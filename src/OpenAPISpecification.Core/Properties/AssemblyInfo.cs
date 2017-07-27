@@ -10,11 +10,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle( "OpenAPISpecification.Core" )]
+[assembly: AssemblyTitle( "OpenApiSpecification.Core" )]
 [assembly: AssemblyDescription( "" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "OpenAPISpecification.Core" )]
+[assembly: AssemblyProduct( "OpenApiSpecification.Core" )]
 [assembly: AssemblyCopyright( "Copyright ©  Microsoft" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]

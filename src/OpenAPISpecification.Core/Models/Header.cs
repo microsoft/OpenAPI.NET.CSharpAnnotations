@@ -6,9 +6,9 @@
 namespace Microsoft.OpenApiSpecification.Core.Models
 {
     /// <summary>
-    /// The class representing OpenApi V3 specification.
+    /// Represents header.
     /// </summary>
-    public class OpenApiV3Specification
+    public class Header
     {
     }
 }

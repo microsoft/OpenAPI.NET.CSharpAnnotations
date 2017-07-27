@@ -21,7 +21,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         /// <summary>
         /// The generated open api V3 specification document.
         /// </summary>
-        public OpenApiV3Specification OpenApiSpecificationV3Document { get; }
+        public OpenApiV3SpecificationDocument OpenApiSpecificationV3Document { get; }
 
         /// <summary>
         /// List of path generations results.

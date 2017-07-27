@@ -30,8 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,9 +46,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\OpenApiV3Specification.cs" />
+    <Compile Include="Models\Callback.cs" />
+    <Compile Include="Models\Components.cs" />
+    <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Discriminator.cs" />
+    <Compile Include="Models\Encoding.cs" />
+    <Compile Include="Models\ExternalDocumentation.cs" />
+    <Compile Include="Models\Header.cs" />
+    <Compile Include="Models\Info.cs" />
+    <Compile Include="Models\ParameterKind.cs" />
+    <Compile Include="Models\License.cs" />
+    <Compile Include="Models\MediaType.cs" />
+    <Compile Include="Models\OpenApiV3SpecificationDocument.cs" />
+    <Compile Include="Models\OperationMethod.cs" />
+    <Compile Include="Models\Operations.cs" />
+    <Compile Include="Models\Parameter.cs" />
+    <Compile Include="Models\RequestBody.cs" />
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Schema.cs" />
+    <Compile Include="Models\SecurityRequirement.cs" />
+    <Compile Include="Models\Server.cs" />
+    <Compile Include="Models\Operation.cs" />
+    <Compile Include="Models\ServerVariable.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
