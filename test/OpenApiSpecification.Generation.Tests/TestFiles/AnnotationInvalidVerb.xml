@@ -1,0 +1,330 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>NativeXml</name>
+  </assembly>
+  <members>
+    <member name="T:NativeXml.Contracts.V1.EntityContractV1">
+      <summary>
+        The V1 contract for an "entity".
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.EntityContractV1.Blob">
+      <summary>
+        Gets or sets an arbitrary BLOB for the client to associate data with the entity.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.EntityContractV1.Count">
+      <summary>
+        Gets or sets the count associated with this entity.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.EntityContractV1.Id">
+      <summary>
+        Gets or sets the unique identifier for the entity.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.EntityContractV1.Legacy">
+      <summary>
+        Gets or sets the legacy status.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.EntityContractV1.Name">
+      <summary>
+        Gets or sets the name of the entity.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.EntityContractV1.DiffTest">
+      <summary>
+        Gets or sets the DiffTest.
+      </summary>
+    </member>
+    <member name="T:NativeXml.Contracts.V1.PagedEntityContractV1">
+      <summary>
+        The V1 contract for a paged set of entities.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.PagedEntityContractV1.Items">
+      <summary>
+        Gets the items in this page of the entities.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.PagedEntityContractV1.PagingInfo">
+      <summary>
+        Gets or sets information related to paging.
+      </summary>
+    </member>
+    <member name="T:NativeXml.Contracts.V1.PagingInfoContractV1">
+      <summary>
+        Represents the requisite information to page calls.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.PagingInfoContractV1.ContinuationToken">
+      <summary>
+        Gets or sets the continuationToken of this collection.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Contracts.V1.PagingInfoContractV1.TotalItems">
+      <summary>
+        Gets or sets the total count of the items in this collection.
+      </summary>
+    </member>
+    <member name="T:NativeXml.EntityV1Controller">
+      <summary>
+        Defines V1 operations for the entities resource.
+      </summary>
+    </member>
+    <member name="M:NativeXml.EntityV1Controller.PostAsync(NativeXml.Contracts.V1.EntityContractV1)">
+      <summary>
+        Adds a new entity and assigns it a unique identifier.
+      </summary>
+      <group>Entity V1</group>
+      <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+      <verb>POST</verb>
+      <url>http://localhost:9000/V1/entities</url>
+      <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+      <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
+      <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+      <requestType>
+        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>The entity to add
+      </requestType>
+      <response code="200">
+        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:NativeXml.EntityV1Controller.GetAsync(System.String,System.Boolean)">
+      <summary>
+        Retrieves a specific entity instance.
+      </summary>
+      <group>Entity V1</group>
+      <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+      <verb>Invalid</verb>
+      <url>http://localhost:9000/V1/entities/{id}?legacy={legacy}</url>
+      <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+      <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
+      <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+      <param name="id" cref="T:System.String" in="path">The unique entity id</param>
+      <param name="legacy" required="true" cref="T:System.Boolean" in="query">Should the API return legacy versions.</param>
+      <response code="200">
+        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+      <swagger security="e2eappdev" version="V2">ExternalPartners</swagger>
+      <swagger security="groupdoesntexist" version="V2">Walmart</swagger>
+      <returns>Task resulting in the entity contract</returns>
+    </member>
+    <member name="M:NativeXml.EntityV1Controller.GetAsync">
+      <summary>
+        Gets a paged collection of entities matching the query parameters.
+      </summary>
+      <group>Entity V1</group>
+      <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+      <verb>GET</verb>
+      <url>http://localhost:9000/V1/entities</url>
+      <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+      <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
+      <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+      <response code="200">
+        <see cref="T:NativeXml.Contracts.V1.PagedEntityContractV1"/>Paged Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+      <returns>Task resulting in the paged entity set contract</returns>
+    </member>
+    <member name="M:NativeXml.EntityV1Controller.PutAsync(System.String,NativeXml.Contracts.V1.EntityContractV1)">
+      <summary>
+        Updates an existing entity.
+      </summary>
+      <group>Entity V1</group>
+      <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+      <verb>PUT</verb>
+      <url>http://localhost:9000/V1/entities/{id}</url>
+      <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+      <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+      <param name="id" cref="T:System.String" in="path">The unique entity id</param>
+      <requestType>
+        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>The entity to add
+      </requestType>
+      <response code="200">
+        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+      <returns>Task resulting in the updated entity contract</returns>
+    </member>
+    <member name="T:NativeXml.EntityV2Controller">
+      <summary>
+        Defines V2 operations for the entities resource.
+      </summary>
+    </member>
+    <member name="M:NativeXml.EntityV2Controller.GetAsync">
+      <summary>
+        Retrieves all known entities.
+      </summary>
+      <group>Entity V2</group>
+      <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+      <verb>GET</verb>
+      <url>http://localhost:9000/V2/entities/</url>
+      <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+      <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
+      <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+      <response code="200">
+        <see cref="T:System.Collections.Generic.List`1"/>where T is <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>List of Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:NativeXml.EntityV2Controller.GetAsync(System.String)">
+      <summary>
+        Retrieves a specific entity instance.
+      </summary>
+      <group>Entity V2</group>
+      <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+      <verb>GET</verb>
+      <url>http://localhost:9000/V2/entities/{id}?diffTest=1</url>
+      <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+      <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
+      <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+      <param name="id" cref="T:System.String" in="path">The unique entity id</param>
+      <param name="diffTest" cref="T:System.Int32" in="query">The stat id</param>
+      <response code="200">
+        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:NativeXml.EntityV2Controller.DeleteAsync(System.String)">
+      <summary>
+        Deletes an entity.
+      </summary>
+      <group>Entity V2</group>
+      <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+      <verb>DELETE</verb>
+      <url>http://localhost:9000/V2/entities/{id}</url>
+      <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+      <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
+      <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+      <param name="id" cref="T:System.String" in="path">The unique entity id</param>
+      <response code="200">
+        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="T:NativeXml.Policies">
+      <summary>
+        SLL policy container class. Do not edit.
+      </summary>
+    </member>
+    <member name="P:NativeXml.Policies.Autopilot">
+      <summary>
+        Gets the policy configuration for Autopilot.
+      </summary>
+    </member>
+    <member name="T:NativeXml.ServiceExceptions">
+      <summary>
+        Provides exceptions for the Reference service.
+      </summary>
+    </member>
+    <member name="F:NativeXml.ServiceExceptions.Source">
+      <summary>
+        Error source for the Reference service.
+      </summary>
+    </member>
+    <member name="F:NativeXml.ServiceExceptions.IdMismatch">
+      <summary errorCategory="2000-2999: Bad Request">
+        The ID value present in the URI differs from the one present in the request body.
+      </summary>
+    </member>
+    <member name="M:NativeXml.ServiceExceptions.IdMismatchException(System.String,System.String)">
+      <summary>
+        Returns an exception wrapping a error response indicating that the URI ID and the request body ID differ.
+      </summary>
+      <param name="pathArgumentId">ID from the URI path argument</param>
+      <param name="requestId">ID from the request body</param>
+      <returns>Exception wrapping the error response</returns>
+    </member>
+    <member name="T:NativeXml.ServiceHost">
+      <summary>
+        Hosts a web service.
+      </summary>
+    </member>
+    <member name="M:NativeXml.ServiceHost.Dispose">
+      <summary>
+        Stops and disposes the service.
+      </summary>
+    </member>
+    <member name="M:NativeXml.ServiceHost.Dispose(System.Boolean)">
+      <summary>
+        Cleans up the resources associated with the service.
+      </summary>
+      <param name="disposing">True if called from Dispose.</param>
+    </member>
+    <member name="M:NativeXml.ServiceHost.OnCancelKeyPress(System.Object,System.ConsoleCancelEventArgs)">
+      <summary>
+        Handles the cancel key press event by shutting down the service should a cancel key press be encountered.
+      </summary>
+      <param name="sender">The event sender.</param>
+      <param name="e">The event args.</param>
+    </member>
+    <member name="M:NativeXml.ServiceHost.Run">
+      <summary>
+        Runs the host (starting it if not already started), and blocks until the exe receives a cancel event.
+      </summary>
+    </member>
+    <member name="M:NativeXml.ServiceHost.Run(NativeXml.WaitHandleSignal)">
+      <summary>
+        Runs the service (starting it if not already started), and blocks until a new line is input via the console.
+      </summary>
+      <param name="signal">The signal to use for the control break event.</param>
+    </member>
+    <member name="M:NativeXml.ServiceHost.Start">
+      <summary>
+        Starts the service.
+      </summary>
+    </member>
+    <member name="M:NativeXml.Startup.Configuration(Owin.IAppBuilder)">
+      <summary>
+        This code configures Web API. The Startup class is specified as a type parameter in the WebApp.Start method.
+      </summary>
+      <param name="appBuilder"></param>
+    </member>
+    <member name="T:NativeXml.WaitHandleSignal">
+      <summary>
+        A simple interception mechanism to let a 3rd party know when the worker is waiting.
+      </summary>
+    </member>
+    <member name="M:NativeXml.WaitHandleSignal.Dispose">
+      <summary>
+        Disposes the signal.
+      </summary>
+    </member>
+    <member name="M:NativeXml.WaitHandleSignal.Set">
+      <summary>
+        Sets the signal.
+      </summary>
+    </member>
+    <member name="M:NativeXml.WaitHandleSignal.WaitForWaitOne(System.TimeSpan)">
+      <summary>
+        Waits for a call to WaitOne.
+      </summary>
+      <param name="timeout">The amount of time to wait.</param>
+      <returns>True if a signal was received.</returns>
+    </member>
+    <member name="M:NativeXml.WaitHandleSignal.WaitOne">
+      <summary>
+        Waits for a signal.
+      </summary>
+    </member>
+  </members>
+</doc>

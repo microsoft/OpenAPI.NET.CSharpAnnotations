@@ -16,14 +16,14 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// <summary>
         /// Gets or sets an optional string describing the host designated by the URL.
         /// </summary>
-        [JsonProperty(PropertyName = "description", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "description", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets a map between a variable name and its value.
         /// The value is used for substitution in the server's URL template.
         /// </summary>
-        [JsonProperty(PropertyName = "variables", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "variables", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public IDictionary<string, ServerVariable> ServerVariables { get; } = new Dictionary<string, ServerVariable>();
 
         /// <summary>

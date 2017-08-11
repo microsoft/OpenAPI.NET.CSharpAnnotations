@@ -11,6 +11,28 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
     public class PathGenerationResult
     {
         /// <summary>
+        /// Initializes a new instance of <see cref="PathGenerationResult"/>
+        /// </summary>
+        /// <param name="message">The generation message.</param>
+        /// <param name="status">The generation status.</param>
+        public PathGenerationResult(string message, GenerationStatus status) : this(null, message, status)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="PathGenerationResult"/>
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="message">The generation message.</param>
+        /// <param name="status">The generation status.</param>
+        public PathGenerationResult(string path, string message, GenerationStatus status)
+        {
+            Path = path;
+            Message = message;
+            Status = status;
+        }
+
+        /// <summary>
         /// The message providing details on the generation.
         /// </summary>
         public string Message { get; }

@@ -1,0 +1,47 @@
+{
+  "info": {
+    "title": "NativeXml",
+    "version": "1.0.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/V1/entities/{id}": {
+      "get": {
+        "operationId": "getV1EntitiesById",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "MS-Contract-Version-Contract-Version",
+            "schema": {
+              "format": "float",
+              "type": "number"
+            }
+          },
+          {
+            "in": "header",
+            "name": "MS-CorrelationId-CorrelationId",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "header",
+            "name": "MS-RequestId-RequestId",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "query",
+            "name": "legacy",
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "summary": "Retrieves a specific entity instance.",
+        "tags": [ "Entity V1" ]
+      }
+    }
+  },
+  "servers": [ { "url": "http://localhost:9000" } ]
+}

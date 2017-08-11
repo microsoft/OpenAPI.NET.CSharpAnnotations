@@ -70,6 +70,8 @@
     <Compile Include="Models\ServerVariable.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\EmptyCollectionContractResolver.cs" />
+    <Compile Include="Serialization\OperationsJsonConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
