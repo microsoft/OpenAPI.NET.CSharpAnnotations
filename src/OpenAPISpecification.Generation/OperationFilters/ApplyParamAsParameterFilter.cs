@@ -44,6 +44,9 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                 var name = paramElement.Attribute("name")?.Value.Trim();
                 var cref = paramElement.Attribute("cref")?.Value.Trim();
                 var description = paramElement.Attribute("description")?.Value.RemoveBlankLines();
+                
+                // TODO: Handle System.Array param type.
+                //
                 var dataType = GetDataTypeValue(cref);
 
                 parameters.Add(new Parameter
@@ -73,10 +76,10 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
             {
                 var typeName = cref.Split(':')[1].Trim();
 
-                return PrimitiveTypeToDataTypeAndFormatMapper.Map(Type.GetType(typeName));
+                return Type.GetType(typeName).MapToOpenApiDataTypeFormatPair();
             }
 
-            return PrimitiveTypeToDataTypeAndFormatMapper.Map(typeof(string));
+            return typeof(string).MapToOpenApiDataTypeFormatPair();
         }
 
         private static ParameterKind GetParameterKind(string kind)

@@ -20,7 +20,10 @@ namespace Microsoft.OpenApiSpecification.Core.Serialization
             return objectType == typeof(Operations);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+        public override object ReadJson(
+            JsonReader reader,
+            Type objectType,
+            object existingValue,
             JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null)
@@ -47,7 +50,8 @@ namespace Microsoft.OpenApiSpecification.Core.Serialization
 
                     case "parameters":
                         operations.Parameters =
-                            (IDictionary<string, Parameter>) serializer.Deserialize(reader,
+                            (IDictionary<string, Parameter>) serializer.Deserialize(
+                                reader,
                                 typeof(IDictionary<string, Parameter>));
                         break;
 
@@ -56,7 +60,9 @@ namespace Microsoft.OpenApiSpecification.Core.Serialization
                         break;
 
                     default:
-                        var key = (OperationMethod) Enum.Parse(enumType: typeof(OperationMethod), value: propertyName,
+                        var key = (OperationMethod) Enum.Parse(
+                            enumType: typeof(OperationMethod),
+                            value: propertyName,
                             ignoreCase: true);
                         var value = (Operation) serializer.Deserialize(reader, typeof(Operation));
                         operations.Add(key, value);

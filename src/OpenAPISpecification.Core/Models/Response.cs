@@ -11,7 +11,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     /// <summary>
     /// Represents the expected response of an operation.
     /// </summary>
-    public class Response
+    public class Response : IReferenceable
     {
         /// <summary>
         /// Gets the map containing descriptions of potential response payloads.
@@ -23,8 +23,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// <summary>
         /// Gets or sets the Response description.
         /// </summary>
-        [JsonProperty(PropertyName = "description", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-            Required = Required.Always)]
+        [JsonProperty(PropertyName = "description", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Description { get; set; }
 
         /// <summary>
@@ -32,5 +31,11 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "headers", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public IDictionary<string, Header> Headers { get; } = new Dictionary<string, Header>();
+
+        /// <summary>
+        /// Gets or sets the reference string.
+        /// </summary>
+        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
+        public string Reference { get; set; }
     }
 }

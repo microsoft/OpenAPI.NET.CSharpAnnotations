@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Callback.cs" />
+    <Compile Include="Models\Example.cs" />
+    <Compile Include="Models\IReferenceable.cs" />
     <Compile Include="Models\Components.cs" />
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Discriminator.cs" />

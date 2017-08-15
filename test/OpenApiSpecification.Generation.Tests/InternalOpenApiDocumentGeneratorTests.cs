@@ -11,7 +11,6 @@ using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Microsoft.OpenApiSpecification.Generation.Tests
 {
@@ -20,14 +19,6 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
     {
         private const string TestFilesDirectory = "TestFiles";
         private const string TestValidationDirectory = "TestValidation";
-
-        private static bool CompareJson(string actual, string expected)
-        {
-            var actualObject = JObject.Parse(actual);
-            var expectedObject = JObject.Parse(expected);
-
-            return JToken.DeepEquals(actualObject, expectedObject);
-        }
 
         [TestMethod]
         public void GenerateV3DocumentShouldSucceed()
@@ -51,7 +42,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
 
             var expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory, "Success.Json"));
 
-            Assert.IsTrue(CompareJson(actualDocument, expectedDocument));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
 
         [TestMethod]
@@ -68,13 +59,14 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
             Assert.IsNotNull(result);
             Assert.IsTrue(result.GenerationStatus == GenerationStatus.Failure);
             Assert.IsNotNull(result.OpenApiSpecificationV3Document);
-            Assert.AreEqual( 7, result.PathGenerationResults.Count);
+            Assert.AreEqual(7, result.PathGenerationResults.Count);
 
             var failedPaths = result.PathGenerationResults.Where(p => p.Status == GenerationStatus.Failure);
 
             Assert.IsTrue(failedPaths.Count() == 1);
             Assert.IsTrue(failedPaths.First().Path == "http://{host}/V1/entities");
-            Assert.IsTrue(failedPaths.First().Message ==
+            Assert.IsTrue(
+                failedPaths.First().Message ==
                 string.Format(SpecificationGenerationMessages.InvalidUrl, "http://{host}/V1/entities"));
 
             var actualDocument = JsonConvert.SerializeObject(
@@ -82,10 +74,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
             );
 
-            var expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory,
-                "AnnotationInvalidUri.Json"));
+            var expectedDocument = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "AnnotationInvalidUri.Json"));
 
-            Assert.IsTrue(CompareJson(actualDocument, expectedDocument));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
 
         [TestMethod]
@@ -102,13 +96,14 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
             Assert.IsNotNull(result);
             Assert.IsTrue(result.GenerationStatus == GenerationStatus.Failure);
             Assert.IsNotNull(result.OpenApiSpecificationV3Document);
-            Assert.AreEqual(7,result.PathGenerationResults.Count);
+            Assert.AreEqual(7, result.PathGenerationResults.Count);
 
             var failedPaths = result.PathGenerationResults.Where(p => p.Status == GenerationStatus.Failure);
 
             Assert.IsTrue(failedPaths.Count() == 1);
             Assert.IsTrue(failedPaths.First().Path == "/V1/entities/{id}");
-            Assert.IsTrue(failedPaths.First().Message ==
+            Assert.IsTrue(
+                failedPaths.First().Message ==
                 string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"));
 
             var actualDocument = JsonConvert.SerializeObject(
@@ -116,10 +111,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
             );
 
-            var expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory,
-                "AnnotationInvalidVerb.Json"));
+            var expectedDocument = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "AnnotationInvalidVerb.Json"));
 
-            Assert.IsTrue(CompareJson(actualDocument, expectedDocument));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
 
         [TestMethod]
@@ -140,7 +137,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
             Assert.IsTrue(result.PathGenerationResults.Count == 1);
             Assert.IsNull(result.PathGenerationResults.First().Path);
             Assert.IsTrue(result.PathGenerationResults.First().Status == GenerationStatus.Success);
-            Assert.IsTrue(result.PathGenerationResults.First().Message ==
+            Assert.IsTrue(
+                result.PathGenerationResults.First().Message ==
                 SpecificationGenerationMessages.NoOperationElementFoundToParse);
         }
 
@@ -167,10 +165,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
             );
 
-            var expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory,
-                "AnnotationParamNoTypeSpecified.Json"));
+            var expectedDocument = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "AnnotationParamNoTypeSpecified.Json"));
 
-            Assert.IsTrue(CompareJson(actualDocument, expectedDocument));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
 
         [TestMethod]
@@ -190,7 +190,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
 
             Assert.IsTrue(failedPaths.Count() == 1);
             Assert.IsTrue(failedPaths.First().Path == "/V1/entities/{id}");
-            Assert.IsTrue(failedPaths.First().Message ==
+            Assert.IsTrue(
+                failedPaths.First().Message ==
                 string.Format(SpecificationGenerationMessages.UndocumentedPathParameter, "id", "/V1/entities/{id}"));
 
             var actualDocument = JsonConvert.SerializeObject(
@@ -198,10 +199,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
             );
 
-            var expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory,
-                "AnnotationUndocumentedPathParameters.Json"));
+            var expectedDocument = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "AnnotationUndocumentedPathParameters.Json"));
 
-            Assert.IsTrue(CompareJson(actualDocument, expectedDocument));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
     }
 }

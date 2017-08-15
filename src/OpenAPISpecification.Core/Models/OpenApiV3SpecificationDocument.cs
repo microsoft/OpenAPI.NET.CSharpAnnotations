@@ -29,21 +29,27 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// <summary>
         /// Gets or sets the metadata about the API.
         /// </summary>
-        [JsonProperty(PropertyName = "info", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+        [JsonProperty(
+            PropertyName = "info",
+            DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
             Required = Required.Always)]
         public Info Info { get; set; } = new Info();
 
         /// <summary>
         /// Gets or sets the Open API Specification version.
         /// </summary>
-        [JsonProperty(PropertyName = "openapi", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+        [JsonProperty(
+            PropertyName = "openapi",
+            DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
             Required = Required.Always)]
         public string OpenApi { get; set; } = "3.0.0";
 
         /// <summary>
         /// Gets or sets the available paths for the API
         /// </summary>
-        [JsonProperty(PropertyName = "paths", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+        [JsonProperty(
+            PropertyName = "paths",
+            DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
             Required = Required.Always)]
         public IDictionary<string, Operations> Paths { get; } = new Dictionary<string, Operations>();
 

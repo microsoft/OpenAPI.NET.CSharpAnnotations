@@ -1,0 +1,4 @@
+﻿{
+    "enum": ["SampleEnumValueFirst", "SampleEnumValueSecond"],
+    "type": "string"
+}

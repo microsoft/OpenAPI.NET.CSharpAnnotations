@@ -8,7 +8,12 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     /// <summary>
     /// Represents callback.
     /// </summary>
-    public class Callback
+    public class Callback : IReferenceable
     {
+        /// <summary>
+        /// Gets or sets the reference string.
+        /// </summary>
+        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
+        public string Reference { get; set; }
     }
 }

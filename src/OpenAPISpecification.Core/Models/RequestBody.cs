@@ -11,13 +11,12 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     /// <summary>
     /// Represents the request body for the operation.
     /// </summary>
-    public class RequestBody
+    public class RequestBody : IReferenceable
     {
         /// <summary>
         /// Gets the content of the request body.The key is the media type and the value describes it.
         /// </summary>
-        [JsonProperty(PropertyName = "content", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-            Required = Required.Always)]
+        [JsonProperty(PropertyName = "content", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public IDictionary<string, MediaType> Content { get; } = new Dictionary<string, MediaType>();
 
         /// <summary>
@@ -31,5 +30,11 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "required", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool IsRequired { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference string.
+        /// </summary>
+        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
+        public string Reference { get; set; }
     }
 }

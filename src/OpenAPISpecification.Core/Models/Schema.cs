@@ -11,18 +11,13 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     /// <summary>
     /// The schema defining the type.
     /// </summary>
-    public class Schema
+    public class Schema : IReferenceable
     {
-        /// <summary>
-        /// Gets or sets a value indicating whether the minimum value is excluded.
-        /// </summary>
-        [JsonProperty(PropertyName = "exclusiveMinimum", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public bool IsExclusiveMinimum { get; set; }
-
         /// <summary>
         /// Gets or sets the schema for the additional properties.
         /// </summary>
-        [JsonProperty(PropertyName = "additionalProperties",
+        [JsonProperty(
+            PropertyName = "additionalProperties",
             DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Schema AdditionalProperties { get; set; }
 
@@ -56,6 +51,11 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         [JsonProperty(PropertyName = "discriminator", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public Discriminator Discriminator { get; set; }
 
+        /// <summary>
+        /// Gets the possible enumerated values.
+        /// </summary>
+        [JsonProperty(PropertyName = "enum", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public IList<string> Enum { get; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the free-form property to include a an example of an instance for this schema.
@@ -80,6 +80,12 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "exclusiveMaximum", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool IsExclusiveMaximum { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the minimum value is excluded.
+        /// </summary>
+        [JsonProperty(PropertyName = "exclusiveMinimum", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public bool IsExclusiveMinimum { get; set; }
 
         /// <summary>
         /// Gets or sets the schemas of the array's tuple values.
@@ -180,8 +186,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
-        [JsonProperty(PropertyName = "title", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-            Order = -100 + 3)]
+        [JsonProperty(PropertyName = "title", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Title { get; set; }
 
         /// <summary>
@@ -195,5 +200,11 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "uniqueItems", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool UniqueItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference string.
+        /// </summary>
+        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
+        public string Reference { get; set; }
     }
 }

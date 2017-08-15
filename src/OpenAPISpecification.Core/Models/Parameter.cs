@@ -11,7 +11,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     /// <summary>
     /// Represents a single operation parameter.
     /// </summary>
-    public class Parameter
+    public class Parameter : IReferenceable
     {
         /// <summary>
         /// Gets or sets a value indicating whether passing empty-valued parameters is allowed (default: false).
@@ -44,22 +44,19 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// <summary>
         /// Gets or sets the location of the parameter (query, header, path)
         /// </summary>
-        [JsonProperty(PropertyName = "in", DefaultValueHandling = DefaultValueHandling.Ignore,
-            Required = Required.Always)]
+        [JsonProperty(PropertyName = "in", DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ParameterKind In { get; set; }
 
         /// <summary>
         /// Gets or sets whether or not the parameter is required.
         /// </summary>
-        [JsonProperty(PropertyName = "required", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-            Required = Required.Always)]
+        [JsonProperty(PropertyName = "required", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool IsRequired { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the Parameter.
         /// </summary>
-        [JsonProperty(PropertyName = "name", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-            Required = Required.Always)]
+        [JsonProperty(PropertyName = "name", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Name { get; set; }
 
         /// <summary>
@@ -73,5 +70,11 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "style", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public string Style { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reference string.
+        /// </summary>
+        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
+        public string Reference { get; set; }
     }
 }

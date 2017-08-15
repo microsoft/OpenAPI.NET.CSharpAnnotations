@@ -3,17 +3,19 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace Microsoft.OpenApiSpecification.Core.Models
 {
     /// <summary>
-    /// Represents header.
+    /// Interface for models that are referenceable.
     /// </summary>
-    public class Header : IReferenceable
+    public interface IReferenceable
     {
         /// <summary>
-        /// Gets or sets the reference string.
+        /// Gets or sets the reference string to the defined model in <see cref="Components"/> section.
         /// </summary>
-        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
-        public string Reference { get; set; }
+        [JsonProperty(PropertyName = "$ref", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        string Reference { get; set; }
     }
 }

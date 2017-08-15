@@ -46,25 +46,30 @@
     <Compile Include="DocumentFilters\ApplyUrlAsServerFilter.cs" />
     <Compile Include="DocumentFilters\IDocumentFilter.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Models\OpenApiDataTypeFormatPair.cs" />
     <Compile Include="OpenApiDocumentGeneratorSettings.cs" />
     <Compile Include="OperationFilters\ApplyGroupsAsTagFilter.cs" />
     <Compile Include="OperationFilters\ApplyParamAsParameterFilter.cs" />
     <Compile Include="OperationFilters\ApplyRemarksAsDescriptionFilter.cs" />
     <Compile Include="OperationFilters\ApplySummaryFilter.cs" />
     <Compile Include="OperationFilters\IOperationFilter.cs" />
-    <Compile Include="PrimitiveTypeToDataTypeAndFormatMapper.cs" />
     <Compile Include="Exceptions\DocumentationException.cs" />
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="InternalOpenApiDocumentGenerator.cs" />
     <Compile Include="IOpenApiDocumentGenerator.cs" />
-    <Compile Include="Models\OpenApiDataTypeFormatPair.cs" />
     <Compile Include="Models\GenerationStatus.cs" />
     <Compile Include="Models\OpenApiDocumentGenerationResult.cs" />
     <Compile Include="Models\PathGenerationResult.cs" />
+    <Compile Include="ReferenceRegistries\ParameterReferenceRegistry.cs" />
+    <Compile Include="ReferenceRegistries\ExampleReferenceRegistry.cs" />
+    <Compile Include="ReferenceRegistries\SchemaReferenceRegistry.cs" />
+    <Compile Include="ReferenceRegistries\ReferenceRegistryManager.cs" />
+    <Compile Include="ReferenceRegistries\ReferenceRegistry.cs" />
     <Compile Include="OpenApiDocumentGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecificationGenerationMessages.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenApiSpecification.Core\OpenApiSpecification.Core.csproj">
@@ -72,6 +77,5 @@
       <Name>OpenApiSpecification.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
