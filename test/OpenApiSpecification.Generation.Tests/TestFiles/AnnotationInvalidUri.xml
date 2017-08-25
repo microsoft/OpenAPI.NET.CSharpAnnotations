@@ -85,15 +85,6 @@
       <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
       <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
       <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
-      <requestType>
-        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>The entity to add
-      </requestType>
-      <response code="200">
-        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
-      </response>
-      <response code="400">
-        <see cref="T:System.String"/>Bad request
-      </response>
     </member>
     <member name="M:NativeXml.EntityV1Controller.GetAsync(System.String,System.Boolean)">
       <summary>
@@ -108,14 +99,6 @@
       <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
       <param name="id" required="true" cref="T:System.String" in="path">Should the API return legacy versions.</param>
       <param name="legacy" required="true" cref="T:System.Boolean" in="query">Should the API return legacy versions.</param>
-      <response code="200">
-        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
-      </response>
-      <response code="400">
-        <see cref="T:System.String"/>Bad request
-      </response>
-      <swagger security="e2eappdev" version="V2">ExternalPartners</swagger>
-      <swagger security="groupdoesntexist" version="V2">Walmart</swagger>
       <returns>Task resulting in the entity contract</returns>
     </member>
     <member name="M:NativeXml.EntityV1Controller.GetAsync">
@@ -129,12 +112,6 @@
       <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
       <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
       <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
-      <response code="200">
-        <see cref="T:NativeXml.Contracts.V1.PagedEntityContractV1"/>Paged Entity contract
-      </response>
-      <response code="400">
-        <see cref="T:System.String"/>Bad request
-      </response>
       <returns>Task resulting in the paged entity set contract</returns>
     </member>
     <member name="M:NativeXml.EntityV1Controller.PutAsync(System.String,NativeXml.Contracts.V1.EntityContractV1)">
@@ -148,15 +125,6 @@
       <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
       <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
       <param name="id" cref="T:System.String" in="path">The unique entity id</param>
-      <requestType>
-        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>The entity to add
-      </requestType>
-      <response code="200">
-        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
-      </response>
-      <response code="400">
-        <see cref="T:System.String"/>Bad request
-      </response>
       <returns>Task resulting in the updated entity contract</returns>
     </member>
     <member name="T:NativeXml.EntityV2Controller">
@@ -175,12 +143,6 @@
       <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
       <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
       <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
-      <response code="200">
-        <see cref="T:System.Collections.Generic.List`1"/>where T is <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>List of Entity contract
-      </response>
-      <response code="400">
-        <see cref="T:System.String"/>Bad request
-      </response>
     </member>
     <member name="M:NativeXml.EntityV2Controller.GetAsync(System.String)">
       <summary>
@@ -195,12 +157,6 @@
       <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
       <param name="id" cref="T:System.String" in="path">The unique entity id</param>
       <param name="diffTest" cref="T:System.Int32" in="query">The stat id</param>
-      <response code="200">
-        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
-      </response>
-      <response code="400">
-        <see cref="T:System.String"/>Bad request
-      </response>
     </member>
     <member name="M:NativeXml.EntityV2Controller.DeleteAsync(System.String)">
       <summary>
@@ -214,12 +170,6 @@
       <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
       <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
       <param name="id" cref="T:System.String" in="path">The unique entity id</param>
-      <response code="200">
-        <see cref="T:NativeXml.Contracts.V1.EntityContractV1"/>Entity contract
-      </response>
-      <response code="400">
-        <see cref="T:System.String"/>Bad request
-      </response>
     </member>
     <member name="T:NativeXml.Policies">
       <summary>

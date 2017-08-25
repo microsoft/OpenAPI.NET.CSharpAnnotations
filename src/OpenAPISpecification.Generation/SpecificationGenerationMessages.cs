@@ -22,5 +22,15 @@ namespace Microsoft.OpenApiSpecification.Generation
         public const string UnexpectedError = "Unexpected error occurred during generation: {0}";
 
         public const string UndocumentedPathParameter = "Path paramater: {0} is undocumented in {1}";
+
+        public const string UnorderedGenericType =
+            "The request or response type contains a generic type that is unordered. " +
+            "The correct way to document a generic type is as follows: <![CDATA[ <responseType>" +
+            "<see cref=\"Response{T}\"/> where T is <see cref=\"GenericType\"/></responseType> ]]>";
+
+        public const string UndocumentedGenericType =
+            "The request or response type contains a generic type that is undocumented. " +
+            "The correct way to document a generic type is as follows: <![CDATA[ <responseType>" +
+            "<see cref=\"Response{T}\"/> where T is <see cref=\"GenericType\"/></responseType> ]]>";
     }
 }

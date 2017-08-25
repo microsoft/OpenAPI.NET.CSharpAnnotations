@@ -22,10 +22,10 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets an optional, string summary. Intended to apply to all operations in this path.
+        /// Gets the list of parameters that are applicable for all the operations described under this path.
         /// </summary>
-        [JsonProperty(PropertyName = "summary", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public string Summary { get; set; }
+        [JsonProperty(PropertyName = "parameters", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public IDictionary<string, Parameter> Parameters { get; internal set; } = new Dictionary<string, Parameter>();
 
         /// <summary>
         /// Gets an alternative server array to service all operations in this path.
@@ -34,9 +34,9 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         public IList<Server> Servers { get; internal set; } = new List<Server>();
 
         /// <summary>
-        /// Gets the list of parameters that are applicable for all the operations described under this path.
+        /// Gets or sets an optional, string summary. Intended to apply to all operations in this path.
         /// </summary>
-        [JsonProperty(PropertyName = "parameters", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, Parameter> Parameters { get; internal set; } = new Dictionary<string, Parameter>();
+        [JsonProperty(PropertyName = "summary", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string Summary { get; set; }
     }
 }

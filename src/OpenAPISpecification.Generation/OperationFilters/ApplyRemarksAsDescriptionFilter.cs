@@ -20,7 +20,8 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// </summary>
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
-        public void Apply(Operation operation, XElement element)
+        /// <param name="settings">The operation filter settings.</param>
+        public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
             string description = null;
             var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == "remarks");

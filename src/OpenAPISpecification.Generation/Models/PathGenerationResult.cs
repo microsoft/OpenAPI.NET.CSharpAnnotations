@@ -3,6 +3,8 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using Newtonsoft.Json;
+
 namespace Microsoft.OpenApiSpecification.Generation.Models
 {
     /// <summary>
@@ -10,6 +12,13 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
     /// </summary>
     public class PathGenerationResult
     {
+        /// <summary>
+        /// Default constructor. Required for deserialization.
+        /// </summary>
+        public PathGenerationResult()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of <see cref="PathGenerationResult"/>
         /// </summary>
@@ -35,16 +44,19 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         /// <summary>
         /// The message providing details on the generation.
         /// </summary>
-        public string Message { get; }
+        [JsonProperty]
+        public string Message { get; internal set; }
 
         /// <summary>
         /// The path.
         /// </summary>
-        public string Path { get; }
+        [JsonProperty]
+        public string Path { get; internal set; }
 
         /// <summary>
         /// The generation status for the path.
         /// </summary>
-        public GenerationStatus Status { get; }
+        [JsonProperty]
+        public GenerationStatus Status { get; internal set; }
     }
 }

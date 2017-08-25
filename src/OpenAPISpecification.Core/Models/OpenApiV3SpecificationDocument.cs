@@ -18,7 +18,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets or sets the element that holds a set of reusable objects for different aspects of the OAS.
         /// </summary>
         [JsonProperty(PropertyName = "components", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public Components Components { get; set; }
+        public Components Components { get; set; } = new Components();
 
         /// <summary>
         /// Gets or sets the external documentation.

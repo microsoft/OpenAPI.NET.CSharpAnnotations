@@ -16,16 +16,16 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     public class Discriminator
     {
         /// <summary>
+        /// Gets the mapping between payload values and schema names or references.
+        /// </summary>
+        [JsonProperty(PropertyName = "mapping", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public IDictionary<string, string> Mapping { get; } = new Dictionary<string, string>();
+
+        /// <summary>
         /// Gets or sets the property in the payload that will hold the discriminator value.
         /// </summary>
         [JsonProperty(PropertyName = "propertyName", Required = Required.Always,
             DefaultValueHandling = DefaultValueHandling.Ignore)]
         public string PropertyName { get; set; }
-
-        /// <summary>
-        /// Gets the mapping between payload values and schema names or references.
-        /// </summary>
-        [JsonProperty(PropertyName = "mapping", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IDictionary<string, string> Mapping { get; } = new Dictionary<string, string>();
     }
 }

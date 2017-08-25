@@ -14,7 +14,7 @@ using Microsoft.OpenApiSpecification.Generation.Models;
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
     /// <summary>
-    /// Parses the value of group tag in xml documentation and apply that as parameter in operation.
+    /// Parses the value of param tag in xml documentation and apply that as parameter in operation.
     /// </summary>
     public class ApplyParamAsParameterFilter : IOperationFilter
     {
@@ -23,7 +23,8 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// </summary>
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
-        public void Apply(Operation operation, XElement element)
+        /// <param name="settings">The operation filter settings.</param>
+        public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
             var paramElements = element.Elements().Where(p => p.Name == "param"
                 && (p.Attribute("in")?.Value == "path" ||
@@ -44,7 +45,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                 var name = paramElement.Attribute("name")?.Value.Trim();
                 var cref = paramElement.Attribute("cref")?.Value.Trim();
                 var description = paramElement.Attribute("description")?.Value.RemoveBlankLines();
-                
+
                 // TODO: Handle System.Array param type.
                 //
                 var dataType = GetDataTypeValue(cref);

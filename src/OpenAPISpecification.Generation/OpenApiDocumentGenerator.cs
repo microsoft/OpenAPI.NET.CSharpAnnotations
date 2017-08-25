@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Models;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApiSpecification.Generation
 {
@@ -31,7 +32,7 @@ namespace Microsoft.OpenApiSpecification.Generation
             new ApplySummaryFilter()
         };
 
-        private readonly InternalOpenApiDocumentGenerator _internalOpenApiDocumentGenerator;
+        private readonly OpenApiDocumentGeneratorSettings _generatorSettings;
 
         /// <summary>
         /// Creates new instance of <see cref="OpenApiDocumentGenerator"/> with provided generator settings.
@@ -39,7 +40,7 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// <param name="generatorSettings">The generator settings.</param>
         public OpenApiDocumentGenerator(OpenApiDocumentGeneratorSettings generatorSettings)
         {
-            _internalOpenApiDocumentGenerator = new InternalOpenApiDocumentGenerator(generatorSettings);
+            _generatorSettings = generatorSettings;
         }
 
         /// <summary>
@@ -47,10 +48,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// </summary>
         public OpenApiDocumentGenerator()
         {
-            var generatorSettings = new OpenApiDocumentGeneratorSettings(
+            _generatorSettings = new OpenApiDocumentGeneratorSettings(
                 _defaultOperationFilters, _defaultDocumentFilters);
-
-            _internalOpenApiDocumentGenerator = new InternalOpenApiDocumentGenerator(generatorSettings);
         }
 
         /// <summary>
@@ -71,7 +70,13 @@ namespace Microsoft.OpenApiSpecification.Generation
                 }
             }
 
-            return _internalOpenApiDocumentGenerator.GenerateOpenApiDocument(annotationXmlDocument);
+            using (var isolatedDomain = new AppDomainCreator<InternalOpenApiDocumentGenerator>())
+            {
+                var result = isolatedDomain.Object.GenerateOpenApiDocument(annotationXmlDocument.ToString(),
+                    contractAssemblyPaths);
+
+                return JsonConvert.DeserializeObject<OpenApiDocumentGenerationResult>(result);
+            }
         }
 
         /// <summary>

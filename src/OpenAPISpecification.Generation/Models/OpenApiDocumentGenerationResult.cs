@@ -3,18 +3,26 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApiSpecification.Generation.Models
 {
     /// <summary>
     /// The class to store the open api document generation result.
     /// </summary>
+    [Serializable]
     public class OpenApiDocumentGenerationResult
     {
-        private List<PathGenerationResult> _pathGenerationResults = new List<PathGenerationResult>();
+        /// <summary>
+        /// Default constructor. Required for deserialization.
+        /// </summary>
+        public OpenApiDocumentGenerationResult()
+        {
+        }
 
         /// <summary>
         /// Initializes the instance of <see cref="OpenApiDocumentGenerationResult"/>.
@@ -23,7 +31,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         public OpenApiDocumentGenerationResult(PathGenerationResult generationResult)
         {
             OpenApiSpecificationV3Document = null;
-            _pathGenerationResults.Add(generationResult);
+            PathGenerationResults.Add(generationResult);
         }
 
         /// <summary>
@@ -38,41 +46,42 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
 
             foreach (var pathGenerationResult in generationResults)
             {
-                _pathGenerationResults.Add(
+                PathGenerationResults.Add(
                     new PathGenerationResult(pathGenerationResult.Path, pathGenerationResult.Message,
                         pathGenerationResult.Status));
             }
         }
 
         /// <summary>
-        /// The generation status.
-        /// </summary>
-        public GenerationStatus GenerationStatus
-        {
-            get
-            {
-                if (_pathGenerationResults.Any(i => i.Status == GenerationStatus.Failure))
-                {
-                    return GenerationStatus.Failure;
-                }
-
-                if (_pathGenerationResults.Any(i => i.Status == GenerationStatus.Warning))
-                {
-                    return GenerationStatus.Warning;
-                }
-
-                return GenerationStatus.Success;
-            }
-        }
-
-        /// <summary>
         /// The generated open api V3 specification document.
         /// </summary>
-        public OpenApiV3SpecificationDocument OpenApiSpecificationV3Document { get; }
+        [JsonProperty]
+        public OpenApiV3SpecificationDocument OpenApiSpecificationV3Document { get; internal set; }
 
         /// <summary>
         /// List of path generations results.
         /// </summary>
-        public IReadOnlyCollection<PathGenerationResult> PathGenerationResults => _pathGenerationResults;
+        [JsonProperty]
+        public IList<PathGenerationResult> PathGenerationResults { get; internal set; } =
+            new List<PathGenerationResult>();
+
+        /// <summary>
+        /// Returns the generation status.
+        /// </summary>
+        /// <returns>The generation status.</returns>
+        public GenerationStatus GetGenerationStatus()
+        {
+            if (PathGenerationResults.Any(i => i.Status == GenerationStatus.Failure))
+            {
+                return GenerationStatus.Failure;
+            }
+
+            if (PathGenerationResults.Any(i => i.Status == GenerationStatus.Warning))
+            {
+                return GenerationStatus.Warning;
+            }
+
+            return GenerationStatus.Success;
+        }
     }
 }

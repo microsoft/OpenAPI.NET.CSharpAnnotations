@@ -50,7 +50,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// <summary>
         /// Gets or sets whether or not the parameter is required.
         /// </summary>
-        [JsonProperty(PropertyName = "required", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(PropertyName = "required", DefaultValueHandling = DefaultValueHandling.Include)]
         public bool IsRequired { get; set; }
 
         /// <summary>

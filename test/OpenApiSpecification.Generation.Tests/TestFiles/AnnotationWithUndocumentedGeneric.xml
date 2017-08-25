@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NativeXml</name>
+    </assembly>
+    <members>
+        <member name="M:NativeXml.EntityV1Controller.GetAsync">
+            <summary>
+                Gets a paged collection of entities matching the query parameters.
+            </summary>
+            <group>Entity V1</group>
+            <faults cref="T:Microsoft.MarketplaceServices.Core.StandardExceptions"/>
+            <verb>GET</verb>
+            <url>http://localhost:9000/V1/entities</url>
+            <param name="MS-Contract-Version-Contract-Version" cref="T:System.Single" in="header">Specifies the verions of the contracts used</param>
+            <param name="MS-CorrelationId-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request</param>
+            <param name="MS-RequestId-RequestId" cref="T:System.String" in="header">Request ID for the request</param>
+            <param in="body">
+                <see cref="T:System.Collections.Generic.Dictionary`2"/>Dictionary of Team Sub Team information for each BRHPath as key
+            </param>
+            <returns>Task resulting in the paged entity set contract</returns>
+        </member>
+    </members>
+</doc>

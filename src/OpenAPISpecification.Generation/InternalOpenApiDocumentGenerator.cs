@@ -12,67 +12,99 @@ using System.Web;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Exceptions;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.OperationFilters;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApiSpecification.Generation
 {
     /// <summary>
     /// Provides functionality to parse xml into OpenApiV3Specification
     /// </summary>
-    internal class InternalOpenApiDocumentGenerator
+    internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
-        private readonly OpenApiDocumentGeneratorSettings _generatorSettings;
-
-        /// <summary>
-        /// Creates a new instance of <see cref="InternalOpenApiDocumentGenerator"/>.
-        /// </summary>
-        /// <param name="generatorSettings">The xml tag processor.</param>
-        public InternalOpenApiDocumentGenerator(OpenApiDocumentGeneratorSettings generatorSettings)
+        private static readonly IList<IDocumentFilter> DefaultDocumentFilters = new List<IDocumentFilter>
         {
-            _generatorSettings = generatorSettings;
-        }
+            new ApplyAssemblyNameAsInfoFilter(),
+            new ApplyUrlAsServerFilter()
+        };
+
+        private static readonly IList<IOperationFilter> DefaultOperationFilters = new List<IOperationFilter>
+        {
+            new ApplyGroupsAsTagFilter(),
+            new ApplyParamAsParameterFilter(),
+            new ApplyParamAsRequestBodyFilter(),
+            new ApplyParamAsResponseFilter(),
+            new ApplyRemarksAsDescriptionFilter(),
+            new ApplySummaryFilter()
+        };
+
+        // TO DO: Figure out a way to serialize this and pass as parameter from OpenApiDocumentGenerator.
+        private readonly OpenApiDocumentGeneratorSettings _generatorSettings = new OpenApiDocumentGeneratorSettings(
+            DefaultOperationFilters, DefaultDocumentFilters);
 
         /// <summary>
         /// Takes in annotation xml document and returns the open api document generation result which contains the
         /// corresponding open api document.
         /// </summary>
         /// <param name="annotationXml">The annotation xml document.</param>
+        /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <returns>See <see cref="OpenApiDocumentGenerationResult"/>></returns>
-        public OpenApiDocumentGenerationResult GenerateOpenApiDocument(XDocument annotationXml)
+        public string GenerateOpenApiDocument(
+            string annotationXml,
+            IEnumerable<string> contractAssemblyPaths)
         {
-            var operationElements = annotationXml.XPathSelectElements("//doc/members/member[url and verb]");
+            var annotationXmlDocument = XDocument.Parse(annotationXml);
+
+            var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]");
+
+            var operationFilterSettings =
+                new OperationFilterSettings
+                {
+                    TypeFetcher = new TypeFetcher(contractAssemblyPaths)
+                };
+
+            OpenApiDocumentGenerationResult result;
 
             if (!operationElements.Any())
             {
-                return new OpenApiDocumentGenerationResult(
+                result = new OpenApiDocumentGenerationResult(
                     new PathGenerationResult(SpecificationGenerationMessages.NoOperationElementFoundToParse,
                         GenerationStatus.Success));
+
+                return JsonConvert.SerializeObject(result);
             }
 
             try
             {
-                var generatePathResult = GeneratePaths(operationElements);
+                var generatePathResult = GeneratePaths(operationElements, operationFilterSettings);
                 var openApiDocument = new OpenApiV3SpecificationDocument();
 
                 generatePathResult.Item2.CopyInto(openApiDocument.Paths);
 
                 foreach (var documentFilter in _generatorSettings.DocumentFilters)
                 {
-                    documentFilter.Apply(openApiDocument, annotationXml);
+                    documentFilter.Apply(openApiDocument, annotationXmlDocument);
                 }
 
-                return new OpenApiDocumentGenerationResult(
+                operationFilterSettings.ReferenceRegistryManager
+                    .SchemaReferenceRegistry.References.CopyInto(openApiDocument.Components.Schemas);
+
+                result = new OpenApiDocumentGenerationResult(
                     openApiDocument,
                     generatePathResult.Item1);
             }
             catch (Exception e)
             {
-                return new OpenApiDocumentGenerationResult(new PathGenerationResult(
+                result = new OpenApiDocumentGenerationResult(new PathGenerationResult(
                     string.Format(SpecificationGenerationMessages.UnexpectedError, e),
                     GenerationStatus.Failure));
             }
+
+            return JsonConvert.SerializeObject(result);
         }
 
         private string GenerateOperationId(string absolutePath, OperationMethod operationMethod)
@@ -122,7 +154,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         }
 
         private Tuple<List<PathGenerationResult>, IDictionary<string, Operations>> GeneratePaths(
-            IEnumerable<XElement> operationElements)
+            IEnumerable<XElement> operationElements,
+            OperationFilterSettings operationFilterSettings)
         {
             var pathGenerationResults = new List<PathGenerationResult>();
             var paths = new Dictionary<string, Operations>();
@@ -139,7 +172,6 @@ namespace Microsoft.OpenApiSpecification.Generation
                     continue;
                 }
 
-
                 try
                 {
                     pathId = HttpUtility.UrlDecode(new Uri(pathId).AbsolutePath);
@@ -153,7 +185,7 @@ namespace Microsoft.OpenApiSpecification.Generation
 
                     foreach (var operationFilter in _generatorSettings.OperationFilters)
                     {
-                        operationFilter.Apply(operation, operationElement);
+                        operationFilter.Apply(operation, operationElement, operationFilterSettings);
                     }
 
                     AnnotationXmlDocumentValidator.ValidateAllPathParametersAreDocumented(

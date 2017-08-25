@@ -92,6 +92,7 @@
   <ItemGroup>
     <Content Include="TestFiles\Annotation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="TestFiles\AnnotationInvalidUri.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -106,6 +107,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\AnnotationUndocumentedPathParameters.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\AnnotationWithDuplicateResponseTag.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\AnnotationWithUndocumentedGeneric.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\AnnotationWithUnorderedGeneric.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\NativeXml.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -133,7 +146,10 @@
     <None Include="TestValidation\AnnotationUndocumentedPathParameters.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestValidation\Success.Json">
+    <None Include="TestValidation\AnnotationWithDuplicateResponseTag.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestValidation\GenerationSucceed.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -158,6 +174,11 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties TestValidation_4AnnotationInvalidUri_1Json__JSONSchema="{&quot;components&quot;:{},&quot;info&quot;:{&quot;title&quot;:&quot;NativeXml&quot;,&quot;version&quot;:&quot;1.0.0&quot;},&quot;openapi&quot;:&quot;3.0.0&quot;,&quot;paths&quot;:{&quot;/V1/entities/{id}&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV1EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;query&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;legacy&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;boolean&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Retrieves a specific entity instance.&quot;,&quot;tags&quot;:[&quot;Entity V1&quot;]},&quot;put&quot;:{&quot;operationId&quot;:&quot;putV1EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Updates an existing entity.&quot;,&quot;tags&quot;:[&quot;Entity V1&quot;]}},&quot;/V1/entities&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV1Entities&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Gets a paged collection of entities matching the query parameters.&quot;,&quot;tags&quot;:[&quot;Entity V1&quot;]}},&quot;/V2/entities/&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV2Entities&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Retrieves all known entities.&quot;,&quot;tags&quot;:[&quot;Entity V2&quot;]}},&quot;/V2/entities/{id}&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV2EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;query&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;diffTest&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;int32&quot;,&quot;type&quot;:&quot;integer&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Retrieves a specific entity instance.&quot;,&quot;tags&quot;:[&quot;Entity V2&quot;]},&quot;delete&quot;:{&quot;operationId&quot;:&quot;deleteV2EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Deletes an entity.&quot;,&quot;tags&quot;:[&quot;Entity V2&quot;]}}},&quot;servers&quot;:[{&quot;url&quot;:&quot;http://localhost:9000&quot;}]}" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
