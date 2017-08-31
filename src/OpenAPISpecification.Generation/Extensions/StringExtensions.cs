@@ -30,7 +30,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Extensions
         /// <summary>
         /// Removes blank lines.
         /// </summary>
-        /// <param name="value">The string that needs to be updated.</param>
+        /// <param name="value">The original string.</param>
         /// <returns>The updated string.</returns>
         public static string RemoveBlankLines(this string value)
         {
@@ -39,8 +39,34 @@ namespace Microsoft.OpenApiSpecification.Generation.Extensions
                 return value;
             }
 
-            return Regex.Replace( input: value, pattern: @"^\s*$(\r\n|\r|\n)",
-                replacement: string.Empty, options: RegexOptions.Multiline ).Trim();
+            return Regex.Replace(
+                    value,
+                    @"^\s*$(\r\n|\r|\n)",
+                    string.Empty,
+                    RegexOptions.Multiline)
+                .Trim();
+        }
+
+        /// <summary>
+        /// Converts the first letter of the string to uppercase.
+        /// </summary>
+        /// <param name="value">The original string.</param>
+        /// <returns>The updated string.</returns>
+        public static string ToTitleCase(this string value)
+        {
+            if (value == null)
+            {
+                return value;
+            }
+
+            value = value.Trim();
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return value;
+            }
+
+            return value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
         }
     }
 }

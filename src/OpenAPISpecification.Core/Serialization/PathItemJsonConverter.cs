@@ -11,13 +11,13 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApiSpecification.Core.Serialization
 {
     /// <summary>
-    /// Custom json converter for <see cref="Operations"/>
+    /// Custom json converter for <see cref="PathItem"/>
     /// </summary>
-    internal class OperationsJsonConverter : JsonConverter
+    internal class PathItemJsonConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Operations);
+            return objectType == typeof(PathItem);
         }
 
         public override object ReadJson(
@@ -31,7 +31,7 @@ namespace Microsoft.OpenApiSpecification.Core.Serialization
                 return null;
             }
 
-            var operations = new Operations();
+            var pathItem = new PathItem();
 
             while (reader.Read() && reader.TokenType == JsonToken.PropertyName)
             {
@@ -41,69 +41,69 @@ namespace Microsoft.OpenApiSpecification.Core.Serialization
                 switch (propertyName)
                 {
                     case "summary":
-                        operations.Summary = (string) serializer.Deserialize(reader, typeof(string));
+                        pathItem.Summary = (string) serializer.Deserialize(reader, typeof(string));
                         break;
 
                     case "description":
-                        operations.Description = (string) serializer.Deserialize(reader, typeof(string));
+                        pathItem.Description = (string) serializer.Deserialize(reader, typeof(string));
                         break;
 
                     case "parameters":
-                        operations.Parameters =
+                        pathItem.Parameters =
                             (IDictionary<string, Parameter>) serializer.Deserialize(
                                 reader,
                                 typeof(IDictionary<string, Parameter>));
                         break;
 
                     case "servers":
-                        operations.Servers = (IList<Server>) serializer.Deserialize(reader, typeof(IList<Server>));
+                        pathItem.Servers = (IList<Server>) serializer.Deserialize(reader, typeof(IList<Server>));
                         break;
 
                     default:
                         var key = (OperationMethod) Enum.Parse(
-                            enumType: typeof(OperationMethod),
-                            value: propertyName,
-                            ignoreCase: true);
+                            typeof(OperationMethod),
+                            propertyName,
+                            true);
                         var value = (Operation) serializer.Deserialize(reader, typeof(Operation));
-                        operations.Add(key, value);
+                        pathItem.Add(key, value);
                         break;
                 }
             }
 
-            return operations;
+            return pathItem;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var operations = (Operations) value;
+            var pathItem = (PathItem) value;
             writer.WriteStartObject();
 
-            if (operations.Summary != null)
+            if (pathItem.Summary != null)
             {
-                writer.WritePropertyName(nameof(operations.Summary).ToLower());
-                serializer.Serialize(writer, operations.Summary);
+                writer.WritePropertyName(nameof(pathItem.Summary).ToLower());
+                serializer.Serialize(writer, pathItem.Summary);
             }
 
-            if (operations.Description != null)
+            if (pathItem.Description != null)
             {
-                writer.WritePropertyName(nameof(operations.Description).ToLower());
-                serializer.Serialize(writer, operations.Description);
+                writer.WritePropertyName(nameof(pathItem.Description).ToLower());
+                serializer.Serialize(writer, pathItem.Description);
             }
 
-            if (operations.Parameters != null && operations.Parameters.Count > 0)
+            if (pathItem.Parameters != null && pathItem.Parameters.Count > 0)
             {
-                writer.WritePropertyName(nameof(operations.Parameters).ToLower());
-                serializer.Serialize(writer, operations.Parameters);
+                writer.WritePropertyName(nameof(pathItem.Parameters).ToLower());
+                serializer.Serialize(writer, pathItem.Parameters);
             }
 
-            if (operations.Servers != null && operations.Servers.Count > 0)
+            if (pathItem.Servers != null && pathItem.Servers.Count > 0)
             {
-                writer.WritePropertyName(nameof(operations.Servers).ToLower());
-                serializer.Serialize(writer, operations.Servers);
+                writer.WritePropertyName(nameof(pathItem.Servers).ToLower());
+                serializer.Serialize(writer, pathItem.Servers);
             }
 
             // Open api spec needs the operation method to be lower cased so convert dictionary keys to lower case.
-            foreach (var pair in operations)
+            foreach (var pair in pathItem)
             {
                 writer.WritePropertyName(pair.Key.ToString().ToLowerInvariant());
                 serializer.Serialize(writer, pair.Value);

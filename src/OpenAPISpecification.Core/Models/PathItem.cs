@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApiSpecification.Core.Models
 {
     /// <summary>
-    /// Holds all the operations of a path.
+    /// Holds all the operations and other metadata of a path.
     /// </summary>
-    [JsonConverter(typeof(OperationsJsonConverter))]
-    public class Operations : Dictionary<OperationMethod, Operation>
+    [JsonConverter(typeof(PathItemJsonConverter))]
+    public class PathItem : Dictionary<OperationMethod, Operation>
     {
         /// <summary>
         /// Gets or sets an optional, string description. Intended to apply to all operations in this path.

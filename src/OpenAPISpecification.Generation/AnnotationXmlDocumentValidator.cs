@@ -21,7 +21,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// </summary>
         /// <param name="pathParameters">The list of path parameters documented in annotation xml.</param>
         /// <param name="absolutePath">The absolute path to compare against.</param>
-        public static void ValidateAllPathParametersAreDocumented(IEnumerable<Parameter> pathParameters,
+        public static void ValidateAllPathParametersAreDocumented(
+            IEnumerable<Parameter> pathParameters,
             string absolutePath)
         {
             // Regex remove brackets from {pathParamNames} in segment

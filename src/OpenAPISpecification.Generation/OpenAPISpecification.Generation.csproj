@@ -50,6 +50,7 @@
     <Compile Include="AppDomainCreator.cs" />
     <Compile Include="Exceptions\UndocumentedGenericTypeException.cs" />
     <Compile Include="Exceptions\UnorderedGenericTypeException.cs" />
+    <Compile Include="Models\DictionaryJsonConverter.cs" />
     <Compile Include="OperationFilters\ApplyParamAsResponseFilter.cs" />
     <Compile Include="OperationFilters\OperationFilterSettings.cs" />
     <Compile Include="TypeFetcher.cs" />
@@ -57,8 +58,9 @@
     <Compile Include="DocumentFilters\ApplyUrlAsServerFilter.cs" />
     <Compile Include="DocumentFilters\IDocumentFilter.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Models\DocumentVariantInfo.cs" />
     <Compile Include="Models\OpenApiDataTypeFormatPair.cs" />
-    <Compile Include="OpenApiDocumentGeneratorSettings.cs" />
+    <Compile Include="OpenApiDocumentGeneratorConfig.cs" />
     <Compile Include="OperationFilters\ApplyGroupsAsTagFilter.cs" />
     <Compile Include="OperationFilters\ApplyParamAsParameterFilter.cs" />
     <Compile Include="OperationFilters\ApplyParamAsRequestBodyFilter.cs" />
@@ -71,7 +73,7 @@
     <Compile Include="InternalOpenApiDocumentGenerator.cs" />
     <Compile Include="IOpenApiDocumentGenerator.cs" />
     <Compile Include="Models\GenerationStatus.cs" />
-    <Compile Include="Models\OpenApiDocumentGenerationResult.cs" />
+    <Compile Include="Models\DocumentGenerationResult.cs" />
     <Compile Include="Models\PathGenerationResult.cs" />
     <Compile Include="ReferenceRegistries\ParameterReferenceRegistry.cs" />
     <Compile Include="ReferenceRegistries\ExampleReferenceRegistry.cs" />

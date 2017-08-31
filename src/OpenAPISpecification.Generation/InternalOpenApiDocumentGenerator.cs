@@ -43,71 +43,232 @@ namespace Microsoft.OpenApiSpecification.Generation
         };
 
         // TO DO: Figure out a way to serialize this and pass as parameter from OpenApiDocumentGenerator.
-        private readonly OpenApiDocumentGeneratorSettings _generatorSettings = new OpenApiDocumentGeneratorSettings(
-            DefaultOperationFilters, DefaultDocumentFilters);
+        private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
+            DefaultOperationFilters,
+            DefaultDocumentFilters);
 
         /// <summary>
-        /// Takes in annotation xml document and returns the open api document generation result which contains the
-        /// corresponding open api document.
+        /// Add operation and update the operation filter settings based on the given document variant info.
+        /// </summary>
+        private void AddOperation(
+            IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> specificationDocuments,
+            IDictionary<DocumentVariantInfo, OperationFilterSettings> operationFilterSettingsMap,
+            DocumentVariantInfo documentVariantInfo,
+            XElement operationElement,
+            string url,
+            TypeFetcher typeFetcher)
+        {
+            // Create the operation and apply all the filters specified.
+            var operationMethod = GetOperationMethod(operationElement);
+
+            var operation = new Operation
+            {
+                OperationId = GetOperationId(url, operationMethod)
+            };
+
+            if (!operationFilterSettingsMap.ContainsKey(documentVariantInfo))
+            {
+                operationFilterSettingsMap[documentVariantInfo] =
+                    new OperationFilterSettings
+                    {
+                        TypeFetcher = typeFetcher
+                    };
+            }
+
+            foreach (var operationFilter in _generatorConfig.OperationFilters)
+            {
+                operationFilter.Apply(
+                    operation,
+                    operationElement,
+                    operationFilterSettingsMap[documentVariantInfo]);
+            }
+
+            AnnotationXmlDocumentValidator.ValidateAllPathParametersAreDocumented(
+                operation.Parameters.Where(i => i.In == ParameterKind.Path),
+                url);
+
+            // Add the processed operation to the specification document.
+            if (!specificationDocuments.ContainsKey(documentVariantInfo))
+            {
+                specificationDocuments.Add(
+                    documentVariantInfo,
+                    new OpenApiV3SpecificationDocument());
+            }
+
+            var paths = specificationDocuments[documentVariantInfo].Paths;
+
+            if (!paths.ContainsKey(url))
+            {
+                var pathItem = new PathItem
+                {
+                    [operationMethod] = operation
+                };
+
+                paths.Add(url, pathItem);
+            }
+            else
+            {
+                paths[url].Add(operationMethod, operation);
+            }
+        }
+
+        /// <summary>
+        /// Takes in annotation xml document and returns the OpenAPI document generation result
+        /// which contains OpenAPI specification document(s).
         /// </summary>
         /// <param name="annotationXml">The annotation xml document.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
-        /// <returns>See <see cref="OpenApiDocumentGenerationResult"/>></returns>
-        public string GenerateOpenApiDocument(
+        /// <returns>A string representing serialized version of <see cref="DocumentGenerationResult"/>></returns>
+        public string GenerateOpenApiDocuments(
             string annotationXml,
-            IEnumerable<string> contractAssemblyPaths)
+            IList<string> contractAssemblyPaths)
         {
             var annotationXmlDocument = XDocument.Parse(annotationXml);
 
-            var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]");
+            var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]")
+                .ToList();
 
-            var operationFilterSettings =
-                new OperationFilterSettings
-                {
-                    TypeFetcher = new TypeFetcher(contractAssemblyPaths)
-                };
-
-            OpenApiDocumentGenerationResult result;
+            DocumentGenerationResult result;
 
             if (!operationElements.Any())
             {
-                result = new OpenApiDocumentGenerationResult(
-                    new PathGenerationResult(SpecificationGenerationMessages.NoOperationElementFoundToParse,
-                        GenerationStatus.Success));
+                result = new DocumentGenerationResult(
+                    new List<PathGenerationResult>
+                    {
+                        new PathGenerationResult(
+                            SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                            GenerationStatus.Success)
+                    });
 
                 return JsonConvert.SerializeObject(result);
             }
 
             try
             {
-                var generatePathResult = GeneratePaths(operationElements, operationFilterSettings);
-                var openApiDocument = new OpenApiV3SpecificationDocument();
+                result = new DocumentGenerationResult();
 
-                generatePathResult.Item2.CopyInto(openApiDocument.Paths);
+                // TODO: Allow custom element names to be retrieved from a config file (aka default annotations).
+                // Task 13256107 contains this work.
+                // This will likely be given to this method in the argument in some way.
+                var documentVariantElementNames = new List<string> {"swagger"};
 
-                foreach (var documentFilter in _generatorSettings.DocumentFilters)
+                var typeFetcher = new TypeFetcher(contractAssemblyPaths);
+
+                var pathGenerationResults = GenerateSpecificationDocuments(
+                    typeFetcher,
+                    operationElements,
+                    documentVariantElementNames,
+                    result.Documents);
+
+                foreach (var documentVariantInfo in result.Documents.Keys)
                 {
-                    documentFilter.Apply(openApiDocument, annotationXmlDocument);
+                    var openApiDocument = result.Documents[documentVariantInfo];
+
+                    foreach (var documentFilter in _generatorConfig.DocumentFilters)
+                    {
+                        documentFilter.Apply(openApiDocument, annotationXmlDocument);
+                    }
                 }
 
-                operationFilterSettings.ReferenceRegistryManager
-                    .SchemaReferenceRegistry.References.CopyInto(openApiDocument.Components.Schemas);
+                foreach (var pathGenerationResult in pathGenerationResults)
+                {
+                    result.PathGenerationResults.Add(new PathGenerationResult(pathGenerationResult));
+                }
 
-                result = new OpenApiDocumentGenerationResult(
-                    openApiDocument,
-                    generatePathResult.Item1);
+                return JsonConvert.SerializeObject(result);
             }
             catch (Exception e)
             {
-                result = new OpenApiDocumentGenerationResult(new PathGenerationResult(
-                    string.Format(SpecificationGenerationMessages.UnexpectedError, e),
-                    GenerationStatus.Failure));
-            }
+                result = new DocumentGenerationResult(
+                    new List<PathGenerationResult>
+                    {
+                        new PathGenerationResult(
+                            string.Format(SpecificationGenerationMessages.UnexpectedError, e),
+                            GenerationStatus.Failure)
+                    });
 
-            return JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(result);
+            }
         }
 
-        private string GenerateOperationId(string absolutePath, OperationMethod operationMethod)
+        /// <summary>
+        /// Populate the specification documents for all document variant infos.
+        /// </summary>
+        /// <returns>The path generation results from populating the specification documents.</returns>
+        private IList<PathGenerationResult> GenerateSpecificationDocuments(
+            TypeFetcher typeFetcher,
+            IList<XElement> operationElements,
+            IList<string> documentVariantElementNames,
+            IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> specificationDocuments)
+        {
+            var pathGenerationResults = new List<PathGenerationResult>();
+
+            var operationFilterSettingsMap = new Dictionary<DocumentVariantInfo, OperationFilterSettings>();
+
+            foreach (var operationElement in operationElements)
+            {
+                string url;
+                if (!TryGetUrl(pathGenerationResults, operationElement, out url))
+                {
+                    continue;
+                }
+
+                try
+                {
+                    AddOperation(
+                        specificationDocuments,
+                        operationFilterSettingsMap,
+                        DocumentVariantInfo.Default,
+                        operationElement,
+                        url,
+                        typeFetcher);
+
+                    foreach (var documentVariantElementName in documentVariantElementNames)
+                    {
+                        var customElements = operationElement.Descendants(documentVariantElementName);
+                        foreach (var customElement in customElements)
+                        {
+                            var documentVariantInfo = new DocumentVariantInfo
+                            {
+                                Categorizer = customElement.Name.LocalName.Trim(),
+                                Title = customElement.Value.Trim()
+                            };
+
+                            AddOperation(
+                                specificationDocuments,
+                                operationFilterSettingsMap,
+                                documentVariantInfo,
+                                operationElement,
+                                url,
+                                typeFetcher);
+                        }
+                    }
+
+                    pathGenerationResults.Add(
+                        new PathGenerationResult(
+                            url,
+                            SpecificationGenerationMessages.SuccessfulPathGeneration,
+                            GenerationStatus.Success));
+                }
+                catch (Exception e)
+                {
+                    pathGenerationResults.Add(
+                        new PathGenerationResult(url, e.Message, GenerationStatus.Failure));
+                }
+            }
+
+            foreach (var documentVariantInfo in specificationDocuments.Keys)
+            {
+                operationFilterSettingsMap[documentVariantInfo]
+                    .ReferenceRegistryManager
+                    .SchemaReferenceRegistry.References.CopyInto(
+                        specificationDocuments[documentVariantInfo].Components.Schemas);
+            }
+
+            return pathGenerationResults;
+        }
+
+        private string GetOperationId(string absolutePath, OperationMethod operationMethod)
         {
             if (string.IsNullOrEmpty(absolutePath))
             {
@@ -136,13 +297,13 @@ namespace Microsoft.OpenApiSpecification.Generation
                     {
                         foreach (Match match in matches)
                         {
-                            current += "By" + ToTitleCase(match.Groups[1].Value);
+                            current += "By" + match.Groups[1].Value.ToTitleCase();
                         }
                     }
                 }
                 else
                 {
-                    current = ToTitleCase(segment);
+                    current = segment.ToTitleCase();
                 }
 
                 // Open api spec recommends to follow common programming naming conventions for operation Id
@@ -153,80 +314,9 @@ namespace Microsoft.OpenApiSpecification.Generation
             return operationId.ToString();
         }
 
-        private Tuple<List<PathGenerationResult>, IDictionary<string, Operations>> GeneratePaths(
-            IEnumerable<XElement> operationElements,
-            OperationFilterSettings operationFilterSettings)
+        private static OperationMethod GetOperationMethod(XElement operationElement)
         {
-            var pathGenerationResults = new List<PathGenerationResult>();
-            var paths = new Dictionary<string, Operations>();
-
-            foreach (var operationElement in operationElements)
-            {
-                var urls = operationElement.Descendants().Where(i => i.Name == "url").Select(i => i.Value);
-
-                // Can't process further if no url is documented, so skip the operation.
-                var pathId = urls.FirstOrDefault();
-
-                if (pathId == null)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    pathId = HttpUtility.UrlDecode(new Uri(pathId).AbsolutePath);
-
-                    var operationMethod = GetOperationMethod(operationElement);
-
-                    var operation = new Operation
-                    {
-                        OperationId = GenerateOperationId(pathId, operationMethod)
-                    };
-
-                    foreach (var operationFilter in _generatorSettings.OperationFilters)
-                    {
-                        operationFilter.Apply(operation, operationElement, operationFilterSettings);
-                    }
-
-                    AnnotationXmlDocumentValidator.ValidateAllPathParametersAreDocumented(
-                        operation.Parameters.Where(i => i.In == ParameterKind.Path), pathId);
-
-                    if (!paths.ContainsKey(pathId))
-                    {
-                        var operations = new Operations();
-                        operations.Add(operationMethod, operation);
-
-                        paths.Add(pathId, operations);
-                    }
-                    else
-                    {
-                        paths[pathId].Add(operationMethod, operation);
-                    }
-
-                    pathGenerationResults.Add(new PathGenerationResult(pathId,
-                        SpecificationGenerationMessages.SuccessfulPathGeneration, GenerationStatus.Success));
-                }
-                catch (UriFormatException)
-                {
-                    pathGenerationResults.Add(new PathGenerationResult(
-                        pathId,
-                        string.Format(SpecificationGenerationMessages.InvalidUrl, pathId),
-                        GenerationStatus.Failure));
-                }
-                catch (Exception e)
-                {
-                    pathGenerationResults.Add(
-                        new PathGenerationResult(pathId, e.Message, GenerationStatus.Failure));
-                }
-            }
-
-            return new Tuple<List<PathGenerationResult>, IDictionary<string, Operations>>(
-                pathGenerationResults, paths);
-        }
-
-        private static OperationMethod GetOperationMethod(XElement element)
-        {
-            var verbElement = element.Descendants().FirstOrDefault(i => i.Name == "verb");
+            var verbElement = operationElement.Descendants().FirstOrDefault(i => i.Name == "verb");
 
             if (verbElement == null)
             {
@@ -241,18 +331,53 @@ namespace Microsoft.OpenApiSpecification.Generation
                 return method;
             }
 
-            throw new DocumentationException(string.Format(
-                SpecificationGenerationMessages.InvalidHttpMethod, verb));
+            throw new DocumentationException(
+                string.Format(
+                    SpecificationGenerationMessages.InvalidHttpMethod,
+                    verb));
         }
 
-        private static string ToTitleCase(string target)
+        private static bool TryGetUrl(
+            IList<PathGenerationResult> pathGenerationResults,
+            XElement operationElement,
+            out string url)
         {
-            if (string.IsNullOrWhiteSpace(target))
+            var urls = operationElement.Descendants().Where(i => i.Name == "url").Select(i => i.Value);
+
+            // Can't process further if no url is documented, so skip the operation.
+            url = urls.FirstOrDefault();
+
+            if (url == null)
             {
-                return target;
+                return false;
             }
 
-            return target.Substring(0, 1).ToUpperInvariant() + target.Substring(1);
+            try
+            {
+                url = HttpUtility.UrlDecode(new Uri(url).AbsolutePath);
+            }
+            catch (UriFormatException)
+            {
+                pathGenerationResults.Add(
+                    new PathGenerationResult(
+                        url,
+                        string.Format(SpecificationGenerationMessages.InvalidUrl, url),
+                        GenerationStatus.Failure));
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                pathGenerationResults.Add(
+                    new PathGenerationResult(
+                        url,
+                        e.Message,
+                        GenerationStatus.Failure));
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

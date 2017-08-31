@@ -51,7 +51,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
             PropertyName = "paths",
             DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
             Required = Required.Always)]
-        public IDictionary<string, Operations> Paths { get; } = new Dictionary<string, Operations>();
+        public Paths Paths { get; } = new Paths();
 
         /// <summary>
         /// Gets the collection of security requirement.

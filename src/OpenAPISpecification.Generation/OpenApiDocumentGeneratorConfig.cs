@@ -10,31 +10,31 @@ using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 namespace Microsoft.OpenApiSpecification.Generation
 {
     /// <summary>
-    /// Holds the settings to perform generation.
+    /// Holds the configuration used to perform generation.
     /// </summary>
-    public class OpenApiDocumentGeneratorSettings
+    public class OpenApiDocumentGeneratorConfig
     {
         /// <summary>
-        /// Creates instance of <see cref="OpenApiDocumentGeneratorSettings"/>.
+        /// Creates instance of <see cref="OpenApiDocumentGeneratorConfig"/>.
         /// </summary>
         /// <param name="operationFilters">The operation filers.</param>
         /// <param name="documentFilters">The document filters.</param>
-        public OpenApiDocumentGeneratorSettings(
-            IEnumerable<IOperationFilter> operationFilters,
-            IEnumerable<IDocumentFilter> documentFilters)
+        public OpenApiDocumentGeneratorConfig(
+            IList<IOperationFilter> operationFilters,
+            IList<IDocumentFilter> documentFilters)
         {
             OperationFilters = operationFilters;
             DocumentFilters = documentFilters;
         }
-        
+
         /// <summary>
         /// Gets the list of document filters.
         /// </summary>
-        public IEnumerable<IDocumentFilter> DocumentFilters { get; }
+        public IList<IDocumentFilter> DocumentFilters { get; }
 
         /// <summary>
         /// Gets the list of operation filters.
         /// </summary>
-        public IEnumerable<IOperationFilter> OperationFilters { get; }
+        public IList<IOperationFilter> OperationFilters { get; }
     }
 }

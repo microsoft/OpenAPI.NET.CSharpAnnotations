@@ -1,7 +1,7 @@
 ﻿{
     "additionalProperties": {
         "$ref":
-            "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleType"
+            "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleType"
     },
     "type": "object"
 }

@@ -13,17 +13,21 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
 {
     [TestClass]
-    public class ReferenceRegistryTests
+    public class ReferenceRegistryTest
     {
         private const string TestValidationDirectory = "ReferenceRegistryTests/TestValidation";
 
         [TestMethod]
         public void GenerateSchemaFromDictionaryTypeShouldSucceed()
         {
+            // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(IDictionary<string, SampleType>));
+            // Act
+            var returnedSchema =
+                referenceRegistryManager.FindOrAddSchemaReference(typeof(IDictionary<string, SampleType>));
 
+            // Assert
             var actualSchema = JsonConvert.SerializeObject(
                 returnedSchema,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -50,10 +54,13 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
         [TestMethod]
         public void GenerateSchemaFromEnumTypeShouldSucceed()
         {
+            // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
+            // Act
             var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleEnum));
 
+            // Assert
             var actualSchema = JsonConvert.SerializeObject(
                 returnedSchema,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -80,10 +87,13 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
         [TestMethod]
         public void GenerateSchemaFromNestedObjectTypeShouldSucceed()
         {
+            // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
+            // Act
             var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleType));
 
+            // Assert
             var actualSchema = JsonConvert.SerializeObject(
                 returnedSchema,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -110,10 +120,13 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
         [TestMethod]
         public void GenerateSchemaFromObjectListTypeShouldSucceed()
         {
+            // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
+            // Act
             var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(IList<SampleType>));
 
+            // Assert
             var actualSchema = JsonConvert.SerializeObject(
                 returnedSchema,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -140,10 +153,13 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
         [TestMethod]
         public void GenerateSchemaFromObjectTypeShouldSucceed()
         {
+            // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
+            // Act
             var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleInnerType));
 
+            // Assert
             var actualSchema = JsonConvert.SerializeObject(
                 returnedSchema,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -170,10 +186,13 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
         [TestMethod]
         public void GenerateSchemaFromSimpleTypeShouldSucceed()
         {
+            // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
+            // Act
             var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(string));
 
+            // Assert
             var actualSchema = JsonConvert.SerializeObject(
                 returnedSchema,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -214,15 +233,19 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
 
         internal class SampleType
         {
-            public Dictionary<string, SampleInnerType> SamplePropertyDictionaryStringObject { get; } = new Dictionary<string, SampleInnerType>();
+            public Dictionary<string, SampleInnerType> SamplePropertyDictionaryStringObject { get; } =
+                new Dictionary<string, SampleInnerType>();
 
-            public Dictionary<string, string> SamplePropertyDictionaryStringString { get; } = new Dictionary<string, string>();
+            public Dictionary<string, string> SamplePropertyDictionaryStringString { get; } =
+                new Dictionary<string, string>();
 
             public SampleEnum SamplePropertyEnum { get; set; }
 
-            public IDictionary<string, SampleInnerType> SamplePropertyIDictionaryStringObject { get; } = new Dictionary<string, SampleInnerType>();
+            public IDictionary<string, SampleInnerType> SamplePropertyIDictionaryStringObject { get; } =
+                new Dictionary<string, SampleInnerType>();
 
-            public IDictionary<string, string> SamplePropertyIDictionaryStringString { get; } = new Dictionary<string, string>();
+            public IDictionary<string, string> SamplePropertyIDictionaryStringString { get; } =
+                new Dictionary<string, string>();
 
             public IList<SampleInnerType> SamplePropertyIListObject { get; } = new List<SampleInnerType>();
 

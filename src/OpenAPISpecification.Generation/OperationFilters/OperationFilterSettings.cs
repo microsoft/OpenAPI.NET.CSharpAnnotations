@@ -13,13 +13,13 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
     public class OperationFilterSettings
     {
         /// <summary>
+        /// Gets the reference registry manager.
+        /// </summary>
+        public ReferenceRegistryManager ReferenceRegistryManager { get; } = new ReferenceRegistryManager();
+
+        /// <summary>
         /// Gets or sets the type fetcher.
         /// </summary>
         public TypeFetcher TypeFetcher { get; set; }
-
-        /// <summary>
-        /// Gets or sets the reference registry manager.
-        /// </summary>
-        public ReferenceRegistryManager ReferenceRegistryManager { get; } = new ReferenceRegistryManager();
     }
 }

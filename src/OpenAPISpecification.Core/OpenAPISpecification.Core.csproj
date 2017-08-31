@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Callback.cs" />
+    <Compile Include="Models\Paths.cs" />
     <Compile Include="Models\Example.cs" />
     <Compile Include="Models\IReferenceable.cs" />
     <Compile Include="Models\Components.cs" />
@@ -61,7 +62,7 @@
     <Compile Include="Models\MediaType.cs" />
     <Compile Include="Models\OpenApiV3SpecificationDocument.cs" />
     <Compile Include="Models\OperationMethod.cs" />
-    <Compile Include="Models\Operations.cs" />
+    <Compile Include="Models\PathItem.cs" />
     <Compile Include="Models\Parameter.cs" />
     <Compile Include="Models\RequestBody.cs" />
     <Compile Include="Models\Response.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\EmptyCollectionContractResolver.cs" />
-    <Compile Include="Serialization\OperationsJsonConverter.cs" />
+    <Compile Include="Serialization\PathItemJsonConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

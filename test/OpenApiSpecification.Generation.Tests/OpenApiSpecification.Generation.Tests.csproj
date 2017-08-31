@@ -57,10 +57,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ReferenceRegistryTests\ReferenceRegistryTests.cs" />
-    <Compile Include="InternalOpenApiDocumentGeneratorTests.cs" />
+    <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
+    <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
+    <Compile Include="InternalOpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />
+    <Content Include="DocumentVariantTests\TestFiles\Annotation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\NativeXml.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ReferenceRegistryTests\TestValidation\DictionaryTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -133,25 +140,34 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariant2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariant1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationDefaultVariant.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
-    <None Include="TestValidation\AnnotationInvalidUri.Json">
+    <Content Include="TestValidation\AnnotationInvalidUri.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestValidation\AnnotationInvalidVerb.Json">
+    </Content>
+    <Content Include="TestValidation\AnnotationInvalidVerb.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestValidation\AnnotationParamNoTypeSpecified.Json">
+    </Content>
+    <Content Include="TestValidation\AnnotationParamNoTypeSpecified.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestValidation\AnnotationUndocumentedPathParameters.Json">
+    </Content>
+    <Content Include="TestValidation\AnnotationUndocumentedPathParameters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestValidation\AnnotationWithDuplicateResponseTag.Json">
+    </Content>
+    <Content Include="TestValidation\AnnotationWithDuplicateResponseTag.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestValidation\GenerationSucceed.Json">
+    </Content>
+    <Content Include="TestValidation\GenerationSucceed.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Choose>

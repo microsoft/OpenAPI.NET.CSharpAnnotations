@@ -1,4 +1,4 @@
 ﻿{
     "$ref":
-        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType"
+        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType"
 }

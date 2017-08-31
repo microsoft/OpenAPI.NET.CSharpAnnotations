@@ -1,5 +1,5 @@
 ﻿{
-    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType": {
+    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType": {
         "properties": {
             "SamplePropertyInnerEnum": {
                 "enum": [
@@ -24,12 +24,12 @@
         },
         "type": "object"
     },
-    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleType": {
+    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleType": {
         "properties": {
             "SamplePropertyDictionaryStringObject": {
                 "additionalProperties": {
                     "$ref":
-                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType"
+                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType"
                 },
                 "readOnly": true,
                 "type": "object"
@@ -52,7 +52,7 @@
             "SamplePropertyIDictionaryStringObject": {
                 "additionalProperties": {
                     "$ref":
-                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType"
+                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType"
                 },
                 "readOnly": true,
                 "type": "object"
@@ -67,7 +67,7 @@
             "SamplePropertyIListObject": {
                 "items": {
                     "$ref":
-                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType"
+                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType"
                 },
                 "readOnly": true,
                 "type": "array"
@@ -91,7 +91,7 @@
             "SamplePropertyListObject": {
                 "items": {
                     "$ref":
-                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType"
+                        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType"
                 },
                 "readOnly": true,
                 "type": "array"
@@ -106,12 +106,12 @@
             "SamplePropertyObject": {
                 "readOnly": false,
                 "$ref":
-                    "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType"
+                    "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType"
             },
             "SamplePropertyReadonlyObject": {
                 "readOnly": true,
                 "$ref":
-                    "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTests_SampleInnerType"
+                    "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType"
             },
             "SamplePropertyString": {
                 "readOnly": false,
