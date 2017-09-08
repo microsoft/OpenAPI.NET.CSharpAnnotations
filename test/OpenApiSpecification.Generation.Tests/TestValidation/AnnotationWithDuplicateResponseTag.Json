@@ -1,65 +1,76 @@
 {
     "components": {
         "schemas": {
+            "NativeXml.Contracts.V1.PagedEntityContractV1": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                        },
+                        "readOnly": true,
+                        "type": "array"
+                    },
+                    "pagingInfo": {
+                        "readOnly": false,
+                        "$ref": "#/components/schemas/NativeXml.Contracts.V1.PagingInfoContractV1"
+                    }
+                },
+                "required": ["pagingInfo"],
+                "type": "object"
+            },
             "NativeXml.Contracts.V1.EntityContractV1": {
                 "properties": {
-                    "Blob": {
+                    "blob": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "Count": {
+                    "count": {
                         "format": "int32",
                         "readOnly": false,
                         "type": "integer"
                     },
-                    "Id": {
+                    "id": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "Legacy": {
+                    "legacy": {
                         "readOnly": false,
                         "type": "boolean"
                     },
-                    "Name": {
+                    "name": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "DiffTest": {
+                    "difftest": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "TestEnum": {
-                        "enum": [ "one", "two" ],
+                    "testEnum": {
+                        "enum": [
+                            "one",
+                            "two"
+                        ],
                         "readOnly": false,
                         "type": "string"
                     }
                 },
+                "required": [
+                    "name",
+                    "difftest",
+                    "testEnum"
+                ],
                 "type": "object"
             },
             "NativeXml.Contracts.V1.PagingInfoContractV1": {
                 "properties": {
-                    "ContinuationToken": {
+                    "continuationToken": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "TotalItems": {
+                    "totalItems": {
                         "format": "int32",
                         "readOnly": false,
                         "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "NativeXml.Contracts.V1.PagedEntityContractV1": {
-                "properties": {
-                    "Items": {
-                        "items": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" },
-                        "readOnly": true,
-                        "type": "array"
-                    },
-                    "PagingInfo": {
-                        "readOnly": false,
-                        "$ref": "#/components/schemas/NativeXml.Contracts.V1.PagingInfoContractV1"
                     }
                 },
                 "type": "object"
@@ -89,29 +100,49 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.PagedEntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.PagedEntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Paged Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Gets a paged collection of entities matching the query parameters.",
-                "tags": [ "Entity V1" ]
+                "tags": ["Entity V1"]
             }
         }
     },
-    "servers": [ { "url": "http://localhost:9000" } ]
+    "servers": [
+        {
+            "url": "http://localhost:9000"
+        }
+    ]
 }

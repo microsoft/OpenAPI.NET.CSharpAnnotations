@@ -3,37 +3,45 @@
         "schemas": {
             "NativeXml.Contracts.V1.EntityContractV1": {
                 "properties": {
-                    "Blob": {
+                    "blob": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "Count": {
+                    "count": {
                         "format": "int32",
                         "readOnly": false,
                         "type": "integer"
                     },
-                    "Id": {
+                    "id": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "Legacy": {
+                    "legacy": {
                         "readOnly": false,
                         "type": "boolean"
                     },
-                    "Name": {
+                    "name": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "DiffTest": {
+                    "difftest": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "TestEnum": {
-                        "enum": [ "one", "two" ],
+                    "testEnum": {
+                        "enum": [
+                            "one",
+                            "two"
+                        ],
                         "readOnly": false,
                         "type": "string"
                     }
                 },
+                "required": [
+                    "name",
+                    "difftest",
+                    "testEnum"
+                ],
                 "type": "object"
             }
         }
@@ -61,41 +69,65 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "path",
                         "required": false,
                         "name": "id",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "query",
                         "required": false,
                         "name": "legacy",
-                        "schema": { "type": "boolean" }
+                        "schema": {
+                            "type": "boolean"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Retrieves a specific entity instance.",
-                "tags": [ "Entity V1" ]
+                "tags": ["Entity V1"]
             }
         }
     },
-    "servers": [ { "url": "http://localhost:9000" } ]
+    "servers": [
+        {
+            "url": "http://localhost:9000"
+        }
+    ]
 }

@@ -165,7 +165,7 @@ namespace Microsoft.OpenApiSpecification.Generation
                 typeName = crefValue.GetTypeNameFromCref();
                 return CreateListType(typeName);
             }
-
+            
             if (crefValues.Any( IsGenericType))
             {
                 return ExtractGenericType(crefValues.Select(i => i.GetTypeNameFromCref()).ToList());

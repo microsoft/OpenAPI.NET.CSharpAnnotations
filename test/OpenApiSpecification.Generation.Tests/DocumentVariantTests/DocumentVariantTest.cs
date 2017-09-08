@@ -50,8 +50,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
 
             // Assert
             Assert.IsNotNull(result);
-
-            Assert.IsTrue(result.GenerationStatus == GenerationStatus.Success);
+            Assert.AreEqual(GenerationStatus.Success, result.GenerationStatus);
 
             Assert.AreEqual(3, result.Documents.Keys.Count);
             Assert.AreEqual(7, result.PathGenerationResults.Count);

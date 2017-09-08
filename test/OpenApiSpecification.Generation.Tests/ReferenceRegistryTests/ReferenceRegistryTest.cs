@@ -37,8 +37,6 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                     TestValidationDirectory,
                     "DictionaryTypeSchema.json"));
 
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-
             var actualReferences = JsonConvert.SerializeObject(
                 referenceRegistryManager.SchemaReferenceRegistry.References,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -48,6 +46,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                     TestValidationDirectory,
                     "NestedObjectTypeReferences.json"));
 
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
         }
 
@@ -85,6 +84,64 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
         }
 
         [TestMethod]
+        public void GenerateSchemaFromGenericInterfaceShouldSucceed()
+        {
+            var referenceRegistryManager = new ReferenceRegistryManager();
+
+            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(ISampleGenericType<string>));
+
+            var actualSchema = JsonConvert.SerializeObject(
+                returnedSchema,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedSchema = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "GenericInterfaceSchema.json"));
+
+            var actualReferences = JsonConvert.SerializeObject(
+                referenceRegistryManager.SchemaReferenceRegistry.References,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedReferences = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "GenericInterfaceReferences.json"));
+
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
+        }
+
+        [TestMethod]
+        public void GenerateSchemaFromGenericTypeShouldSucceed()
+        {
+            var referenceRegistryManager = new ReferenceRegistryManager();
+
+            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleGenericType<string>));
+
+            var actualSchema = JsonConvert.SerializeObject(
+                returnedSchema,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedSchema = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "GenericTypeSchema.json"));
+
+            var actualReferences = JsonConvert.SerializeObject(
+                referenceRegistryManager.SchemaReferenceRegistry.References,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedReferences = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "GenericTypeReferences.json"));
+
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
+        }
+
+        [TestMethod]
         public void GenerateSchemaFromNestedObjectTypeShouldSucceed()
         {
             // Arrange
@@ -103,8 +160,6 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                     TestValidationDirectory,
                     "NestedObjectTypeSchema.json"));
 
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-
             var actualReferences = JsonConvert.SerializeObject(
                 referenceRegistryManager.SchemaReferenceRegistry.References,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -114,6 +169,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                     TestValidationDirectory,
                     "NestedObjectTypeReferences.json"));
 
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
         }
 
@@ -136,8 +192,6 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                     TestValidationDirectory,
                     "ObjectListTypeSchema.json"));
 
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-
             var actualReferences = JsonConvert.SerializeObject(
                 referenceRegistryManager.SchemaReferenceRegistry.References,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
@@ -147,6 +201,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                     TestValidationDirectory,
                     "NestedObjectTypeReferences.json"));
 
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
         }
 
@@ -184,6 +239,35 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
         }
 
         [TestMethod]
+        public void GenerateSchemaFromSelfReferencingTypeShouldSucceed()
+        {
+            var referenceRegistryManager = new ReferenceRegistryManager();
+
+            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleSelfReferencingType));
+
+            var actualSchema = JsonConvert.SerializeObject(
+                returnedSchema,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedSchema = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "SelfReferencingTypeSchema.json"));
+
+            var actualReferences = JsonConvert.SerializeObject(
+                referenceRegistryManager.SchemaReferenceRegistry.References,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedReferences = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "SelfReferencingTypeReferences.json"));
+
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
+        }
+
+        [TestMethod]
         public void GenerateSchemaFromSimpleTypeShouldSucceed()
         {
             // Arrange
@@ -213,6 +297,35 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                     TestValidationDirectory,
                     "EmptyTypeReferences.json"));
 
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
+        }
+
+        [TestMethod]
+        public void GenerateSchemaFromTypeInheritedFromGenericInterfaceShouldSucceed()
+        {
+            var referenceRegistryManager = new ReferenceRegistryManager();
+
+            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleInheritFromGenericType));
+
+            var actualSchema = JsonConvert.SerializeObject(
+                returnedSchema,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedSchema = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "InheritFromGenericInterfaceSchema.json"));
+
+            var actualReferences = JsonConvert.SerializeObject(
+                referenceRegistryManager.SchemaReferenceRegistry.References,
+                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+
+            var expectedReferences = File.ReadAllText(
+                Path.Combine(
+                    TestValidationDirectory,
+                    "InheritFromGenericInterfaceReferences.json"));
+
+            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
         }
 
@@ -259,7 +372,40 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
 
             public SampleInnerType SamplePropertyObject { get; set; }
 
+            [JsonProperty("samplePropertyReadonlyObject", Required = Required.Always)]
             public SampleInnerType SamplePropertyReadonlyObject { get; } = new SampleInnerType();
+
+            [JsonProperty("samplePropertyStringNotRequired", Required = Required.Default)]
+            public string SamplePropertyStringNotRequired { get; set; }
+
+            [JsonProperty("samplePropertyStringRequired", Required = Required.Always)]
+            public string SamplePropertyStringRequired { get; set; }
+        }
+
+        internal class SampleSelfReferencingType
+        {
+            public IList<SampleSelfReferencingType> SampleSelfReferencingListProperty { get; set; }
+
+            public SampleSelfReferencingType SampleSelfReferencingProperty { get; set; }
+        }
+
+        internal class SampleGenericType<T>
+        {
+            public T SamplePropertyGeneric { get; set; }
+
+            public string SamplePropertyString { get; set; }
+        }
+
+        internal interface ISampleGenericType<T>
+        {
+            T SamplePropertyGeneric { get; set; }
+
+            string SamplePropertyString { get; set; }
+        }
+
+        internal class SampleInheritFromGenericType : ISampleGenericType<SampleType>
+        {
+            public SampleType SamplePropertyGeneric { get; set; }
 
             public string SamplePropertyString { get; set; }
         }

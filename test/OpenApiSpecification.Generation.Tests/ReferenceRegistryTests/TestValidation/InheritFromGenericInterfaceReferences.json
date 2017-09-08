@@ -1,4 +1,19 @@
 ﻿{
+    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInheritFromGenericType":
+    {
+        "properties": {
+            "SamplePropertyGeneric": {
+                "readOnly": false,
+                "$ref":
+                    "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleType"
+            },
+            "SamplePropertyString": {
+                "readOnly": false,
+                "type": "string"
+            }
+        },
+        "type": "object"
+    },
     "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleType": {
         "properties": {
             "SamplePropertyDictionaryStringObject": {

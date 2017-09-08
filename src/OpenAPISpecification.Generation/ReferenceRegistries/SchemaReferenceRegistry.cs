@@ -5,9 +5,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
 {
@@ -28,6 +30,14 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
         internal override Schema FindOrAddReference(Type input)
         {
             const string PathToSchemaReferences = "#/components/schemas/";
+
+            // Return empty schema when the type does not have a name. 
+            // This can occur, for example, when a generic type without the generic argument specified
+            // is passed in.
+            if (input == null || input.FullName == null)
+            {
+                return new Schema();
+            }
 
             var key = GetKey(input);
 
@@ -80,18 +90,39 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
             if (input.IsEnumerable())
             {
                 schema.Type = "array";
+
                 schema.Items = FindOrAddReference(input.GetEnumerableItemType());
 
                 return schema;
             }
 
+            References[key] = null;
             schema.Type = "object";
             foreach (var propertyInfo in input.GetProperties())
             {
+                var propertyName = propertyInfo.Name;
                 var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
+
+                // Check if the property is read-only.
                 innerSchema.ReadOnly = !propertyInfo.CanWrite;
 
-                schema.Properties[propertyInfo.Name] = innerSchema;
+                var jsonPropertyAttributes = (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), false);
+                if (jsonPropertyAttributes.Any())
+                {
+                    // Use the property name in JsonProperty if given.
+                    if (jsonPropertyAttributes[0].PropertyName != null)
+                    {
+                        propertyName = jsonPropertyAttributes[0].PropertyName;
+                    }
+
+                    // Check if the property is required.
+                    if (jsonPropertyAttributes[0].Required == Required.Always)
+                    {
+                        schema.RequiredProperties.Add(propertyName);
+                    }
+                }
+
+                schema.Properties[propertyName] = innerSchema;
             }
 
             References[key] = schema;
@@ -105,10 +136,14 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
         /// <summary>
         /// Gets the key from the input object to use as reference string.
         /// </summary>
-        /// <remarks>This must match the regular expression ^[a-zA-Z0-9\.\-_]+$</remarks>
+        /// <remarks>
+        /// This must match the regular expression ^[a-zA-Z0-9\.\-_]+$ due to OpenAPI V3 spec.
+        /// </remarks>
         protected override string GetKey(Type input)
         {
-            return new Regex(@"[^a-zA-Z0-9\.\-_]").Replace(input.FullName, "_");
+            // Type.ToString() returns full name for non-generic types and
+            // returns a full name without unnecessary assembly information for generic types.
+            return new Regex(@"[^a-zA-Z0-9\.\-_]").Replace(input.ToString(), "_");
         }
     }
 }

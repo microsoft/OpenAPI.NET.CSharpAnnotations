@@ -32,6 +32,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new List<string> {Path.Combine(TestFilesDirectory, "NativeXml.exe")});
 
             Assert.IsNotNull(result);
+
             Assert.IsTrue(result.GenerationStatus == GenerationStatus.Success);
             Assert.IsNotNull(result.MainDocument);
             Assert.AreEqual(1, result.PathGenerationResults.Count);
@@ -75,7 +76,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
             );
 
-            var expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory, "GenerationSucceed.Json"));
+            var expectedDocument =
+                File.ReadAllText(Path.Combine(TestValidationDirectory, "GenerationSucceed.Json"));
 
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
@@ -139,12 +141,6 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
 
             var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure);
 
-            Assert.IsTrue(failedPaths.Count() == 1);
-            Assert.IsTrue(failedPaths.First().Path == "/V1/entities/{id}");
-            Assert.IsTrue(
-                failedPaths.First().Message ==
-                string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"));
-
             var actualDocument = JsonConvert.SerializeObject(
                 result.MainDocument,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
@@ -154,6 +150,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationInvalidVerb.Json"));
+
+            Assert.IsTrue(failedPaths.Count() == 1);
+            Assert.IsTrue(failedPaths.First().Path == "/V1/entities/{id}");
+            Assert.IsTrue(
+                failedPaths.First().Message ==
+                string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"));
 
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
@@ -193,13 +195,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new List<string> {Path.Combine(TestFilesDirectory, "NativeXml.exe")});
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.GenerationStatus == GenerationStatus.Success);
+            Assert.AreEqual(GenerationStatus.Success, result.GenerationStatus);
             Assert.IsNotNull(result.MainDocument);
             Assert.AreEqual(1, result.PathGenerationResults.Count);
 
-            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure);
-
-            Assert.IsTrue(failedPaths.Count() == 0);
+            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure)
+                .ToList();
 
             var actualDocument = JsonConvert.SerializeObject(
                 result.MainDocument,
@@ -211,6 +212,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                     TestValidationDirectory,
                     "AnnotationParamNoTypeSpecified.Json"));
 
+            Assert.AreEqual(0, failedPaths.Count);
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
 
@@ -220,16 +222,19 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
             var path = Path.Combine(TestFilesDirectory, "AnnotationWithUndocumentedGeneric.xml");
             var document = XDocument.Load(path);
             var generator = new OpenApiDocumentGenerator();
-            var result = generator.GenerateV3Documents(document, new List<string>());
+            var result = generator.GenerateV3Documents(
+                document,
+                new List<string> {Path.Combine(TestFilesDirectory, "NativeXml.exe")});
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.GenerationStatus == GenerationStatus.Failure);
+            Assert.AreEqual(GenerationStatus.Failure, result.GenerationStatus);
             Assert.IsNull(result.MainDocument);
             Assert.AreEqual(1, result.PathGenerationResults.Count);
 
-            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure);
+            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure)
+                .ToList();
 
-            Assert.IsTrue(failedPaths.Count() == 1);
+            Assert.AreEqual(1, failedPaths.Count);
             Assert.AreEqual(SpecificationGenerationMessages.UndocumentedGenericType, failedPaths.First().Message);
         }
 
@@ -244,17 +249,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 new List<string> {Path.Combine(TestFilesDirectory, "NativeXml.exe")});
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.GenerationStatus == GenerationStatus.Failure);
+            Assert.AreEqual(GenerationStatus.Failure, result.GenerationStatus);
             Assert.IsNotNull(result.MainDocument);
             Assert.AreEqual(7, result.PathGenerationResults.Count);
 
-            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure);
-
-            Assert.IsTrue(failedPaths.Count() == 1);
-            Assert.IsTrue(failedPaths.First().Path == "/V1/entities/{id}");
-            Assert.IsTrue(
-                failedPaths.First().Message ==
-                string.Format(SpecificationGenerationMessages.UndocumentedPathParameter, "id", "/V1/entities/{id}"));
+            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure)
+                .ToList();
 
             var actualDocument = JsonConvert.SerializeObject(
                 result.MainDocument,
@@ -265,6 +265,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationUndocumentedPathParameters.Json"));
+
+            Assert.AreEqual(1, failedPaths.Count);
+            Assert.AreEqual("/V1/entities/{id}", failedPaths.First().Path);
+            Assert.AreEqual(
+                string.Format(SpecificationGenerationMessages.UndocumentedPathParameter, "id", "/V1/entities/{id}"),
+                failedPaths.First().Message);
 
             Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
@@ -278,13 +284,14 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
             var result = generator.GenerateV3Documents(document, new List<string>());
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.GenerationStatus == GenerationStatus.Failure);
+            Assert.AreEqual(GenerationStatus.Failure, result.GenerationStatus);
             Assert.IsNull(result.MainDocument);
             Assert.AreEqual(1, result.PathGenerationResults.Count);
 
-            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure);
+            var failedPaths = result.PathGenerationResults.Where(p => p.GenerationStatus == GenerationStatus.Failure)
+                .ToList();
 
-            Assert.IsTrue(failedPaths.Count() == 1);
+            Assert.AreEqual(1, failedPaths.Count());
             Assert.AreEqual(SpecificationGenerationMessages.UnorderedGenericType, failedPaths.First().Message);
         }
     }

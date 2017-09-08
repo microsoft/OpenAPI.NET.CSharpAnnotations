@@ -3,63 +3,74 @@
         "schemas": {
             "NativeXml.Contracts.V1.EntityContractV1": {
                 "properties": {
-                    "Blob": {
+                    "blob": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "Count": {
+                    "count": {
                         "format": "int32",
                         "readOnly": false,
                         "type": "integer"
                     },
-                    "Id": {
+                    "id": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "Legacy": {
+                    "legacy": {
                         "readOnly": false,
                         "type": "boolean"
                     },
-                    "Name": {
+                    "name": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "DiffTest": {
+                    "difftest": {
                         "readOnly": false,
                         "type": "string"
                     },
-                    "TestEnum": {
-                        "enum": [ "one", "two" ],
+                    "testEnum": {
+                        "enum": [
+                            "one",
+                            "two"
+                        ],
                         "readOnly": false,
                         "type": "string"
                     }
                 },
-                "type": "object"
-            },
-            "NativeXml.Contracts.V1.PagingInfoContractV1": {
-                "properties": {
-                    "ContinuationToken": {
-                        "readOnly": false,
-                        "type": "string"
-                    },
-                    "TotalItems": {
-                        "format": "int32",
-                        "readOnly": false,
-                        "type": "integer"
-                    }
-                },
+                "required": [
+                    "name",
+                    "difftest",
+                    "testEnum"
+                ],
                 "type": "object"
             },
             "NativeXml.Contracts.V1.PagedEntityContractV1": {
                 "properties": {
-                    "Items": {
-                        "items": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" },
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                        },
                         "readOnly": true,
                         "type": "array"
                     },
-                    "PagingInfo": {
+                    "pagingInfo": {
                         "readOnly": false,
                         "$ref": "#/components/schemas/NativeXml.Contracts.V1.PagingInfoContractV1"
+                    }
+                },
+                "required": ["pagingInfo"],
+                "type": "object"
+            },
+            "NativeXml.Contracts.V1.PagingInfoContractV1": {
+                "properties": {
+                    "continuationToken": {
+                        "readOnly": false,
+                        "type": "string"
+                    },
+                    "totalItems": {
+                        "format": "int32",
+                        "readOnly": false,
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -89,32 +100,54 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "requestBody": {
-                    "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" } } },
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                            }
+                        }
+                    },
                     "description": "The entity to add",
                     "required": true
                 },
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Adds a new entity and assigns it a unique identifier.",
-                "tags": [ "Entity V1" ]
+                "tags": ["Entity V1"]
             },
             "get": {
                 "operationId": "getV1Entities",
@@ -132,27 +165,43 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.PagedEntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.PagedEntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Paged Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Gets a paged collection of entities matching the query parameters.",
-                "tags": [ "Entity V1" ]
+                "tags": ["Entity V1"]
             }
         },
         "/V1/entities/{id}": {
@@ -172,39 +221,59 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "path",
                         "required": false,
                         "name": "id",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "query",
                         "required": false,
                         "name": "legacy",
-                        "schema": { "type": "boolean" }
+                        "schema": {
+                            "type": "boolean"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Retrieves a specific entity instance.",
-                "tags": [ "Entity V1" ]
+                "tags": ["Entity V1"]
             },
             "put": {
                 "operationId": "putV1EntitiesById",
@@ -222,13 +291,17 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "path",
                         "required": false,
                         "name": "id",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "requestBody": {
@@ -236,7 +309,9 @@
                         "application/json": {
                             "schema": {
                                 "additionalProperties": {
-                                    "items": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" },
+                                    "items": {
+                                        "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                    },
                                     "type": "array"
                                 },
                                 "type": "object"
@@ -248,16 +323,28 @@
                 },
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Updates an existing entity.",
-                "tags": [ "Entity V1" ]
+                "tags": ["Entity V1"]
             }
         },
         "/V2/entities/": {
@@ -277,13 +364,17 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
@@ -291,7 +382,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "items": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" },
+                                    "items": {
+                                        "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                    },
                                     "type": "array"
                                 }
                             }
@@ -299,12 +392,18 @@
                         "description": "List of Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Retrieves all known entities.",
-                "tags": [ "Entity V2" ]
+                "tags": ["Entity V2"]
             }
         },
         "/V2/entities/{id}": {
@@ -324,19 +423,25 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "path",
                         "required": false,
                         "name": "id",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "query",
@@ -352,7 +457,9 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "items": { "type": "string" },
+                                "items": {
+                                    "type": "string"
+                                },
                                 "type": "array"
                             }
                         }
@@ -362,16 +469,28 @@
                 },
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Retrieves a specific entity instance.",
-                "tags": [ "Entity V2" ]
+                "tags": ["Entity V2"]
             },
             "delete": {
                 "operationId": "deleteV2EntitiesById",
@@ -389,35 +508,57 @@
                         "in": "header",
                         "required": false,
                         "name": "MS-CorrelationId-CorrelationId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "header",
                         "required": false,
                         "name": "MS-RequestId-RequestId",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
                         "in": "path",
                         "required": false,
                         "name": "id",
-                        "schema": { "type": "string" }
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NativeXml.Contracts.V1.EntityContractV1"
+                                }
+                            }
+                        },
                         "description": "Entity contract"
                     },
                     "400": {
-                        "content": { "application/json": { "schema": { "type": "string" } } },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "description": "Bad request"
                     }
                 },
                 "summary": "Deletes an entity.",
-                "tags": [ "Entity V2" ]
+                "tags": ["Entity V2"]
             }
         }
     },
-    "servers": [ { "url": "http://localhost:9000" } ]
+    "servers": [
+        {
+            "url": "http://localhost:9000"
+        }
+    ]
 }

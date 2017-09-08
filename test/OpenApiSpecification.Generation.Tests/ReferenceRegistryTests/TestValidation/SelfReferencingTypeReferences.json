@@ -1,0 +1,18 @@
+﻿{
+    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleSelfReferencingType": {
+        "properties": {
+            "SampleSelfReferencingProperty": {
+                "readOnly": false,
+                "$ref": "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleSelfReferencingType"
+            },
+            "SampleSelfReferencingListProperty": {
+                "items": {
+                    "$ref": "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleSelfReferencingType"
+                },
+                "readOnly": false,
+                "type": "array"
+            }
+        },
+        "type": "object"
+    }
+}

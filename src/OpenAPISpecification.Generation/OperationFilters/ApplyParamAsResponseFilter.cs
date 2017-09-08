@@ -60,9 +60,9 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                         allListedTypes.Add(crefValue);
                     }
                 }
-
+                
                 var responseContractType = settings.TypeFetcher.GetTypeFromCrefValues(allListedTypes);
-
+                
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
                     responseContractType);
 
