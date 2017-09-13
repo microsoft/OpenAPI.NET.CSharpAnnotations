@@ -65,6 +65,18 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
                 schema.Type = dataTypeAndFormatPair.DataType;
                 schema.Format = dataTypeAndFormatPair.Format;
 
+                // Certain simple types yield more specific information.
+                if (input == typeof(char))
+                {
+                    schema.MinLength = 1;
+                    schema.MaxLength = 1;
+                } else if (input == typeof(Guid))
+                {
+                    schema.Example = Guid.Empty.ToString();
+                    schema.MinLength = 36;
+                    schema.MaxLength = 36;
+                }
+
                 return schema;
             }
 

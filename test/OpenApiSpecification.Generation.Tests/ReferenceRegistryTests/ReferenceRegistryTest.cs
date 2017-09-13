@@ -3,29 +3,42 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
 {
-    [TestClass]
     public class ReferenceRegistryTest
     {
+        private const string SimpleTypeSubDirectory = "SimpleTypes";
         private const string TestValidationDirectory = "ReferenceRegistryTests/TestValidation";
 
-        [TestMethod]
-        public void GenerateSchemaFromDictionaryTypeShouldSucceed()
+        private readonly ITestOutputHelper _output;
+
+        public ReferenceRegistryTest(ITestOutputHelper output)
+        {
+            this._output = output;
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldSucceed))]
+        public void GenerateSchemaFromTypeShouldSucceed(
+            Type type,
+            string expectedSchemaFileName,
+            string expectedReferencesFileName)
         {
             // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
             // Act
             var returnedSchema =
-                referenceRegistryManager.FindOrAddSchemaReference(typeof(IDictionary<string, SampleType>));
+                referenceRegistryManager.FindOrAddSchemaReference(type);
 
             // Assert
             var actualSchema = JsonConvert.SerializeObject(
@@ -33,300 +46,127 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
 
             var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "DictionaryTypeSchema.json"));
+                expectedSchemaFileName);
 
             var actualReferences = JsonConvert.SerializeObject(
                 referenceRegistryManager.SchemaReferenceRegistry.References,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
 
             var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "NestedObjectTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
+                expectedReferencesFileName);
+            _output.WriteLine(actualSchema);
+            Assert.True(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
+            Assert.True(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
         }
 
-        [TestMethod]
-        public void GenerateSchemaFromEnumTypeShouldSucceed()
+        private static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
         {
-            // Arrange
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            // Act
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleEnum));
-
-            // Assert
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "EnumTypeSchema.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "EmptyTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromGenericInterfaceShouldSucceed()
-        {
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(ISampleGenericType<string>));
-
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "GenericInterfaceSchema.json"));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "GenericInterfaceReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromGenericTypeShouldSucceed()
-        {
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleGenericType<string>));
-
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "GenericTypeSchema.json"));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "GenericTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromNestedObjectTypeShouldSucceed()
-        {
-            // Arrange
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            // Act
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleType));
-
-            // Assert
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "NestedObjectTypeSchema.json"));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "NestedObjectTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromObjectListTypeShouldSucceed()
-        {
-            // Arrange
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            // Act
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(IList<SampleType>));
-
-            // Assert
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "ObjectListTypeSchema.json"));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "NestedObjectTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromObjectTypeShouldSucceed()
-        {
-            // Arrange
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            // Act
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleInnerType));
-
-            // Assert
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "ObjectTypeSchema.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "InnerObjectTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromSelfReferencingTypeShouldSucceed()
-        {
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleSelfReferencingType));
-
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "SelfReferencingTypeSchema.json"));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "SelfReferencingTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromSimpleTypeShouldSucceed()
-        {
-            // Arrange
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            // Act
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(string));
-
-            // Assert
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "SimpleTypeSchema.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "EmptyTypeReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
-        }
-
-        [TestMethod]
-        public void GenerateSchemaFromTypeInheritedFromGenericInterfaceShouldSucceed()
-        {
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            var returnedSchema = referenceRegistryManager.FindOrAddSchemaReference(typeof(SampleInheritFromGenericType));
-
-            var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedSchema = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "InheritFromGenericInterfaceSchema.json"));
-
-            var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
-
-            var expectedReferences = File.ReadAllText(
-                Path.Combine(
-                    TestValidationDirectory,
-                    "InheritFromGenericInterfaceReferences.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
+            // Simple types
+
+            yield return new object[]
+            {
+                typeof(bool),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "BoolTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(byte),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "ByteTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(char),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "CharTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(string),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "StringTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(int),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "IntTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(Guid),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "GuidTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(DateTimeOffset),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "DateTimeTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+            };
+
+            // Enum types
+            yield return new object[] 
+            {
+                typeof(SampleEnum),
+                Path.Combine(TestValidationDirectory, "EnumTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, "EmptyTypeReferences.json")
+            };
+
+            // Object types
+            yield return new object[]
+            {
+                typeof(SampleInnerType),
+                Path.Combine(TestValidationDirectory, "ObjectTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, "InnerObjectTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(SampleType),
+                Path.Combine(TestValidationDirectory, "NestedObjectTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, "NestedObjectTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(SampleSelfReferencingType),
+                Path.Combine(TestValidationDirectory, "SelfReferencingTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, "SelfReferencingTypeReferences.json")
+            };
+
+            // Enumerable types
+            yield return new object[]
+            {
+                typeof(IList<SampleType>),
+                Path.Combine(TestValidationDirectory, "ObjectListTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, "NestedObjectTypeReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(IDictionary<string, SampleType>),
+                Path.Combine(TestValidationDirectory, "DictionaryTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, "NestedObjectTypeReferences.json")
+            };
+
+            // Generic types
+            yield return new object[] 
+            {
+                typeof(SampleGenericType<string>),
+                Path.Combine(TestValidationDirectory, "GenericTypeSchema.json"),
+                Path.Combine(TestValidationDirectory, "GenericTypeReferences.json")
+            };
+            yield return new object[] 
+            {
+                typeof(ISampleGenericType<string>),
+                Path.Combine(TestValidationDirectory, "GenericInterfaceSchema.json"),
+                Path.Combine(TestValidationDirectory, "GenericInterfaceReferences.json")
+            };
+            yield return new object[] 
+            {
+                typeof(SampleInheritFromGenericType),
+                Path.Combine(TestValidationDirectory, "InheritFromGenericInterfaceSchema.json"),
+                Path.Combine(TestValidationDirectory, "InheritFromGenericInterfaceReferences.json")
+            };
         }
 
         internal enum SampleEnum

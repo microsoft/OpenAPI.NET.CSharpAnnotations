@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -17,6 +18,8 @@
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,12 +39,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.assert.2.2.0\lib\netstandard1.1\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.core.2.2.0\lib\netstandard1.1\xunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.execution.2.2.0\lib\net452\xunit.execution.desktop.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -58,13 +74,38 @@
   <ItemGroup>
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
     <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
-    <Compile Include="InternalOpenApiDocumentGeneratorTest.cs" />
+    <Compile Include="InternalOpenApiDocumentGeneratorTests\InternalOpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestHelper.cs" />
-    <Content Include="DocumentVariantTests\TestFiles\Annotation.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\NativeXml.exe">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationDuplicateResponseTag.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationIncorrectlyOrderedGeneric.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationInvalidUri.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationInvalidVerb.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationParamNoTypeSpecified.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedGeneric.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedPathParameters.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\Annotation.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ReferenceRegistryTests\TestValidation\DictionaryTypeSchema.json">
@@ -82,10 +123,10 @@
     <Content Include="ReferenceRegistryTests\TestValidation\ObjectTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\StringTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\EmptyTypeReferences.json">
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\EmptyTypeReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ReferenceRegistryTests\TestValidation\InnerObjectTypeReferences.json">
@@ -96,35 +137,32 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestFiles\Annotation.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\Annotation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="TestFiles\AnnotationInvalidUri.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationInvalidUri.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\AnnotationInvalidVerb.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationInvalidVerb.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\AnnotationNoOperationsToParse.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationNoOperationsToParse.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\AnnotationParamNoTypeSpecified.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationParamNoTypeSpecified.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\AnnotationUndocumentedPathParameters.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedPathParameters.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\AnnotationWithDuplicateResponseTag.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationDuplicateResponseTag.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\AnnotationWithUndocumentedGeneric.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedGeneric.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\AnnotationWithUnorderedGeneric.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\NativeXml.exe">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationIncorrectlyOrderedGeneric.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -172,25 +210,34 @@
     <Content Include="DocumentVariantTests\TestValidation\AnnotationDefaultVariant.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestValidation\AnnotationInvalidUri.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestValidation\AnnotationInvalidVerb.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestValidation\AnnotationParamNoTypeSpecified.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestValidation\AnnotationUndocumentedPathParameters.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestValidation\AnnotationWithDuplicateResponseTag.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestValidation\GenerationSucceed.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\IntTypeSchema.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\CharTypeSchema.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\BoolTypeSchema.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\GuidTypeSchema.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\DateTimeTypeSchema.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\EmptyTypeReferences.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\ByteTypeSchema.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Choose>
@@ -213,11 +260,13 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties TestValidation_4AnnotationInvalidUri_1Json__JSONSchema="{&quot;components&quot;:{},&quot;info&quot;:{&quot;title&quot;:&quot;NativeXml&quot;,&quot;version&quot;:&quot;1.0.0&quot;},&quot;openapi&quot;:&quot;3.0.0&quot;,&quot;paths&quot;:{&quot;/V1/entities/{id}&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV1EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;query&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;legacy&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;boolean&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Retrieves a specific entity instance.&quot;,&quot;tags&quot;:[&quot;Entity V1&quot;]},&quot;put&quot;:{&quot;operationId&quot;:&quot;putV1EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Updates an existing entity.&quot;,&quot;tags&quot;:[&quot;Entity V1&quot;]}},&quot;/V1/entities&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV1Entities&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Gets a paged collection of entities matching the query parameters.&quot;,&quot;tags&quot;:[&quot;Entity V1&quot;]}},&quot;/V2/entities/&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV2Entities&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Retrieves all known entities.&quot;,&quot;tags&quot;:[&quot;Entity V2&quot;]}},&quot;/V2/entities/{id}&quot;:{&quot;get&quot;:{&quot;operationId&quot;:&quot;getV2EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;query&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;diffTest&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;int32&quot;,&quot;type&quot;:&quot;integer&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Retrieves a specific entity instance.&quot;,&quot;tags&quot;:[&quot;Entity V2&quot;]},&quot;delete&quot;:{&quot;operationId&quot;:&quot;deleteV2EntitiesById&quot;,&quot;parameters&quot;:[{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-Contract-Version-Contract-Version&quot;,&quot;schema&quot;:{&quot;format&quot;:&quot;float&quot;,&quot;type&quot;:&quot;number&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-CorrelationId-CorrelationId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;header&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;MS-RequestId-RequestId&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}},{&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:false,&quot;name&quot;:&quot;id&quot;,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;}}],&quot;responses&quot;:{&quot;default&quot;:{&quot;description&quot;:&quot;Unexpected Error!&quot;}},&quot;summary&quot;:&quot;Deletes an entity.&quot;,&quot;tags&quot;:[&quot;Entity V2&quot;]}}},&quot;servers&quot;:[{&quot;url&quot;:&quot;http://localhost:9000&quot;}]}" />
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.2.0\build\net20\xunit.runner.visualstudio.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

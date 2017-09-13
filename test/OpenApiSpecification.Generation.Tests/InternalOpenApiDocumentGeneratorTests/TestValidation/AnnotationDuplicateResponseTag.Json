@@ -48,17 +48,19 @@
                 "properties": {
                     "samplePropertyObject": {
                         "readOnly": false,
-                        "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                        "$ref":
+                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
                     },
                     "samplePropertyObjectList": {
                         "items": {
-                            "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            "$ref":
+                                "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                         },
                         "readOnly": true,
                         "type": "array"
                     }
                 },
-                "required": [ "samplePropertyObject" ],
+                "required": ["samplePropertyObject"],
                 "type": "object"
             },
             "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2": {
@@ -77,14 +79,16 @@
                     },
                     "samplePropertyObjectDictionary": {
                         "additionalProperties": {
-                            "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            "$ref":
+                                "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                         },
                         "readOnly": true,
                         "type": "object"
                     },
                     "samplePropertyObjectList": {
                         "items": {
-                            "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            "$ref":
+                                "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                         },
                         "readOnly": true,
                         "type": "array"
@@ -160,7 +164,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                                 }
                             }
                         },
@@ -178,7 +183,7 @@
                     }
                 },
                 "summary": "Sample Get 1",
-                "tags": [ "Sample V1" ]
+                "tags": ["Sample V1"]
             },
             "put": {
                 "operationId": "putV1SamplesById",
@@ -222,7 +227,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                                 }
                             }
                         },
@@ -240,7 +246,7 @@
                     }
                 },
                 "summary": "Sample put",
-                "tags": [ "Sample V1" ]
+                "tags": ["Sample V1"]
             }
         },
         "/V1/samples": {
@@ -278,7 +284,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
                                 }
                             }
                         },
@@ -296,7 +303,7 @@
                     }
                 },
                 "summary": "Sample Get 2",
-                "tags": [ "Sample V1" ]
+                "tags": ["Sample V1"]
             },
             "post": {
                 "operationId": "postV1Samples",
@@ -332,7 +339,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
                                 }
                             }
                         },
@@ -350,7 +358,7 @@
                     }
                 },
                 "summary": "Sample Post",
-                "tags": [ "Sample V1" ]
+                "tags": ["Sample V1"]
             }
         },
         "/V2/samples/{id}": {
@@ -396,7 +404,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                                 }
                             }
                         },
@@ -414,7 +423,7 @@
                     }
                 },
                 "summary": "Sample delete",
-                "tags": [ "Sample V2" ]
+                "tags": ["Sample V2"]
             },
             "get": {
                 "operationId": "getV2SamplesById",
@@ -466,7 +475,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
                                 }
                             }
                         },
@@ -484,7 +494,7 @@
                     }
                 },
                 "summary": "Sample get 2",
-                "tags": [ "Sample V2" ]
+                "tags": ["Sample V2"]
             }
         },
         "/V2/samples/": {
@@ -523,7 +533,8 @@
                             "application/json": {
                                 "schema": {
                                     "items": {
-                                        "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                                        "$ref":
+                                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
                                     },
                                     "type": "array"
                                 }
@@ -543,7 +554,7 @@
                     }
                 },
                 "summary": "Sample get 1",
-                "tags": [ "Sample V2" ]
+                "tags": ["Sample V2"]
             }
         }
     },

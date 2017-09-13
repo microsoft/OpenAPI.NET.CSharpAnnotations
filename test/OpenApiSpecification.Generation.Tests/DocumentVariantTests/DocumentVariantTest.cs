@@ -9,18 +9,25 @@ using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
 {
-    [TestClass]
     public class DocumentVariantTest
     {
         private const string TestFilesDirectory = "DocumentVariantTests/TestFiles";
         private const string TestValidationDirectory = "DocumentVariantTests/TestValidation";
 
-        [TestMethod]
+        private readonly ITestOutputHelper _output;
+
+        public DocumentVariantTest(ITestOutputHelper output)
+        {
+            _output = output;
+        }
+
+        [Fact]
         public void GenerateV3DocumentMultipleVariantsShouldSucceed()
         {
             // Arrange
@@ -34,71 +41,66 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
             var variantInfo1 = new DocumentVariantInfo
             {
                 Categorizer = "swagger",
-                Title = "Variant1"
+                Title = "Group1"
             };
 
             var variantInfo2 = new DocumentVariantInfo
             {
                 Categorizer = "swagger",
-                Title = "Variant2"
+                Title = "Group2"
             };
 
             // Act
             var result = generator.GenerateV3Documents(
                 document,
-                new List<string> {Path.Combine(TestFilesDirectory, "NativeXml.exe")});
+                new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")});
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(GenerationStatus.Success, result.GenerationStatus);
+            Assert.NotNull(result);
+            Assert.Equal(GenerationStatus.Success, result.GenerationStatus);
 
-            Assert.AreEqual(3, result.Documents.Keys.Count);
-            Assert.AreEqual(7, result.PathGenerationResults.Count);
-
-            OpenApiV3SpecificationDocument specificationDocument;
-            string actualDocument;
-            string expectedDocument;
+            Assert.Equal(3, result.Documents.Keys.Count);
+            Assert.Equal(7, result.PathGenerationResults.Count);
 
             // Default Document Variant
-            result.Documents.TryGetValue(variantInfoDefault, out specificationDocument);
-            Assert.IsNotNull(specificationDocument);
-
-            actualDocument = JsonConvert.SerializeObject(
-                specificationDocument,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
-            );
-
-            expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
+            VerifyDocumentVariantAgainstJsonFile(
+                result,
+                variantInfoDefault,
+                Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"));
 
             // Document Variant 1
-            // Only contains info from operations with tags with title "Variant1" in Annotation.xml 
-            result.Documents.TryGetValue(variantInfo1, out specificationDocument);
-            Assert.IsNotNull(specificationDocument);
-
-            actualDocument = JsonConvert.SerializeObject(
-                specificationDocument,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
-            );
-
-            expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory, "AnnotationVariant1.json"));
-
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
+            // Only contains info from operations with tags with title "Group1" in Annotation.xml 
+            VerifyDocumentVariantAgainstJsonFile(
+                result,
+                variantInfo1,
+                Path.Combine(TestValidationDirectory, "AnnotationVariant1.json"));
 
             // Document Variant 2
-            // Only contains info from operations with tags with title "Variant2" in Annotation.xml 
-            result.Documents.TryGetValue(variantInfo2, out specificationDocument);
-            Assert.IsNotNull(specificationDocument);
+            // Only contains info from operations with tags with title "Group2" in Annotation.xml 
+            VerifyDocumentVariantAgainstJsonFile(
+                result,
+                variantInfo2,
+                Path.Combine(TestValidationDirectory, "AnnotationVariant2.json"));
+        }
 
-            actualDocument = JsonConvert.SerializeObject(
+        private void VerifyDocumentVariantAgainstJsonFile(
+            DocumentGenerationResult result,
+            DocumentVariantInfo documentVariantInfo,
+            string jsonFileName)
+        {
+            OpenApiV3SpecificationDocument specificationDocument;
+
+            result.Documents.TryGetValue(documentVariantInfo, out specificationDocument);
+            Assert.NotNull(specificationDocument);
+
+            var actualDocument = JsonConvert.SerializeObject(
                 specificationDocument,
                 new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
             );
 
-            expectedDocument = File.ReadAllText(Path.Combine(TestValidationDirectory, "AnnotationVariant2.json"));
+            var expectedDocument = File.ReadAllText(jsonFileName);
 
-            Assert.IsTrue(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
+            Assert.True(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
         }
     }
 }

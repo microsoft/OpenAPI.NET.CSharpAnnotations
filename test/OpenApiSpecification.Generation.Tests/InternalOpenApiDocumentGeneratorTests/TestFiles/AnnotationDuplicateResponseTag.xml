@@ -135,13 +135,16 @@
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object retrieved
       </response>
+      <!-- This is the duplicate response tag -->
+      <response code="200">
+        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"/>Sample object retrieved
+      </response>
+      <!-- ////////////////////////////////// -->
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <!-- Tags for both Group1 and Group2 here -->
       <swagger security="e2eappdev" version="V2">Group1</swagger>
       <swagger security="groupdoesntexist" version="V2">Group2</swagger>
-      <!-- //////////////////////////////////// -->
       <returns>The sample object 1</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SampleGet2">
@@ -160,9 +163,6 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <!-- Tags for only Group1 here -->
-      <swagger security="e2eappdev" version="V2">Group1</swagger>
-      <!-- //////////////////////////////////// -->
       <returns>The sample object 3</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SamplePost(OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3)">

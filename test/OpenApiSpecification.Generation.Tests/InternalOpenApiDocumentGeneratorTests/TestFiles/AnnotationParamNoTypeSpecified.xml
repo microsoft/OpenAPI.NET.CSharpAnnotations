@@ -130,7 +130,9 @@
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <param name="id" cref="T:System.String" in="path">The object id</param>
+      <!-- The param "id" below does not have type specified -->
+      <param name="id" in="path">The object id</param>
+      <!-- ///////////////////////////////////////////////// -->
       <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object retrieved
@@ -138,10 +140,8 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <!-- Tags for both Group1 and Group2 here -->
       <swagger security="e2eappdev" version="V2">Group1</swagger>
       <swagger security="groupdoesntexist" version="V2">Group2</swagger>
-      <!-- //////////////////////////////////// -->
       <returns>The sample object 1</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SampleGet2">
@@ -160,9 +160,6 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <!-- Tags for only Group1 here -->
-      <swagger security="e2eappdev" version="V2">Group1</swagger>
-      <!-- //////////////////////////////////// -->
       <returns>The sample object 3</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SamplePost(OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3)">

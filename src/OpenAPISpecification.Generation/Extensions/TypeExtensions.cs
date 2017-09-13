@@ -31,6 +31,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Extensions
                 [typeof(DateTime)] = new OpenApiDataTypeFormatPair {DataType = "string", Format = "date-time"},
                 [typeof(DateTimeOffset)] = new OpenApiDataTypeFormatPair {DataType = "string", Format = "date-time"},
                 [typeof(Guid)] = new OpenApiDataTypeFormatPair {DataType = "string", Format = "uuid"},
+                [typeof(char)] = new OpenApiDataTypeFormatPair { DataType = "string" },
                 [typeof(string)] = new OpenApiDataTypeFormatPair {DataType = "string"}
             };
 
