@@ -7,13 +7,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using FluentAssertions;
+using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.Models;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests
+namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumentGeneratorTests
 {
     public class InternalOpenApiDocumentGeneratorTest
     {
@@ -24,7 +26,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
 
         public InternalOpenApiDocumentGeneratorTest(ITestOutputHelper output)
         {
-            this._output = output;
+            _output = output;
         }
 
         private static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldFailGeneration()
@@ -165,7 +167,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
             IList<string> inputBinaryFiles,
             int expectedPathGenerationResultsCount,
             string expectedJsonFile,
-            IEnumerable<PathGenerationResult> expectedFailedPathGenerationResults)
+            IList<PathGenerationResult> expectedFailedPathGenerationResults)
         {
             var document = XDocument.Load(inputXmlFile);
 
@@ -175,13 +177,15 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 document,
                 inputBinaryFiles);
 
-            Assert.NotNull(result);
-            Assert.Equal(GenerationStatus.Failure, result.GenerationStatus);
-            Assert.NotNull(result.MainDocument);
-            Assert.Equal(expectedPathGenerationResultsCount, result.PathGenerationResults.Count);
+            result.Should().NotBeNull();
+
+            result.GenerationStatus.Should().Be(GenerationStatus.Failure);
+            result.MainDocument.Should().NotBeNull();
+            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
 
             var failedPaths = result.PathGenerationResults.Where(
-                p => p.GenerationStatus == GenerationStatus.Failure);
+                    p => p.GenerationStatus == GenerationStatus.Failure)
+                .ToList();
 
             var actualDocument = JsonConvert.SerializeObject(
                 result.MainDocument,
@@ -190,9 +194,15 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
-            Assert.Equal(expectedFailedPathGenerationResults, failedPaths);
+            failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
 
-            Assert.True(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
+            // We are doing serialization and deserialization to force the resulting actual document
+            // to have the exact fields we will see in the resulting document based on the contract resolver.
+            // Without serialization and deserialization, the actual document may have fields that should
+            // not be present, such as empty list fields.
+            JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
+                .Should()
+                .BeEquivalentTo(JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(expectedDocument));
         }
 
         [Fact]
@@ -206,16 +216,17 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
 
             var result = generator.GenerateV3Documents(document, new List<string>());
 
-            Assert.NotNull(result);
-            Assert.True(result.GenerationStatus == GenerationStatus.Success);
-            Assert.Null(result.MainDocument);
-            Assert.NotNull(result.PathGenerationResults);
-            Assert.True(result.PathGenerationResults.Count == 1);
-            Assert.Null(result.PathGenerationResults.First().Path);
-            Assert.True(result.PathGenerationResults.First().GenerationStatus == GenerationStatus.Success);
-            Assert.True(
-                result.PathGenerationResults.First().Message ==
-                SpecificationGenerationMessages.NoOperationElementFoundToParse);
+            result.Should().NotBeNull();
+            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.MainDocument.Should().BeNull();
+            result.PathGenerationResults.Should()
+                .BeEquivalentTo(
+                    new List<PathGenerationResult>
+                    {
+                        new PathGenerationResult(
+                            SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                            GenerationStatus.Success)
+                    });
         }
 
         [Theory]
@@ -234,10 +245,10 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
                 document,
                 inputBinaryFiles);
 
-            Assert.NotNull(result);
-            Assert.True(result.GenerationStatus == GenerationStatus.Success);
-            Assert.NotNull(result.MainDocument);
-            Assert.Equal(expectedPathGenerationResultsCount, result.PathGenerationResults.Count);
+            result.Should().NotBeNull();
+            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.MainDocument.Should().NotBeNull();
+            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
 
             var actualDocument = JsonConvert.SerializeObject(
                 result.MainDocument,
@@ -246,7 +257,9 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
-            Assert.True(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
+            JsonConvert.DeserializeObject<object>(actualDocument)
+                .Should()
+                .BeEquivalentTo(JsonConvert.DeserializeObject<object>(expectedDocument));
         }
     }
 }

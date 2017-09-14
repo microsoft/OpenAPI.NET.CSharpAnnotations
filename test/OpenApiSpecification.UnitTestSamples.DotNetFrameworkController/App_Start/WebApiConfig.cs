@@ -7,20 +7,21 @@ using System.Web.Http;
 
 namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController
 {
+    /// <summary>
+    /// Web config.
+    /// </summary>
     public static class WebApiConfig
     {
+        /// <summary>
+        /// Register the configuration, services, and routes.
+        /// </summary>
+        /// <param name="config">HTTP Configuration</param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                "DefaultApi",
-                "api/{controller}/{id}",
-                new {id = RouteParameter.Optional}
-            );
         }
     }
 }

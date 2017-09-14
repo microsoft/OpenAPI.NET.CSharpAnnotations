@@ -10,8 +10,14 @@ using System.Web.Routing;
 
 namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController
 {
+    /// <summary>
+    /// Web API Application.
+    /// </summary>
     public class WebApiApplication : HttpApplication
     {
+        /// <summary>
+        /// Start application.
+        /// </summary>
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

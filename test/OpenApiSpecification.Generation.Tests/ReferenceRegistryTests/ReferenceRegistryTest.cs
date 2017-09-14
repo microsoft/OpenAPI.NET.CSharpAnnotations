@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using FluentAssertions;
+using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
 using Newtonsoft.Json;
@@ -23,7 +25,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
 
         public ReferenceRegistryTest(ITestOutputHelper output)
         {
-            this._output = output;
+            _output = output;
         }
 
         [Theory]
@@ -55,8 +57,14 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
             var expectedReferences = File.ReadAllText(
                 expectedReferencesFileName);
             _output.WriteLine(actualSchema);
-            Assert.True(TestHelper.AreJsonEqual(expectedSchema, actualSchema));
-            Assert.True(TestHelper.AreJsonEqual(expectedReferences, actualReferences));
+
+            JsonConvert.DeserializeObject<Schema>(actualSchema)
+                .Should()
+                .BeEquivalentTo(JsonConvert.DeserializeObject<Schema>(expectedSchema));
+
+            JsonConvert.DeserializeObject<Schema>(actualReferences)
+                .Should()
+                .BeEquivalentTo(JsonConvert.DeserializeObject<Schema>(expectedReferences));
         }
 
         private static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
@@ -107,7 +115,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
             };
 
             // Enum types
-            yield return new object[] 
+            yield return new object[]
             {
                 typeof(SampleEnum),
                 Path.Combine(TestValidationDirectory, "EnumTypeSchema.json"),
@@ -149,19 +157,19 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
             };
 
             // Generic types
-            yield return new object[] 
+            yield return new object[]
             {
                 typeof(SampleGenericType<string>),
                 Path.Combine(TestValidationDirectory, "GenericTypeSchema.json"),
                 Path.Combine(TestValidationDirectory, "GenericTypeReferences.json")
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 typeof(ISampleGenericType<string>),
                 Path.Combine(TestValidationDirectory, "GenericInterfaceSchema.json"),
                 Path.Combine(TestValidationDirectory, "GenericInterfaceReferences.json")
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 typeof(SampleInheritFromGenericType),
                 Path.Combine(TestValidationDirectory, "InheritFromGenericInterfaceSchema.json"),

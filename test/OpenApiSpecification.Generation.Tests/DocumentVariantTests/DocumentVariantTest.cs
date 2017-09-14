@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using FluentAssertions;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.Models;
@@ -56,11 +57,18 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")});
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(GenerationStatus.Success, result.GenerationStatus);
+            result.Should().NotBeNull();
+            result.GenerationStatus.Should().Be(GenerationStatus.Success);
 
-            Assert.Equal(3, result.Documents.Keys.Count);
-            Assert.Equal(7, result.PathGenerationResults.Count);
+            result.PathGenerationResults.Count.Should().Be(7);
+            result.Documents.Keys.Should()
+                .BeEquivalentTo(
+                    new List<DocumentVariantInfo>
+                    {
+                        variantInfoDefault,
+                        variantInfo1,
+                        variantInfo2
+                    });
 
             // Default Document Variant
             VerifyDocumentVariantAgainstJsonFile(
@@ -91,7 +99,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
             OpenApiV3SpecificationDocument specificationDocument;
 
             result.Documents.TryGetValue(documentVariantInfo, out specificationDocument);
-            Assert.NotNull(specificationDocument);
+
+            specificationDocument.Should().NotBeNull();
 
             var actualDocument = JsonConvert.SerializeObject(
                 specificationDocument,
@@ -100,7 +109,9 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
 
             var expectedDocument = File.ReadAllText(jsonFileName);
 
-            Assert.True(TestHelper.AreJsonEqual(expectedDocument, actualDocument));
+            JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
+                .Should()
+                .BeEquivalentTo(JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(expectedDocument));
         }
     }
 }
