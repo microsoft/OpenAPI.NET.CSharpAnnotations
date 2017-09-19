@@ -11,7 +11,7 @@ using OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts;
 namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers
 {
     /// <summary>
-    /// Sample controller V1
+    /// Define V1 operations.
     /// </summary>
     public class SampleControllerV1 : ApiController
     {

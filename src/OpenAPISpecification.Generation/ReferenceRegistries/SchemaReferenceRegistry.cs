@@ -18,6 +18,9 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
     /// </summary>
     public class SchemaReferenceRegistry : ReferenceRegistry<Type, Schema>
     {
+        private static readonly Regex _allNonCompliantCharactersRegex = new Regex(@"[^a-zA-Z0-9\.\-_]");
+        private static readonly Regex _genericMarkersRegex = new Regex(@"`[0-9]+");
+
         /// <summary>
         /// The dictionary containing all references of the given type.
         /// </summary>
@@ -70,7 +73,8 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
                 {
                     schema.MinLength = 1;
                     schema.MaxLength = 1;
-                } else if (input == typeof(Guid))
+                }
+                else if (input == typeof(Guid))
                 {
                     schema.Example = Guid.Empty.ToString();
                     schema.MinLength = 36;
@@ -155,7 +159,22 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
         {
             // Type.ToString() returns full name for non-generic types and
             // returns a full name without unnecessary assembly information for generic types.
-            return new Regex(@"[^a-zA-Z0-9\.\-_]").Replace(input.ToString(), "_");
+            var typeName = input.ToString();
+
+            // Replace + (used when this type has a parent class name) by .
+            typeName = typeName.Replace('+', '.');
+
+            // Remove `n from a generic type. It's clear that this is a generic type
+            // since it will be followed by other types name(s).
+            typeName = _genericMarkersRegex.Replace(typeName, string.Empty);
+
+            // Replace , (used to separate multiple types used in a generic) by - 
+            typeName = typeName.Replace(',', '-');
+
+            // Replace all other non-compliant strings, including [ ] used in generics by _
+            typeName = _allNonCompliantCharactersRegex.Replace(typeName, "_");
+
+            return typeName;
         }
     }
 }

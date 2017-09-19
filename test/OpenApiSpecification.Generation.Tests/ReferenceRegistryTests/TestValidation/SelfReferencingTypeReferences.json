@@ -1,13 +1,13 @@
 ﻿{
-    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleSelfReferencingType": {
+    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleSelfReferencingType": {
         "properties": {
             "SampleSelfReferencingProperty": {
                 "readOnly": false,
-                "$ref": "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleSelfReferencingType"
+                "$ref": "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleSelfReferencingType"
             },
             "SampleSelfReferencingListProperty": {
                 "items": {
-                    "$ref": "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleSelfReferencingType"
+                    "$ref": "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleSelfReferencingType"
                 },
                 "readOnly": false,
                 "type": "array"

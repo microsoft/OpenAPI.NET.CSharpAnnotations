@@ -42,9 +42,8 @@
     <Reference Include="FluentAssertions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.5.0.0-beta0001\lib\net451\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -76,18 +75,23 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
+    <Compile Include="DefaultSettingsFixtureCollection.cs" />
+    <Compile Include="DefaultSettingsFixture.cs" />
     <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
     <Compile Include="InternalOpenApiDocumentGeneratorTests\InternalOpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationDuplicateResponseTag.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationIncorrectlyOrderedGeneric.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationIncorrectlyOrderedGeneric.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationInvalidUri.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -97,9 +101,9 @@
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationParamNoTypeSpecified.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedGeneric.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedGeneric.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedPathParameters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -212,9 +216,6 @@
     <Content Include="DocumentVariantTests\TestValidation\AnnotationDefaultVariant.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
     <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\IntTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -235,6 +236,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\ByteTypeSchema.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\NestedGenericReferences.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReferenceRegistryTests\TestValidation\NestedGenericSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="xunit.runner.json">

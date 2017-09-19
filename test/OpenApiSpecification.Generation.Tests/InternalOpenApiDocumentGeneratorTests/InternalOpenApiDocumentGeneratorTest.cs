@@ -9,7 +9,6 @@ using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.Models;
 using Newtonsoft.Json;
 using Xunit;
@@ -17,6 +16,7 @@ using Xunit.Abstractions;
 
 namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumentGeneratorTests
 {
+    [Collection("DefaultSettings")]
     public class InternalOpenApiDocumentGeneratorTest
     {
         private const string TestFilesDirectory = "InternalOpenApiDocumentGeneratorTests/TestFiles";
@@ -34,9 +34,10 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // Invalid Verb
             yield return new object[]
             {
+                "Invalid Verb",
                 Path.Combine(TestFilesDirectory, "AnnotationInvalidVerb.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationInvalidVerb.Json"),
@@ -52,9 +53,10 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // Invalid Uri
             yield return new object[]
             {
+                "Invalid Uri",
                 Path.Combine(TestFilesDirectory, "AnnotationInvalidUri.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationInvalidUri.Json"),
@@ -70,9 +72,10 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // Undocumented Path Parameters
             yield return new object[]
             {
+                "Undocumented Path Parameters",
                 Path.Combine(TestFilesDirectory, "AnnotationUndocumentedPathParameters.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationUndocumentedPathParameters.Json"),
@@ -88,16 +91,17 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // Undocumented Generics
             yield return new object[]
             {
+                "Undocumented Generics",
                 Path.Combine(TestFilesDirectory, "AnnotationUndocumentedGeneric.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationUndocumentedGeneric.Json"),
                 new List<PathGenerationResult>
                 {
                     new PathGenerationResult(
-                        "/V2/samples/",
+                        "/V3/samples/{id}",
                         SpecificationGenerationMessages.UndocumentedGenericType,
                         GenerationStatus.Failure),
                 }
@@ -106,16 +110,17 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // Incorrect Order for Generics
             yield return new object[]
             {
+                "Incorrect Order for Generics",
                 Path.Combine(TestFilesDirectory, "AnnotationIncorrectlyOrderedGeneric.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationIncorrectlyOrderedGeneric.Json"),
                 new List<PathGenerationResult>
                 {
                     new PathGenerationResult(
-                        "/V2/samples/",
+                        "/V3/samples/",
                         SpecificationGenerationMessages.UnorderedGenericType,
                         GenerationStatus.Failure)
                 }
@@ -127,9 +132,10 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // Standard, original valid XML document
             yield return new object[]
             {
+                "Standard valid XML document",
                 Path.Combine(TestFilesDirectory, "Annotation.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "Annotation.Json")
@@ -139,9 +145,10 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // The duplicate response tag should simply be ignored.
             yield return new object[]
             {
+                "Duplicate Response Tag Ignored",
                 Path.Combine(TestFilesDirectory, "AnnotationDuplicateResponseTag.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationDuplicateResponseTag.Json")
@@ -151,9 +158,10 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             // The type should simply default to string.
             yield return new object[]
             {
+                "Unspecified Type Default to String",
                 Path.Combine(TestFilesDirectory, "AnnotationParamNoTypeSpecified.xml"),
                 new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                7,
+                9,
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationParamNoTypeSpecified.Json")
@@ -163,12 +171,15 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
         [Theory]
         [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldFailGeneration))]
         public void InvalidDocumentationShouldFailGeneration(
+            string testCaseName,
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             int expectedPathGenerationResultsCount,
             string expectedJsonFile,
             IList<PathGenerationResult> expectedFailedPathGenerationResults)
         {
+            _output.WriteLine(testCaseName);
+
             var document = XDocument.Load(inputXmlFile);
 
             var generator = new OpenApiDocumentGenerator();
@@ -187,12 +198,11 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
                     p => p.GenerationStatus == GenerationStatus.Failure)
                 .ToList();
 
-            var actualDocument = JsonConvert.SerializeObject(
-                result.MainDocument,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
-            );
+            var actualDocument = JsonConvert.SerializeObject(result.MainDocument);
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
+
+            _output.WriteLine(actualDocument);
 
             failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
 
@@ -232,11 +242,14 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
         [Theory]
         [MemberData(nameof(GetTestCasesForValidDocumentationShouldPassGeneration))]
         public void ValidDocumentationShouldPassGeneration(
+            string testCaseName,
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             int expectedPathGenerationResultsCount,
             string expectedJsonFile)
         {
+            _output.WriteLine(testCaseName);
+
             var document = XDocument.Load(inputXmlFile);
 
             var generator = new OpenApiDocumentGenerator();
@@ -250,16 +263,17 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             result.MainDocument.Should().NotBeNull();
             result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
 
-            var actualDocument = JsonConvert.SerializeObject(
-                result.MainDocument,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
-            );
+            var actualDocument = JsonConvert.SerializeObject(result.MainDocument);
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
-            JsonConvert.DeserializeObject<object>(actualDocument)
+            _output.WriteLine(actualDocument);
+
+            JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
                 .Should()
-                .BeEquivalentTo(JsonConvert.DeserializeObject<object>(expectedDocument));
+                .BeEquivalentTo(
+                    JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(expectedDocument),
+                    o => o.WithStrictOrdering());
         }
     }
 }

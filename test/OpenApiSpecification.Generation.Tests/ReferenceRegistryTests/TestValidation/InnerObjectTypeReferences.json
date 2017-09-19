@@ -1,5 +1,5 @@
 ﻿{
-    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest_SampleInnerType": {
+    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleInnerType": {
         "properties": {
             "SamplePropertyInnerEnum": {
                 "enum": [

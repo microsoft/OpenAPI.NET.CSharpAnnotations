@@ -16,6 +16,7 @@ using Xunit.Abstractions;
 
 namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
 {
+    [Collection("DefaultSettings")]
     public class DocumentVariantTest
     {
         private const string TestFilesDirectory = "DocumentVariantTests/TestFiles";
@@ -60,7 +61,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
 
-            result.PathGenerationResults.Count.Should().Be(7);
+            result.PathGenerationResults.Count.Should().Be(9);
             result.Documents.Keys.Should()
                 .BeEquivalentTo(
                     new List<DocumentVariantInfo>
@@ -108,6 +109,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
             );
 
             var expectedDocument = File.ReadAllText(jsonFileName);
+
+            _output.WriteLine(actualDocument);
 
             JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
                 .Should()

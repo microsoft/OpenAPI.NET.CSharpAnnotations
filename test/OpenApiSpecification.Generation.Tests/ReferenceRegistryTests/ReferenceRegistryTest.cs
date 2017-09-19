@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Core.Serialization;
 using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
 using Newtonsoft.Json;
 using Xunit;
@@ -16,6 +15,7 @@ using Xunit.Abstractions;
 
 namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
 {
+    [Collection("DefaultSettings")]
     public class ReferenceRegistryTest
     {
         private const string SimpleTypeSubDirectory = "SimpleTypes";
@@ -35,6 +35,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
             string expectedSchemaFileName,
             string expectedReferencesFileName)
         {
+            _output.WriteLine(type.ToString());
+
             // Arrange
             var referenceRegistryManager = new ReferenceRegistryManager();
 
@@ -44,27 +46,28 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
 
             // Assert
             var actualSchema = JsonConvert.SerializeObject(
-                returnedSchema,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+                returnedSchema);
 
             var expectedSchema = File.ReadAllText(
                 expectedSchemaFileName);
 
             var actualReferences = JsonConvert.SerializeObject(
-                referenceRegistryManager.SchemaReferenceRegistry.References,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()});
+                referenceRegistryManager.SchemaReferenceRegistry.References);
 
             var expectedReferences = File.ReadAllText(
                 expectedReferencesFileName);
+
             _output.WriteLine(actualSchema);
+            _output.WriteLine(actualReferences);
 
             JsonConvert.DeserializeObject<Schema>(actualSchema)
                 .Should()
                 .BeEquivalentTo(JsonConvert.DeserializeObject<Schema>(expectedSchema));
 
-            JsonConvert.DeserializeObject<Schema>(actualReferences)
+            JsonConvert.DeserializeObject<IDictionary<string, Schema>>(actualReferences)
                 .Should()
-                .BeEquivalentTo(JsonConvert.DeserializeObject<Schema>(expectedReferences));
+                .BeEquivalentTo(
+                    JsonConvert.DeserializeObject<IDictionary<string, Schema>>(expectedReferences));
         }
 
         private static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
@@ -165,9 +168,20 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
             };
             yield return new object[]
             {
-                typeof(ISampleGenericType<string>),
+                typeof(ISampleGenericType<string, SampleType>),
                 Path.Combine(TestValidationDirectory, "GenericInterfaceSchema.json"),
                 Path.Combine(TestValidationDirectory, "GenericInterfaceReferences.json")
+            };
+            yield return new object[]
+            {
+                typeof(
+                    ISampleGenericType<
+                        ISampleGenericType<
+                            string,
+                            ISampleGenericType<string, SampleType>>,
+                        SampleType>),
+                Path.Combine(TestValidationDirectory, "NestedGenericSchema.json"),
+                Path.Combine(TestValidationDirectory, "NestedGenericReferences.json")
             };
             yield return new object[]
             {
@@ -244,16 +258,20 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
             public string SamplePropertyString { get; set; }
         }
 
-        internal interface ISampleGenericType<T>
+        internal interface ISampleGenericType<T1, T2>
         {
-            T SamplePropertyGeneric { get; set; }
+            T1 SamplePropertyGenericTypeT1 { get; set; }
+
+            T2 SamplePropertyGenericTypeT2 { get; set; }
 
             string SamplePropertyString { get; set; }
         }
 
-        internal class SampleInheritFromGenericType : ISampleGenericType<SampleType>
+        internal class SampleInheritFromGenericType : ISampleGenericType<SampleType, SampleInnerType>
         {
-            public SampleType SamplePropertyGeneric { get; set; }
+            public SampleType SamplePropertyGenericTypeT1 { get; set; }
+
+            public SampleInnerType SamplePropertyGenericTypeT2 { get; set; }
 
             public string SamplePropertyString { get; set; }
         }

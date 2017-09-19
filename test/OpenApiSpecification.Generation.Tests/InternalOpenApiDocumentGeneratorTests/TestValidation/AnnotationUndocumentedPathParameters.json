@@ -29,26 +29,32 @@
                         "type": "string"
                     },
                     "samplePropertyEnum": {
-                        "enum": ["SampleEnumValue1",
-                            "SampleEnumValue2"],
+                        "enum": [
+                            "SampleEnumValue1",
+                            "SampleEnumValue2"
+                        ],
                         "readOnly": false,
                         "type": "string"
                     }
                 },
-                "required": ["samplePropertyString3",
+                "required": [
+                    "samplePropertyString3",
                     "samplePropertyString4",
-                    "samplePropertyEnum"],
+                    "samplePropertyEnum"
+                ],
                 "type": "object"
             },
             "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3": {
                 "properties": {
                     "samplePropertyObject": {
                         "readOnly": false,
-                        "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                        "$ref":
+                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
                     },
                     "samplePropertyObjectList": {
                         "items": {
-                            "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            "$ref":
+                                "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                         },
                         "readOnly": true,
                         "type": "array"
@@ -60,8 +66,10 @@
             "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2": {
                 "properties": {
                     "samplePropertyEnum": {
-                        "enum": ["SampleEnumValue1",
-                            "SampleEnumValue2"],
+                        "enum": [
+                            "SampleEnumValue1",
+                            "SampleEnumValue2"
+                        ],
                         "readOnly": false,
                         "type": "string"
                     },
@@ -71,14 +79,16 @@
                     },
                     "samplePropertyObjectDictionary": {
                         "additionalProperties": {
-                            "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            "$ref":
+                                "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                         },
                         "readOnly": true,
                         "type": "object"
                     },
                     "samplePropertyObjectList": {
                         "items": {
-                            "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            "$ref":
+                                "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                         },
                         "readOnly": true,
                         "type": "array"
@@ -88,9 +98,26 @@
                         "type": "string"
                     }
                 },
-                "required": ["samplePropertyInt",
+                "required": [
+                    "samplePropertyInt",
                     "samplePropertyObjectDictionary",
-                    "samplePropertyObjectList"],
+                    "samplePropertyObjectList"
+                ],
+                "type": "object"
+            },
+            "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.ISampleObject4_OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1-OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2_":
+            {
+                "properties": {
+                    "samplePropertyTypeT1": {
+                        "readOnly": false,
+                        "$ref":
+                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                    }
+                },
+                "required": [
+                    "samplePropertyTypeT1",
+                    "samplePropertyTypeT1"
+                ],
                 "type": "object"
             }
         }
@@ -104,7 +131,8 @@
         "/V1/samples": {
             "get": {
                 "operationId": "getV1Samples",
-                "parameters": [{
+                "parameters": [
+                    {
                         "in": "header",
                         "required": false,
                         "name": "sampleHeaderParam1",
@@ -128,13 +156,15 @@
                         "schema": {
                             "type": "string"
                         }
-                    }],
+                    }
+                ],
                 "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
                                 }
                             }
                         },
@@ -156,7 +186,8 @@
             },
             "post": {
                 "operationId": "postV1Samples",
-                "parameters": [{
+                "parameters": [
+                    {
                         "in": "header",
                         "required": false,
                         "name": "sampleHeaderParam1",
@@ -180,13 +211,15 @@
                         "schema": {
                             "type": "string"
                         }
-                    }],
+                    }
+                ],
                 "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
                                 }
                             }
                         },
@@ -210,7 +243,8 @@
         "/V1/samples/{id}": {
             "put": {
                 "operationId": "putV1SamplesById",
-                "parameters": [{
+                "parameters": [
+                    {
                         "in": "header",
                         "required": false,
                         "name": "sampleHeaderParam1",
@@ -242,13 +276,15 @@
                         "schema": {
                             "type": "string"
                         }
-                    }],
+                    }
+                ],
                 "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                                 }
                             }
                         },
@@ -269,10 +305,11 @@
                 "tags": ["Sample V1"]
             }
         },
-        "/V2/samples/{id}": {
-            "delete": {
-                "operationId": "deleteV2SamplesById",
-                "parameters": [{
+        "/V3/samples/": {
+            "get": {
+                "operationId": "getV3Samples",
+                "parameters": [
+                    {
                         "in": "header",
                         "required": false,
                         "name": "sampleHeaderParam1",
@@ -296,25 +333,22 @@
                         "schema": {
                             "type": "string"
                         }
-                    },
-                    {
-                        "in": "path",
-                        "required": false,
-                        "name": "id",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }],
+                    }
+                ],
                 "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                    "items": {
+                                        "$ref":
+                                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.ISampleObject4_OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1-OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2_"
+                                    },
+                                    "type": "array"
                                 }
                             }
                         },
-                        "description": "Sample object deleted"
+                        "description": ""
                     },
                     "400": {
                         "content": {
@@ -327,12 +361,15 @@
                         "description": "Bad request"
                     }
                 },
-                "summary": "Sample delete",
-                "tags": ["Sample V2"]
-            },
+                "summary": "Sample get 1",
+                "tags": ["Sample V3"]
+            }
+        },
+        "/V3/samples/{id}": {
             "get": {
-                "operationId": "getV2SamplesById",
-                "parameters": [{
+                "operationId": "getV3SamplesById",
+                "parameters": [
+                    {
                         "in": "header",
                         "required": false,
                         "name": "sampleHeaderParam1",
@@ -372,17 +409,19 @@
                         "schema": {
                             "type": "string"
                         }
-                    }],
+                    }
+                ],
                 "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.ISampleObject4_OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1-OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2_"
                                 }
                             }
                         },
-                        "description": "Sample object retrieved"
+                        "description": ""
                     },
                     "400": {
                         "content": {
@@ -396,13 +435,14 @@
                     }
                 },
                 "summary": "Sample get 2",
-                "tags": ["Sample V2"]
+                "tags": ["Sample V3"]
             }
         },
-        "/V2/samples/": {
-            "get": {
-                "operationId": "getV2Samples",
-                "parameters": [{
+        "/V2/samples/{id}": {
+            "delete": {
+                "operationId": "deleteV2SamplesById",
+                "parameters": [
+                    {
                         "in": "header",
                         "required": false,
                         "name": "sampleHeaderParam1",
@@ -426,14 +466,152 @@
                         "schema": {
                             "type": "string"
                         }
-                    }],
+                    },
+                    {
+                        "in": "path",
+                        "required": false,
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                }
+                            }
+                        },
+                        "description": "Sample object deleted"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Bad request"
+                    }
+                },
+                "summary": "Sample delete",
+                "tags": ["Sample V2"]
+            },
+            "get": {
+                "operationId": "getV2SamplesById",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "required": false,
+                        "name": "sampleHeaderParam1",
+                        "schema": {
+                            "format": "float",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "header",
+                        "required": false,
+                        "name": "sampleHeaderParam2",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "header",
+                        "required": false,
+                        "name": "sampleHeaderParam3",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "required": false,
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "required": false,
+                        "name": "queryString",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                                }
+                            }
+                        },
+                        "description": "Sample object retrieved"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Bad request"
+                    }
+                },
+                "summary": "Sample get 2",
+                "tags": ["Sample V2"]
+            }
+        },
+        "/V2/samples/": {
+            "get": {
+                "operationId": "getV2Samples",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "required": false,
+                        "name": "sampleHeaderParam1",
+                        "schema": {
+                            "format": "float",
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "in": "header",
+                        "required": false,
+                        "name": "sampleHeaderParam2",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "header",
+                        "required": false,
+                        "name": "sampleHeaderParam3",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "items": {
-                                        "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                                        "$ref":
+                                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
                                     },
                                     "type": "array"
                                 }
@@ -457,7 +635,9 @@
             }
         }
     },
-    "servers": [{
-        "url": "http://localhost:9000"
-    }]
+    "servers": [
+        {
+            "url": "http://localhost:9000"
+        }
+    ]
 }
