@@ -161,11 +161,14 @@
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object retrieved
       </response>
-      <!-- This is the duplicate response tag -->
+      <!-- Multiple response types for one response code (200) -->
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"/>Sample object retrieved
       </response>
-      <!-- ////////////////////////////////// -->
+      <response code="200">
+        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object retrieved
+      </response>
+      <!-- /////////////////////////////////////////////////// -->
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
@@ -201,9 +204,7 @@
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <requestType>
-        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object
-      </requestType>
+      <param name="sampleObject" in="body"><see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object</param>
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object posted
       </response>
@@ -222,9 +223,7 @@
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
-      <requestType>
-        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>The sample object
-      </requestType>
+      <param name="sampleObject" in="body"><see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object</param>
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>The sample object updated
       </response>

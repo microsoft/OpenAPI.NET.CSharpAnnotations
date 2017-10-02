@@ -216,6 +216,17 @@
                             "type": "string"
                         }
                     }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            }
+                        }
+                    },
+                    "description": "Sample object",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "content": {
@@ -322,6 +333,17 @@
                             "type": "string"
                         }
                     }],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
+                            }
+                        }
+                    },
+                    "description": "Sample object",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "content": {

@@ -237,6 +237,18 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":
+                                    "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                            }
+                        }
+                    },
+                    "description": "Sample object",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "content": {
@@ -349,6 +361,30 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "anyOf": [
+                                    {
+                                        "$ref":
+                                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"
+                                    },
+                                    {
+                                        "$ref":
+                                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                    },
+                                    {
+                                        "$ref":
+                                            "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "description": "Sample object",
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "content": {

@@ -18,21 +18,26 @@ namespace Microsoft.OpenApiSpecification.Generation
     /// </summary>
     public class OpenApiDocumentGenerator : IOpenApiDocumentGenerator
     {
-        private readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
+        private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
             new ApplyAssemblyNameAsInfoFilter(),
             new ApplyUrlAsServerFilter()
         };
 
-        private readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
+        private static readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
         {
-            new ApplyGroupsAsTagFilter(),
+            new ApplyGroupAsTagFilter(),
             new ApplyParamAsParameterFilter(),
+            new ApplyParamAsRequestBodyFilter(),
+            new ApplyResponseAsResponseFilter(),
             new ApplyRemarksAsDescriptionFilter(),
             new ApplySummaryFilter()
         };
 
-        private readonly OpenApiDocumentGeneratorConfig _generatorConfig;
+        // TO DO: Figure out a way to serialize this and pass as parameter from OpenApiDocumentGenerator.
+        private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
+            _defaultOperationFilters,
+            _defaultDocumentFilters);
 
         /// <summary>
         /// Creates new instance of <see cref="OpenApiDocumentGenerator"/> with provided generator settings.

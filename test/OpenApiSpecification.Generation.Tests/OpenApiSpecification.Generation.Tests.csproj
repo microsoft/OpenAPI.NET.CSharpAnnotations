@@ -80,13 +80,18 @@
     <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
     <Compile Include="InternalOpenApiDocumentGeneratorTests\InternalOpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleRequestTypes.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleResponseTypes.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\Annotation.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationDuplicateResponseTag.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationIncorrectlyOrderedGeneric.json">
@@ -162,9 +167,6 @@
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedPathParameters.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationDuplicateResponseTag.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedGeneric.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -214,6 +216,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\TestValidation\AnnotationDefaultVariant.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleResponseTypes.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleRequestTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

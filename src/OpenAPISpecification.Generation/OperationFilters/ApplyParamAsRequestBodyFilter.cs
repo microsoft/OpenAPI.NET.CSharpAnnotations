@@ -26,48 +26,76 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// <param name="settings">The operation filter settings.</param>
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
-            var bodyElement = element.Elements().Where(p => p.Name == "param"
-                && p.Attribute("in")?.Value == "body").FirstOrDefault();
+            var bodyElements = element.Elements()
+                .Where(p => p.Name == "param" && p.Attribute("in")?.Value == "body")
+                .ToList();
 
-            if (bodyElement == null)
+            if (!bodyElements.Any())
             {
                 return;
             }
 
-            var childNodes = bodyElement.DescendantNodes().ToList();
-            var description = string.Empty;
-
-            var lastNode = childNodes.LastOrDefault();
-
-            if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
+            foreach (var bodyElement in bodyElements)
             {
-                description = lastNode.ToString();
-            }
+                var childNodes = bodyElement.DescendantNodes().ToList();
+                var description = string.Empty;
 
-            var allListedTypes = new List<string>();
+                var lastNode = childNodes.LastOrDefault();
 
-            var seeNodes = bodyElement.Descendants("see");
-
-            foreach (var node in seeNodes)
-            {
-                var crefValue = node.Attribute("cref")?.Value;
-
-                if (crefValue != null)
+                if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
-                    allListedTypes.Add(crefValue);
+                    description = lastNode.ToString();
+                }
+
+                var allListedTypes = new List<string>();
+
+                var seeNodes = bodyElement.Descendants("see");
+
+                foreach (var node in seeNodes)
+                {
+                    var crefValue = node.Attribute("cref")?.Value;
+
+                    if (crefValue != null)
+                    {
+                        allListedTypes.Add(crefValue);
+                    }
+                }
+
+                var type = settings.TypeFetcher.GetTypeFromCrefValues(allListedTypes);
+
+                var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
+
+                if (operation.RequestBody == null)
+                {
+                    operation.RequestBody = new RequestBody
+                    {
+                        Description = description.RemoveBlankLines(),
+                        Content =
+                        {
+                            ["application/json"] = new MediaType {Schema = schema}
+                        },
+                        IsRequired = true
+                    };
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(operation.RequestBody.Description))
+                    {
+                        operation.RequestBody.Description = description.RemoveBlankLines();
+                    }
+
+                    if (!operation.RequestBody.Content["application/json"].Schema.AnyOf.Any())
+                    {
+                        var existingSchema = operation.RequestBody.Content["application/json"].Schema;
+                        var newSchema = new Schema();
+                        newSchema.AnyOf.Add(existingSchema);
+
+                        operation.RequestBody.Content["application/json"].Schema = newSchema;
+                    }
+
+                    operation.RequestBody.Content["application/json"].Schema.AnyOf.Add(schema);
                 }
             }
-
-            var type = settings.TypeFetcher.GetTypeFromCrefValues(allListedTypes);
-
-            var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
-
-            operation.RequestBody = new RequestBody
-            {
-                Description = description.RemoveBlankLines(),
-                Content = {new KeyValuePair<string, MediaType>("application/json", new MediaType {Schema = schema})},
-                IsRequired = true
-            };
         }
     }
 }

@@ -141,19 +141,6 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
                     "Annotation.Json")
             };
 
-            // Valid XML document but with one duplicate response tag.
-            // The duplicate response tag should simply be ignored.
-            yield return new object[]
-            {
-                "Duplicate Response Tag Ignored",
-                Path.Combine(TestFilesDirectory, "AnnotationDuplicateResponseTag.xml"),
-                new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
-                9,
-                Path.Combine(
-                    TestValidationDirectory,
-                    "AnnotationDuplicateResponseTag.Json")
-            };
-
             // Valid XML document but with one parameter without specified type.
             // The type should simply default to string.
             yield return new object[]
@@ -165,6 +152,30 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationParamNoTypeSpecified.Json")
+            };
+
+            // Valid XML document with multiple response types per response code.
+            yield return new object[]
+            {
+                "Multiple Response Types Per Response Code",
+                Path.Combine(TestFilesDirectory, "AnnotationMultipleResponseTypes.xml"),
+                new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
+                9,
+                Path.Combine(
+                    TestValidationDirectory,
+                    "AnnotationMultipleResponseTypes.Json")
+            };
+
+            // Valid XML document with multiple request types.
+            yield return new object[]
+            {
+                "Multiple Request Types",
+                Path.Combine(TestFilesDirectory, "AnnotationMultipleRequestTypes.xml"),
+                new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")},
+                9,
+                Path.Combine(
+                    TestValidationDirectory,
+                    "AnnotationMultipleRequestTypes.Json")
             };
         }
 

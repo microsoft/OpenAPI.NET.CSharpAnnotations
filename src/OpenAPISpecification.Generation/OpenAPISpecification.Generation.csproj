@@ -49,7 +49,7 @@
     <Compile Include="Exceptions\UndocumentedGenericTypeException.cs" />
     <Compile Include="Exceptions\UnorderedGenericTypeException.cs" />
     <Compile Include="Models\DictionaryJsonConverter.cs" />
-    <Compile Include="OperationFilters\ApplyParamAsResponseFilter.cs" />
+    <Compile Include="OperationFilters\ApplyResponseAsResponseFilter.cs" />
     <Compile Include="OperationFilters\OperationFilterSettings.cs" />
     <Compile Include="TypeFetcher.cs" />
     <Compile Include="DocumentFilters\ApplyAssemblyNameAsInfoFilter.cs" />
@@ -59,7 +59,7 @@
     <Compile Include="Models\DocumentVariantInfo.cs" />
     <Compile Include="Models\OpenApiDataTypeFormatPair.cs" />
     <Compile Include="OpenApiDocumentGeneratorConfig.cs" />
-    <Compile Include="OperationFilters\ApplyGroupsAsTagFilter.cs" />
+    <Compile Include="OperationFilters\ApplyGroupAsTagFilter.cs" />
     <Compile Include="OperationFilters\ApplyParamAsParameterFilter.cs" />
     <Compile Include="OperationFilters\ApplyParamAsRequestBodyFilter.cs" />
     <Compile Include="OperationFilters\ApplyRemarksAsDescriptionFilter.cs" />

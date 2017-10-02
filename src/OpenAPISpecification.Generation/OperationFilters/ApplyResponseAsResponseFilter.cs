@@ -15,7 +15,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
     /// <summary>
     /// Parses the value of response tag in xml documentation and apply that as response in operation.
     /// </summary>
-    public class ApplyParamAsResponseFilter : IOperationFilter
+    public class ApplyResponseAsResponseFilter : IOperationFilter
     {
         /// <summary>
         /// Fetches the value of "response" tags from xml documentation and populates operation's response.
@@ -32,7 +32,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                 // Fetch response code
                 var code = responseElement.Attribute("code")?.Value;
 
-                if (code == null || operation.Responses.ContainsKey(code))
+                if (code == null)
                 {
                     continue;
                 }
@@ -60,28 +60,51 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                         allListedTypes.Add(crefValue);
                     }
                 }
-                
+
                 var responseContractType = settings.TypeFetcher.GetTypeFromCrefValues(allListedTypes);
-                
+
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
                     responseContractType);
 
-                var response = new Response
+                if (operation.Responses.ContainsKey(code))
                 {
-                    Description = description.RemoveBlankLines(),
-                    Content =
+                    if (string.IsNullOrWhiteSpace(operation.Responses[code].Description))
                     {
-                        new KeyValuePair<string, MediaType>("application/json",
-                            new MediaType {Schema = schema})
+                        operation.Responses[code].Description = description.RemoveBlankLines();
                     }
-                };
 
-                operation.Responses.Add(code, response);
+                    // If the existing schema is just a single schema (not a list of AnyOf), then
+                    // we create a new schema and add that schema to AnyOf to allow us to add
+                    // more schemas to it later.
+                    if (!operation.Responses[code].Content["application/json"].Schema.AnyOf.Any())
+                    {
+                        var existingSchema = operation.Responses[code].Content["application/json"].Schema;
+                        var newSchema = new Schema();
+                        newSchema.AnyOf.Add(existingSchema);
+                        
+                        operation.Responses[code].Content["application/json"].Schema = newSchema;
+                    }
+                    
+                    operation.Responses[code].Content["application/json"].Schema.AnyOf.Add(schema);
+                }
+                else
+                {
+                    var response = new Response
+                    {
+                        Description = description.RemoveBlankLines(),
+                        Content =
+                        {
+                            ["application/json"] = new MediaType {Schema = schema}
+                        }
+                    };
+
+                    operation.Responses.Add(code, response);
+                }
             }
 
             if (!operation.Responses.Any())
             {
-                operation.Responses.Add("default", new Response {Description = "Unexpected Error!"});
+                operation.Responses.Add("default", new Response {Description = "Cannot locate responses in the documentation!"});
             }
         }
     }

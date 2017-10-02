@@ -26,26 +26,26 @@ namespace Microsoft.OpenApiSpecification.Generation
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
-        private static readonly IList<IDocumentFilter> DefaultDocumentFilters = new List<IDocumentFilter>
+        private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
             new ApplyAssemblyNameAsInfoFilter(),
             new ApplyUrlAsServerFilter()
         };
 
-        private static readonly IList<IOperationFilter> DefaultOperationFilters = new List<IOperationFilter>
+        private static readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
         {
-            new ApplyGroupsAsTagFilter(),
+            new ApplyGroupAsTagFilter(),
             new ApplyParamAsParameterFilter(),
             new ApplyParamAsRequestBodyFilter(),
-            new ApplyParamAsResponseFilter(),
+            new ApplyResponseAsResponseFilter(),
             new ApplyRemarksAsDescriptionFilter(),
             new ApplySummaryFilter()
         };
 
         // TO DO: Figure out a way to serialize this and pass as parameter from OpenApiDocumentGenerator.
         private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
-            DefaultOperationFilters,
-            DefaultDocumentFilters);
+            _defaultOperationFilters,
+            _defaultDocumentFilters);
 
         /// <summary>
         /// Add operation and update the operation filter settings based on the given document variant info.

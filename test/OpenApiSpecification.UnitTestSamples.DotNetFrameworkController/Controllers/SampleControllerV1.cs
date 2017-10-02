@@ -66,7 +66,7 @@ namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Control
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
-        /// <requestType><see cref="SampleObject3"/>Sample object</requestType>
+        /// <param name="sampleObject" in="body"><see cref="SampleObject3"/>Sample object</param>
         /// <response code="200"><see cref="SampleObject3"/>Sample object posted</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpPost]
@@ -86,7 +86,7 @@ namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Control
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
         /// <param name="id" cref="string" in="path">The object id</param>
-        /// <requestType><see cref="SampleObject1"/>The sample object</requestType>
+        /// <param name="sampleObject" in="body"><see cref="SampleObject1"/>Sample object</param>
         /// <response code="200"><see cref="SampleObject1"/>The sample object updated</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         /// <returns>The sample object 1</returns>

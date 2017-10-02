@@ -196,7 +196,17 @@
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <param name="sampleObject" in="body"><see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object</param>
+      <param name="sampleObject" in="body">
+        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object
+      </param>
+      <!-- Multiple request types -->
+      <param name="sampleObject" in="body">
+        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object
+      </param>
+      <param name="sampleObject" in="body">
+        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"/>Sample object
+      </param>
+      <!-- ////////////////////// -->
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object posted
       </response>
@@ -261,11 +271,11 @@
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
-      <!-- The ISampleObject4 generic is not documented properly. -->
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.ISampleObject4`2"/>
+        where T1 is <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>
+        where T2 is <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"/>
       </response>
-      <!-- ////////////////////////////////////////////////////// -->
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>

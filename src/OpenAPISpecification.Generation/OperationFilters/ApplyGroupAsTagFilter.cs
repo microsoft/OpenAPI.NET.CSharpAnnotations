@@ -12,7 +12,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
     /// <summary>
     /// Parses the value of group tag in xml documentation and apply that as tag in operation.
     /// </summary>
-    public class ApplyGroupsAsTagFilter : IOperationFilter
+    public class ApplyGroupAsTagFilter : IOperationFilter
     {
         /// <summary>
         /// Fetches the value of "group" tag from xml documentation and populates operation's tag.
