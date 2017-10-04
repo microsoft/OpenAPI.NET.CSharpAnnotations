@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <document>
+    <variant>swagger</variant>
+    <variant>swagger2</variant>
+  </document>
+  <operation>
+    <annotation tag="$default">
+      <param name="SampleAddedHeaderParam" required="false" cref="T:System.String" in="header">Added Header Param.</param>
+    </annotation>
+  </operation>
+</configuration>

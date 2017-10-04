@@ -28,8 +28,8 @@ namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Control
         /// <param name="queryBool" required="true" cref="bool" in="query">Sample query boolean</param>
         /// <response code="200"><see cref="SampleObject1"/>Sample object retrieved</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
-        /// <swagger security="e2eappdev" version="V2">Group1</swagger>
-        /// <swagger security="groupdoesntexist" version="V2">Group2</swagger>
+        /// <swagger security="sg1" version="V2">Group1</swagger>
+        /// <swagger security="sgnotexist" version="V2">Group2</swagger>
         /// <returns>The sample object 1</returns>
         [HttpPost]
         [Route("/V1/samples/{id}?queryBool={queryBool}")]

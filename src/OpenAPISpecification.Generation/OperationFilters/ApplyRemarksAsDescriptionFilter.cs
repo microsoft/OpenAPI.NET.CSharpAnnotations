@@ -7,6 +7,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
+using Microsoft.OpenApiSpecification.Generation.Models;
 
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
@@ -21,17 +22,26 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
+        /// <remarks>
+        /// Care should be taken to not overwrite the existing value in Operation if already present.
+        /// This guarantees the predictable behavior that the first tag in the XML will be respected.
+        /// It also guarantees that common annotations in the config file do not overwrite the
+        /// annotations in the main documentation.
+        /// </remarks>
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
             string description = null;
-            var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == "remarks");
+            var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == KnownStrings.Remarks);
 
             if (descriptionElement != null)
             {
                 description = descriptionElement.Value.Trim().RemoveBlankLines();
             }
 
-            operation.Description = description;
+            if (string.IsNullOrWhiteSpace(operation.Description))
+            {
+                operation.Description = description;
+            }
         }
     }
 }

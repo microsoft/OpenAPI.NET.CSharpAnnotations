@@ -29,15 +29,19 @@
                         "type": "string"
                     },
                     "samplePropertyEnum": {
-                        "enum": ["SampleEnumValue1",
-                            "SampleEnumValue2"],
+                        "enum": [
+                            "SampleEnumValue1",
+                            "SampleEnumValue2"
+                        ],
                         "readOnly": false,
                         "type": "string"
                     }
                 },
-                "required": ["samplePropertyString3",
+                "required": [
+                    "samplePropertyString3",
                     "samplePropertyString4",
-                    "samplePropertyEnum"],
+                    "samplePropertyEnum"
+                ],
                 "type": "object"
             }
         }
@@ -99,7 +103,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
+                                    "$ref":
+                                        "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                                 }
                             }
                         },
@@ -117,11 +122,13 @@
                     }
                 },
                 "summary": "Sample Get 1",
-                "tags": [ "Sample V1" ]
+                "tags": ["Sample V1"]
             }
         }
     },
-    "servers": [{
-        "url": "http://localhost:9000"
-    }]
+    "servers": [
+        {
+            "url": "http://localhost:9000"
+        }
+    ]
 }

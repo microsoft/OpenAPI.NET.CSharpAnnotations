@@ -164,8 +164,13 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <swagger security="e2eappdev" version="V2">Group1</swagger>
-      <swagger security="groupdoesntexist" version="V2">Group2</swagger>
+      <!-- The custom swagger tags for Group1 and Group 2 -->
+      <swagger security="sg1" version="V2">Group1</swagger>
+      <swagger security="sgnotexist" version="V2">Group2</swagger>
+      <!-- /////////////////////////////////// -->
+      <!-- The custom swagger2 tags for Group1 -->
+      <swagger2 security="sg1" version="V2">Group1</swagger2>
+      <!-- /////////////////////////////////// -->
       <returns>The sample object 1</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SampleGet2">
@@ -184,6 +189,9 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
+      <!-- The custom swagger2 tags for Group1 -->
+      <swagger2 security="sg1" version="V2">Group1</swagger2>
+      <!-- /////////////////////////////////// -->
       <returns>The sample object 3</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SamplePost(OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3)">

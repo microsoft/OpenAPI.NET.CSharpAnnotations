@@ -1,0 +1,18 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <document>
+    <variant>swagger</variant>
+  </document>
+  <operation>
+    <annotation tag="Sample V1">
+      <summary>This should be overridden.</summary>
+      <description>This should be overridden.</description>
+    </annotation>
+    <annotation tag="Sample V2">
+      <summary>
+        Sample summary from common annotations.
+      </summary>
+      <description>This should be overridden.</description>
+    </annotation>
+  </operation>
+</configuration>

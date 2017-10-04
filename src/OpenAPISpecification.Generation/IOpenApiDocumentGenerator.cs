@@ -19,10 +19,22 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// </summary>
         /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
         /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <param name="configurationXmlDocument">The XDocument representing the generation configuration.</param>
         /// <returns>The open api document generation result.</returns>
         DocumentGenerationResult GenerateV3Documents(
             XDocument annotationXmlDocument,
-            IList<string> contractAssemblyPaths);
+            IList<string> contractAssemblyPaths,
+            XDocument configurationXmlDocument);
+
+        /// <summary>
+        /// Generates V3 documents using the provided xdocument and contract assemblies.
+        /// </summary>
+        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <returns>The open api document generation result.</returns>
+        DocumentGenerationResult GenerateV3Documents(
+        XDocument annotationXmlDocument,
+        IList<string> contractAssemblyPaths);
 
         /// <summary>
         /// Generates V3 documents using the provided visual studio summary comment and contract assemblies.

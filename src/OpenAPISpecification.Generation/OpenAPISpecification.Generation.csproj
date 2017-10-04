@@ -46,9 +46,13 @@
   <ItemGroup>
     <Compile Include="AnnotationXmlDocumentValidator.cs" />
     <Compile Include="AppDomainCreator.cs" />
+    <Compile Include="ConfigFilters\ApplyCommonAnnotationFilter.cs" />
+    <Compile Include="ConfigFilters\IOperationConfigFilter.cs" />
+    <Compile Include="ConfigFilters\OperationConfigFilterSettings.cs" />
     <Compile Include="Exceptions\UndocumentedGenericTypeException.cs" />
     <Compile Include="Exceptions\UnorderedGenericTypeException.cs" />
     <Compile Include="Models\DictionaryJsonConverter.cs" />
+    <Compile Include="Models\KnownStrings.cs" />
     <Compile Include="OperationFilters\ApplyResponseAsResponseFilter.cs" />
     <Compile Include="OperationFilters\OperationFilterSettings.cs" />
     <Compile Include="TypeFetcher.cs" />

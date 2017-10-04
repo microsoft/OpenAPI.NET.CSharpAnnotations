@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
@@ -41,8 +40,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         [JsonProperty]
         [JsonConverter(typeof(DictionaryJsonConverter<DocumentVariantInfo, OpenApiV3SpecificationDocument>))]
         public IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument>
-            Documents { get; internal set; }
-            = new Dictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument>();
+            Documents { get; set; }
 
         /// <summary>
         /// The generation status.
@@ -74,7 +72,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         {
             get
             {
-                if (Documents.ContainsKey(DocumentVariantInfo.Default))
+                if (Documents != null && Documents.ContainsKey(DocumentVariantInfo.Default))
                 {
                     return Documents[DocumentVariantInfo.Default];
                 }

@@ -12,6 +12,7 @@ using System.Web;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Exceptions;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
@@ -26,6 +27,11 @@ namespace Microsoft.OpenApiSpecification.Generation
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
+        private static readonly IList<IOperationConfigFilter> _defaultConfigFilters = new List<IOperationConfigFilter>
+        {
+            new ApplyCommonAnnotationFilter()
+        };
+
         private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
             new ApplyAssemblyNameAsInfoFilter(),
@@ -45,7 +51,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         // TO DO: Figure out a way to serialize this and pass as parameter from OpenApiDocumentGenerator.
         private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
             _defaultOperationFilters,
-            _defaultDocumentFilters);
+            _defaultDocumentFilters,
+            _defaultConfigFilters);
 
         /// <summary>
         /// Add operation and update the operation filter settings based on the given document variant info.
@@ -55,6 +62,7 @@ namespace Microsoft.OpenApiSpecification.Generation
             IDictionary<DocumentVariantInfo, OperationFilterSettings> operationFilterSettingsMap,
             DocumentVariantInfo documentVariantInfo,
             XElement operationElement,
+            XElement operationConfigElement,
             string url,
             TypeFetcher typeFetcher)
         {
@@ -75,12 +83,32 @@ namespace Microsoft.OpenApiSpecification.Generation
                     };
             }
 
+            // Apply all the operation-related filters to extract information related to the operation.
+            // It is important that these are applied before the config filters below
+            // since the config filters may rely on information generated from operation filters.
             foreach (var operationFilter in _generatorConfig.OperationFilters)
             {
                 operationFilter.Apply(
                     operation,
                     operationElement,
                     operationFilterSettingsMap[documentVariantInfo]);
+            }
+
+            if (operationConfigElement != null)
+            {
+                // Apply the config-related filters to extract information from the config xml
+                // that can be applied to the operations.
+                foreach (var configFilter in _generatorConfig.OperationConfigFilters)
+                {
+                    configFilter.Apply(
+                        operation,
+                        operationConfigElement,
+                        new OperationConfigFilterSettings
+                        {
+                            OperationFilterSettings = operationFilterSettingsMap[documentVariantInfo],
+                            OperationFilters = _generatorConfig.OperationFilters
+                        });
+                }
             }
 
             AnnotationXmlDocumentValidator.ValidateAllPathParametersAreDocumented(
@@ -116,17 +144,34 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// Takes in annotation xml document and returns the OpenAPI document generation result
         /// which contains OpenAPI specification document(s).
         /// </summary>
-        /// <param name="annotationXml">The annotation xml document.</param>
+        /// <param name="annotationXml">The serialized XDocument representing annotation.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
+        /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
         /// <returns>A string representing serialized version of <see cref="DocumentGenerationResult"/>></returns>
+        /// <remarks>
+        /// Given that this function is expected to be called from an isolated domain,
+        /// the input and output must be serialized to string.
+        /// </remarks>
         public string GenerateOpenApiDocuments(
             string annotationXml,
-            IList<string> contractAssemblyPaths)
+            IList<string> contractAssemblyPaths,
+            string configurationXml)
         {
             var annotationXmlDocument = XDocument.Parse(annotationXml);
-
             var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]")
                 .ToList();
+
+            XElement operationConfigElement = null;
+            var documentVariantElementNames = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(configurationXml))
+            {
+                var configurationXmlDocument = XDocument.Parse(configurationXml);
+                operationConfigElement = configurationXmlDocument.XPathSelectElement("//configuration/operation");
+                documentVariantElementNames.AddRange(
+                    configurationXmlDocument.XPathSelectElements("//configuration/document/variant")
+                        .Select(x => x.Value));
+            }
 
             DocumentGenerationResult result;
 
@@ -147,18 +192,18 @@ namespace Microsoft.OpenApiSpecification.Generation
             {
                 result = new DocumentGenerationResult();
 
-                // TODO: Allow custom element names to be retrieved from a config file (aka default annotations).
-                // Task 13256107 contains this work.
-                // This will likely be given to this method in the argument in some way.
-                var documentVariantElementNames = new List<string> {"swagger"};
-
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
+
+                IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> documents;
 
                 var pathGenerationResults = GenerateSpecificationDocuments(
                     typeFetcher,
                     operationElements,
+                    operationConfigElement,
                     documentVariantElementNames,
-                    result.Documents);
+                    out documents);
+
+                result.Documents = documents;
 
                 foreach (var documentVariantInfo in result.Documents.Keys)
                 {
@@ -198,9 +243,12 @@ namespace Microsoft.OpenApiSpecification.Generation
         private IList<PathGenerationResult> GenerateSpecificationDocuments(
             TypeFetcher typeFetcher,
             IList<XElement> operationElements,
+            XElement operationConfigElement,
             IList<string> documentVariantElementNames,
-            IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> specificationDocuments)
+            out IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> specificationDocuments)
         {
+            specificationDocuments = new Dictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument>();
+
             var pathGenerationResults = new List<PathGenerationResult>();
 
             var operationFilterSettingsMap = new Dictionary<DocumentVariantInfo, OperationFilterSettings>();
@@ -220,6 +268,7 @@ namespace Microsoft.OpenApiSpecification.Generation
                         operationFilterSettingsMap,
                         DocumentVariantInfo.Default,
                         operationElement,
+                        operationConfigElement,
                         url,
                         typeFetcher);
 
@@ -239,6 +288,7 @@ namespace Microsoft.OpenApiSpecification.Generation
                                 operationFilterSettingsMap,
                                 documentVariantInfo,
                                 operationElement,
+                                operationConfigElement,
                                 url,
                                 typeFetcher);
                         }

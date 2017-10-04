@@ -75,11 +75,21 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
+    <Compile Include="OperationConfigTests\OperationConfigTest.cs" />
     <Compile Include="DefaultSettingsFixtureCollection.cs" />
     <Compile Include="DefaultSettingsFixture.cs" />
     <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
     <Compile Include="InternalOpenApiDocumentGeneratorTests\InternalOpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="DocumentVariantTests\TestFiles\ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\ConfigOneDocumentVariantTag.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\ConfigMultipleDocumentVariantTags.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleRequestTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -113,10 +123,33 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\TestFiles\Annotation.xml">
-      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\AnnotationSomeMissingSummary.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\Annotation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\ConfigOverridden.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\ConfigApplyToSomeOperations.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\ConfigApplyToAllOperations.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\ConfigBlankOperation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\ConfigNoOperation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ReferenceRegistryTests\TestValidation\DictionaryTypeSchema.json">
@@ -150,7 +183,6 @@
   <ItemGroup>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\Annotation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationInvalidUri.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -209,13 +241,43 @@
     <Content Include="ReferenceRegistryTests\TestValidation\GenericInterfaceReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariant2.json">
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariantSwaggerGroup2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariant1.json">
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariantSwaggerGroup1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\TestValidation\AnnotationDefaultVariant.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestValidation\AnnotationNoOperationConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestValidation\AnnotationBlankOperationConfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestValidation\AnnotationApplyToAllOperations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestValidation\AnnotationApplyToSomeOperations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\TestValidation\AnnotationOverridden.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariantSwagger2Group1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup2.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationDefaultVariant.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationVariantSwagger2Group1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleResponseTypes.Json">

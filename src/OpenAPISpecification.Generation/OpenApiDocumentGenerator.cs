@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Models;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
@@ -24,6 +25,11 @@ namespace Microsoft.OpenApiSpecification.Generation
             new ApplyUrlAsServerFilter()
         };
 
+        private static readonly IList<IOperationConfigFilter> _defaultConfigFilters = new List<IOperationConfigFilter>
+        {
+            new ApplyCommonAnnotationFilter()
+        };
+
         private static readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
         {
             new ApplyGroupAsTagFilter(),
@@ -37,7 +43,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         // TO DO: Figure out a way to serialize this and pass as parameter from OpenApiDocumentGenerator.
         private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
             _defaultOperationFilters,
-            _defaultDocumentFilters);
+            _defaultDocumentFilters,
+            _defaultConfigFilters);
 
         /// <summary>
         /// Creates new instance of <see cref="OpenApiDocumentGenerator"/> with provided generator settings.
@@ -55,7 +62,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         {
             _generatorConfig = new OpenApiDocumentGeneratorConfig(
                 _defaultOperationFilters,
-                _defaultDocumentFilters);
+                _defaultDocumentFilters,
+                _defaultConfigFilters);
         }
 
         /// <summary>
@@ -63,10 +71,12 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// </summary>
         /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
         /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <param name="configurationXmlDocument">The XDocument representing the generation configuration.</param>
         /// <returns>The open api document generation result.</returns>
         public DocumentGenerationResult GenerateV3Documents(
             XDocument annotationXmlDocument,
-            IList<string> contractAssemblyPaths)
+            IList<string> contractAssemblyPaths,
+            XDocument configurationXmlDocument)
         {
             foreach (var contractAssemblyPath in contractAssemblyPaths)
             {
@@ -80,10 +90,27 @@ namespace Microsoft.OpenApiSpecification.Generation
             {
                 var result = isolatedDomain.Object.GenerateOpenApiDocuments(
                     annotationXmlDocument.ToString(),
-                    contractAssemblyPaths);
+                    contractAssemblyPaths,
+                    configurationXmlDocument?.ToString());
 
                 return JsonConvert.DeserializeObject<DocumentGenerationResult>(result);
             }
+        }
+
+        /// <summary>
+        /// Generates V3 documents using the provided xdocument and contract assemblies.
+        /// </summary>
+        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <returns>The open api document generation result.</returns>
+        public DocumentGenerationResult GenerateV3Documents(
+            XDocument annotationXmlDocument,
+            IList<string> contractAssemblyPaths)
+        {
+            return GenerateV3Documents(
+                annotationXmlDocument,
+                contractAssemblyPaths,
+                configurationXmlDocument: null);
         }
 
         /// <summary>

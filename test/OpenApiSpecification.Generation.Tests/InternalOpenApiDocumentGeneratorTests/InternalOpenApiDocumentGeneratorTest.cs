@@ -268,7 +268,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
             var result = generator.GenerateV3Documents(
                 document,
                 inputBinaryFiles);
-
+            
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();

@@ -21,6 +21,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
     {
         private const string TestFilesDirectory = "DocumentVariantTests/TestFiles";
         private const string TestValidationDirectory = "DocumentVariantTests/TestValidation";
+        private const string TestValidationWithCommonAnnotationsDirectory =
+            "DocumentVariantTests/TestValidation/AnnotationsWithCommonAnnotations";
 
         private readonly ITestOutputHelper _output;
 
@@ -29,67 +31,166 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
             _output = output;
         }
 
-        [Fact]
-        public void GenerateV3DocumentMultipleVariantsShouldSucceed()
+        private static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldSucceed()
         {
+            // One document variant tag name
+            yield return new object[]
+            {
+                "One document variant tag name",
+                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        TestFilesDirectory,
+                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                },
+                Path.Combine(
+                    TestFilesDirectory,
+                    "ConfigOneDocumentVariantTag.xml"),
+                9,
+                new Dictionary<DocumentVariantInfo, string>()
+                {
+                    [ DocumentVariantInfo.Default ] = Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group1"
+                    } ] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2"
+                    } ] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                },
+            };
+
+            // Multiple document variant tag names
+            yield return new object[]
+            {
+                "Multiple document variant tag names",
+                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        TestFilesDirectory,
+                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                },
+                Path.Combine(
+                    TestFilesDirectory,
+                    "ConfigMultipleDocumentVariantTags.xml"),
+                9,
+                new Dictionary<DocumentVariantInfo, string>()
+                {
+                    [ DocumentVariantInfo.Default ] = Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group1"
+                    } ] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2"
+                    } ] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger2",
+                        Title = "Group1"
+                    } ] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwagger2Group1.json"),
+                },
+            };
+
+            // Multiple document variant tag names with common annotations
+            yield return new object[]
+            {
+                "Multiple document variant tag names with common annotations",
+                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        TestFilesDirectory,
+                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                },
+                Path.Combine(
+                    TestFilesDirectory,
+                    "ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml"),
+                9,
+                new Dictionary<DocumentVariantInfo, string>()
+                {
+                    [ DocumentVariantInfo.Default ] = Path.Combine(TestValidationWithCommonAnnotationsDirectory, "AnnotationDefaultVariant.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group1"
+                    } ] = Path.Combine(TestValidationWithCommonAnnotationsDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2"
+                    } ] = Path.Combine(TestValidationWithCommonAnnotationsDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                    [ new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger2",
+                        Title = "Group1"
+                    } ] = Path.Combine(TestValidationWithCommonAnnotationsDirectory, "AnnotationVariantSwagger2Group1.json"),
+                },
+            };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForGenerateDocumentMultipleVariantsShouldSucceed))]
+        public void GenerateDocumentMultipleVariantsShouldSucceed(
+            string testCaseName,
+            string inputXmlFile,
+            IList<string> inputBinaryFiles,
+            string configXmlFile,
+            int expectedPathGenerationResultsCount,
+            IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap )
+        {
+            _output.WriteLine(testCaseName);
+
             // Arrange
-            var path = Path.Combine(TestFilesDirectory, "Annotation.xml");
+            var path = inputXmlFile;
             var document = XDocument.Load(path);
 
+            var configPath = configXmlFile;
+            var configDocument = XDocument.Load(configPath);
+
             var generator = new OpenApiDocumentGenerator();
-
-            var variantInfoDefault = DocumentVariantInfo.Default;
-
-            var variantInfo1 = new DocumentVariantInfo
-            {
-                Categorizer = "swagger",
-                Title = "Group1"
-            };
-
-            var variantInfo2 = new DocumentVariantInfo
-            {
-                Categorizer = "swagger",
-                Title = "Group2"
-            };
-
+            
             // Act
             var result = generator.GenerateV3Documents(
                 document,
-                new List<string> {Path.Combine(TestFilesDirectory, "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")});
+                inputBinaryFiles,
+                configDocument);
 
             // Assert
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
 
-            result.PathGenerationResults.Count.Should().Be(9);
+            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
             result.Documents.Keys.Should()
-                .BeEquivalentTo(
-                    new List<DocumentVariantInfo>
-                    {
-                        variantInfoDefault,
-                        variantInfo1,
-                        variantInfo2
-                    });
+                .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
             // Default Document Variant
-            VerifyDocumentVariantAgainstJsonFile(
-                result,
-                variantInfoDefault,
-                Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"));
+            foreach (var documentVariantInfoToExpectedJsonFile in documentVariantInfoToExpectedJsonFileMap)
+            {
+                var documentVariantInfo = documentVariantInfoToExpectedJsonFile.Key;
+                var expectedJsonFile = documentVariantInfoToExpectedJsonFile.Value;
 
-            // Document Variant 1
-            // Only contains info from operations with tags with title "Group1" in Annotation.xml 
-            VerifyDocumentVariantAgainstJsonFile(
-                result,
-                variantInfo1,
-                Path.Combine(TestValidationDirectory, "AnnotationVariant1.json"));
-
-            // Document Variant 2
-            // Only contains info from operations with tags with title "Group2" in Annotation.xml 
-            VerifyDocumentVariantAgainstJsonFile(
-                result,
-                variantInfo2,
-                Path.Combine(TestValidationDirectory, "AnnotationVariant2.json"));
+                VerifyDocumentVariantAgainstJsonFile(
+                    result,
+                    documentVariantInfo,
+                    expectedJsonFile);
+            }
         }
 
         private void VerifyDocumentVariantAgainstJsonFile(

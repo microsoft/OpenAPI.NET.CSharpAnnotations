@@ -164,8 +164,8 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <swagger security="e2eappdev" version="V2">Group1</swagger>
-      <swagger security="groupdoesntexist" version="V2">Group2</swagger>
+      <swagger security="sg1" version="V2">Group1</swagger>
+      <swagger security="sgnotexist" version="V2">Group2</swagger>
       <returns>The sample object 1</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SampleGet2">

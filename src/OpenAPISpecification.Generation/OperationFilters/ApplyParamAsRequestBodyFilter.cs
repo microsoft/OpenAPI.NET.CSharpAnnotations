@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
+using Microsoft.OpenApiSpecification.Generation.Models;
 
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
@@ -24,16 +25,17 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
+        /// <remarks>
+        /// Care should be taken to not overwrite the existing value in Operation if already present.
+        /// This guarantees the predictable behavior that the first tag in the XML will be respected.
+        /// It also guarantees that common annotations in the config file do not overwrite the
+        /// annotations in the main documentation.
+        /// </remarks>
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
             var bodyElements = element.Elements()
-                .Where(p => p.Name == "param" && p.Attribute("in")?.Value == "body")
+                .Where(p => p.Name == KnownStrings.Param && p.Attribute(KnownStrings.In)?.Value == KnownStrings.Body)
                 .ToList();
-
-            if (!bodyElements.Any())
-            {
-                return;
-            }
 
             foreach (var bodyElement in bodyElements)
             {
@@ -53,7 +55,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 
                 foreach (var node in seeNodes)
                 {
-                    var crefValue = node.Attribute("cref")?.Value;
+                    var crefValue = node.Attribute(KnownStrings.Cref)?.Value;
 
                     if (crefValue != null)
                     {

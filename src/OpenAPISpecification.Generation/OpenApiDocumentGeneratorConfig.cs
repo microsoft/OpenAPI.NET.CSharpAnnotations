@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 
@@ -19,13 +20,21 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// </summary>
         /// <param name="operationFilters">The operation filers.</param>
         /// <param name="documentFilters">The document filters.</param>
+        /// <param name="operationConfigFilters">The operation config filters.</param>
         public OpenApiDocumentGeneratorConfig(
             IList<IOperationFilter> operationFilters,
-            IList<IDocumentFilter> documentFilters)
+            IList<IDocumentFilter> documentFilters,
+            IList<IOperationConfigFilter> operationConfigFilters)
         {
             OperationFilters = operationFilters;
             DocumentFilters = documentFilters;
+            OperationConfigFilters = operationConfigFilters;
         }
+
+        /// <summary>
+        /// Gets the list of operation config filters.
+        /// </summary>
+        public IList<IOperationConfigFilter> OperationConfigFilters { get; }
 
         /// <summary>
         /// Gets the list of document filters.
