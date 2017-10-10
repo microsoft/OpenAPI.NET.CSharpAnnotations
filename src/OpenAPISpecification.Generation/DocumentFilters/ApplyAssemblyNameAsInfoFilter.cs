@@ -20,7 +20,8 @@ namespace Microsoft.OpenApiSpecification.Generation.DocumentFilters
         /// </summary>
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocument">The document representing annotation xml.</param>
-        public void Apply(OpenApiV3SpecificationDocument specificationDocument, XDocument xmlDocument)
+        /// <param name="settings">Settings for document filters.</param>
+        public void Apply(OpenApiV3SpecificationDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
         {
             specificationDocument.Info = new Info
             {

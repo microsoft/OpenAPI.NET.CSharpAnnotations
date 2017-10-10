@@ -24,7 +24,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// The key is the media type and the value describes it. The map MUST only contain one entry.
         /// </summary>
         [JsonProperty(PropertyName = "content", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, MediaType> Content { get; } = new Dictionary<string, MediaType>();
+        public IDictionary<string, MediaType> Content { get; internal set; } = new Dictionary<string, MediaType>();
 
         /// <summary>
         /// Gets or sets the parameter description.

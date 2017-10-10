@@ -22,10 +22,11 @@ namespace Microsoft.OpenApiSpecification.Generation
         private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
             new ApplyAssemblyNameAsInfoFilter(),
-            new ApplyUrlAsServerFilter()
+            new ApplyUrlAsServerFilter(),
+            new ApplyMemberSummaryAsSchemaDescriptionFilter()
         };
 
-        private static readonly IList<IOperationConfigFilter> _defaultConfigFilters = new List<IOperationConfigFilter>
+        private static readonly IList<IOperationConfigFilter> _defaultOperationConfigFilters = new List<IOperationConfigFilter>
         {
             new ApplyCommonAnnotationFilter()
         };
@@ -44,7 +45,7 @@ namespace Microsoft.OpenApiSpecification.Generation
         private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
             _defaultOperationFilters,
             _defaultDocumentFilters,
-            _defaultConfigFilters);
+            _defaultOperationConfigFilters);
 
         /// <summary>
         /// Creates new instance of <see cref="OpenApiDocumentGenerator"/> with provided generator settings.
@@ -63,7 +64,7 @@ namespace Microsoft.OpenApiSpecification.Generation
             _generatorConfig = new OpenApiDocumentGeneratorConfig(
                 _defaultOperationFilters,
                 _defaultDocumentFilters,
-                _defaultConfigFilters);
+                _defaultOperationConfigFilters);
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the map between a property name and its encoding information.
         /// </summary>
         [JsonProperty(PropertyName = "encoding", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, Encoding> Encoding { get; } = new Dictionary<string, Encoding>();
+        public IDictionary<string, Encoding> Encoding { get; internal set; } = new Dictionary<string, Encoding>();
 
         /// <summary>
         /// Gets or sets the schema defining the type used.

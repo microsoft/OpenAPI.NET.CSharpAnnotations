@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
@@ -34,11 +34,13 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
             var bodyElements = element.Elements()
-                .Where(p => p.Name == KnownStrings.Param && p.Attribute(KnownStrings.In)?.Value == KnownStrings.Body)
+                .Where(p => p.Name == KnownXmlStrings.Param && p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
                 .ToList();
 
             foreach (var bodyElement in bodyElements)
             {
+                var mediaType = bodyElement.Attribute(KnownXmlStrings.Type)?.Value ?? "application/json";
+
                 var childNodes = bodyElement.DescendantNodes().ToList();
                 var description = string.Empty;
 
@@ -51,11 +53,11 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 
                 var allListedTypes = new List<string>();
 
-                var seeNodes = bodyElement.Descendants("see");
+                var seeNodes = bodyElement.Descendants(KnownXmlStrings.See);
 
                 foreach (var node in seeNodes)
                 {
-                    var crefValue = node.Attribute(KnownStrings.Cref)?.Value;
+                    var crefValue = node.Attribute(KnownXmlStrings.Cref)?.Value;
 
                     if (crefValue != null)
                     {
@@ -63,7 +65,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                     }
                 }
 
-                var type = settings.TypeFetcher.GetTypeFromCrefValues(allListedTypes);
+                var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
 
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
 
@@ -74,7 +76,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                         Description = description.RemoveBlankLines(),
                         Content =
                         {
-                            ["application/json"] = new MediaType {Schema = schema}
+                            [mediaType] = new MediaType {Schema = schema}
                         },
                         IsRequired = true
                     };
@@ -86,16 +88,23 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                         operation.RequestBody.Description = description.RemoveBlankLines();
                     }
 
-                    if (!operation.RequestBody.Content["application/json"].Schema.AnyOf.Any())
+                    if (!operation.RequestBody.Content.ContainsKey(mediaType))
                     {
-                        var existingSchema = operation.RequestBody.Content["application/json"].Schema;
-                        var newSchema = new Schema();
-                        newSchema.AnyOf.Add(existingSchema);
-
-                        operation.RequestBody.Content["application/json"].Schema = newSchema;
+                        operation.RequestBody.Content[mediaType] = new MediaType {Schema = schema};
                     }
+                    else
+                    {
+                        if (!operation.RequestBody.Content[mediaType].Schema.AnyOf.Any())
+                        {
+                            var existingSchema = operation.RequestBody.Content[mediaType].Schema;
+                            var newSchema = new Schema();
+                            newSchema.AnyOf.Add(existingSchema);
 
-                    operation.RequestBody.Content["application/json"].Schema.AnyOf.Add(schema);
+                            operation.RequestBody.Content[mediaType].Schema = newSchema;
+                        }
+
+                        operation.RequestBody.Content[mediaType].Schema.AnyOf.Add(schema);
+                    }
                 }
             }
         }

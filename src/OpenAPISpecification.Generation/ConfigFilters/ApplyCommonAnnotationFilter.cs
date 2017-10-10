@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
 namespace Microsoft.OpenApiSpecification.Generation.ConfigFilters
 {
@@ -24,15 +24,15 @@ namespace Microsoft.OpenApiSpecification.Generation.ConfigFilters
         /// <param name="settings">The operation config filter settings.</param>
         public void Apply(Operation operation, XElement element, OperationConfigFilterSettings settings)
         {
-            var annotationElements = element.Descendants().Where(i => i.Name == KnownStrings.Annotation);
+            var annotationElements = element.Descendants().Where(i => i.Name == KnownXmlStrings.Annotation);
 
             foreach (var annotationElement in annotationElements)
             {
-                var targetedTag = annotationElement.Attribute(KnownStrings.Tag);
+                var targetedTag = annotationElement.Attribute(KnownXmlStrings.Tag);
 
                 if (targetedTag == null ||
-                    (!string.Equals(targetedTag.Value.Trim(), "$default", StringComparison.InvariantCultureIgnoreCase) &&
-                        !operation.Tags.Contains(targetedTag.Value.Trim(), StringComparer.InvariantCultureIgnoreCase)))
+                    !string.Equals(targetedTag.Value.Trim(), "$default", StringComparison.InvariantCultureIgnoreCase) &&
+                    !operation.Tags.Contains(targetedTag.Value.Trim(), StringComparer.InvariantCultureIgnoreCase))
                 {
                     continue;
                 }

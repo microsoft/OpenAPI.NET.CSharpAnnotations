@@ -18,7 +18,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// The key is the media type and the value is used to describe it.
         /// </summary>
         [JsonProperty(PropertyName = "content", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, MediaType> Content { get; } = new Dictionary<string, MediaType>();
+        public IDictionary<string, MediaType> Content { get; internal set; } = new Dictionary<string, MediaType>();
 
         /// <summary>
         /// Gets or sets the Response description.
@@ -30,7 +30,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets or sets the headers.
         /// </summary>
         [JsonProperty(PropertyName = "headers", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, Header> Headers { get; } = new Dictionary<string, Header>();
+        public IDictionary<string, Header> Headers { get; internal set; } = new Dictionary<string, Header>();
 
         /// <summary>
         /// Gets or sets the reference string.

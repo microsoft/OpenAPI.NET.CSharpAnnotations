@@ -6,7 +6,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
@@ -29,7 +29,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// </remarks>
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
-            var groupElement = element.Descendants().FirstOrDefault(i => i.Name == KnownStrings.Group);
+            var groupElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Group);
 
             var groupValue = groupElement?.Value.Trim();
 

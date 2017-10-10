@@ -35,7 +35,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets or sets the list of parameters that are applicable for this operation.
         /// </summary>
         [JsonProperty(PropertyName = "parameters", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IList<Parameter> Parameters { get; } = new List<Parameter>();
+        public IList<Parameter> Parameters { get; internal set; } = new List<Parameter>();
 
         /// <summary>
         /// Gets or sets the request body applicable for the operation.
@@ -48,20 +48,20 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "responses", Required = Required.Always,
             DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IDictionary<string, Response> Responses { get; } = new Dictionary<string, Response>();
+        public IDictionary<string, Response> Responses { get; internal set; } = new Dictionary<string, Response>();
 
         /// <summary>
         /// Gets the collection of security description.
         /// </summary>
         [JsonProperty(PropertyName = "security", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IList<SecurityRequirement> Security { get; } = new List<SecurityRequirement>();
+        public IList<SecurityRequirement> Security { get; internal set; } = new List<SecurityRequirement>();
 
         /// <summary>
         /// Gets an alternative server array to service this operation.
         /// If an alternative server object is specified at the Root level, it will be overridden by this value.
         /// </summary>
         [JsonProperty(PropertyName = "servers", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IList<Server> Servers { get; } = new List<Server>();
+        public IList<Server> Servers { get; internal set; } = new List<Server>();
 
         /// <summary>
         /// Gets or sets the summary of the operation.
@@ -73,6 +73,6 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the tags for the API documentation control.
         /// </summary>
         [JsonProperty(PropertyName = "tags", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IList<string> Tags { get; } = new List<string>();
+        public IList<string> Tags { get; internal set; } = new List<string>();
     }
 }

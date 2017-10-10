@@ -4,31 +4,38 @@
             "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1": {
                 "properties": {
                     "samplePropertyBool": {
+                        "description": "Gets or sets the sample property bool",
                         "readOnly": false,
                         "type": "boolean"
                     },
                     "samplePropertyStringInt": {
+                        "description": "Gets or sets the sample property int",
                         "format": "int32",
                         "readOnly": false,
                         "type": "integer"
                     },
                     "samplePropertyString1": {
+                        "description": "Gets or sets the sample property string 1",
                         "readOnly": false,
                         "type": "string"
                     },
                     "samplePropertyString2": {
+                        "description": "Gets or sets the sample property string 2",
                         "readOnly": false,
                         "type": "string"
                     },
                     "samplePropertyString3": {
+                        "description": "Gets or sets the sample property string 3",
                         "readOnly": false,
                         "type": "string"
                     },
                     "samplePropertyString4": {
+                        "description": "Gets or sets the sample property string 4",
                         "readOnly": false,
                         "type": "string"
                     },
                     "samplePropertyEnum": {
+                        "description": "Gets or sets the sample property enum",
                         "enum": [
                             "SampleEnumValue1",
                             "SampleEnumValue2"
@@ -47,11 +54,13 @@
             "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3": {
                 "properties": {
                     "samplePropertyObject": {
+                        "description": "Gets or sets sample property object",
                         "readOnly": false,
                         "$ref":
                             "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2"
                     },
                     "samplePropertyObjectList": {
+                        "description": "Gets the sample property object list",
                         "items": {
                             "$ref":
                                 "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
@@ -66,6 +75,7 @@
             "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject2": {
                 "properties": {
                     "samplePropertyEnum": {
+                        "description": "Gets or sets the sample property enum",
                         "enum": [
                             "SampleEnumValue1",
                             "SampleEnumValue2"
@@ -74,6 +84,7 @@
                         "type": "string"
                     },
                     "samplePropertyInt": {
+                        "description": "Gets or sets the sample property string 1",
                         "readOnly": false,
                         "type": "string"
                     },
@@ -82,10 +93,12 @@
                             "$ref":
                                 "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
                         },
+                        "description": "Gets the sample property object dictionary",
                         "readOnly": true,
                         "type": "object"
                     },
                     "samplePropertyObjectList": {
+                        "description": "Gets the sample property object list",
                         "items": {
                             "$ref":
                                 "#/components/schemas/OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"
@@ -94,6 +107,7 @@
                         "type": "array"
                     },
                     "samplePropertyString1": {
+                        "description": "Gets or sets the sample property string 1",
                         "readOnly": false,
                         "type": "string"
                     }

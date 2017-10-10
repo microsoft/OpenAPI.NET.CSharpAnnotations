@@ -24,7 +24,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// The value is used for substitution in the server's URL template.
         /// </summary>
         [JsonProperty(PropertyName = "variables", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, ServerVariable> ServerVariables { get; } = new Dictionary<string, ServerVariable>();
+        public IDictionary<string, ServerVariable> ServerVariables { get; internal set; } = new Dictionary<string, ServerVariable>();
 
         /// <summary>
         /// Gets or sets the URL to the target host.

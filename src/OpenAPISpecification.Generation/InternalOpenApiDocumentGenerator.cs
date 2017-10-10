@@ -17,6 +17,7 @@ using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Exceptions;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 using Newtonsoft.Json;
 
@@ -35,7 +36,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
             new ApplyAssemblyNameAsInfoFilter(),
-            new ApplyUrlAsServerFilter()
+            new ApplyUrlAsServerFilter(),
+            new ApplyMemberSummaryAsSchemaDescriptionFilter()
         };
 
         private static readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
@@ -64,11 +66,9 @@ namespace Microsoft.OpenApiSpecification.Generation
             XElement operationElement,
             XElement operationConfigElement,
             string url,
+            OperationMethod operationMethod,
             TypeFetcher typeFetcher)
         {
-            // Create the operation and apply all the filters specified.
-            var operationMethod = GetOperationMethod(operationElement);
-
             var operation = new Operation
             {
                 OperationId = GetOperationId(url, operationMethod)
@@ -110,10 +110,6 @@ namespace Microsoft.OpenApiSpecification.Generation
                         });
                 }
             }
-
-            AnnotationXmlDocumentValidator.ValidateAllPathParametersAreDocumented(
-                operation.Parameters.Where(i => i.In == ParameterKind.Path),
-                url);
 
             // Add the processed operation to the specification document.
             if (!specificationDocuments.ContainsKey(documentVariantInfo))
@@ -211,7 +207,13 @@ namespace Microsoft.OpenApiSpecification.Generation
 
                     foreach (var documentFilter in _generatorConfig.DocumentFilters)
                     {
-                        documentFilter.Apply(openApiDocument, annotationXmlDocument);
+                        documentFilter.Apply(
+                            openApiDocument,
+                            annotationXmlDocument,
+                            new DocumentFilterSettings
+                            {
+                                TypeFetcher = typeFetcher
+                            });
                     }
                 }
 
@@ -241,7 +243,7 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// </summary>
         /// <returns>The path generation results from populating the specification documents.</returns>
         private IList<PathGenerationResult> GenerateSpecificationDocuments(
-            TypeFetcher typeFetcher,
+            TypeFetcher typeFetcher, 
             IList<XElement> operationElements,
             XElement operationConfigElement,
             IList<string> documentVariantElementNames,
@@ -261,6 +263,12 @@ namespace Microsoft.OpenApiSpecification.Generation
                     continue;
                 }
 
+                OperationMethod operationMethod;
+                if (!TryGetOperationMethod(pathGenerationResults, url, operationElement, out operationMethod))
+                {
+                    continue;
+                }
+                
                 try
                 {
                     AddOperation(
@@ -270,6 +278,7 @@ namespace Microsoft.OpenApiSpecification.Generation
                         operationElement,
                         operationConfigElement,
                         url,
+                        operationMethod,
                         typeFetcher);
 
                     foreach (var documentVariantElementName in documentVariantElementNames)
@@ -290,12 +299,14 @@ namespace Microsoft.OpenApiSpecification.Generation
                                 operationElement,
                                 operationConfigElement,
                                 url,
+                                operationMethod,
                                 typeFetcher);
                         }
                     }
 
                     pathGenerationResults.Add(
                         new PathGenerationResult(
+                            operationMethod.ToString(),
                             url,
                             SpecificationGenerationMessages.SuccessfulPathGeneration,
                             GenerationStatus.Success));
@@ -303,7 +314,11 @@ namespace Microsoft.OpenApiSpecification.Generation
                 catch (Exception e)
                 {
                     pathGenerationResults.Add(
-                        new PathGenerationResult(url, e.Message, GenerationStatus.Failure));
+                        new PathGenerationResult(
+                            operationMethod.ToString(),
+                            url, 
+                            e.Message,
+                            GenerationStatus.Failure));
                 }
             }
 
@@ -364,27 +379,31 @@ namespace Microsoft.OpenApiSpecification.Generation
             return operationId.ToString();
         }
 
-        private static OperationMethod GetOperationMethod(XElement operationElement)
+        private static bool TryGetOperationMethod(
+            IList<PathGenerationResult> pathGenerationResults,
+            string url,
+            XElement operationElement,
+            out OperationMethod operationMethod)
         {
-            var verbElement = operationElement.Descendants().FirstOrDefault(i => i.Name == "verb");
+            var verbElement = operationElement.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Verb);
+            
+            var verb = verbElement?.Value.Trim();
 
-            if (verbElement == null)
+            if (Enum.TryParse(verb, true, out operationMethod))
             {
-                return OperationMethod.Undefined;
+                return true;
             }
 
-            var verb = verbElement.Value.Trim();
-            OperationMethod method;
+            pathGenerationResults.Add(
+                new PathGenerationResult(
+                    verb,
+                    url,
+                    string.Format(
+                        SpecificationGenerationMessages.InvalidHttpMethod,
+                        verb),
+                    GenerationStatus.Failure));
 
-            if (Enum.TryParse(verb, true, out method))
-            {
-                return method;
-            }
-
-            throw new DocumentationException(
-                string.Format(
-                    SpecificationGenerationMessages.InvalidHttpMethod,
-                    verb));
+            return false;
         }
 
         private static bool TryGetUrl(
@@ -392,13 +411,20 @@ namespace Microsoft.OpenApiSpecification.Generation
             XElement operationElement,
             out string url)
         {
-            var urls = operationElement.Descendants().Where(i => i.Name == "url").Select(i => i.Value);
+            var urls = operationElement.Elements(KnownXmlStrings.Url).Select(i => i.Value);
 
             // Can't process further if no url is documented, so skip the operation.
             url = urls.FirstOrDefault();
 
             if (url == null)
             {
+                pathGenerationResults.Add(
+                    new PathGenerationResult(
+                        operationMethod: SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
+                        path: url,
+                        message: string.Format(SpecificationGenerationMessages.InvalidUrl, url),
+                        generationStatus: GenerationStatus.Failure));
+
                 return false;
             }
 
@@ -410,9 +436,10 @@ namespace Microsoft.OpenApiSpecification.Generation
             {
                 pathGenerationResults.Add(
                     new PathGenerationResult(
-                        url,
-                        string.Format(SpecificationGenerationMessages.InvalidUrl, url),
-                        GenerationStatus.Failure));
+                        operationMethod: SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
+                        path: url,
+                        message: string.Format(SpecificationGenerationMessages.InvalidUrl, url),
+                        generationStatus: GenerationStatus.Failure));
 
                 return false;
             }
@@ -420,9 +447,10 @@ namespace Microsoft.OpenApiSpecification.Generation
             {
                 pathGenerationResults.Add(
                     new PathGenerationResult(
-                        url,
-                        e.Message,
-                        GenerationStatus.Failure));
+                        operationMethod: SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
+                        path: url,
+                        message: e.Message,
+                        generationStatus: GenerationStatus.Failure));
 
                 return false;
             }

@@ -30,6 +30,6 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "enum", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
             Required = Required.Always)]
-        public IList<string> Enum { get; } = new List<string>();
+        public IList<string> Enum { get; internal set; } = new List<string>();
     }
 }

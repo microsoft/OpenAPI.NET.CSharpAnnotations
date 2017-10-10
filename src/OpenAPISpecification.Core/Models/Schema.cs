@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.OpenApiSpecification.Core.Serialization;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApiSpecification.Core.Models
@@ -11,7 +12,8 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     /// <summary>
     /// The schema defining the type.
     /// </summary>
-    public class Schema : IReferenceable
+    [JsonConverter(typeof(ExtensibleJsonConverter))]
+    public class Schema : IReferenceable, IExtensible
     {
         /// <summary>
         /// Gets or sets the schema for the additional properties.
@@ -25,13 +27,13 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the collection of schemas where each schema must be valid.
         /// </summary>
         [JsonProperty(PropertyName = "allOf", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IList<Schema> AllOf { get; } = new List<Schema>();
+        public IList<Schema> AllOf { get; internal set; } = new List<Schema>();
 
         /// <summary>
         /// Gets the collection of schemas where at least one must be valid.
         /// </summary>
         [JsonProperty(PropertyName = "anyOf", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IList<Schema> AnyOf { get; } = new List<Schema>();
+        public IList<Schema> AnyOf { get; internal set; } = new List<Schema>();
 
         /// <summary>
         /// Gets or sets the default value.
@@ -55,13 +57,18 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the possible enumerated values.
         /// </summary>
         [JsonProperty(PropertyName = "enum", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IList<string> Enum { get; } = new List<string>();
+        public IList<string> Enum { get; internal set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the free-form property to include a an example of an instance for this schema.
         /// </summary>
         [JsonProperty(PropertyName = "example", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public object Example { get; set; }
+
+        /// <summary>
+        /// Gets the extension properties
+        /// </summary>
+        public IDictionary<string, object> Extensions { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// Gets or sets the additional external documentation for this schema.
@@ -157,7 +164,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the collection of schemas where exactly one must be valid.
         /// </summary>
         [JsonProperty(PropertyName = "oneOf", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IList<Schema> OneOf { get; } = new List<Schema>();
+        public IList<Schema> OneOf { get; internal set; } = new List<Schema>();
 
         /// <summary>
         /// Gets or sets the validation pattern as regular expression.
@@ -169,7 +176,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the properties of the type.
         /// </summary>
         [JsonProperty(PropertyName = "properties", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, Schema> Properties { get; } = new Dictionary<string, Schema>();
+        public IDictionary<string, Schema> Properties { get; internal set; } = new Dictionary<string, Schema>();
 
         /// <summary>
         /// Gets or sets if a schema is read only.
@@ -178,10 +185,17 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         public bool? ReadOnly { get; set; }
 
         /// <summary>
+        /// Gets or sets the reference string.
+        /// </summary>
+        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
+        [JsonProperty(PropertyName = "$ref", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string Reference { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of properties that are required in the schema.
         /// </summary>
         [JsonProperty(PropertyName = "required", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IList<string> RequiredProperties { get; } = new List<string>();
+        public IList<string> RequiredProperties { get; internal set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the title.
@@ -200,11 +214,5 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// </summary>
         [JsonProperty(PropertyName = "uniqueItems", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public bool UniqueItems { get; set; }
-
-        /// <summary>
-        /// Gets or sets the reference string.
-        /// </summary>
-        /// <remarks>If this is present, the rest of the object will be ignored.</remarks>
-        public string Reference { get; set; }
     }
 }

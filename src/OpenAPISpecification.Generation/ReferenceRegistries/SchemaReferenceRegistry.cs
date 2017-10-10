@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Newtonsoft.Json;
@@ -18,9 +17,6 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
     /// </summary>
     public class SchemaReferenceRegistry : ReferenceRegistry<Type, Schema>
     {
-        private static readonly Regex _allNonCompliantCharactersRegex = new Regex(@"[^a-zA-Z0-9\.\-_]");
-        private static readonly Regex _genericMarkersRegex = new Regex(@"`[0-9]+");
-
         /// <summary>
         /// The dictionary containing all references of the given type.
         /// </summary>
@@ -122,7 +118,7 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
                 // Check if the property is read-only.
                 innerSchema.ReadOnly = !propertyInfo.CanWrite;
 
-                var jsonPropertyAttributes = (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), false);
+                var jsonPropertyAttributes = (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), inherit: false);
                 if (jsonPropertyAttributes.Any())
                 {
                     // Use the property name in JsonProperty if given.
@@ -161,20 +157,7 @@ namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
             // returns a full name without unnecessary assembly information for generic types.
             var typeName = input.ToString();
 
-            // Replace + (used when this type has a parent class name) by .
-            typeName = typeName.Replace('+', '.');
-
-            // Remove `n from a generic type. It's clear that this is a generic type
-            // since it will be followed by other types name(s).
-            typeName = _genericMarkersRegex.Replace(typeName, string.Empty);
-
-            // Replace , (used to separate multiple types used in a generic) by - 
-            typeName = typeName.Replace(',', '-');
-
-            // Replace all other non-compliant strings, including [ ] used in generics by _
-            typeName = _allNonCompliantCharactersRegex.Replace(typeName, "_");
-
-            return typeName;
+            return typeName.SanitizeClassName();
         }
     }
 }

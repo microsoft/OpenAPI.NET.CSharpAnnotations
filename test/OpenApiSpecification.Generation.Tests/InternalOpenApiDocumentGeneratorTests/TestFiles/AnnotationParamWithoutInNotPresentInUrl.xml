@@ -154,11 +154,12 @@
       <verb>GET</verb>
       <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
-      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
-      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <!-- The path parameter {id} is not documented -->
-      <!-- ///////////////////////////////////////// -->
-      <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
+      <!-- in attribute is removed. The in for sampleHeaderParam2 and sampleHeaderParam3 cannot be populated. -->
+      <param name="sampleHeaderParam2" cref="T:System.String">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String">Header param 3</param>
+      <param name="id" cref="T:System.String">The object id</param>
+      <param name="queryBool" required="true" cref="T:System.Boolean">Sample query boolean</param>
+      <!-- /////////////////////// -->
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object retrieved
       </response>
@@ -197,7 +198,9 @@
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <param name="sampleObject" in="body"><see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object</param>
+      <param name="sampleObject" in="body">
+        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object
+      </param>
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3"/>Sample object posted
       </response>
@@ -216,7 +219,9 @@
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
-      <param name="sampleObject" in="body"><see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object</param>
+      <param name="sampleObject" in="body">
+        <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object
+      </param>
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>The sample object updated
       </response>

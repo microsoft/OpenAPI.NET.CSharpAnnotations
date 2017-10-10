@@ -17,7 +17,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the content of the request body.The key is the media type and the value describes it.
         /// </summary>
         [JsonProperty(PropertyName = "content", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, MediaType> Content { get; } = new Dictionary<string, MediaType>();
+        public IDictionary<string, MediaType> Content { get; internal set; } = new Dictionary<string, MediaType>();
 
         /// <summary>
         /// Gets or sets the brief description of the request body.

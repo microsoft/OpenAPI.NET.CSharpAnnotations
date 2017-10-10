@@ -51,24 +51,24 @@ namespace Microsoft.OpenApiSpecification.Core.Models
             PropertyName = "paths",
             DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
             Required = Required.Always)]
-        public Paths Paths { get; } = new Paths();
+        public Paths Paths { get; internal set; } = new Paths();
 
         /// <summary>
         /// Gets the collection of security requirement.
         /// </summary>
         [JsonProperty(PropertyName = "security", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IList<SecurityRequirement> Security { get; } = new List<SecurityRequirement>();
+        public IList<SecurityRequirement> Security { get; internal set; } = new List<SecurityRequirement>();
 
         /// <summary>
         /// Gets the collection of Server Objects, which provide connectivity information to a target server.
         /// </summary>
         [JsonProperty(PropertyName = "servers", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IList<Server> Servers { get; } = new List<Server>();
+        public IList<Server> Servers { get; internal set; } = new List<Server>();
 
         /// <summary>
         /// Gets the collection of tag.
         /// </summary>
         [JsonProperty(PropertyName = "tags", DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public IList<Tag> Tags { get; } = new List<Tag>();
+        public IList<Tag> Tags { get; internal set; } = new List<Tag>();
     }
 }

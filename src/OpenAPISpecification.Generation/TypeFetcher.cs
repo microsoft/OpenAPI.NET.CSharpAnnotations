@@ -154,7 +154,7 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// </summary>
         /// <param name="crefValues">The list of cref values.</param>
         /// <returns>The type.</returns>
-        public Type GetTypeFromCrefValues(IList<string> crefValues)
+        public Type LoadTypeFromCrefValues(IList<string> crefValues)
         {
             string typeName;
 
@@ -162,16 +162,16 @@ namespace Microsoft.OpenApiSpecification.Generation
             {
                 var crefValue = crefValues.First().Split('[')[0];
 
-                typeName = crefValue.GetTypeNameFromCref();
+                typeName = crefValue.ExtractTypeNameFromCref();
                 return CreateListType(typeName);
             }
             
-            if (crefValues.Any( IsGenericType))
+            if (crefValues.Any(IsGenericType))
             {
-                return ExtractGenericType(crefValues.Select(i => i.GetTypeNameFromCref()).ToList());
+                return ExtractGenericType(crefValues.Select(i => i.ExtractTypeNameFromCref()).ToList());
             }
 
-            typeName = crefValues.First().GetTypeNameFromCref();
+            typeName = crefValues.First().ExtractTypeNameFromCref();
             return LoadType(typeName);
         }
 
@@ -181,7 +181,7 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// <param name="typeName">The type name.</param>
         /// <exception cref="TypeLoadException">Thrown when type was not found.</exception>
         /// <returns>The type.</returns>
-        private Type LoadType(string typeName)
+        public Type LoadType(string typeName)
         {
             Type contractType = null;
 

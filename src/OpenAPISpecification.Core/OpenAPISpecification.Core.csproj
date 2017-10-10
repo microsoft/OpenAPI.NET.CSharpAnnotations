@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Callback.cs" />
+    <Compile Include="Models\IExtensible.cs" />
     <Compile Include="Models\Paths.cs" />
     <Compile Include="Models\Example.cs" />
     <Compile Include="Models\IReferenceable.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\EmptyCollectionContractResolver.cs" />
+    <Compile Include="Serialization\ExtensibleJsonConverter.cs" />
     <Compile Include="Serialization\PathItemJsonConverter.cs" />
   </ItemGroup>
   <ItemGroup>

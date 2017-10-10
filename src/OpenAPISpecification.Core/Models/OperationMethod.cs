@@ -16,12 +16,6 @@ namespace Microsoft.OpenApiSpecification.Core.Models
     public enum OperationMethod
     {
         /// <summary>
-        /// An undefined method.
-        /// </summary>
-        [EnumMember(Value = "undefined")]
-        Undefined,
-
-        /// <summary>
         /// The HTTP GET method.
         /// </summary>
         [EnumMember(Value = "get")]

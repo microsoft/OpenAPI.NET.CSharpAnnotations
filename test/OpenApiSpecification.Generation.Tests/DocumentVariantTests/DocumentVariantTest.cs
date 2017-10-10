@@ -180,42 +180,30 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
+            var actualDocuments = new List<OpenApiV3SpecificationDocument>();
+            var expectedDocuments = new List<OpenApiV3SpecificationDocument>();
+
             // Default Document Variant
             foreach (var documentVariantInfoToExpectedJsonFile in documentVariantInfoToExpectedJsonFileMap)
             {
                 var documentVariantInfo = documentVariantInfoToExpectedJsonFile.Key;
                 var expectedJsonFile = documentVariantInfoToExpectedJsonFile.Value;
 
-                VerifyDocumentVariantAgainstJsonFile(
-                    result,
-                    documentVariantInfo,
-                    expectedJsonFile);
+                OpenApiV3SpecificationDocument specificationDocument;
+
+                result.Documents.TryGetValue(documentVariantInfo, out specificationDocument);
+
+                var actualDocumentAsString = JsonConvert.SerializeObject(specificationDocument);
+
+                _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
+                _output.WriteLine(actualDocumentAsString);
+
+                actualDocuments.Add(JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocumentAsString));
+
+                expectedDocuments.Add(JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(File.ReadAllText(expectedJsonFile)));
             }
-        }
 
-        private void VerifyDocumentVariantAgainstJsonFile(
-            DocumentGenerationResult result,
-            DocumentVariantInfo documentVariantInfo,
-            string jsonFileName)
-        {
-            OpenApiV3SpecificationDocument specificationDocument;
-
-            result.Documents.TryGetValue(documentVariantInfo, out specificationDocument);
-
-            specificationDocument.Should().NotBeNull();
-
-            var actualDocument = JsonConvert.SerializeObject(
-                specificationDocument,
-                new JsonSerializerSettings {ContractResolver = new EmptyCollectionContractResolver()}
-            );
-
-            var expectedDocument = File.ReadAllText(jsonFileName);
-
-            _output.WriteLine(actualDocument);
-
-            JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
-                .Should()
-                .BeEquivalentTo(JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(expectedDocument));
+            actualDocuments.Should().BeEquivalentTo(expectedDocuments);
         }
     }
 }

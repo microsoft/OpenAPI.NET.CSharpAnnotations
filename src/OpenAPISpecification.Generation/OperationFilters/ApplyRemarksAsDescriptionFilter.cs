@@ -7,7 +7,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
@@ -31,7 +31,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
             string description = null;
-            var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == KnownStrings.Remarks);
+            var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Remarks);
 
             if (descriptionElement != null)
             {

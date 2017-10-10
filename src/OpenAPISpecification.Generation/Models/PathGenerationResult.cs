@@ -27,6 +27,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         /// <param name="generationStatus">The generation status.</param>
         public PathGenerationResult(string message, GenerationStatus generationStatus) : this(
             null,
+            null,
             message,
             generationStatus)
         {
@@ -36,19 +37,24 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         /// Initializes a new instance of <see cref="PathGenerationResult"/>.
         /// </summary>
         /// <param name="pathGenerationResult">The path generation result to copy from.</param>
-        public PathGenerationResult(PathGenerationResult pathGenerationResult) :
-            this(pathGenerationResult.Path, pathGenerationResult.Message, pathGenerationResult.GenerationStatus)
+        public PathGenerationResult(PathGenerationResult pathGenerationResult) : this(
+            pathGenerationResult.OperationMethod,
+            pathGenerationResult.Path,
+            pathGenerationResult.Message,
+            pathGenerationResult.GenerationStatus)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of <see cref="PathGenerationResult"/>.
         /// </summary>
+        /// <param name="operationMethod">The operation method</param>
         /// <param name="path">The path.</param>
         /// <param name="message">The generation message.</param>
         /// <param name="generationStatus">The generation status.</param>
-        public PathGenerationResult(string path, string message, GenerationStatus generationStatus)
+        public PathGenerationResult(string operationMethod, string path, string message, GenerationStatus generationStatus)
         {
+            OperationMethod = operationMethod;
             Path = path;
             Message = message;
             GenerationStatus = generationStatus;
@@ -70,6 +76,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         /// The path.
         /// </summary>
         [JsonProperty]
+        public string OperationMethod { get; internal set; }
+
+        /// <summary>
+        /// The path.
+        /// </summary>
+        [JsonProperty]
         public string Path { get; internal set; }
 
         /// <summary>
@@ -85,7 +97,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         /// <summary>
         /// Gets the hash code of this path generation result.
         /// </summary>
-        public override int GetHashCode() => new {GenerationStatus, Message, Path}.GetHashCode();
+        public override int GetHashCode() => 
+            new {OperationMethod, GenerationStatus, Message, Path}.GetHashCode();
 
         /// <summary>
         /// Determines whether this equals to the other path generation result.
@@ -93,6 +106,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         public bool Equals(PathGenerationResult other)
         {
             return other != null &&
+                OperationMethod == other.OperationMethod &&
                 GenerationStatus == other.GenerationStatus &&
                 Message == other.Message &&
                 Path == other.Path;

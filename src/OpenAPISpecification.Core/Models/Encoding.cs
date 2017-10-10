@@ -37,7 +37,7 @@ namespace Microsoft.OpenApiSpecification.Core.Models
         /// Gets the map allowing additional information to be provided as headers,
         /// </summary>
         [JsonProperty(PropertyName = "headers", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public IDictionary<string, Header> Headers { get; } = new Dictionary<string, Header>();
+        public IDictionary<string, Header> Headers { get; internal set; } = new Dictionary<string, Header>();
 
         /// <summary>
         /// Gets or sets how a specific property value will be serialized depending on its type.

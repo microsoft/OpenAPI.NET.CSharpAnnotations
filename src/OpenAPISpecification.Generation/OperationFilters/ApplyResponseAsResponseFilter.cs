@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
@@ -32,17 +32,18 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// </remarks>
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
-            var responseElements = element.Elements().Where(p => p.Name == KnownStrings.Response);
+            var responseElements = element.Elements().Where(p => p.Name == KnownXmlStrings.Response);
 
             foreach (var responseElement in responseElements)
             {
-                // Fetch response code
-                var code = responseElement.Attribute(KnownStrings.Code)?.Value;
+                var code = responseElement.Attribute(KnownXmlStrings.Code)?.Value;
 
                 if (code == null)
                 {
                     continue;
                 }
+
+                var mediaType = responseElement.Attribute(KnownXmlStrings.Type)?.Value ?? "application/json";
 
                 var childNodes = responseElement.DescendantNodes().ToList();
                 var description = string.Empty;
@@ -56,11 +57,11 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 
                 var allListedTypes = new List<string>();
 
-                var seeNodes = responseElement.Descendants(KnownStrings.See);
+                var seeNodes = responseElement.Descendants(KnownXmlStrings.See);
 
                 foreach (var node in seeNodes)
                 {
-                    var crefValue = node.Attribute(KnownStrings.Cref)?.Value;
+                    var crefValue = node.Attribute(KnownXmlStrings.Cref)?.Value;
 
                     if (crefValue != null)
                     {
@@ -68,7 +69,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                     }
                 }
 
-                var responseContractType = settings.TypeFetcher.GetTypeFromCrefValues(allListedTypes);
+                var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
 
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
                     responseContractType);
@@ -80,19 +81,26 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                         operation.Responses[code].Description = description.RemoveBlankLines();
                     }
 
-                    // If the existing schema is just a single schema (not a list of AnyOf), then
-                    // we create a new schema and add that schema to AnyOf to allow us to add
-                    // more schemas to it later.
-                    if (!operation.Responses[code].Content["application/json"].Schema.AnyOf.Any())
+                    if (!operation.Responses[code].Content.ContainsKey(mediaType))
                     {
-                        var existingSchema = operation.Responses[code].Content["application/json"].Schema;
-                        var newSchema = new Schema();
-                        newSchema.AnyOf.Add(existingSchema);
-                        
-                        operation.Responses[code].Content["application/json"].Schema = newSchema;
+                        operation.Responses[code].Content[mediaType] = new MediaType {Schema = schema};
                     }
-                    
-                    operation.Responses[code].Content["application/json"].Schema.AnyOf.Add(schema);
+                    else
+                    {
+                        // If the existing schema is just a single schema (not a list of AnyOf), then
+                        // we create a new schema and add that schema to AnyOf to allow us to add
+                        // more schemas to it later.
+                        if (!operation.Responses[code].Content[mediaType].Schema.AnyOf.Any())
+                        {
+                            var existingSchema = operation.Responses[code].Content[mediaType].Schema;
+                            var newSchema = new Schema();
+                            newSchema.AnyOf.Add(existingSchema);
+
+                            operation.Responses[code].Content[mediaType].Schema = newSchema;
+                        }
+
+                        operation.Responses[code].Content[mediaType].Schema.AnyOf.Add(schema);
+                    }
                 }
                 else
                 {
@@ -101,7 +109,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
                         Description = description.RemoveBlankLines(),
                         Content =
                         {
-                            ["application/json"] = new MediaType {Schema = schema}
+                            [mediaType] = new MediaType {Schema = schema}
                         }
                     };
 

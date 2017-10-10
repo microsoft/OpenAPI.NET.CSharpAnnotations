@@ -21,7 +21,7 @@ namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contrac
         /// <summary>
         /// Sample Property of Type T2
         /// </summary>
-        [JsonProperty(PropertyName = "samplePropertyTypeT1", Required = Required.Always)]
+        [JsonProperty(PropertyName = "samplePropertyTypeT2", Required = Required.Always)]
         T2 SamplePropertyTypeT2 { get; set; }
     }
 }

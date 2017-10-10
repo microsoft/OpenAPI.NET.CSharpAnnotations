@@ -90,7 +90,23 @@
     <Content Include="DocumentVariantTests\TestFiles\ConfigMultipleDocumentVariantTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedPathParam.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationParamWithoutInNotPresentInUrl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationParamWithoutInButPresentInUrl.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleRequestMediaTypes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleRequestTypes.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleResponseMediaTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -119,7 +135,7 @@
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedGeneric.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedPathParameters.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationConflictingPathAndQueryParameters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\TestFiles\Annotation.xml">
@@ -196,7 +212,7 @@
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationParamNoTypeSpecified.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedPathParameters.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationConflictingPathAndQueryParameters.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedGeneric.xml">
@@ -284,6 +300,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleRequestTypes.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleResponseMediaTypes.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleRequestMediaTypes.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationParamWithoutInButPresentInUrl.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationParamWithoutInNotPresentInUrl.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedPathParam.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
