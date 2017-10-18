@@ -75,7 +75,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
-    <Compile Include="FilterTests\OptionalPathParametersBranchingFilterTest.cs" />
+    <Compile Include="FilterTests\BranchOptionalPathParametersFilterTest.cs" />
     <Compile Include="DocumentVariantTests\DocumentVariantTestCases.cs" />
     <Compile Include="OperationConfigTests\OperationConfigTest.cs" />
     <Compile Include="DefaultSettingsFixtureCollection.cs" />

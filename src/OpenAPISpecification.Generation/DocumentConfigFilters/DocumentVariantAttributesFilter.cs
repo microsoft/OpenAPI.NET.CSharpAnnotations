@@ -19,7 +19,7 @@ namespace Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters
     /// <summary>
     /// Populate the <see cref="DocumentVariantInfo.Attributes"/>.
     /// </summary>
-    public class ApplyDocumentVariantAttributesFilter : IDocumentConfigFilter
+    public class DocumentVariantAttributesFilter : IDocumentConfigFilter
     {
         /// <summary>
         /// Fetches the attributes in document variant option as well as the entire documentation itself

@@ -14,11 +14,11 @@ using Xunit.Abstractions;
 namespace Microsoft.OpenApiSpecification.Generation.Tests.FilterTests
 {
     [Collection("DefaultSettings")]
-    public class OptionalPathParametersBranchingFilterTest
+    public class BranchOptionalPathParametersFilterTest
     {
         private readonly ITestOutputHelper _output;
 
-        public OptionalPathParametersBranchingFilterTest(ITestOutputHelper output)
+        public BranchOptionalPathParametersFilterTest(ITestOutputHelper output)
         {
             _output = output;
         }
@@ -33,7 +33,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.FilterTests
         {
             _output.WriteLine(testName);
 
-            var result = ApplyOptionalPathParametersBranchingFilter.GeneratePossiblePaths(
+            var result = BranchOptionalPathParametersFilter.GeneratePossiblePaths(
                 fullPath,
                 pathParams);
 

@@ -17,7 +17,7 @@ namespace Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilter
     /// <summary>
     /// Parses the URL to populate the in attribute of the param tags if not explicitly documented.
     /// </summary>
-    public class ApplyPopulateInAttributeFilter : IPreprocessingOperationFilter
+    public class PopulateInAttributeFilter : IPreprocessingOperationFilter
     {
         /// <summary>
         /// Parses the parameters in the URL to populate the in attribute of the param tags as path or query

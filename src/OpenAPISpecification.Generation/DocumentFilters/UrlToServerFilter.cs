@@ -16,7 +16,7 @@ namespace Microsoft.OpenApiSpecification.Generation.DocumentFilters
     /// <summary>
     /// Parses the value of url tag in xml documentation and apply that as server in Open Api V3 specification document.
     /// </summary>
-    public class ApplyUrlAsServerFilter : IDocumentFilter
+    public class UrlToServerFilter : IDocumentFilter
     {
         /// <summary>
         /// Fetches the value of "url" tag from xml documentation and use it to populate

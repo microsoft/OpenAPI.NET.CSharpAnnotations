@@ -4,16 +4,16 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
+using Microsoft.OpenApiSpecification.Generation.OperationConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
 
 namespace Microsoft.OpenApiSpecification.Generation
 {
     /// <summary>
-    /// Holds the configuration used to perform generation.
+    /// Holds the configuration needed for the generator including filters.
     /// </summary>
     public class OpenApiDocumentGeneratorConfig
     {

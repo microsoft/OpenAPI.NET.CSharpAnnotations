@@ -19,7 +19,7 @@ namespace Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilter
     /// Parses the value of the URL and creates multiple operations in the Paths object when
     /// there are optional path parameters.
     /// </summary>
-    public class ApplyOptionalPathParametersBranchingFilter : IPreprocessingOperationFilter
+    public class BranchOptionalPathParametersFilter : IPreprocessingOperationFilter
     {
         /// <summary>
         /// Fetches the URL value and creates multiple operations based on optional parameters.

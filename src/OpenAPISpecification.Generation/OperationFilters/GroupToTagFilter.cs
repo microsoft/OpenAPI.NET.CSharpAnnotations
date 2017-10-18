@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------
+// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
@@ -6,18 +6,17 @@
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
     /// <summary>
-    /// Parses the value of remarks tag in xml documentation and apply that as description of the operation.
+    /// Parses the value of group tag in xml documentation and apply that as tag in operation.
     /// </summary>
-    public class ApplyRemarksAsDescriptionFilter : IOperationFilter
+    public class GroupToTagFilter : IOperationFilter
     {
         /// <summary>
-        /// Fetches the value of "remarks" tag from xml documentation and populates operation's description.
+        /// Fetches the value of "group" tag from xml documentation and populates operation's tag.
         /// </summary>
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
@@ -30,17 +29,18 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// </remarks>
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
-            string description = null;
-            var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Remarks);
+            var groupElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Group);
 
-            if (descriptionElement != null)
+            var groupValue = groupElement?.Value.Trim();
+
+            if (string.IsNullOrWhiteSpace(groupValue))
             {
-                description = descriptionElement.Value.Trim().RemoveBlankLines();
+                return;
             }
 
-            if (string.IsNullOrWhiteSpace(operation.Description))
+            if (!operation.Tags.Contains(groupValue))
             {
-                operation.Description = description;
+                operation.Tags.Add(groupValue);
             }
         }
     }

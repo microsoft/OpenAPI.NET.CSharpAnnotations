@@ -16,7 +16,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
     /// <summary>
     /// Parses the value of response tag in xml documentation and apply that as response in operation.
     /// </summary>
-    public class ApplyResponseAsResponseFilter : IOperationFilter
+    public class ResponseToResponseFilter : IOperationFilter
     {
         /// <summary>
         /// Fetches the value of "response" tags from xml documentation and populates operation's response.
