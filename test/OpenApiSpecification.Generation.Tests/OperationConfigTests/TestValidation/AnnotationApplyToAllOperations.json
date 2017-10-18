@@ -166,7 +166,7 @@
                     },
                     {
                         "in": "query",
-                        "required": false,
+                        "required": true,
                         "name": "queryBool",
                         "schema": {
                             "type": "boolean"
@@ -181,9 +181,9 @@
                         }
                     },
                     {
-                        "in": "path",
+                        "in": "query",
                         "required": false,
-                        "name": "SampleAddedPathParam",
+                        "name": "SampleAddedQueryParam",
                         "schema": {
                             "type": "string"
                         }
@@ -263,9 +263,9 @@
                         }
                     },
                     {
-                        "in": "path",
+                        "in": "query",
                         "required": false,
-                        "name": "SampleAddedPathParam",
+                        "name": "SampleAddedQueryParam",
                         "schema": {
                             "type": "string"
                         }
@@ -339,9 +339,9 @@
                         }
                     },
                     {
-                        "in": "path",
+                        "in": "query",
                         "required": false,
-                        "name": "SampleAddedPathParam",
+                        "name": "SampleAddedQueryParam",
                         "schema": {
                             "type": "string"
                         }
@@ -413,9 +413,9 @@
                         }
                     },
                     {
-                        "in": "path",
+                        "in": "query",
                         "required": false,
-                        "name": "SampleAddedPathParam",
+                        "name": "SampleAddedQueryParam",
                         "schema": {
                             "type": "string"
                         }
@@ -497,9 +497,9 @@
                         }
                     },
                     {
-                        "in": "path",
+                        "in": "query",
                         "required": false,
-                        "name": "SampleAddedPathParam",
+                        "name": "SampleAddedQueryParam",
                         "schema": {
                             "type": "string"
                         }
@@ -587,9 +587,9 @@
                         }
                     },
                     {
-                        "in": "path",
+                        "in": "query",
                         "required": false,
-                        "name": "SampleAddedPathParam",
+                        "name": "SampleAddedQueryParam",
                         "schema": {
                             "type": "string"
                         }
@@ -663,9 +663,9 @@
                         }
                     },
                     {
-                        "in": "path",
+                        "in": "query",
                         "required": false,
-                        "name": "SampleAddedPathParam",
+                        "name": "SampleAddedQueryParam",
                         "schema": {
                             "type": "string"
                         }

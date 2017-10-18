@@ -5,6 +5,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Microsoft.OpenApiSpecification.Generation.Extensions
 {
@@ -107,6 +108,16 @@ namespace Microsoft.OpenApiSpecification.Generation.Extensions
             }
 
             return value.Substring(startIndex: 0, length: 1).ToUpperInvariant() + value.Substring(startIndex: 1);
+        }
+
+        /// <summary>
+        /// Extracts the absolute path from a full URL string.
+        /// </summary>
+        /// <param name="value">The string in URL format.</param>
+        /// <returns>The absolute path inside the URL.</returns>
+        public static string UrlStringToAbsolutePath(this string value)
+        {
+            return HttpUtility.UrlDecode(new Uri(value).AbsolutePath);
         }
     }
 }

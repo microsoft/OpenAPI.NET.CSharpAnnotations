@@ -13,9 +13,19 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
     public class OperationFilterSettings
     {
         /// <summary>
+        /// Gets or sets the operation method for the operation.
+        /// </summary>
+        public string OperationMethod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the path for the operation.
+        /// </summary>
+        public string Path { get; set; }
+
+        /// <summary>
         /// Gets the reference registry manager.
         /// </summary>
-        public ReferenceRegistryManager ReferenceRegistryManager { get; } = new ReferenceRegistryManager();
+        public ReferenceRegistryManager ReferenceRegistryManager { get; set; }
 
         /// <summary>
         /// Gets or sets the type fetcher.

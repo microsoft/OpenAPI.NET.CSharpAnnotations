@@ -62,8 +62,14 @@
     <Compile Include="Exceptions\UnorderedGenericTypeException.cs" />
     <Compile Include="Models\DictionaryJsonConverter.cs" />
     <Compile Include="Models\KnownStrings\KnownXmlStrings.cs" />
+    <Compile Include="OperationFilters\ApplyParamAsParameterFilter.cs" />
     <Compile Include="OperationFilters\ApplyResponseAsResponseFilter.cs" />
     <Compile Include="OperationFilters\OperationFilterSettings.cs" />
+    <Compile Include="PreProcessingOperationFilters\ApplyConvertAlternativeParamToParamFilter.cs" />
+    <Compile Include="PreProcessingOperationFilters\ApplyPopulateInAttributeFilter.cs" />
+    <Compile Include="PreProcessingOperationFilters\IPreprocessingOperationFilter.cs" />
+    <Compile Include="PreProcessingOperationFilters\PreprocessingOperationFilterSettings.cs" />
+    <Compile Include="OperationHandler.cs" />
     <Compile Include="TypeFetcher.cs" />
     <Compile Include="DocumentFilters\ApplyAssemblyNameAsInfoFilter.cs" />
     <Compile Include="DocumentFilters\ApplyUrlAsServerFilter.cs" />
@@ -73,7 +79,7 @@
     <Compile Include="Models\OpenApiDataTypeFormatPair.cs" />
     <Compile Include="OpenApiDocumentGeneratorConfig.cs" />
     <Compile Include="OperationFilters\ApplyGroupAsTagFilter.cs" />
-    <Compile Include="OperationFilters\ApplyParamAsParameterFilter.cs" />
+    <Compile Include="PreProcessingOperationFilters\ApplyOptionalPathParametersBranchingFilter.cs" />
     <Compile Include="OperationFilters\ApplyParamAsRequestBodyFilter.cs" />
     <Compile Include="OperationFilters\ApplyRemarksAsDescriptionFilter.cs" />
     <Compile Include="OperationFilters\ApplySummaryFilter.cs" />

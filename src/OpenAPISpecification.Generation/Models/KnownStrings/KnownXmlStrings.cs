@@ -15,14 +15,16 @@ namespace Microsoft.OpenApiSpecification.Generation.Models.KnownStrings
         public const string Group = "group";
         public const string Header = "header";
         public const string In = "in";
-        public const string IsRequired = "isRequired";
         public const string Name = "name";
         public const string Option = "option";
         public const string Options = "options";
         public const string Param = "param";
         public const string Path = "path";
+        public const string PathParam = "pathParam";
         public const string Query = "query";
+        public const string QueryParam = "queryParam";
         public const string Remarks = "remarks";
+        public const string Required = "required";
         public const string Response = "response";
         public const string See = "see";
         public const string Summary = "summary";

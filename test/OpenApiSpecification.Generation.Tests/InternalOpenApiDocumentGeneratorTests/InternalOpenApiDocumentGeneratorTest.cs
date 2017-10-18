@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -361,6 +360,40 @@ namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumen
                 Path.Combine(
                     TestValidationDirectory,
                     "AnnotationMultipleResponseMediaTypes.Json")
+            };
+
+            // Valid XML document with optional path parameters.
+            yield return new object[]
+            {
+                "Optional Path Parameters",
+                Path.Combine(TestFilesDirectory, "AnnotationOptionalPathParametersBranching.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        TestFilesDirectory,
+                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                },
+                9,
+                Path.Combine(
+                    TestValidationDirectory,
+                    "AnnotationOptionalPathParametersBranching.Json")
+            };
+
+            // Valid XML document with alternative param tags.
+            yield return new object[]
+            {
+                "Alternative Param Tags (i.e. queryParam, pathParam, header)",
+                Path.Combine(TestFilesDirectory, "AnnotationAlternativeParamTags.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        TestFilesDirectory,
+                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                },
+                9,
+                Path.Combine(
+                    TestValidationDirectory,
+                    "Annotation.Json")
             };
         }
 

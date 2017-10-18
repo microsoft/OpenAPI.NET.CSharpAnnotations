@@ -6,9 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApiSpecification.Core.Models;
@@ -18,8 +15,9 @@ using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Exceptions;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Microsoft.OpenApiSpecification.Generation.Models;
-using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
+using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
+using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApiSpecification.Generation
@@ -58,90 +56,120 @@ namespace Microsoft.OpenApiSpecification.Generation
             new ApplySummaryFilter()
         };
 
-        // TO DO: Figure out a way to serialize this and pass as parameter from OpenApiDocumentGenerator.
-        private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
-            _defaultOperationFilters,
-            _defaultDocumentFilters,
-            _defaultOperationConfigFilters,
-            _defaultDocumentConfigFilters);
+        private static readonly IList<IPreprocessingOperationFilter> _defaultPreprocessingOperationFilters =
+            new List<IPreprocessingOperationFilter>
+            {
+                new ApplyConvertAlternativeParamToParamFilter(),
+                new ApplyPopulateInAttributeFilter(),
+                new ApplyOptionalPathParametersBranchingFilter()
+            };
+
+        private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig
+        {
+            DocumentConfigFilters = _defaultDocumentConfigFilters,
+            DocumentFilters = _defaultDocumentFilters,
+            OperationConfigFilters = _defaultOperationConfigFilters,
+            OperationFilters = _defaultOperationFilters,
+            PreprocessingOperationFilters = _defaultPreprocessingOperationFilters
+        };
 
         /// <summary>
         /// Add operation and update the operation filter settings based on the given document variant info.
         /// </summary>
         private void AddOperation(
             IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> specificationDocuments,
-            IDictionary<DocumentVariantInfo, OperationFilterSettings> operationFilterSettingsMap,
+            IDictionary<DocumentVariantInfo, ReferenceRegistryManager> referenceRegistryManagerMap,
             DocumentVariantInfo documentVariantInfo,
             XElement operationElement,
             XElement operationConfigElement,
-            string url,
-            OperationMethod operationMethod,
             TypeFetcher typeFetcher)
         {
-            var operation = new Operation
-            {
-                OperationId = GetOperationId(url, operationMethod)
-            };
+            var paths = new Paths();
 
-            if (!operationFilterSettingsMap.ContainsKey(documentVariantInfo))
+            foreach (var preprocessingOperationFilter in _generatorConfig.PreprocessingOperationFilters)
             {
-                operationFilterSettingsMap[documentVariantInfo] =
-                    new OperationFilterSettings
-                    {
-                        TypeFetcher = typeFetcher
-                    };
-            }
-
-            // Apply all the operation-related filters to extract information related to the operation.
-            // It is important that these are applied before the config filters below
-            // since the config filters may rely on information generated from operation filters.
-            foreach (var operationFilter in _generatorConfig.OperationFilters)
-            {
-                operationFilter.Apply(
-                    operation,
+                preprocessingOperationFilter.Apply(
+                    paths,
                     operationElement,
-                    operationFilterSettingsMap[documentVariantInfo]);
+                    new PreprocessingOperationFilterSettings());
             }
 
-            if (operationConfigElement != null)
+            if (!referenceRegistryManagerMap.ContainsKey(documentVariantInfo))
             {
-                // Apply the config-related filters to extract information from the config xml
-                // that can be applied to the operations.
-                foreach (var configFilter in _generatorConfig.OperationConfigFilters)
+                referenceRegistryManagerMap[documentVariantInfo] = new ReferenceRegistryManager();
+            }
+
+            foreach (var pathToPathItem in paths)
+            {
+                var path = pathToPathItem.Key;
+                var pathItem = pathToPathItem.Value;
+
+                foreach (var operationMethodToOperation in pathItem)
                 {
-                    configFilter.Apply(
-                        operation,
-                        operationConfigElement,
-                        new OperationConfigFilterSettings
+                    var operationMethod = operationMethodToOperation.Key;
+                    var operation = operationMethodToOperation.Value;
+
+                    var operationFilterSettings = new OperationFilterSettings
+                    {
+                        TypeFetcher = typeFetcher,
+                        ReferenceRegistryManager = referenceRegistryManagerMap[documentVariantInfo],
+                        Path = path,
+                        OperationMethod = operationMethod.ToString(),
+                    };
+
+                    // Apply all the operation-related filters to extract information related to the operation.
+                    // It is important that these are applied before the config filters below
+                    // since the config filters may rely on information generated from operation filters.
+                    foreach (var operationFilter in _generatorConfig.OperationFilters)
+                    {
+                        operationFilter.Apply(
+                            operation,
+                            operationElement,
+                            operationFilterSettings);
+                    }
+
+                    if (operationConfigElement != null)
+                    {
+                        // Apply the config-related filters to extract information from the config xml
+                        // that can be applied to the operations.
+                        foreach (var configFilter in _generatorConfig.OperationConfigFilters)
                         {
-                            OperationFilterSettings = operationFilterSettingsMap[documentVariantInfo],
-                            OperationFilters = _generatorConfig.OperationFilters
-                        });
+                            configFilter.Apply(
+                                operation,
+                                operationConfigElement,
+                                new OperationConfigFilterSettings
+                                {
+                                    OperationFilterSettings = operationFilterSettings,
+                                    OperationFilters = _generatorConfig.OperationFilters
+                                });
+                        }
+                    }
+
+                    // Add the processed operation to the specification document.
+                    if (!specificationDocuments.ContainsKey(documentVariantInfo))
+                    {
+                        specificationDocuments.Add(
+                            documentVariantInfo,
+                            new OpenApiV3SpecificationDocument());
+                    }
+
+                    // Copy operations from local Paths object to the Paths in the specification document.
+                    var documentPaths = specificationDocuments[documentVariantInfo].Paths;
+
+                    if (!documentPaths.ContainsKey(path))
+                    {
+                        documentPaths.Add(
+                            path,
+                            new PathItem
+                            {
+                                [operationMethod] = operation
+                            });
+                    }
+                    else
+                    {
+                        documentPaths[path].Add(operationMethod, operation);
+                    }
                 }
-            }
-
-            // Add the processed operation to the specification document.
-            if (!specificationDocuments.ContainsKey(documentVariantInfo))
-            {
-                specificationDocuments.Add(
-                    documentVariantInfo,
-                    new OpenApiV3SpecificationDocument());
-            }
-
-            var paths = specificationDocuments[documentVariantInfo].Paths;
-
-            if (!paths.ContainsKey(url))
-            {
-                var pathItem = new PathItem
-                {
-                    [operationMethod] = operation
-                };
-
-                paths.Add(url, pathItem);
-            }
-            else
-            {
-                paths[url].Add(operationMethod, operation);
             }
         }
 
@@ -305,7 +333,7 @@ namespace Microsoft.OpenApiSpecification.Generation
 
             var pathGenerationResults = new List<PathGenerationResult>();
 
-            var operationFilterSettingsMap = new Dictionary<DocumentVariantInfo, OperationFilterSettings>();
+            var referenceRegistryManagerMap = new Dictionary<DocumentVariantInfo, ReferenceRegistryManager>();
 
             foreach (var operationElement in operationElements)
             {
@@ -314,7 +342,7 @@ namespace Microsoft.OpenApiSpecification.Generation
 
                 try
                 {
-                    url = GetUrl(operationElement);
+                    url = OperationHandler.GetUrl(operationElement);
                 }
                 catch (InvalidUrlException e)
                 {
@@ -333,7 +361,7 @@ namespace Microsoft.OpenApiSpecification.Generation
 
                 try
                 {
-                    operationMethod = GetOperationMethod(url, operationElement);
+                    operationMethod = OperationHandler.GetOperationMethod(url, operationElement);
                 }
                 catch (InvalidVerbException e)
                 {
@@ -354,12 +382,10 @@ namespace Microsoft.OpenApiSpecification.Generation
                 {
                     AddOperation(
                         specificationDocuments,
-                        operationFilterSettingsMap,
+                        referenceRegistryManagerMap,
                         DocumentVariantInfo.Default,
                         operationElement,
                         operationConfigElement,
-                        url,
-                        operationMethod,
                         typeFetcher);
 
                     foreach (var documentVariantElementName in documentVariantElementNames)
@@ -375,12 +401,10 @@ namespace Microsoft.OpenApiSpecification.Generation
 
                             AddOperation(
                                 specificationDocuments,
-                                operationFilterSettingsMap,
+                                referenceRegistryManagerMap,
                                 documentVariantInfo,
                                 operationElement,
                                 operationConfigElement,
-                                url,
-                                operationMethod,
                                 typeFetcher);
                         }
                     }
@@ -410,120 +434,12 @@ namespace Microsoft.OpenApiSpecification.Generation
 
             foreach (var documentVariantInfo in specificationDocuments.Keys)
             {
-                operationFilterSettingsMap[documentVariantInfo]
-                    .ReferenceRegistryManager
+                referenceRegistryManagerMap[documentVariantInfo]
                     .SchemaReferenceRegistry.References.CopyInto(
                         specificationDocuments[documentVariantInfo].Components.Schemas);
             }
 
             return pathGenerationResults;
-        }
-
-        private string GetOperationId(string absolutePath, OperationMethod operationMethod)
-        {
-            if (string.IsNullOrEmpty(absolutePath))
-            {
-                throw new ArgumentException(nameof(absolutePath) + " must be specified");
-            }
-
-            var operationId = new StringBuilder(operationMethod.ToString().ToLowerInvariant());
-
-            foreach (var segment in absolutePath.Split('/'))
-            {
-                if (string.IsNullOrEmpty(segment))
-                {
-                    continue;
-                }
-
-                var current = string.Empty;
-
-                // In order to build an operation id, extract the path parameters
-                // and prepend By to these before adding them to the operationId.
-                // e.g. for GET /v6/products/{productId} -> getV6ProductsByProductId 
-                if (segment.Contains("{"))
-                {
-                    var matches = new Regex(@"\{(.*?)\}").Matches(segment);
-
-                    if (matches.Count > 0)
-                    {
-                        foreach (Match match in matches)
-                        {
-                            current += "By" + match.Groups[1].Value.ToTitleCase();
-                        }
-                    }
-                }
-                else
-                {
-                    current = segment.ToTitleCase();
-                }
-
-                // Open api spec recommends to follow common programming naming conventions for operation Id
-                // So only allow alphabets or alphanumerics.
-                operationId.Append(Regex.Replace(current, "[^a-zA-Z0-9]", string.Empty));
-            }
-
-            return operationId.ToString();
-        }
-
-        /// <summary>
-        /// Extracts the operation method from the operation element
-        /// </summary>
-        /// <exception cref="InvalidVerbException">Thrown if the verb is missing or has invalid format.</exception>
-        private static OperationMethod GetOperationMethod(
-            string url,
-            XElement operationElement)
-        {
-            var verbElement = operationElement.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Verb);
-
-            var verb = verbElement?.Value.Trim();
-
-            OperationMethod operationMethod;
-
-            if (Enum.TryParse(verb, true, out operationMethod))
-            {
-                return operationMethod;
-            }
-
-            throw new InvalidVerbException(verb);
-        }
-
-        /// <summary>
-        /// Extracts the URL from the operation element
-        /// </summary>
-        /// <exception cref="InvalidUrlException">Thrown if the URL is missing or has invalid format.</exception>
-        private static string GetUrl(
-            XElement operationElement)
-        {
-            var urls = operationElement.Elements(KnownXmlStrings.Url).Select(i => i.Value);
-
-            // Can't process further if no url is documented, so skip the operation.
-            var url = urls.FirstOrDefault();
-
-            if (url == null)
-            {
-                throw new InvalidUrlException(
-                    url,
-                    SpecificationGenerationMessages.NullUrl);
-            }
-
-            try
-            {
-                url = HttpUtility.UrlDecode(new Uri(url).AbsolutePath);
-            }
-            catch (UriFormatException)
-            {
-                throw new InvalidUrlException(
-                    url,
-                    SpecificationGenerationMessages.MalformattedUrl);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidUrlException(
-                    url,
-                    e.Message);
-            }
-
-            return url;
         }
     }
 }

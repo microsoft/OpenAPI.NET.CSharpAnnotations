@@ -8,11 +8,10 @@
   <operation>
     <annotation tag="Sample V1">
       <param name="SampleAddedHeaderParam" required="false" cref="T:System.String" in="header">Added Header Param.</param>
-      <param name="SampleAddedPathParam" required="false" cref="T:System.String" in="path">Added Path Param.</param>
+      <param name="SampleAddedQueryParam" required="false" cref="T:System.String" in="query">Added Query Param.</param>
     </annotation>
     <annotation tag="Sample V2">
       <param name="SampleAddedHeaderParamV2" required="false" cref="T:System.String" in="header">Added Header Param.</param>
-      <param name="SampleAddedPathParamV2" required="false" cref="T:System.String" in="path">Added Path Param.</param>
       <param name="SampleAddedQueryParamV2" required="false" cref="T:System.String" in="query">Added Query Param.</param>
       <group>
         Added Group.
