@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9FCE4F1B-304E-414E-A74B-A38D07248AB3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.OpenApiSpecification.Core</RootNamespace>
+    <AssemblyName>Microsoft.OpenApiSpecification.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Callback.cs" />
+    <Compile Include="Models\IExtensible.cs" />
+    <Compile Include="Models\Paths.cs" />
+    <Compile Include="Models\Example.cs" />
+    <Compile Include="Models\IReferenceable.cs" />
+    <Compile Include="Models\Components.cs" />
+    <Compile Include="Models\Contact.cs" />
+    <Compile Include="Models\Discriminator.cs" />
+    <Compile Include="Models\Encoding.cs" />
+    <Compile Include="Models\ExternalDocumentation.cs" />
+    <Compile Include="Models\Header.cs" />
+    <Compile Include="Models\Info.cs" />
+    <Compile Include="Models\ParameterKind.cs" />
+    <Compile Include="Models\License.cs" />
+    <Compile Include="Models\MediaType.cs" />
+    <Compile Include="Models\OpenApiV3SpecificationDocument.cs" />
+    <Compile Include="Models\OperationMethod.cs" />
+    <Compile Include="Models\PathItem.cs" />
+    <Compile Include="Models\Parameter.cs" />
+    <Compile Include="Models\RequestBody.cs" />
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Schema.cs" />
+    <Compile Include="Models\SecurityRequirement.cs" />
+    <Compile Include="Models\Server.cs" />
+    <Compile Include="Models\Operation.cs" />
+    <Compile Include="Models\ServerVariable.cs" />
+    <Compile Include="Models\Tag.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\EmptyCollectionContractResolver.cs" />
+    <Compile Include="Serialization\ExtensibleJsonConverter.cs" />
+    <Compile Include="Serialization\PathItemJsonConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,4 @@
+﻿{
+    "$ref":
+        "#/components/schemas/Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest.ISampleGenericType_System.String-Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleType_"
+}

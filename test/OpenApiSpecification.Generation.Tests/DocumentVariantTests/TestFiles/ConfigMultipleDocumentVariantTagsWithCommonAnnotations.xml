@@ -1,0 +1,24 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <document>
+    <variant>
+      <name>swagger</name>
+      <options>
+        <option security="sg1" version="V2">Group1</option>
+        <option security="sgnotexist" version="V2">Group2</option>
+      </options>
+    </variant>
+    <variant>
+      <name>swagger2</name>
+      <options>
+        <option security="sg1" version="V2">Group1</option>
+        <option security="sgnotexist" version="V2">Group2</option>
+      </options>
+    </variant>
+  </document>
+  <operation>
+    <annotation tag="$default">
+      <param name="SampleAddedHeaderParam" required="false" cref="T:System.String" in="header">Added Header Param.</param>
+    </annotation>
+  </operation>
+</configuration>

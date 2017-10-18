@@ -1,0 +1,15 @@
+﻿{
+    "Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleGenericType_System.String_": {
+        "properties": {
+            "SamplePropertyGeneric": {
+                "readOnly": false,
+                "type": "string"
+            },
+            "SamplePropertyString": {
+                "readOnly": false,
+                "type": "string"
+            }
+        },
+        "type": "object"
+    }
+}

@@ -1,0 +1,7 @@
+﻿{
+    "type": "string",
+    "format": "uuid",
+    "maxLength": 36,
+    "minLength": 36,
+    "example": "00000000-0000-0000-0000-000000000000"
+}

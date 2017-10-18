@@ -1,0 +1,19 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <document>
+    <variant>
+      <name>swagger</name>
+    </variant>
+  </document>
+  <operation>
+    <annotation tag="$default">
+      <param name="SampleAddedHeaderParam" required="false" cref="T:System.String" in="header">Added Header Param.</param>
+      <param name="SampleAddedQueryParam" required="false" cref="T:System.String" in="query">Added Query Param.</param>
+    </annotation>
+    <annotation tag="$default">
+      <group>
+        Added Group.
+      </group>
+    </annotation>
+  </operation>
+</configuration>

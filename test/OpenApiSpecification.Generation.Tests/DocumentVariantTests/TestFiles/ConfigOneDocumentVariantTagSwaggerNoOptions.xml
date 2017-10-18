@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <document>
+    <variant>
+      <name>swagger</name>
+    </variant>
+  </document>
+  <operation>
+  </operation>
+</configuration>
