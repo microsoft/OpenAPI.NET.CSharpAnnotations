@@ -13,7 +13,7 @@ using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
 namespace Microsoft.OpenApiSpecification.Generation
 {
     /// <summary>
-    /// Holds the configuration used to perform generation.
+    /// Holds the configuration needed for the generator including filters.
     /// </summary>
     public class OpenApiDocumentGeneratorConfig
     {
