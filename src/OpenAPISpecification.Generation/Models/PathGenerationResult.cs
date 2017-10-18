@@ -21,68 +21,45 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="PathGenerationResult"/>
+        /// Initializes a new instance of <see cref="PathGenerationResult"/> based on the other instance.
         /// </summary>
-        /// <param name="message">The generation message.</param>
-        /// <param name="generationStatus">The generation status.</param>
-        public PathGenerationResult(string message, GenerationStatus generationStatus) : this(
-            null,
-            null,
-            message,
-            generationStatus)
+        public PathGenerationResult(PathGenerationResult other)
         {
+            OperationMethod = other.OperationMethod;
+            Path = other.Path;
+            Message = other.Message;
+            ExceptionType = other.ExceptionType;
+            GenerationStatus = other.GenerationStatus;
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="PathGenerationResult"/>.
+        /// The type name of the exception.
         /// </summary>
-        /// <param name="pathGenerationResult">The path generation result to copy from.</param>
-        public PathGenerationResult(PathGenerationResult pathGenerationResult) : this(
-            pathGenerationResult.OperationMethod,
-            pathGenerationResult.Path,
-            pathGenerationResult.Message,
-            pathGenerationResult.GenerationStatus)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="PathGenerationResult"/>.
-        /// </summary>
-        /// <param name="operationMethod">The operation method</param>
-        /// <param name="path">The path.</param>
-        /// <param name="message">The generation message.</param>
-        /// <param name="generationStatus">The generation status.</param>
-        public PathGenerationResult(string operationMethod, string path, string message, GenerationStatus generationStatus)
-        {
-            OperationMethod = operationMethod;
-            Path = path;
-            Message = message;
-            GenerationStatus = generationStatus;
-        }
+        public Type ExceptionType { get; set; }
 
         /// <summary>
         /// The generation status for the path.
         /// </summary>
         [JsonProperty]
-        public GenerationStatus GenerationStatus { get; internal set; }
+        public GenerationStatus GenerationStatus { get; set; }
 
         /// <summary>
         /// The message providing details on the generation.
         /// </summary>
         [JsonProperty]
-        public string Message { get; internal set; }
+        public string Message { get; set; }
 
         /// <summary>
         /// The path.
         /// </summary>
         [JsonProperty]
-        public string OperationMethod { get; internal set; }
+        public string OperationMethod { get; set; }
 
         /// <summary>
         /// The path.
         /// </summary>
         [JsonProperty]
-        public string Path { get; internal set; }
+        public string Path { get; set; }
 
         /// <summary>
         /// Determines whether this equals to the other object.
@@ -95,12 +72,6 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         }
 
         /// <summary>
-        /// Gets the hash code of this path generation result.
-        /// </summary>
-        public override int GetHashCode() => 
-            new {OperationMethod, GenerationStatus, Message, Path}.GetHashCode();
-
-        /// <summary>
         /// Determines whether this equals to the other path generation result.
         /// </summary>
         public bool Equals(PathGenerationResult other)
@@ -111,5 +82,11 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
                 Message == other.Message &&
                 Path == other.Path;
         }
+
+        /// <summary>
+        /// Gets the hash code of this path generation result.
+        /// </summary>
+        public override int GetHashCode() =>
+            new {OperationMethod, GenerationStatus, Message, Path}.GetHashCode();
     }
 }

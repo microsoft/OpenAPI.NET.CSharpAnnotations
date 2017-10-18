@@ -17,6 +17,8 @@ namespace Microsoft.OpenApiSpecification.Generation.Models.KnownStrings
         public const string In = "in";
         public const string IsRequired = "isRequired";
         public const string Name = "name";
+        public const string Option = "option";
+        public const string Options = "options";
         public const string Param = "param";
         public const string Path = "path";
         public const string Query = "query";
@@ -28,11 +30,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Models.KnownStrings
         public const string Tag = "tag";
         public const string Type = "type";
         public const string Url = "url";
+        public const string Variant = "variant";
         public const string Verb = "verb";
 
         public static string[] AllowedInValues => new[] {Header, Path, Query, Body};
 
         // "body" in attribute is translated to a requestBody instead of a parameter.
-        public static string[] InValuesTranslatableToParameter => new[] { Header, Path, Query };
+        public static string[] InValuesTranslatableToParameter => new[] {Header, Path, Query};
     }
 }

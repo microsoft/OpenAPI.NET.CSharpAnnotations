@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
+using Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Models;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
@@ -19,6 +20,12 @@ namespace Microsoft.OpenApiSpecification.Generation
     /// </summary>
     public class OpenApiDocumentGenerator : IOpenApiDocumentGenerator
     {
+        private static readonly IList<IDocumentConfigFilter> _defaultDocumentConfigFilters =
+            new List<IDocumentConfigFilter>
+            {
+                new ApplyDocumentVariantAttributesFilter()
+            };
+
         private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
             new ApplyAssemblyNameAsInfoFilter(),
@@ -26,10 +33,11 @@ namespace Microsoft.OpenApiSpecification.Generation
             new ApplyMemberSummaryAsSchemaDescriptionFilter()
         };
 
-        private static readonly IList<IOperationConfigFilter> _defaultOperationConfigFilters = new List<IOperationConfigFilter>
-        {
-            new ApplyCommonAnnotationFilter()
-        };
+        private static readonly IList<IOperationConfigFilter> _defaultOperationConfigFilters =
+            new List<IOperationConfigFilter>
+            {
+                new ApplyCommonAnnotationFilter()
+            };
 
         private static readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
         {
@@ -45,7 +53,8 @@ namespace Microsoft.OpenApiSpecification.Generation
         private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig(
             _defaultOperationFilters,
             _defaultDocumentFilters,
-            _defaultOperationConfigFilters);
+            _defaultOperationConfigFilters,
+            _defaultDocumentConfigFilters);
 
         /// <summary>
         /// Creates new instance of <see cref="OpenApiDocumentGenerator"/> with provided generator settings.
@@ -64,7 +73,8 @@ namespace Microsoft.OpenApiSpecification.Generation
             _generatorConfig = new OpenApiDocumentGeneratorConfig(
                 _defaultOperationFilters,
                 _defaultDocumentFilters,
-                _defaultOperationConfigFilters);
+                _defaultOperationConfigFilters,
+                _defaultDocumentConfigFilters);
         }
 
         /// <summary>

@@ -75,13 +75,29 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
+    <Compile Include="DocumentVariantTests\DocumentVariantTestCases.cs" />
     <Compile Include="OperationConfigTests\OperationConfigTest.cs" />
     <Compile Include="DefaultSettingsFixtureCollection.cs" />
     <Compile Include="DefaultSettingsFixture.cs" />
     <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
     <Compile Include="InternalOpenApiDocumentGeneratorTests\InternalOpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="DocumentVariantTests\TestFiles\AnnotationWithVariantAttributesConflictWithConfig.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\AnnotationWithVariantAttributesConflictWithSelf.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\AnnotationWithVariantAttributes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="DocumentVariantTests\TestFiles\ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\ConfigOneDocumentVariantTagSwagger2NoOptions.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\TestFiles\ConfigOneDocumentVariantTagSwaggerNoOptions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\TestFiles\ConfigOneDocumentVariantTag.xml">

@@ -156,18 +156,21 @@
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <!-- Path param {id} is not documented -->
-      <!-- ///////////////////////////////// -->
+      <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
-      
       <response code="200">
         <see cref="T:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject1"/>Sample object retrieved
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
+      <!-- The custom swagger tags for Group1 and Group 2 -->
       <swagger>Group1</swagger>
       <swagger>Group2</swagger>
+      <!-- ////////////////////////////////////////////// -->
+      <!-- The custom swagger2 tags for Group1 with attributes conflicting with another swagger2 Group1 tag below -->
+      <swagger2 security="sg1" version="V2">Group1</swagger2>
+      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
       <returns>The sample object 1</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SampleGet2">
@@ -186,6 +189,9 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
+      <!-- The custom swagger2 tags for Group1 with attributes conflicting with another swagger2 Group1 tag above -->
+      <swagger2 security="sg1" version="VConflict">Group1</swagger2>
+      <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
       <returns>The sample object 3</returns>
     </member>
     <member name="M:OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers.SampleControllerV1.SamplePost(OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts.SampleObject3)">

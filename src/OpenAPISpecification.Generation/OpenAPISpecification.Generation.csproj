@@ -45,12 +45,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDomainCreator.cs" />
-    <Compile Include="ConfigFilters\ApplyCommonAnnotationFilter.cs" />
-    <Compile Include="ConfigFilters\IOperationConfigFilter.cs" />
-    <Compile Include="ConfigFilters\OperationConfigFilterSettings.cs" />
+    <Compile Include="DocumentConfigFilters\ApplyDocumentVariantAttributesFilter.cs" />
     <Compile Include="DocumentFilters\ApplyMemberSummaryAsSchemaDescriptionFilter.cs" />
     <Compile Include="DocumentFilters\DocumentFilterSettings.cs" />
+    <Compile Include="Exceptions\ConflictingDocumentVariantAttributesException.cs" />
+    <Compile Include="Exceptions\InvalidVerbException.cs" />
+    <Compile Include="Exceptions\InvalidUrlException.cs" />
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
+    <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
+    <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
+    <Compile Include="OperationConfigFilters\ApplyCommonAnnotationFilter.cs" />
+    <Compile Include="OperationConfigFilters\IOperationConfigFilter.cs" />
+    <Compile Include="OperationConfigFilters\OperationConfigFilterSettings.cs" />
     <Compile Include="Exceptions\UndocumentedGenericTypeException.cs" />
     <Compile Include="Exceptions\ConflictingPathAndQueryParametersException.cs" />
     <Compile Include="Exceptions\UnorderedGenericTypeException.cs" />

@@ -12,7 +12,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Exceptions
     /// The exception that is thrown when there is an undocumented generic type in the xml documentation.
     /// </summary>
     [Serializable]
-    internal class UndocumentedGenericTypeException : DocumentationException
+    public class UndocumentedGenericTypeException : DocumentationException
     {
         /// <summary>
         /// Default undocumented generic type exception.
@@ -31,7 +31,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the UndocumentedGenericTypeException class with serialized data.
+        /// Initializes a new instance of the <see cref="UndocumentedGenericTypeException"/> class with serialized data.
         /// </summary>
         /// <param name="info">Serialization info.</param>
         /// <param name="context">Streaming context.</param>

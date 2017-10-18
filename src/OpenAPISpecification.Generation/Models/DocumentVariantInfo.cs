@@ -4,7 +4,11 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Microsoft.OpenApiSpecification.Generation.Models
 {
@@ -15,6 +19,12 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
     {
         private static readonly DocumentVariantInfo _defaultSpecificationDocumentVariantInfo
             = new DocumentVariantInfo();
+
+        /// <summary>
+        /// Gets or sets the other attributes related to this document variant.
+        /// </summary>
+        [JsonProperty]
+        public IDictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the categorizer used to fork the document.
@@ -33,6 +43,15 @@ namespace Microsoft.OpenApiSpecification.Generation.Models
         /// </summary>
         [JsonProperty]
         public string Title { get; set; }
+
+        /// <summary>
+        /// Determines whether this <see cref="Attributes"/> are equivalent to the <see cref="Attributes"/>
+        /// in the other document variant info.
+        /// </summary>
+        public bool AreAttributesEquivalent(DocumentVariantInfo documentVariantInfo)
+        {
+            return this.Attributes.EquivalentTo(documentVariantInfo.Attributes);
+        }
 
         /// <summary>
         /// Determines whether this object is equal to the given object.

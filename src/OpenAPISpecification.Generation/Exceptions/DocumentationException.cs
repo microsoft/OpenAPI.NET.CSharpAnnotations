@@ -39,7 +39,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the DocumentationException class with serialized data.
+        /// Initializes a new instance of the <see cref="DocumentationException"/> class with serialized data.
         /// </summary>
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>

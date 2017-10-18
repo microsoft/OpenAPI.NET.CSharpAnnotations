@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
+using Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 
@@ -21,25 +22,33 @@ namespace Microsoft.OpenApiSpecification.Generation
         /// <param name="operationFilters">The operation filers.</param>
         /// <param name="documentFilters">The document filters.</param>
         /// <param name="operationConfigFilters">The operation config filters.</param>
+        /// <param name="documentConfigFilters">The document config filters.</param>
         public OpenApiDocumentGeneratorConfig(
             IList<IOperationFilter> operationFilters,
             IList<IDocumentFilter> documentFilters,
-            IList<IOperationConfigFilter> operationConfigFilters)
+            IList<IOperationConfigFilter> operationConfigFilters,
+            IList<IDocumentConfigFilter> documentConfigFilters)
         {
             OperationFilters = operationFilters;
             DocumentFilters = documentFilters;
             OperationConfigFilters = operationConfigFilters;
+            DocumentConfigFilters = documentConfigFilters;
         }
 
         /// <summary>
-        /// Gets the list of operation config filters.
+        /// Gets the list of document config filters.
         /// </summary>
-        public IList<IOperationConfigFilter> OperationConfigFilters { get; }
+        public IList<IDocumentConfigFilter> DocumentConfigFilters { get; }
 
         /// <summary>
         /// Gets the list of document filters.
         /// </summary>
         public IList<IDocumentFilter> DocumentFilters { get; }
+
+        /// <summary>
+        /// Gets the list of operation config filters.
+        /// </summary>
+        public IList<IOperationConfigFilter> OperationConfigFilters { get; }
 
         /// <summary>
         /// Gets the list of operation filters.

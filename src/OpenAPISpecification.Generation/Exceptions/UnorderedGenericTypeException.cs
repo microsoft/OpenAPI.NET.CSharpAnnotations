@@ -40,7 +40,7 @@ namespace Microsoft.OpenApiSpecification.Generation.Exceptions
         }
 
         /// <summary>
-        /// Initializes a new instance of the UnorderedGenericTypeException class with serialized data.
+        /// Initializes a new instance of the <see cref="UnorderedGenericTypeException"/> class with serialized data.
         /// </summary>
         /// <param name="info">Serialization info.</param>
         /// <param name="context">Streaming context.</param>

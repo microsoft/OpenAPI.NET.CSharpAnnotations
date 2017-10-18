@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0"?>
 <configuration>
   <document>
-    <variant>swagger</variant>
+    <variant>
+      <name>swagger</name>
+    </variant>
   </document>
   <operation>
     <annotation tag="Sample V1">

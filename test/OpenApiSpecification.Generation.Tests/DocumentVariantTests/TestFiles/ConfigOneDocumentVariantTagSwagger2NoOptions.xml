@@ -2,7 +2,7 @@
 <configuration>
   <document>
     <variant>
-      <name>swagger</name>
+      <name>swagger2</name>
     </variant>
   </document>
   <operation>
