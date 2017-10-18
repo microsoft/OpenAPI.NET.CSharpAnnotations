@@ -12,7 +12,7 @@ namespace Microsoft.OpenApiSpecification.Generation.DocumentFilters
     /// <summary>
     /// Parses the value of assembly tag in xml documentation and apply that as info in Open Api V3 specification document.
     /// </summary>
-    public class ApplyAssemblyNameAsInfoFilter : IDocumentFilter
+    public class AssemblyNameToInfoFilter : IDocumentFilter
     {
         /// <summary>
         /// Fetches the value of "assembly" tag from xml documentation and use it to populate

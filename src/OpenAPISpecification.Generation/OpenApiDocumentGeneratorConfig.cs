@@ -4,9 +4,9 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
+using Microsoft.OpenApiSpecification.Generation.OperationConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
 

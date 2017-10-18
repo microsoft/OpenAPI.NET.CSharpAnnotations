@@ -9,12 +9,12 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.ConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
 using Microsoft.OpenApiSpecification.Generation.Exceptions;
 using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApiSpecification.Generation.OperationConfigFilters;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
 using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
@@ -30,38 +30,38 @@ namespace Microsoft.OpenApiSpecification.Generation
         private static readonly IList<IDocumentConfigFilter> _defaultDocumentConfigFilters =
             new List<IDocumentConfigFilter>
             {
-                new ApplyDocumentVariantAttributesFilter()
+                new DocumentVariantAttributesFilter()
             };
 
         private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
-            new ApplyAssemblyNameAsInfoFilter(),
-            new ApplyUrlAsServerFilter(),
-            new ApplyMemberSummaryAsSchemaDescriptionFilter()
+            new AssemblyNameToInfoFilter(),
+            new UrlToServerFilter(),
+            new MemberSummaryToSchemaDescriptionFilter()
         };
 
         private static readonly IList<IOperationConfigFilter> _defaultOperationConfigFilters =
             new List<IOperationConfigFilter>
             {
-                new ApplyCommonAnnotationFilter()
+                new CommonAnnotationFilter()
             };
 
         private static readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
         {
-            new ApplyGroupAsTagFilter(),
-            new ApplyParamAsParameterFilter(),
-            new ApplyParamAsRequestBodyFilter(),
-            new ApplyResponseAsResponseFilter(),
-            new ApplyRemarksAsDescriptionFilter(),
-            new ApplySummaryFilter()
+            new GroupToTagFilter(),
+            new ParamToParameterFilter(),
+            new ParamToRequestBodyFilter(),
+            new ResponseToResponseFilter(),
+            new RemarksToDescriptionFilter(),
+            new SummaryToSummaryFilter()
         };
 
         private static readonly IList<IPreprocessingOperationFilter> _defaultPreprocessingOperationFilters =
             new List<IPreprocessingOperationFilter>
             {
-                new ApplyConvertAlternativeParamToParamFilter(),
-                new ApplyPopulateInAttributeFilter(),
-                new ApplyOptionalPathParametersBranchingFilter()
+                new ConvertAlternativeParamTagsFilter(),
+                new PopulateInAttributeFilter(),
+                new BranchOptionalPathParametersFilter()
             };
 
         private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig

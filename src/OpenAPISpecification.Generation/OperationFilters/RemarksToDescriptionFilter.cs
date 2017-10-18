@@ -12,12 +12,12 @@ using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
 {
     /// <summary>
-    /// Parses the value of summary tag in xml documentation and apply that as summary of the operation.
+    /// Parses the value of remarks tag in xml documentation and apply that as description of the operation.
     /// </summary>
-    public class ApplySummaryFilter : IOperationFilter
+    public class RemarksToDescriptionFilter : IOperationFilter
     {
         /// <summary>
-        /// Fetches the value of "summary" tag from xml documentation and populates operation's summary.
+        /// Fetches the value of "remarks" tag from xml documentation and populates operation's description.
         /// </summary>
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
@@ -30,16 +30,17 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
         /// </remarks>
         public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
         {
-            var summaryElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Summary);
+            string description = null;
+            var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Remarks);
 
-            if (summaryElement == null)
+            if (descriptionElement != null)
             {
-                return;
+                description = descriptionElement.Value.Trim().RemoveBlankLines();
             }
 
-            if (string.IsNullOrWhiteSpace(operation.Summary))
+            if (string.IsNullOrWhiteSpace(operation.Description))
             {
-                operation.Summary = summaryElement.Value.Trim().RemoveBlankLines();
+                operation.Description = description;
             }
         }
     }

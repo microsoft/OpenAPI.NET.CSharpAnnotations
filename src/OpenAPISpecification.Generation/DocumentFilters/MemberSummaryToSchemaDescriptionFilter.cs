@@ -17,7 +17,7 @@ namespace Microsoft.OpenApiSpecification.Generation.DocumentFilters
     /// Filter to parse the values from the summary tags for all the properties
     /// to populate descriptions in the schema.
     /// </summary>
-    public class ApplyMemberSummaryAsSchemaDescriptionFilter : IDocumentFilter
+    public class MemberSummaryToSchemaDescriptionFilter : IDocumentFilter
     {
         /// <summary>
         /// Parses the values from the summary for all the properties to populate descriptions in the schema.

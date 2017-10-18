@@ -16,7 +16,7 @@ namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
     /// <summary>
     /// Parses the value of param tag in xml documentation and apply that as request body in operation.
     /// </summary>
-    public class ApplyParamAsRequestBodyFilter : IOperationFilter
+    public class ParamToRequestBodyFilter : IOperationFilter
     {
         /// <summary>
         /// Fetches the value of "param" tags from xml documentation with in valus of "body"

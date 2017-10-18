@@ -75,7 +75,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
-    <Compile Include="FilterTests\BranchOptionalPathParametersFilterTest.cs" />
+    <Compile Include="FilterTests\OptionalPathParametersBranchingFilterTest.cs" />
     <Compile Include="DocumentVariantTests\DocumentVariantTestCases.cs" />
     <Compile Include="OperationConfigTests\OperationConfigTest.cs" />
     <Compile Include="DefaultSettingsFixtureCollection.cs" />
@@ -250,9 +250,9 @@
       <Project>{9fce4f1b-304e-414e-a74b-a38d07248ab3}</Project>
       <Name>OpenApiSpecification.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OpenApiSpecification.Generation\OpenApiSpecification.Generation.csproj">
+    <ProjectReference Include="..\..\src\OpenApiSpecification.Generation\Microsoft.OpenApi.CSharpComment.Reader.csproj">
       <Project>{14d2c330-aaa0-4813-960f-bd3d46d6ce1d}</Project>
-      <Name>OpenApiSpecification.Generation</Name>
+      <Name>Microsoft.OpenApi.CSharpComment.Reader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

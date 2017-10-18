@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 
-namespace Microsoft.OpenApiSpecification.Generation.ConfigFilters
+namespace Microsoft.OpenApiSpecification.Generation.OperationConfigFilters
 {
     /// <summary>
     /// Settings for <see cref="IOperationConfigFilter"/>.

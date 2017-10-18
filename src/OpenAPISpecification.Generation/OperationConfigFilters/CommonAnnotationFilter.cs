@@ -9,12 +9,12 @@ using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
-namespace Microsoft.OpenApiSpecification.Generation.ConfigFilters
+namespace Microsoft.OpenApiSpecification.Generation.OperationConfigFilters
 {
     /// <summary>
     /// Parses the value of the annotation nodes in operation-level config and applies them to the specified operations.
     /// </summary>
-    public class ApplyCommonAnnotationFilter : IOperationConfigFilter
+    public class CommonAnnotationFilter : IOperationConfigFilter
     {
         /// <summary>
         /// Fetches the annotations specified in the operation-level config and applies them to the specified operations.

@@ -13,7 +13,7 @@ namespace Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilter
     /// <summary>
     /// Converts the alternative param tags (queryParam, pathParam, header) to standard param tags.
     /// </summary>
-    public class ApplyConvertAlternativeParamToParamFilter : IPreprocessingOperationFilter
+    public class ConvertAlternativeParamTagsFilter : IPreprocessingOperationFilter
     {
         /// <summary>
         /// Converts the alternative param tags (queryParam, pathParam, header) to standard param tags.
