@@ -16,7 +16,7 @@ using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
 namespace Microsoft.OpenApiSpecification.Generation
 {
-    internal static class OperationHandler
+    internal static class OperationHandler 
     {
         /// <summary>
         /// Gets the operation id by parsing segments out of the absolute path.
