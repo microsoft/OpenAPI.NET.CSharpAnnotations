@@ -5,10 +5,10 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
 {
     /// <summary>
     /// The class representing the contract of a document config filter.

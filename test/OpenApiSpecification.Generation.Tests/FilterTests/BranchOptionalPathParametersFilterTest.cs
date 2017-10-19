@@ -6,12 +6,12 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using FluentAssertions;
-using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests.FilterTests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.FilterTests
 {
     [Collection("DefaultSettings")]
     public class BranchOptionalPathParametersFilterTest

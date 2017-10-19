@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Microsoft.OpenApiSpecification.Generation
+namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
     /// Creates a seperate app domain.

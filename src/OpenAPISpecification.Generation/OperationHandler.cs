@@ -9,12 +9,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Exceptions;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
-namespace Microsoft.OpenApiSpecification.Generation
+namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     internal static class OperationHandler
     {

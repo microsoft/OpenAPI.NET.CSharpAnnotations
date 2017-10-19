@@ -8,13 +8,13 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Models;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 {
     [Collection("DefaultSettings")]
     public class DocumentVariantTest

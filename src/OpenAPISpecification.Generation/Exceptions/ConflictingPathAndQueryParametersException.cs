@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.OpenApiSpecification.Generation.Exceptions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when the URL contains the same parameter in both path and query.

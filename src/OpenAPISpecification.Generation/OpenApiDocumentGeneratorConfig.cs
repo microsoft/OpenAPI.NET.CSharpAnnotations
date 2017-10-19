@@ -4,13 +4,13 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters;
-using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
-using Microsoft.OpenApiSpecification.Generation.OperationConfigFilters;
-using Microsoft.OpenApiSpecification.Generation.OperationFilters;
-using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 
-namespace Microsoft.OpenApiSpecification.Generation
+namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
     /// Holds the configuration needed for the generator including filters.

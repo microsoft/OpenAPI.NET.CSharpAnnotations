@@ -7,13 +7,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using FluentAssertions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Models;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests.OperationConfigTests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
 {
     [Collection("DefaultSettings")]
     public class OperationConfigTest

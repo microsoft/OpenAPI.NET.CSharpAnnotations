@@ -5,9 +5,9 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation
+namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
     /// The contract for open api document generator.

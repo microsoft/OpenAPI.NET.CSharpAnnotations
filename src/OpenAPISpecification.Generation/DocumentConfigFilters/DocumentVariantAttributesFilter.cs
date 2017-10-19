@@ -3,18 +3,15 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Exceptions;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models;
-using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
-using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
 {
     /// <summary>
     /// Populate the <see cref="DocumentVariantInfo.Attributes"/>.

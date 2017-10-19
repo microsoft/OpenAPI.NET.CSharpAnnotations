@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using Microsoft.OpenApiSpecification.Core.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
+namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
     /// Reference Registry for an <see cref="IReferenceable"/> class.

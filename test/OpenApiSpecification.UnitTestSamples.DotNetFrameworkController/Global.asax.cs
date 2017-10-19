@@ -8,7 +8,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis
 {
     /// <summary>
     /// Web API Application.

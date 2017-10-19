@@ -6,7 +6,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.Models
+namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
     /// Model representing the generation result for the path.

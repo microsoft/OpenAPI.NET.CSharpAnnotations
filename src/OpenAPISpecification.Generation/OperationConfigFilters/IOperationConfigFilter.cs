@@ -6,7 +6,7 @@
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.OperationConfigFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
 {
     /// <summary>
     /// The class representing the contract of an operation config filter.

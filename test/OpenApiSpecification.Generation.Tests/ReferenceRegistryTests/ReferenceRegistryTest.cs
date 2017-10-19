@@ -7,13 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
+using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests.ReferenceRegistryTests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests
 {
     [Collection("DefaultSettings")]
     public class ReferenceRegistryTest

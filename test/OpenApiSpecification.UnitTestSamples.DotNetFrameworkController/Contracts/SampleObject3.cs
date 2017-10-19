@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts
 {
     /// <summary>
     /// Sample contract for object 3

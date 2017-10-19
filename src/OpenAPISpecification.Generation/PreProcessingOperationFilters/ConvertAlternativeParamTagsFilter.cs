@@ -5,10 +5,10 @@
 
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
-namespace Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
 {
     /// <summary>
     /// Converts the alternative param tags (queryParam, pathParam, header) to standard param tags.

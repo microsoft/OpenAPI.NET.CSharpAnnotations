@@ -3,7 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.OpenApiSpecification.Generation.Models
+namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
     /// Simple string pair that represents a data type and format pairing specific to Open API Specification.

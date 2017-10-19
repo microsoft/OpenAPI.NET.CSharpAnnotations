@@ -6,10 +6,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation
+namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
     /// The class that holds functionality to generate open api document.

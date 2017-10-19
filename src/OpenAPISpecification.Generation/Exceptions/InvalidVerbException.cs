@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.OpenApiSpecification.Generation.Exceptions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
 {
     /// <summary>
     /// The exception that is recorded when a verb that is missing or 

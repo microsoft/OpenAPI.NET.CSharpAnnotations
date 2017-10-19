@@ -8,7 +8,7 @@ using System.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.Models
+namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
     /// The class to store the open api document generation result.

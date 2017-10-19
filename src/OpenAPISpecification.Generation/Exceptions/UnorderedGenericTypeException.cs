@@ -6,7 +6,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Microsoft.OpenApiSpecification.Generation.Exceptions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when generic types are not documented in order in the xml documentation.

@@ -6,12 +6,12 @@
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.DocumentFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 {
     /// <summary>
     /// Filter to parse the values from the summary tags for all the properties

@@ -4,9 +4,9 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Generation.OperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 
-namespace Microsoft.OpenApiSpecification.Generation.OperationConfigFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
 {
     /// <summary>
     /// Settings for <see cref="IOperationConfigFilter"/>.

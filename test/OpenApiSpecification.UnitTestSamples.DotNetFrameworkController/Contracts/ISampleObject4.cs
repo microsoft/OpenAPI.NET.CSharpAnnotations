@@ -5,7 +5,7 @@
 
 using Newtonsoft.Json;
 
-namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts
 {
     /// <summary>
     /// Interface Sample Object 4

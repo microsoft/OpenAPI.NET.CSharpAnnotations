@@ -3,7 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.OpenApiSpecification.Generation.Models
+namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
     /// The enum representing various generation status.

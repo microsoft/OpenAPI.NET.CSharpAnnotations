@@ -3,12 +3,11 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
 using FluentAssertions;
 using Microsoft.OpenApiSpecification.Core.Serialization;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests
 {
     /// <summary>
     /// Fixture containing default settings for external libraries.

@@ -6,7 +6,7 @@
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.DocumentFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 {
     /// <summary>
     /// The class representing the contract of a Document filter

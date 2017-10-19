@@ -9,10 +9,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.OpenApiSpecification.Generation.Exceptions;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 
-namespace Microsoft.OpenApiSpecification.Generation
+namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
     /// Proxy class for fetching type information by loading assemblies into private AppDomain.

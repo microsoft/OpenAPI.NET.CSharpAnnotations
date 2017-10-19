@@ -3,7 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts
 {
     /// <summary>
     /// Sample enum 1

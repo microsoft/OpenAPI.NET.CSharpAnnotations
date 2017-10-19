@@ -4,10 +4,10 @@
 // ------------------------------------------------------------
 
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.OperationFilters;
 
-namespace Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
 {
     /// <summary>
     /// The class representing the contract of a filter to preprocess the <see cref="Operation"/> objects in <see cref="Paths"/>

@@ -5,7 +5,7 @@
 
 using Xunit;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests
 {
     /// <summary>
     /// Collection dummy class for <see cref="DefaultSettingsFixture"/>.

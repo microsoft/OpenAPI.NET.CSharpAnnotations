@@ -8,19 +8,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters;
-using Microsoft.OpenApiSpecification.Generation.DocumentFilters;
-using Microsoft.OpenApiSpecification.Generation.Exceptions;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models;
-using Microsoft.OpenApiSpecification.Generation.OperationConfigFilters;
-using Microsoft.OpenApiSpecification.Generation.OperationFilters;
-using Microsoft.OpenApiSpecification.Generation.PreProcessingOperationFilters;
-using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation
+namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
     /// Provides functionality to parse xml into OpenApiV3Specification

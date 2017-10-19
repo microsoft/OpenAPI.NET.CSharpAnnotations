@@ -6,10 +6,10 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
-namespace Microsoft.OpenApiSpecification.Generation.OperationConfigFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
 {
     /// <summary>
     /// Parses the value of the annotation nodes in operation-level config and applies them to the specified operations.

@@ -6,7 +6,7 @@
 using System;
 using Microsoft.OpenApiSpecification.Core.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
+namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
     /// A class encapsulating reference registries for all <see cref="IReferenceable"/> types.

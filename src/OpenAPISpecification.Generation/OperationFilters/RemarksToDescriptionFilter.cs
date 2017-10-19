@@ -5,11 +5,11 @@
 
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
-using Microsoft.OpenApiSpecification.Generation.Models.KnownStrings;
 
-namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
     /// <summary>
     /// Parses the value of remarks tag in xml documentation and apply that as description of the operation.

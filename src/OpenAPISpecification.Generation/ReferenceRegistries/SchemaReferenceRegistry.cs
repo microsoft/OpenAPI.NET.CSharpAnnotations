@@ -6,11 +6,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.ReferenceRegistries
+namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
     /// Reference Registry for <see cref="Schema"/>

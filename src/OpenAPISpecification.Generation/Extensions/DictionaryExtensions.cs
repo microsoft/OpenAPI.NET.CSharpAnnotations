@@ -4,12 +4,10 @@
 // ------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
-namespace Microsoft.OpenApiSpecification.Generation.Extensions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="IDictionary{TKey,TValue}"/>.

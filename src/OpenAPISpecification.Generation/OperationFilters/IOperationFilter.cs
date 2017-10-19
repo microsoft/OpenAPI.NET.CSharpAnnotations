@@ -6,7 +6,7 @@
 using System.Xml.Linq;
 using Microsoft.OpenApiSpecification.Core.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
     /// <summary>
     /// The class representing the contract of a Operation filter.

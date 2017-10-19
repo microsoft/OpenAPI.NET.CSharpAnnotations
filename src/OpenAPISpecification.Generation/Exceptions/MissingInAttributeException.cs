@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Microsoft.OpenApiSpecification.Generation.Exceptions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when one or more params are missing in attribute and the best effort

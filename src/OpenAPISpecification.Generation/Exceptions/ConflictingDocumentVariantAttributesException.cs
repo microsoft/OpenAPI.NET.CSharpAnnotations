@@ -5,10 +5,10 @@
 
 using System;
 using System.Runtime.Serialization;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.Exceptions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
 {
     /// <summary>
     /// The exception that is thrown when different set of attributes and their values

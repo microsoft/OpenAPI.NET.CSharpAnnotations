@@ -3,9 +3,9 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using Microsoft.OpenApiSpecification.Generation.ReferenceRegistries;
+using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
 
-namespace Microsoft.OpenApiSpecification.Generation.OperationFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
     /// <summary>
     /// Settings for <see cref="IOperationFilter"/>.

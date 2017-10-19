@@ -11,7 +11,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApiSpecification.Core.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.DocumentFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 {
     /// <summary>
     /// Parses the value of url tag in xml documentation and apply that as server in Open Api V3 specification document.

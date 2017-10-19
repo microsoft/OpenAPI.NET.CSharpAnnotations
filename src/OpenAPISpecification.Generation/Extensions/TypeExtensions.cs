@@ -7,9 +7,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 
-namespace Microsoft.OpenApiSpecification.Generation.Extensions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="Type"/>.

@@ -7,8 +7,8 @@
     <ProjectGuid>{4FC8150B-8A9B-4FF9-9213-53AF986CDB30}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.OpenApiSpecification.Generation.Tests</RootNamespace>
-    <AssemblyName>Microsoft.OpenApiSpecification.Generation.Tests</AssemblyName>
+    <RootNamespace>Microsoft.OpenApi.CSharpComment.Reader.Tests</RootNamespace>
+    <AssemblyName>Microsoft.OpenApi.CSharpComment.Reader.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -250,9 +250,9 @@
       <Project>{9fce4f1b-304e-414e-a74b-a38d07248ab3}</Project>
       <Name>OpenApiSpecification.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OpenApiSpecification.Generation\OpenApiSpecification.Generation.csproj">
+    <ProjectReference Include="..\..\src\OpenApiSpecification.Generation\Microsoft.OpenApi.CSharpComment.Reader.csproj">
       <Project>{14d2c330-aaa0-4813-960f-bd3d46d6ce1d}</Project>
-      <Name>OpenApiSpecification.Generation</Name>
+      <Name>Microsoft.OpenApi.CSharpComment.Reader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

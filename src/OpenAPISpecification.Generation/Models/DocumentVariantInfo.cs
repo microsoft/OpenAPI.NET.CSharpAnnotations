@@ -3,14 +3,11 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Generation.Extensions;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace Microsoft.OpenApiSpecification.Generation.Models
+namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
     /// Class encapsulating information for a variant of a document.

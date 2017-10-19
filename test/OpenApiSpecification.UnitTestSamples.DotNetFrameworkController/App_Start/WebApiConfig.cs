@@ -5,7 +5,7 @@
 
 using System.Web.Http;
 
-namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis
 {
     /// <summary>
     /// Web config.

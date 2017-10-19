@@ -7,7 +7,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Microsoft.OpenApiSpecification.Generation.Extensions
+namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
 {
     /// <summary>
     /// Extension methods for <see cref="string"/>.

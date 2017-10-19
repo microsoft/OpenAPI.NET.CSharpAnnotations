@@ -8,14 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApiSpecification.Core.Models;
-using Microsoft.OpenApiSpecification.Generation.Exceptions;
-using Microsoft.OpenApiSpecification.Generation.Models;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests.InternalOpenApiDocumentGeneratorTests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGeneratorTests
 {
     [Collection("DefaultSettings")]
     public class InternalOpenApiDocumentGeneratorTest

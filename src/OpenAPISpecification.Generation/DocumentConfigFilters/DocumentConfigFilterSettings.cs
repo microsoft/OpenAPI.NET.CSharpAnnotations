@@ -3,7 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-namespace Microsoft.OpenApiSpecification.Generation.DocumentConfigFilters
+namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
 {
     /// <summary>
     /// Settings for <see cref="IDocumentConfigFilter"/>.

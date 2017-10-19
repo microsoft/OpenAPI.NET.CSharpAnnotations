@@ -5,11 +5,11 @@
 
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.OpenApiSpecification.Generation.Exceptions;
-using Microsoft.OpenApiSpecification.Generation.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
+using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApiSpecification.Generation.Tests.DocumentVariantTests
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 {
     internal static class DocumentVariantTestCases
     {

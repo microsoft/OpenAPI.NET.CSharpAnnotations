@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Contracts;
+using Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts;
 
-namespace OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.Controllers
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers
 {
     /// <summary>
     /// Defines V3 operations.
