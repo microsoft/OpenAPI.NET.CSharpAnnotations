@@ -250,7 +250,7 @@
       <Project>{9fce4f1b-304e-414e-a74b-a38d07248ab3}</Project>
       <Name>OpenApiSpecification.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\OpenApiSpecification.Generation\Microsoft.OpenApi.CSharpComment.Reader.csproj">
+    <ProjectReference Include="..\..\src\Microsoft.OpenApi.CSharpComment.Reader\Microsoft.OpenApi.CSharpComment.Reader.csproj">
       <Project>{14d2c330-aaa0-4813-960f-bd3d46d6ce1d}</Project>
       <Name>Microsoft.OpenApi.CSharpComment.Reader</Name>
     </ProjectReference>
