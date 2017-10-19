@@ -1,0 +1,18 @@
+﻿{
+    "Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleSelfReferencingType": {
+        "properties": {
+            "SampleSelfReferencingProperty": {
+                "readOnly": false,
+                "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleSelfReferencingType"
+            },
+            "SampleSelfReferencingListProperty": {
+                "items": {
+                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleSelfReferencingType"
+                },
+                "readOnly": false,
+                "type": "array"
+            }
+        },
+        "type": "object"
+    }
+}
