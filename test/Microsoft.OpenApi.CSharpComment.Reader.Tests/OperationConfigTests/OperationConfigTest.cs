@@ -18,8 +18,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
     [Collection("DefaultSettings")]
     public class OperationConfigTest
     {
-        private const string TestFilesDirectory = "OperationConfigTests/TestFiles";
-        private const string TestValidationDirectory = "OperationConfigTests/TestValidation";
+        private const string InputDirectory = "OperationConfigTests/Input";
+        private const string OutputDirectory = "OperationConfigTests/Output";
 
         private readonly ITestOutputHelper _output;
 
@@ -74,19 +74,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "No operation section in config file",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigNoOperation.xml"),
                 7,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationNoOperationConfig.json")
             };
 
@@ -94,19 +94,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Blank operation section in config file",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigBlankOperation.xml"),
                 7,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationBlankOperationConfig.json")
             };
 
@@ -114,19 +114,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Add annotations to all operations",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigApplyToAllOperations.xml"),
                 7,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationApplyToAllOperations.json")
             };
 
@@ -134,19 +134,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Add annotations to some operations",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigApplyToSomeOperations.xml"),
                 7,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationApplyToSomeOperations.json")
             };
 
@@ -154,19 +154,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Add annotations that should be partially overridden",
-                Path.Combine(TestFilesDirectory, "AnnotationSomeMissingSummary.xml"),
+                Path.Combine(InputDirectory, "AnnotationSomeMissingSummary.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigOverridden.xml"),
                 7,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationOverridden.json")
             };
         }

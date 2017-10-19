@@ -20,8 +20,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
     [Collection("DefaultSettings")]
     public class InternalOpenApiDocumentGeneratorTest
     {
-        private const string TestFilesDirectory = "InternalOpenApiDocumentGeneratorTests/TestFiles";
-        private const string TestValidationDirectory = "InternalOpenApiDocumentGeneratorTests/TestValidation";
+        private const string InputDirectory = "InternalOpenApiDocumentGeneratorTests/Input";
+        private const string OutputDirectory = "InternalOpenApiDocumentGeneratorTests/Output";
 
         private readonly ITestOutputHelper _output;
 
@@ -36,16 +36,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Invalid Verb",
-                Path.Combine(TestFilesDirectory, "AnnotationInvalidVerb.xml"),
+                Path.Combine(InputDirectory, "AnnotationInvalidVerb.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationInvalidVerb.Json"),
                 new List<PathGenerationResult>
                 {
@@ -64,16 +64,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Invalid Uri",
-                Path.Combine(TestFilesDirectory, "AnnotationInvalidUri.xml"),
+                Path.Combine(InputDirectory, "AnnotationInvalidUri.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationInvalidUri.Json"),
                 new List<PathGenerationResult>
                 {
@@ -95,16 +95,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Parameters Without In Attribute And Not Present In URL",
-                Path.Combine(TestFilesDirectory, "AnnotationParamWithoutInNotPresentInUrl.xml"),
+                Path.Combine(InputDirectory, "AnnotationParamWithoutInNotPresentInUrl.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationParamWithoutInNotPresentInUrl.Json"),
                 new List<PathGenerationResult>
                 {
@@ -125,16 +125,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Conflicting Path and Query Parameters",
-                Path.Combine(TestFilesDirectory, "AnnotationConflictingPathAndQueryParameters.xml"),
+                Path.Combine(InputDirectory, "AnnotationConflictingPathAndQueryParameters.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationConflictingPathAndQueryParameters.Json"),
                 new List<PathGenerationResult>
                 {
@@ -156,16 +156,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Path Parameter Undocumented",
-                Path.Combine(TestFilesDirectory, "AnnotationUndocumentedPathParam.xml"),
+                Path.Combine(InputDirectory, "AnnotationUndocumentedPathParam.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationUndocumentedPathParam.Json"),
                 new List<PathGenerationResult>
                 {
@@ -187,16 +187,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Undocumented Generics",
-                Path.Combine(TestFilesDirectory, "AnnotationUndocumentedGeneric.xml"),
+                Path.Combine(InputDirectory, "AnnotationUndocumentedGeneric.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationUndocumentedGeneric.Json"),
                 new List<PathGenerationResult>
                 {
@@ -215,16 +215,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Incorrect Order for Generics",
-                Path.Combine(TestFilesDirectory, "AnnotationIncorrectlyOrderedGeneric.xml"),
+                Path.Combine(InputDirectory, "AnnotationIncorrectlyOrderedGeneric.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationIncorrectlyOrderedGeneric.Json"),
                 new List<PathGenerationResult>
                 {
@@ -246,16 +246,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Standard valid XML document",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "Annotation.Json")
             };
 
@@ -263,16 +263,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Parameters Without In Attribute But Present In URL",
-                Path.Combine(TestFilesDirectory, "AnnotationParamWithoutInButPresentInUrl.xml"),
+                Path.Combine(InputDirectory, "AnnotationParamWithoutInButPresentInUrl.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationParamWithoutInButPresentInUrl.Json")
             };
 
@@ -281,16 +281,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Unspecified Type Default to String",
-                Path.Combine(TestFilesDirectory, "AnnotationParamNoTypeSpecified.xml"),
+                Path.Combine(InputDirectory, "AnnotationParamNoTypeSpecified.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationParamNoTypeSpecified.Json")
             };
 
@@ -298,16 +298,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Multiple Response Types Per Response Code",
-                Path.Combine(TestFilesDirectory, "AnnotationMultipleResponseTypes.xml"),
+                Path.Combine(InputDirectory, "AnnotationMultipleResponseTypes.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationMultipleResponseTypes.Json")
             };
 
@@ -315,16 +315,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Multiple Request Types",
-                Path.Combine(TestFilesDirectory, "AnnotationMultipleRequestTypes.xml"),
+                Path.Combine(InputDirectory, "AnnotationMultipleRequestTypes.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationMultipleRequestTypes.Json")
             };
 
@@ -332,16 +332,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Multiple Request Media Types",
-                Path.Combine(TestFilesDirectory, "AnnotationMultipleRequestMediaTypes.xml"),
+                Path.Combine(InputDirectory, "AnnotationMultipleRequestMediaTypes.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationMultipleRequestMediaTypes.Json")
             };
 
@@ -349,16 +349,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Multiple Response Media Types Per Response Code",
-                Path.Combine(TestFilesDirectory, "AnnotationMultipleResponseMediaTypes.xml"),
+                Path.Combine(InputDirectory, "AnnotationMultipleResponseMediaTypes.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationMultipleResponseMediaTypes.Json")
             };
 
@@ -366,16 +366,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Optional Path Parameters",
-                Path.Combine(TestFilesDirectory, "AnnotationOptionalPathParametersBranching.xml"),
+                Path.Combine(InputDirectory, "AnnotationOptionalPathParametersBranching.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "AnnotationOptionalPathParametersBranching.Json")
             };
 
@@ -383,16 +383,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             yield return new object[]
             {
                 "Alternative Param Tags (i.e. queryParam, pathParam, header)",
-                Path.Combine(TestFilesDirectory, "AnnotationAlternativeParamTags.xml"),
+                Path.Combine(InputDirectory, "AnnotationAlternativeParamTags.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 9,
                 Path.Combine(
-                    TestValidationDirectory,
+                    OutputDirectory,
                     "Annotation.Json")
             };
         }
@@ -449,7 +449,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
         [Fact]
         public void NoOperationsToParseShouldReturnEmptyDocument()
         {
-            var path = Path.Combine(TestFilesDirectory, "AnnotationNoOperationsToParse.xml");
+            var path = Path.Combine(InputDirectory, "AnnotationNoOperationsToParse.xml");
 
             var document = XDocument.Load(path);
 

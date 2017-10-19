@@ -1,0 +1,4 @@
+﻿{
+    "$ref":
+        "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.ISampleGenericType_Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.ISampleGenericType_System.String-Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.ISampleGenericType_System.String-Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleType__-Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleType_"
+}

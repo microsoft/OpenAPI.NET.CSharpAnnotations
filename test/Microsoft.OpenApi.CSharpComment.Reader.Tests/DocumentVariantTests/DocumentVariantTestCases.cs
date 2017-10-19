@@ -13,11 +13,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 {
     internal static class DocumentVariantTestCases
     {
-        private const string TestFilesDirectory = "DocumentVariantTests/TestFiles";
-        private const string TestValidationDirectory = "DocumentVariantTests/TestValidation";
+        private const string InputDirectory = "DocumentVariantTests/Input";
+        private const string OutputDirectory = "DocumentVariantTests/Output";
 
-        private const string TestValidationWithCommonAnnotationsDirectory =
-            "DocumentVariantTests/TestValidation/AnnotationsWithCommonAnnotations";
+        private const string CommonAnnotationsDirectory =
+            "AnnotationsWithCommonAnnotations";
 
         public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldFail()
         {
@@ -25,15 +25,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation that self-conflicts",
-                Path.Combine(TestFilesDirectory, "AnnotationWithVariantAttributesConflictWithSelf.xml"),
+                Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithSelf.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigOneDocumentVariantTagSwagger2NoOptions.xml"),
                 1,
                 null,
@@ -67,15 +67,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation that conflicts with the config",
-                Path.Combine(TestFilesDirectory, "AnnotationWithVariantAttributesConflictWithConfig.xml"),
+                Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithConfig.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
                 1,
                 null,
@@ -112,21 +112,21 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "One document variant tag name",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
-                    Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"),
+                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
                     [new DocumentVariantInfo
                     {
                         // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
@@ -137,7 +137,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["security"] = "sg1",
                             ["version"] = "V2"
                         }
-                    }] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
                     [new DocumentVariantInfo
                     {
                         // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
@@ -148,7 +148,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["security"] = "sgnotexist",
                             ["version"] = "V2"
                         }
-                    }] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
                 },
             };
 
@@ -158,33 +158,33 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "One document variant tag name with no option tags.",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
-                    Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"),
+                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
                     [new DocumentVariantInfo
                     {
                         // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
                         Categorizer = "swagger",
                         Title = "Group1"
-                    }] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
                     [new DocumentVariantInfo
                     {
                         // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
                         Categorizer = "swagger",
                         Title = "Group2",
-                    }] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
                 },
             };
 
@@ -192,21 +192,21 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Multiple document variant tag names",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigMultipleDocumentVariantTags.xml"),
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
-                    Path.Combine(TestValidationDirectory, "AnnotationDefaultVariant.json"),
+                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
                     [new DocumentVariantInfo
                     {
                         // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
@@ -217,7 +217,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["security"] = "sg1",
                             ["version"] = "V2"
                         }
-                    }] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
                     [new DocumentVariantInfo
                     {
                         // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
@@ -228,7 +228,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["security"] = "sgnotexist",
                             ["version"] = "V2"
                         }
-                    }] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
                     [new DocumentVariantInfo
                     {
                         // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
@@ -239,7 +239,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["security"] = "sg1",
                             ["version"] = "V2"
                         }
-                    }] = Path.Combine(TestValidationDirectory, "AnnotationVariantSwagger2Group1.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwagger2Group1.json"),
                 },
             };
 
@@ -247,21 +247,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Multiple document variant tag names with common annotations",
-                Path.Combine(TestFilesDirectory, "Annotation.xml"),
+                Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml"),
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] = Path.Combine(
-                        TestValidationWithCommonAnnotationsDirectory,
+                        OutputDirectory,
+                        CommonAnnotationsDirectory,
                         "AnnotationDefaultVariant.json"),
                     [new DocumentVariantInfo
                     {
@@ -274,7 +275,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["version"] = "V2"
                         }
                     }] = Path.Combine(
-                        TestValidationWithCommonAnnotationsDirectory,
+                        OutputDirectory,
+                        CommonAnnotationsDirectory,
                         "AnnotationVariantSwaggerGroup1.json"),
                     [new DocumentVariantInfo
                     {
@@ -287,7 +289,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["version"] = "V2"
                         }
                     }] = Path.Combine(
-                        TestValidationWithCommonAnnotationsDirectory,
+                        OutputDirectory,
+                        CommonAnnotationsDirectory,
                         "AnnotationVariantSwaggerGroup2.json"),
                     [new DocumentVariantInfo
                     {
@@ -300,7 +303,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["version"] = "V2"
                         }
                     }] = Path.Combine(
-                        TestValidationWithCommonAnnotationsDirectory,
+                        OutputDirectory,
+                        CommonAnnotationsDirectory,
                         "AnnotationVariantSwagger2Group1.json"),
                 },
             };
@@ -310,21 +314,21 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation with no options in the config",
-                Path.Combine(TestFilesDirectory, "AnnotationWithVariantAttributes.xml"),
+                Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] = Path.Combine(
-                        TestValidationDirectory,
+                        OutputDirectory,
                         "AnnotationDefaultVariant.json"),
                     [new DocumentVariantInfo
                     {
@@ -337,7 +341,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["version"] = "V2"
                         }
                     }] = Path.Combine(
-                        TestValidationDirectory,
+                        OutputDirectory,
                         "AnnotationVariantSwaggerGroup1.json"),
                     [new DocumentVariantInfo
                     {
@@ -345,7 +349,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         Categorizer = "swagger",
                         Title = "Group2",
                     }] = Path.Combine(
-                        TestValidationDirectory,
+                        OutputDirectory,
                         "AnnotationVariantSwaggerGroup2.json"),
                 }
             };
@@ -356,21 +360,21 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation with redundant, non-conflicting information in the config",
-                Path.Combine(TestFilesDirectory, "AnnotationWithVariantAttributes.xml"),
+                Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
                 new List<string>
                 {
                     Path.Combine(
-                        TestFilesDirectory,
-                        "OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll")
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 Path.Combine(
-                    TestFilesDirectory,
+                    InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] = Path.Combine(
-                        TestValidationDirectory,
+                        OutputDirectory,
                         "AnnotationDefaultVariant.json"),
                     [new DocumentVariantInfo
                     {
@@ -383,7 +387,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["version"] = "V2"
                         }
                     }] = Path.Combine(
-                        TestValidationDirectory,
+                        OutputDirectory,
                         "AnnotationVariantSwaggerGroup1.json"),
                     [new DocumentVariantInfo
                     {
@@ -396,7 +400,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                             ["version"] = "V2"
                         }
                     }] = Path.Combine(
-                        TestValidationDirectory,
+                        OutputDirectory,
                         "AnnotationVariantSwaggerGroup2.json"),
                 }
             };

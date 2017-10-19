@@ -83,165 +83,165 @@
     <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
     <Compile Include="InternalOpenApiDocumentGeneratorTests\InternalOpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="DocumentVariantTests\TestFiles\AnnotationWithVariantAttributesConflictWithConfig.xml">
+    <Content Include="DocumentVariantTests\Input\AnnotationWithVariantAttributesConflictWithConfig.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\AnnotationWithVariantAttributesConflictWithSelf.xml">
+    <Content Include="DocumentVariantTests\Input\AnnotationWithVariantAttributesConflictWithSelf.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\AnnotationWithVariantAttributes.xml">
+    <Content Include="DocumentVariantTests\Input\AnnotationWithVariantAttributes.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml">
+    <Content Include="DocumentVariantTests\Input\ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\ConfigOneDocumentVariantTagSwagger2NoOptions.xml">
+    <Content Include="DocumentVariantTests\Input\ConfigOneDocumentVariantTagSwagger2NoOptions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\ConfigOneDocumentVariantTagSwaggerNoOptions.xml">
+    <Content Include="DocumentVariantTests\Input\ConfigOneDocumentVariantTagSwaggerNoOptions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\ConfigOneDocumentVariantTag.xml">
+    <Content Include="DocumentVariantTests\Input\ConfigOneDocumentVariantTag.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\ConfigMultipleDocumentVariantTags.xml">
+    <Content Include="DocumentVariantTests\Input\ConfigMultipleDocumentVariantTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationAlternativeParamTags.xml">
+    <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationOptionalPathParametersBranching.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationAlternativeParamTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedPathParam.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationOptionalPathParametersBranching.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationParamWithoutInNotPresentInUrl.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationUndocumentedPathParam.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationParamWithoutInButPresentInUrl.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationParamWithoutInNotPresentInUrl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleRequestMediaTypes.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationParamWithoutInButPresentInUrl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleRequestTypes.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleRequestMediaTypes.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleRequestTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleResponseMediaTypes.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleResponseMediaTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationMultipleResponseTypes.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleResponseTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\Annotation.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationIncorrectlyOrderedGeneric.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationIncorrectlyOrderedGeneric.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationInvalidUri.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationInvalidUri.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationInvalidVerb.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationInvalidVerb.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationParamNoTypeSpecified.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationParamNoTypeSpecified.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedGeneric.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationUndocumentedGeneric.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationConflictingPathAndQueryParameters.json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationConflictingPathAndQueryParameters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\Annotation.xml">
+    <Content Include="DocumentVariantTests\Input\Annotation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
+    <Content Include="OperationConfigTests\Input\AnnotationSomeMissingSummary.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\AnnotationSomeMissingSummary.xml">
+    <Content Include="OperationConfigTests\Input\Annotation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\Annotation.xml">
+    <Content Include="OperationConfigTests\Input\ConfigOverridden.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\ConfigOverridden.xml">
+    <Content Include="OperationConfigTests\Input\ConfigApplyToSomeOperations.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\ConfigApplyToSomeOperations.xml">
+    <Content Include="OperationConfigTests\Input\ConfigApplyToAllOperations.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\ConfigApplyToAllOperations.xml">
+    <Content Include="OperationConfigTests\Input\ConfigBlankOperation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\ConfigBlankOperation.xml">
+    <Content Include="OperationConfigTests\Input\ConfigNoOperation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\ConfigNoOperation.xml">
+    <Content Include="OperationConfigTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestFiles\OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.dll">
+    <Content Include="ReferenceRegistryTests\Output\DictionaryTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\DictionaryTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\EnumTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\EnumTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\NestedObjectTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\NestedObjectTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\ObjectListTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\ObjectListTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\ObjectTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\ObjectTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\StringTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\StringTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\EmptyTypeReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\EmptyTypeReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\InnerObjectTypeReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\InnerObjectTypeReferences.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\NestedObjectTypeReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\NestedObjectTypeReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\Annotation.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\Annotation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationInvalidUri.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationInvalidUri.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationInvalidVerb.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationInvalidVerb.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationNoOperationsToParse.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationNoOperationsToParse.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationParamNoTypeSpecified.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationParamNoTypeSpecified.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationConflictingPathAndQueryParameters.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationConflictingPathAndQueryParameters.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationUndocumentedGeneric.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationUndocumentedGeneric.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestFiles\AnnotationIncorrectlyOrderedGeneric.xml">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationIncorrectlyOrderedGeneric.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -256,119 +256,119 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ReferenceRegistryTests\TestValidation\GenericInterfaceSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\GenericInterfaceSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\GenericTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\GenericTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SelfReferencingTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SelfReferencingTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SelfReferencingTypeReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\SelfReferencingTypeReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\InheritFromGenericInterfaceReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\InheritFromGenericInterfaceReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\InheritFromGenericInterfaceSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\InheritFromGenericInterfaceSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\GenericTypeReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\GenericTypeReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\GenericInterfaceReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\GenericInterfaceReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariantSwaggerGroup2.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationVariantSwaggerGroup2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariantSwaggerGroup1.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationVariantSwaggerGroup1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationDefaultVariant.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationDefaultVariant.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestValidation\AnnotationNoOperationConfig.json">
+    <Content Include="OperationConfigTests\Output\AnnotationNoOperationConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestValidation\AnnotationBlankOperationConfig.json">
+    <Content Include="OperationConfigTests\Output\AnnotationBlankOperationConfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestValidation\AnnotationApplyToAllOperations.json">
+    <Content Include="OperationConfigTests\Output\AnnotationApplyToAllOperations.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestValidation\AnnotationApplyToSomeOperations.json">
+    <Content Include="OperationConfigTests\Output\AnnotationApplyToSomeOperations.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OperationConfigTests\TestValidation\AnnotationOverridden.json">
+    <Content Include="OperationConfigTests\Output\AnnotationOverridden.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationVariantSwagger2Group1.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationVariantSwagger2Group1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup2.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationDefaultVariant.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationDefaultVariant.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationVariantSwagger2Group1.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwagger2Group1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\TestValidation\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup1.json">
+    <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleResponseTypes.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleResponseTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleRequestTypes.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleRequestTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleResponseMediaTypes.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleResponseMediaTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationMultipleRequestMediaTypes.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleRequestMediaTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationParamWithoutInButPresentInUrl.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationParamWithoutInButPresentInUrl.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationParamWithoutInNotPresentInUrl.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationParamWithoutInNotPresentInUrl.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationUndocumentedPathParam.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationUndocumentedPathParam.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\TestValidation\AnnotationOptionalPathParametersBranching.Json">
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationOptionalPathParametersBranching.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\IntTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\IntTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\CharTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\CharTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\BoolTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\BoolTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\GuidTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\GuidTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\DateTimeTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\DateTimeTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\EmptyTypeReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\EmptyTypeReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\SimpleTypes\ByteTypeSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\SimpleTypes\ByteTypeSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\NestedGenericReferences.json">
+    <Content Include="ReferenceRegistryTests\Output\NestedGenericReferences.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="ReferenceRegistryTests\TestValidation\NestedGenericSchema.json">
+    <Content Include="ReferenceRegistryTests\Output\NestedGenericSchema.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="xunit.runner.json">

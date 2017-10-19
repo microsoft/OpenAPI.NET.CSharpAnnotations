@@ -19,7 +19,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests
     public class ReferenceRegistryTest
     {
         private const string SimpleTypeSubDirectory = "SimpleTypes";
-        private const string TestValidationDirectory = "ReferenceRegistryTests/TestValidation";
+        private const string OutputDirectory = "ReferenceRegistryTests/Output";
 
         private readonly ITestOutputHelper _output;
 
@@ -77,100 +77,100 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests
             yield return new object[]
             {
                 typeof(bool),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "BoolTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "BoolTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(byte),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "ByteTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "ByteTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(char),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "CharTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "CharTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(string),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "StringTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "StringTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(int),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "IntTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "IntTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(Guid),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "GuidTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "GuidTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(DateTimeOffset),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "DateTimeTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "DateTimeTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
 
             // Enum types
             yield return new object[]
             {
                 typeof(SampleEnum),
-                Path.Combine(TestValidationDirectory, "EnumTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, "EmptyTypeReferences.json")
+                Path.Combine(OutputDirectory, "EnumTypeSchema.json"),
+                Path.Combine(OutputDirectory, "EmptyTypeReferences.json")
             };
 
             // Object types
             yield return new object[]
             {
                 typeof(SampleInnerType),
-                Path.Combine(TestValidationDirectory, "ObjectTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, "InnerObjectTypeReferences.json")
+                Path.Combine(OutputDirectory, "ObjectTypeSchema.json"),
+                Path.Combine(OutputDirectory, "InnerObjectTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(SampleType),
-                Path.Combine(TestValidationDirectory, "NestedObjectTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, "NestedObjectTypeReferences.json")
+                Path.Combine(OutputDirectory, "NestedObjectTypeSchema.json"),
+                Path.Combine(OutputDirectory, "NestedObjectTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(SampleSelfReferencingType),
-                Path.Combine(TestValidationDirectory, "SelfReferencingTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, "SelfReferencingTypeReferences.json")
+                Path.Combine(OutputDirectory, "SelfReferencingTypeSchema.json"),
+                Path.Combine(OutputDirectory, "SelfReferencingTypeReferences.json")
             };
 
             // Enumerable types
             yield return new object[]
             {
                 typeof(IList<SampleType>),
-                Path.Combine(TestValidationDirectory, "ObjectListTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, "NestedObjectTypeReferences.json")
+                Path.Combine(OutputDirectory, "ObjectListTypeSchema.json"),
+                Path.Combine(OutputDirectory, "NestedObjectTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(IDictionary<string, SampleType>),
-                Path.Combine(TestValidationDirectory, "DictionaryTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, "NestedObjectTypeReferences.json")
+                Path.Combine(OutputDirectory, "DictionaryTypeSchema.json"),
+                Path.Combine(OutputDirectory, "NestedObjectTypeReferences.json")
             };
 
             // Generic types
             yield return new object[]
             {
                 typeof(SampleGenericType<string>),
-                Path.Combine(TestValidationDirectory, "GenericTypeSchema.json"),
-                Path.Combine(TestValidationDirectory, "GenericTypeReferences.json")
+                Path.Combine(OutputDirectory, "GenericTypeSchema.json"),
+                Path.Combine(OutputDirectory, "GenericTypeReferences.json")
             };
             yield return new object[]
             {
                 typeof(ISampleGenericType<string, SampleType>),
-                Path.Combine(TestValidationDirectory, "GenericInterfaceSchema.json"),
-                Path.Combine(TestValidationDirectory, "GenericInterfaceReferences.json")
+                Path.Combine(OutputDirectory, "GenericInterfaceSchema.json"),
+                Path.Combine(OutputDirectory, "GenericInterfaceReferences.json")
             };
             yield return new object[]
             {
@@ -180,14 +180,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests
                             string,
                             ISampleGenericType<string, SampleType>>,
                         SampleType>),
-                Path.Combine(TestValidationDirectory, "NestedGenericSchema.json"),
-                Path.Combine(TestValidationDirectory, "NestedGenericReferences.json")
+                Path.Combine(OutputDirectory, "NestedGenericSchema.json"),
+                Path.Combine(OutputDirectory, "NestedGenericReferences.json")
             };
             yield return new object[]
             {
                 typeof(SampleInheritFromGenericType),
-                Path.Combine(TestValidationDirectory, "InheritFromGenericInterfaceSchema.json"),
-                Path.Combine(TestValidationDirectory, "InheritFromGenericInterfaceReferences.json")
+                Path.Combine(OutputDirectory, "InheritFromGenericInterfaceSchema.json"),
+                Path.Combine(OutputDirectory, "InheritFromGenericInterfaceReferences.json")
             };
         }
 
