@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="OpenApiSpecification.UnitTestSamples.DotNetFrameworkController.WebApiApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.WebApiApplication" Language="C#" %>
