@@ -1,13 +1,12 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
-using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApiSpecification.Core.Models;
 
@@ -61,9 +60,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 var cref = paramElement.Attribute(KnownXmlStrings.Cref)?.Value.Trim();
                 var description = paramElement.Attribute(KnownXmlStrings.Description)?.Value.RemoveBlankLines();
 
-                // TODO: Handle System.Array param type.
-                //
-                var dataType = GetDataTypeValue(cref);
+                var schema = GenerateSchemaFromCref(cref, settings);
 
                 operation.Parameters.Add(
                     new Parameter
@@ -73,30 +70,34 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                         Description = description,
                         IsRequired = Convert.ToBoolean(isRequired),
 
-                        Schema = new Schema
-                        {
-                            Type = dataType.DataType,
-                            Format = dataType.Format
-                        }
+                        Schema = schema
                     });
             }
         }
 
-        private static OpenApiDataTypeFormatPair GetDataTypeValue(string cref)
+        /// <summary>
+        /// Generates schema from type name in cref.
+        /// </summary>
+        /// <returns>
+        /// Schema from type in cref if the type is resolvable.
+        /// Otherwise, default to schema for string type.
+        /// </returns>
+        private static Schema GenerateSchemaFromCref(string cref, OperationFilterSettings settings)
         {
-            if (cref != null && cref.Split(':')[0].Trim() == KnownXmlStrings.T)
+            var type = typeof(string);
+
+            if (cref != null && cref.Contains(":") && cref.Split(':')[0].Trim() == KnownXmlStrings.T)
             {
                 var typeName = cref.Split(':')[1].Trim();
-
-                return Type.GetType(typeName).MapToOpenApiDataTypeFormatPair();
+                type = Type.GetType(typeName) ?? typeof(string);
             }
 
-            return typeof(string).MapToOpenApiDataTypeFormatPair();
+            return settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
         }
 
-        private static ParameterKind GetParameterKind(string kind)
+        private static ParameterKind GetParameterKind(string parameterKind)
         {
-            switch (kind)
+            switch (parameterKind)
             {
                 case KnownXmlStrings.Header:
                     return ParameterKind.Header;
