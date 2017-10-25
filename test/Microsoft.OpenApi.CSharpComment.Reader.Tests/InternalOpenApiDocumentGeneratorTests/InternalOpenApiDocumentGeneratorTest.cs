@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -394,6 +394,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "Annotation.Json")
+            };
+
+            // Valid XML document with array type in param tags.
+            yield return new object[]
+            {
+                "Array Type in Param Tags",
+                Path.Combine(InputDirectory, "AnnotationArrayInParamTags.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                },
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationArrayInParamTags.Json")
             };
         }
 

@@ -110,6 +110,9 @@
     <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationArrayInParamTags.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationAlternativeParamTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -341,6 +344,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationOptionalPathParametersBranching.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationArrayInParamTags.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
