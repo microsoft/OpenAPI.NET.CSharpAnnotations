@@ -101,7 +101,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests
             yield return new object[]
             {
                 typeof(int),
-                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "IntTypeSchema.json"),
+                Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "GuidTypeSchema.json"),
                 Path.Combine(OutputDirectory, SimpleTypeSubDirectory, "EmptyTypeReferences.json")
             };
             yield return new object[]
