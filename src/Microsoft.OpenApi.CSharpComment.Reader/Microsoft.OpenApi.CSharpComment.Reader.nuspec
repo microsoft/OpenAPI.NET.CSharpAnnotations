@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+      <id>Microsoft.OpenApi.CSharpComment.Reader</id>
+      <version>1.0.0-beta001</version>
+      <authors>Microsoft</authors>
+      <description>Reader that translates Visual Studio C# comments into .NET objects representing OpenAPI specification.</description>
+      <dependencies>
+          <dependency id="Newtonsoft.Json" version="8.0.3" />
+      </dependencies>
+    </metadata>
+</package>
