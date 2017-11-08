@@ -4,6 +4,7 @@
       <id>Microsoft.OpenApi.CSharpComment.Reader</id>
       <version>1.0.0</version>
       <authors>Microsoft</authors>
+      <description>Reader that translates Visual Studio C# comments into .NET objects representing OpenAPI specification.</description>
       <dependencies>
           <dependency id="Newtonsoft.Json" version="8.0.3" />
       </dependencies>
