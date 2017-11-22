@@ -4,7 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Xml.Linq;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
 {
@@ -20,6 +20,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element containing operation-level config in the config xml.</param>
         /// <param name="settings">The operation config filter settings.</param>
-        void Apply(Operation operation, XElement element, OperationConfigFilterSettings settings);
+        void Apply(OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings);
     }
 }

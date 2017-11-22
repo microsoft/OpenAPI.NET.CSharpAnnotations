@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -36,7 +36,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     InputDirectory,
                     "ConfigOneDocumentVariantTagSwagger2NoOptions.xml"),
                 1,
-                null,
+                new Dictionary<DocumentVariantInfo, string>
+                {
+                    [DocumentVariantInfo.Default] =
+                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger2 tags with title "Group1" in Annotation.xml
+                        // Attributes that appear first in the operation show up in the document.
+                        Categorizer = "swagger2",
+                        Title = "Group1",
+                        Attributes =
+                        {
+                            ["security"] = "sg1",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwagger2Group1.json"),
+                },
                 new List<PathGenerationResult>
                 {
                     new PathGenerationResult
@@ -78,7 +94,34 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
                 1,
-                null,
+                new Dictionary<DocumentVariantInfo, string>
+                {
+                    [DocumentVariantInfo.Default] =
+                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml
+                        // Attributes from the config file takes precedence when conflicts occurs.
+                        Categorizer = "swagger",
+                        Title = "Group1",
+                        Attributes =
+                        {
+                            ["security"] = "sg1",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2",
+                        Attributes =
+                        {
+                            ["security"] = "sgnotexist",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                },
                 new List<PathGenerationResult>
                 {
                     new PathGenerationResult

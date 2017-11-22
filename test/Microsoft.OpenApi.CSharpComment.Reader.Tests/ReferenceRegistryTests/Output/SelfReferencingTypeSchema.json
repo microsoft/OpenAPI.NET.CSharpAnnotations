@@ -1,3 +1,0 @@
-﻿{
-    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests.ReferenceRegistryTest.SampleSelfReferencingType"
-}

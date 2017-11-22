@@ -1,12 +1,13 @@
 // ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
@@ -27,7 +28,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var groupElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Group);
 
@@ -38,9 +39,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 return;
             }
 
-            if (!operation.Tags.Contains(groupValue))
+            if (!operation.Tags.Select(t => t.Name).Contains(groupValue))
             {
-                operation.Tags.Add(groupValue);
+                operation.Tags.Add(
+                    new OpenApiTag
+                    {
+                        Name = groupValue
+                    }
+                );
             }
         }
     }

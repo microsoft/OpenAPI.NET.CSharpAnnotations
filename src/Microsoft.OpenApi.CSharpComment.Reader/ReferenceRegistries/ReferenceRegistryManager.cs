@@ -4,12 +4,13 @@
 // ------------------------------------------------------------
 
 using System;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Interfaces;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
-    /// A class encapsulating reference registries for all <see cref="IReferenceable"/> types.
+    /// A class encapsulating reference registries for all <see cref="IOpenApiReferenceable"/> types.
     /// </summary>
     public class ReferenceRegistryManager
     {
@@ -26,40 +27,40 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
         }
 
         /// <summary>
-        /// Reference registry for the <see cref="Example"/> class.
+        /// Reference registry for the <see cref="OpenApiExample"/> class.
         /// </summary>
         public ExampleReferenceRegistry ExampleReferenceRegistry { get; }
 
         /// <summary>
-        /// Reference registry for the <see cref="Parameter"/> class.
+        /// Reference registry for the <see cref="OpenApiParameter"/> class.
         /// </summary>
         public ParameterReferenceRegistry ParameterReferenceRegistry { get; }
 
         /// <summary>
-        /// Reference registry for the <see cref="Schema"/> class.
+        /// Reference registry for the <see cref="OpenApiSchema"/> class.
         /// </summary>
         public SchemaReferenceRegistry SchemaReferenceRegistry { get; }
 
         /// <summary>
-        /// Finds an existing reference of an <see cref="Example"/> class or creates a new one.
+        /// Finds an existing reference of an <see cref="OpenApiExample"/> class or creates a new one.
         /// </summary>
-        public Example FindOrAddExampleReference(object input)
+        public OpenApiExample FindOrAddExampleReference(object input)
         {
             return ExampleReferenceRegistry.FindOrAddReference(input);
         }
 
         /// <summary>
-        /// Finds an existing reference of an <see cref="Parameter"/> class or creates a new one.
+        /// Finds an existing reference of an <see cref="OpenApiParameter"/> class or creates a new one.
         /// </summary>
-        public Parameter FindOrAddParameterReference(object input)
+        public OpenApiParameter FindOrAddParameterReference(object input)
         {
             return ParameterReferenceRegistry.FindOrAddReference(input);
         }
 
         /// <summary>
-        /// Finds an existing reference of an <see cref="Schema"/> class or creates a new one.
+        /// Finds an existing reference of an <see cref="OpenApiSchema"/> class or creates a new one.
         /// </summary>
-        public Schema FindOrAddSchemaReference(Type input)
+        public OpenApiSchema FindOrAddSchemaReference(Type input)
         {
             return SchemaReferenceRegistry.FindOrAddReference(input);
         }

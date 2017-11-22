@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -16,6 +16,28 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
     {
         private static readonly DocumentVariantInfo _defaultSpecificationDocumentVariantInfo
             = new DocumentVariantInfo();
+
+        /// <summary>
+        /// Initializes the <see cref="DocumentVariantInfo"/> object.
+        /// </summary>
+        public DocumentVariantInfo()
+        {
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="DocumentVariantInfo"/> object.
+        /// </summary>
+        /// <param name="other">Other object to copy from.</param>
+        public DocumentVariantInfo(DocumentVariantInfo other)
+        {
+            foreach (var attribute in other.Attributes)
+            {
+                Attributes[attribute.Key] = attribute.Value;
+            }
+
+            Categorizer = other.Categorizer;
+            Title = other.Title;
+        }
 
         /// <summary>
         /// Gets or sets the other attributes related to this document variant.
@@ -47,7 +69,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// </summary>
         public bool AreAttributesEquivalent(DocumentVariantInfo documentVariantInfo)
         {
-            return this.Attributes.EquivalentTo(documentVariantInfo.Attributes);
+            return Attributes.EquivalentTo(documentVariantInfo.Attributes);
         }
 
         /// <summary>

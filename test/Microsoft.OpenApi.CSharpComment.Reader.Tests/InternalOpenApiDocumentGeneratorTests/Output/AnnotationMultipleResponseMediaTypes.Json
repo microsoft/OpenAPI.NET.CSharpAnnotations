@@ -509,8 +509,7 @@
                                     "type": "array"
                                 }
                             }
-                        },
-                        "description": ""
+                        }
                     },
                     "400": {
                         "content": {
@@ -582,8 +581,7 @@
                                         "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2_"
                                 }
                             }
-                        },
-                        "description": ""
+                        }
                     },
                     "400": {
                         "content": {

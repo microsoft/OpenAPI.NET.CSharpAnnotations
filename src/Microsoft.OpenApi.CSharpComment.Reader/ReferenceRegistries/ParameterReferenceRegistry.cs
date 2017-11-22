@@ -5,14 +5,14 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
-    /// Reference Registry for <see cref="Parameter"/>
+    /// Reference Registry for <see cref="OpenApiParameter"/>
     /// </summary>
-    public class ParameterReferenceRegistry : ReferenceRegistry<object, Parameter>
+    public class ParameterReferenceRegistry : ReferenceRegistry<object, OpenApiParameter>
     {
         private ExampleReferenceRegistry _exampleReferenceRegistry;
         private SchemaReferenceRegistry _schemaReferenceRegistry;
@@ -33,13 +33,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
         /// <summary>
         /// The dictionary containing all references of the given type.
         /// </summary>
-        public override IDictionary<string, Parameter> References { get; } = new Dictionary<string, Parameter>();
+        public override IDictionary<string, OpenApiParameter> References { get; } = new Dictionary<string, OpenApiParameter>();
 
         /// <summary>
         /// Finds the existing reference object based on the key from the input or creates a new one.
         /// </summary>
         /// <returns>The existing or created reference object.</returns>
-        internal override Parameter FindOrAddReference(object input)
+        internal override OpenApiParameter FindOrAddReference(object input)
         {
             throw new NotImplementedException();
         }

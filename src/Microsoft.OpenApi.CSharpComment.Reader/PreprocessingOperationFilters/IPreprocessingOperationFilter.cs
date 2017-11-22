@@ -5,7 +5,7 @@
 
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
 {
@@ -22,6 +22,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
         /// <param name="paths">The paths to be upated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        void Apply(Paths paths, XElement element, PreprocessingOperationFilterSettings settings);
+        void Apply(OpenApiPaths paths, XElement element, PreprocessingOperationFilterSettings settings);
     }
 }

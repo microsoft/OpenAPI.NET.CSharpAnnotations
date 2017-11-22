@@ -5,25 +5,25 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
-    /// Reference Registry for <see cref="Example"/>
+    /// Reference Registry for <see cref="OpenApiExample"/>
     /// </summary>
-    public class ExampleReferenceRegistry : ReferenceRegistry<object, Example>
+    public class ExampleReferenceRegistry : ReferenceRegistry<object, OpenApiExample>
     {
         /// <summary>
         /// The dictionary containing all references of the given type.
         /// </summary>
-        public override IDictionary<string, Example> References { get; } = new Dictionary<string, Example>();
+        public override IDictionary<string, OpenApiExample> References { get; } = new Dictionary<string, OpenApiExample>();
 
         /// <summary>
         /// Finds the existing reference object based on the key from the input or creates a new one.
         /// </summary>
         /// <returns>The existing or created reference object.</returns>
-        internal override Example FindOrAddReference(object input)
+        internal override OpenApiExample FindOrAddReference(object input)
         {
             throw new NotImplementedException();
         }

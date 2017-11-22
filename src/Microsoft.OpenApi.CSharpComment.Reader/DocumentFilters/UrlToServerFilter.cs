@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 {
@@ -25,7 +25,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocument">The document representing annotation xml.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiV3SpecificationDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
+        public void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
         {
             var basePaths = new List<string>();
             var urlElements = xmlDocument.XPathSelectElements("//doc/members/member/url");
@@ -43,7 +43,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 
             foreach (var basePath in basePaths.Distinct())
             {
-                specificationDocument.Servers.Add(new Server {Url = basePath});
+                specificationDocument.Servers.Add(new OpenApiServer { Url = basePath});
             }
         }
 

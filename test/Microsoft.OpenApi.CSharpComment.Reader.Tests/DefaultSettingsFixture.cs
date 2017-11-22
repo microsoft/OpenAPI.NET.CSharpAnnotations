@@ -4,7 +4,6 @@
 // ------------------------------------------------------------
 
 using FluentAssertions;
-using Microsoft.OpenApiSpecification.Core.Serialization;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Tests
@@ -22,7 +21,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-                ContractResolver = new EmptyCollectionContractResolver()
             };
 
             AssertionOptions.AssertEquivalencyUsing(o => o.AllowingInfiniteRecursion());

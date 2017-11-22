@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -9,7 +9,9 @@ using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
@@ -57,7 +59,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 configDocument);
 
             // Assert
-            _output.WriteLine(JsonConvert.SerializeObject(result));
+            _output.WriteLine(
+                JsonConvert.SerializeObject(
+                    result.ToDocumentGenerationResultWithDocumentAsString()));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Failure);
@@ -68,17 +72,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
             failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
 
-            if (result.Documents == null)
-            {
-                documentVariantInfoToExpectedJsonFileMap.Should().BeNull();
-                return;
-            }
-
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
-            var actualDocuments = new List<OpenApiV3SpecificationDocument>();
-            var expectedDocuments = new List<OpenApiV3SpecificationDocument>();
+            var actualDocuments = new List<OpenApiDocument>();
+            var expectedDocuments = new List<OpenApiDocument>();
 
             foreach (var documentVariantInfoToExpectedJsonFile in documentVariantInfoToExpectedJsonFileMap)
             {
@@ -86,20 +84,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 var documentVariantInfo = documentVariantInfoToExpectedJsonFile.Key;
                 var expectedJsonFile = documentVariantInfoToExpectedJsonFile.Value;
 
-                OpenApiV3SpecificationDocument specificationDocument;
+                result.Documents.TryGetValue(documentVariantInfo, out var specificationDocument);
 
-                result.Documents.TryGetValue(documentVariantInfo, out specificationDocument);
-
-                var actualDocumentAsString = JsonConvert.SerializeObject(specificationDocument);
+                var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
 
                 _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);
 
+                var openApiStringReader = new OpenApiStringReader();
+                
                 actualDocuments.Add(
-                    JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocumentAsString));
+                    openApiStringReader.Read(actualDocumentAsString, out var _));
 
                 expectedDocuments.Add(
-                    JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(File.ReadAllText(expectedJsonFile)));
+                    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
             }
 
             actualDocuments.Should().BeEquivalentTo(expectedDocuments);
@@ -135,7 +133,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 configDocument);
 
             // Assert
-            _output.WriteLine(JsonConvert.SerializeObject(result));
+            _output.WriteLine(
+                JsonConvert.SerializeObject(
+                    result.ToDocumentGenerationResultWithDocumentAsString()));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
@@ -144,8 +144,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
-            var actualDocuments = new List<OpenApiV3SpecificationDocument>();
-            var expectedDocuments = new List<OpenApiV3SpecificationDocument>();
+            var actualDocuments = new List<OpenApiDocument>();
+            var expectedDocuments = new List<OpenApiDocument>();
 
             foreach (var documentVariantInfoToExpectedJsonFile in documentVariantInfoToExpectedJsonFileMap)
             {
@@ -153,20 +153,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 var documentVariantInfo = documentVariantInfoToExpectedJsonFile.Key;
                 var expectedJsonFile = documentVariantInfoToExpectedJsonFile.Value;
 
-                OpenApiV3SpecificationDocument specificationDocument;
+                result.Documents.TryGetValue(documentVariantInfo, out var specificationDocument);
 
-                result.Documents.TryGetValue(documentVariantInfo, out specificationDocument);
-
-                var actualDocumentAsString = JsonConvert.SerializeObject(specificationDocument);
+                var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
 
                 _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);
+                
+                var openApiStringReader = new OpenApiStringReader();
 
                 actualDocuments.Add(
-                    JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocumentAsString));
+                    openApiStringReader.Read(actualDocumentAsString, out var _));
 
                 expectedDocuments.Add(
-                    JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(File.ReadAllText(expectedJsonFile)));
+                    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
             }
 
             actualDocuments.Should().BeEquivalentTo(expectedDocuments);

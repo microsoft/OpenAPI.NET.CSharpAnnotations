@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
@@ -30,7 +30,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var responseElements = element.Elements().Where(p => p.Name == KnownXmlStrings.Response);
 
@@ -83,7 +83,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                     if (!operation.Responses[code].Content.ContainsKey(mediaType))
                     {
-                        operation.Responses[code].Content[mediaType] = new MediaType {Schema = schema};
+                        operation.Responses[code].Content[mediaType] = new OpenApiMediaType
+                        {
+                            Schema = schema
+                        };
                     }
                     else
                     {
@@ -93,23 +96,24 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                         if (!operation.Responses[code].Content[mediaType].Schema.AnyOf.Any())
                         {
                             var existingSchema = operation.Responses[code].Content[mediaType].Schema;
-                            var newSchema = new Schema();
+                            var newSchema = new OpenApiSchema();
+
                             newSchema.AnyOf.Add(existingSchema);
 
                             operation.Responses[code].Content[mediaType].Schema = newSchema;
                         }
-
+                        
                         operation.Responses[code].Content[mediaType].Schema.AnyOf.Add(schema);
                     }
                 }
                 else
                 {
-                    var response = new Response
+                    var response = new OpenApiResponse
                     {
                         Description = description.RemoveBlankLines(),
                         Content =
                         {
-                            [mediaType] = new MediaType {Schema = schema}
+                            [mediaType] = new OpenApiMediaType {Schema = schema}
                         }
                     };
 
@@ -119,7 +123,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
             if (!operation.Responses.Any())
             {
-                operation.Responses.Add("default", new Response {Description = "Cannot locate responses in the documentation!"});
+                operation.Responses.Add("default", new OpenApiResponse { Description = "Cannot locate responses in the documentation!"});
             }
         }
     }

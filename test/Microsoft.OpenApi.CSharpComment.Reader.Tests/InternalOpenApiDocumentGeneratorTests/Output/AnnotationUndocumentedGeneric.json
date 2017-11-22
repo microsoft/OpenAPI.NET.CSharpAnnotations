@@ -463,8 +463,7 @@
                                     "type": "array"
                                 }
                             }
-                        },
-                        "description": ""
+                        }
                     },
                     "400": {
                         "content": {

@@ -10,7 +10,9 @@ using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
@@ -110,7 +112,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 {
                     new PathGenerationResult
                     {
-                        OperationMethod = OperationMethod.Get.ToString(),
+                        OperationMethod = OperationType.Get.ToString(),
                         Path = "/V1/samples/{id}",
                         ExceptionType = typeof(MissingInAttributeException),
                         Message = string.Format(
@@ -140,7 +142,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 {
                     new PathGenerationResult
                     {
-                        OperationMethod = OperationMethod.Get.ToString(),
+                        OperationMethod = OperationType.Get.ToString(),
                         Path = "/V1/samples/{id}",
                         ExceptionType = typeof(ConflictingPathAndQueryParametersException),
                         Message = string.Format(
@@ -171,7 +173,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 {
                     new PathGenerationResult
                     {
-                        OperationMethod = OperationMethod.Get.ToString(),
+                        OperationMethod = OperationType.Get.ToString(),
                         Path = "/V1/samples/{id}",
                         ExceptionType = typeof(UndocumentedPathParameterException),
                         Message = string.Format(
@@ -202,7 +204,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 {
                     new PathGenerationResult
                     {
-                        OperationMethod = OperationMethod.Get.ToString(),
+                        OperationMethod = OperationType.Get.ToString(),
                         Path = "/V3/samples/{id}",
                         ExceptionType = typeof(UndocumentedGenericTypeException),
                         Message = SpecificationGenerationMessages.UndocumentedGenericType,
@@ -230,7 +232,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 {
                     new PathGenerationResult
                     {
-                        OperationMethod = OperationMethod.Get.ToString(),
+                        OperationMethod = OperationType.Get.ToString(),
                         Path = "/V3/samples/",
                         ExceptionType = typeof(UnorderedGenericTypeException),
                         Message = SpecificationGenerationMessages.UnorderedGenericType,
@@ -436,7 +438,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             result.Should().NotBeNull();
 
-            _output.WriteLine(JsonConvert.SerializeObject(result));
+            _output.WriteLine(JsonConvert.SerializeObject(result.ToDocumentGenerationResultWithDocumentAsString()));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Failure);
             result.MainDocument.Should().NotBeNull();
@@ -446,7 +448,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                     p => p.GenerationStatus == GenerationStatus.Failure)
                 .ToList();
 
-            var actualDocument = JsonConvert.SerializeObject(result.MainDocument);
+            var actualDocument = result.MainDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
@@ -458,9 +460,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             // to have the exact fields we will see in the resulting document based on the contract resolver.
             // Without serialization and deserialization, the actual document may have fields that should
             // not be present, such as empty list fields.
-            JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
+            var openApiStringReader = new OpenApiStringReader();
+            openApiStringReader.Read(actualDocument, out var _)
                 .Should()
-                .BeEquivalentTo(JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(expectedDocument));
+                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
 
         [Fact]
@@ -510,23 +513,25 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             result.Should().NotBeNull();
 
-            _output.WriteLine(JsonConvert.SerializeObject(result));
+            _output.WriteLine(
+                JsonConvert.SerializeObject(
+                    result.ToDocumentGenerationResultWithDocumentAsString()));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();
             result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
 
-            var actualDocument = JsonConvert.SerializeObject(result.MainDocument);
+            var actualDocument = result.MainDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
             _output.WriteLine(actualDocument);
 
-            JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
+            var openApiStringReader = new OpenApiStringReader();
+            openApiStringReader.Read(actualDocument, out var _)
                 .Should()
                 .BeEquivalentTo(
-                    JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(expectedDocument),
-                    o => o.WithStrictOrdering());
+                    openApiStringReader.Read(expectedDocument, out var _));
         }
     }
 }

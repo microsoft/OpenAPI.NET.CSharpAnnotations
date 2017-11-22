@@ -11,7 +11,7 @@ using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
 {
@@ -27,7 +27,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        public void Apply(Paths paths, XElement element, PreprocessingOperationFilterSettings settings)
+        public void Apply(OpenApiPaths paths, XElement element, PreprocessingOperationFilterSettings settings)
         {
             var paramElements = element.Elements()
                 .Where(
@@ -43,8 +43,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
 
             var absolutePath = fullUrl.UrlStringToAbsolutePath();
 
-            var operationMethod = (OperationMethod)Enum.Parse(
-                typeof(OperationMethod),
+            var operationMethod = (OperationType)Enum.Parse(
+                typeof(OperationType),
                 element.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Verb)?.Value,
                 ignoreCase: true);
 
@@ -58,13 +58,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
             {
                 if (!paths.ContainsKey(pathString))
                 {
-                    paths[pathString] = new PathItem();
+                    paths[pathString] = new OpenApiPathItem();
                 }
 
-                paths[pathString][operationMethod] = new Operation
-                {
-                    OperationId = OperationHandler.GetOperationId(pathString, operationMethod)
-                };
+                paths[pathString].Operations[operationMethod] = 
+                    new OpenApiOperation
+                    {
+                        OperationId = OperationHandler.GetOperationId(pathString, operationMethod)
+                    };
             }
         }
 

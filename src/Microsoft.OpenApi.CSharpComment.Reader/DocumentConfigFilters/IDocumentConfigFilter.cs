@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
 {
@@ -24,7 +24,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
         /// <param name="xmlDocument">The entire XML documentation</param>
         /// <param name="settings">The document config filter settings.</param>
         void Apply(
-            IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> documents,
+            IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement documentConfigElement,
             XDocument xmlDocument,
             DocumentConfigFilterSettings settings);

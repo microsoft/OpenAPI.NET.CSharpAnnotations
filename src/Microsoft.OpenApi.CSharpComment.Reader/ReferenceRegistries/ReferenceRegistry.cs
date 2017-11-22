@@ -4,7 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Interfaces;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
     /// Reference Registry for an <see cref="IReferenceable"/> class.
     /// </summary>
     public abstract class ReferenceRegistry<TInput, TOutput>
-        where TOutput : IReferenceable
+        where TOutput : IOpenApiReferenceable
     {
         /// <summary>
         /// The dictionary containing all references of the given type.
