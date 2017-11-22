@@ -24,7 +24,7 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
-    /// Provides functionality to parse xml into OpenApiV3Specification
+    /// Provides functionality to parse xml documentation and contract assemblies into Open API documents.
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
@@ -188,18 +188,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="annotationXml">The serialized XDocument representing annotation.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
+        /// <param name="openApiSpecVersion">Specification version of the Open API documents to generate.</param>
         /// <returns>
         /// A string representing serialized version of
         /// <see cref="DocumentGenerationResultSerializedDocument"/>>
         /// </returns>
         /// <remarks>
         /// Given that this function is expected to be called from an isolated domain,
-        /// the input and output must be serialized to string.
+        /// the input and output must be serializable to string or value type.
         /// </remarks>
         public string GenerateOpenApiDocuments(
             string annotationXml,
             IList<string> contractAssemblyPaths,
-            string configurationXml)
+            string configurationXml,
+            OpenApiSpecVersion openApiSpecVersion)
         {
             var annotationXmlDocument = XDocument.Parse(annotationXml);
             var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]")
@@ -309,7 +311,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 foreach (var variantInfoDocumentPair in documents)
                 {
                     result.Documents[variantInfoDocumentPair.Key] =
-                        variantInfoDocumentPair.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
+                        variantInfoDocumentPair.Value.SerializeAsJson(openApiSpecVersion);
                 }
 
                 return JsonConvert.SerializeObject(result);

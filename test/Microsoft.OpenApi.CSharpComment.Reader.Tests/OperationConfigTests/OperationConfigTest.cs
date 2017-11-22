@@ -35,6 +35,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             string configXmlFile,
+            OpenApiSpecVersion openApiSpecVersion,
             int expectedPathGenerationResultsCount,
             string expectedJsonFile)
         {
@@ -45,17 +46,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
 
             var generator = new OpenApiDocumentGenerator();
 
-            var result = generator.GenerateV3Documents(
+            var result = generator.GenerateOpenApiDocuments(
                 document,
                 inputBinaryFiles,
-                configDocument);
+                configDocument,
+                openApiSpecVersion);
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();
             result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
 
-            var actualDocument = result.MainDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
+            var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
@@ -85,6 +87,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigNoOperation.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -105,6 +108,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigBlankOperation.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -125,6 +129,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigApplyToAllOperations.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -145,6 +150,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigApplyToSomeOperations.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -165,6 +171,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOverridden.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,

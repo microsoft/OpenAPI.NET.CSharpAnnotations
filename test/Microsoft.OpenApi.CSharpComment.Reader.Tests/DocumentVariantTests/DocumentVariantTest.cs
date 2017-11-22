@@ -37,6 +37,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             string configXmlFile,
+            OpenApiSpecVersion openApiSpecVersion,
             int expectedPathGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
             List<PathGenerationResult> expectedFailedPathGenerationResults)
@@ -53,15 +54,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var generator = new OpenApiDocumentGenerator();
 
             // Act
-            var result = generator.GenerateV3Documents(
+            var result = generator.GenerateOpenApiDocuments(
                 document,
                 inputBinaryFiles,
-                configDocument);
+                configDocument,
+                openApiSpecVersion);
 
             // Assert
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultSerializedDocument()));
+                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Failure);
@@ -112,6 +114,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             string configXmlFile,
+            OpenApiSpecVersion openApiSpecVersion,
             int expectedPathGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap)
         {
@@ -127,15 +130,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var generator = new OpenApiDocumentGenerator();
 
             // Act
-            var result = generator.GenerateV3Documents(
+            var result = generator.GenerateOpenApiDocuments(
                 document,
                 inputBinaryFiles,
-                configDocument);
+                configDocument,
+                openApiSpecVersion);
 
             // Assert
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultSerializedDocument()));
+                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
@@ -155,7 +159,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
                 result.Documents.TryGetValue(documentVariantInfo, out var specificationDocument);
 
-                var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
+                var actualDocumentAsString = specificationDocument.SerializeAsJson(openApiSpecVersion);
 
                 _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);

@@ -35,6 +35,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOneDocumentVariantTagSwagger2NoOptions.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 1,
                 new Dictionary<DocumentVariantInfo, string>
                 {
@@ -93,6 +94,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 1,
                 new Dictionary<DocumentVariantInfo, string>
                 {
@@ -165,6 +167,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
@@ -211,6 +214,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
@@ -245,6 +249,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigMultipleDocumentVariantTags.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
@@ -300,6 +305,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
@@ -367,6 +373,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
@@ -413,6 +420,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
