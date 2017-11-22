@@ -1,6 +1,6 @@
 // ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System;
@@ -32,7 +32,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
 
                 if (targetedTag == null ||
                     !string.Equals(targetedTag.Value.Trim(), "$default", StringComparison.InvariantCultureIgnoreCase) &&
-                    !operation.Tags.Select( t => t.Name ).Contains(targetedTag.Value.Trim(), StringComparer.InvariantCultureIgnoreCase))
+                    !operation.Tags.Select(t => t.Name)
+                        .Contains(targetedTag.Value.Trim(), StringComparer.InvariantCultureIgnoreCase))
                 {
                     continue;
                 }

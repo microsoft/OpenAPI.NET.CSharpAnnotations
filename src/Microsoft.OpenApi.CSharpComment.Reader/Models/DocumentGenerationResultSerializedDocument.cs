@@ -16,20 +16,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
     /// This is needed to allow JsonConvert to serialize the entire object correctly given that
     /// <see cref="OpenApiDocument"/> cannot directly be serialized with JsonConvert.
     /// </summary>
-    public class DocumentGenerationResultWithDocumentAsString
+    public class DocumentGenerationResultSerializedDocument
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResultWithDocumentAsString"/>.
+        /// Initializes a new instance of <see cref="DocumentGenerationResultSerializedDocument"/>.
         /// </summary>
-        public DocumentGenerationResultWithDocumentAsString()
+        public DocumentGenerationResultSerializedDocument()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResultWithDocumentAsString"/>.
+        /// Initializes a new instance of <see cref="DocumentGenerationResultSerializedDocument"/>.
         /// </summary>
         /// <param name="pathGenerationResults">The path generation results.</param>
-        public DocumentGenerationResultWithDocumentAsString(IList<PathGenerationResult> pathGenerationResults)
+        public DocumentGenerationResultSerializedDocument(IList<PathGenerationResult> pathGenerationResults)
         {
             foreach (var pathGenerationResult in pathGenerationResults)
             {

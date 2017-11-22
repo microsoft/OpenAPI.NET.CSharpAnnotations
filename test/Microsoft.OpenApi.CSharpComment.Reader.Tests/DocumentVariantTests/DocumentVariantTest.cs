@@ -61,7 +61,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             // Assert
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultWithDocumentAsString()));
+                    result.ToDocumentGenerationResultSerializedDocument()));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Failure);
@@ -135,7 +135,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             // Assert
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultWithDocumentAsString()));
+                    result.ToDocumentGenerationResultSerializedDocument()));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);

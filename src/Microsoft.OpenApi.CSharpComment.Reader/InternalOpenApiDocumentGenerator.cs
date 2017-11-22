@@ -28,7 +28,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
-        public DocumentGenerationResultWithDocumentAsString Result
+        public DocumentGenerationResultSerializedDocument Result
         {
             get;
             private set;
@@ -195,7 +195,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
         /// <returns>A string representing serialized version of 
-        /// <see cref="DocumentGenerationResultWithDocumentAsString"/>></returns>
+        /// <see cref="DocumentGenerationResultSerializedDocument"/>></returns>
         /// <remarks>
         /// Given that this function is expected to be called from an isolated domain,
         /// the input and output must be serialized to string.
@@ -227,11 +227,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .ToList();
             }
 
-            DocumentGenerationResultWithDocumentAsString result;
+            DocumentGenerationResultSerializedDocument result;
 
             if (!operationElements.Any())
             {
-                result = new DocumentGenerationResultWithDocumentAsString(
+                result = new DocumentGenerationResultSerializedDocument(
                     new List<PathGenerationResult>
                     {
                         new PathGenerationResult
@@ -246,7 +246,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
             try
             {
-                result = new DocumentGenerationResultWithDocumentAsString();
+                result = new DocumentGenerationResultSerializedDocument();
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
                 
@@ -298,7 +298,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     // This exception may not be tied to a particular operation and the resulting
                     // documents may be in bad state. We simply return empty document with
                     // an exception message in the path generation result.
-                    result = new DocumentGenerationResultWithDocumentAsString(
+                    result = new DocumentGenerationResultSerializedDocument(
                         new List<PathGenerationResult>
                         {
                             new PathGenerationResult
@@ -320,7 +320,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             }
             catch (Exception e)
             {
-                result = new DocumentGenerationResultWithDocumentAsString(
+                result = new DocumentGenerationResultSerializedDocument(
                     new List<PathGenerationResult>
                     {
                         new PathGenerationResult

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.OpenApi.CSharpComment.Reader</RootNamespace>
     <AssemblyName>Microsoft.OpenApi.CSharpComment.Reader</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -67,7 +67,7 @@
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
-    <Compile Include="Models\DocumentGenerationResultWithDocumentAsString.cs" />
+    <Compile Include="Models\DocumentGenerationResultSerializedDocument.cs" />
     <Compile Include="OperationConfigFilters\CommonAnnotationFilter.cs" />
     <Compile Include="OperationConfigFilters\IOperationConfigFilter.cs" />
     <Compile Include="OperationConfigFilters\OperationConfigFilterSettings.cs" />

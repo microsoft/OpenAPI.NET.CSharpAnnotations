@@ -90,11 +90,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             new List<PathGenerationResult>();
 
         /// <summary>
-        /// Converts this object to <see cref="DocumentGenerationResultWithDocumentAsString"/>.
+        /// Converts this object to <see cref="DocumentGenerationResultSerializedDocument"/>.
         /// </summary>
-        public DocumentGenerationResultWithDocumentAsString ToDocumentGenerationResultWithDocumentAsString()
+        public DocumentGenerationResultSerializedDocument ToDocumentGenerationResultSerializedDocument()
         {
-            var documentGenerationResult = new DocumentGenerationResultWithDocumentAsString();
+            var documentGenerationResult = new DocumentGenerationResultSerializedDocument();
 
             foreach (var pathGenerationResult in PathGenerationResults)
             {

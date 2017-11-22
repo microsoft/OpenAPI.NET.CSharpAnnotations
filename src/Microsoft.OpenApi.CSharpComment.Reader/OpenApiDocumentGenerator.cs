@@ -44,7 +44,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     configurationXmlDocument?.ToString());
 
                 var documentGenerationResultWithDocumentAsString =
-                    JsonConvert.DeserializeObject<DocumentGenerationResultWithDocumentAsString>(result);
+                    JsonConvert.DeserializeObject<DocumentGenerationResultSerializedDocument>(result);
 
                 return documentGenerationResultWithDocumentAsString.ToDocumentGenerationResult();
             }
