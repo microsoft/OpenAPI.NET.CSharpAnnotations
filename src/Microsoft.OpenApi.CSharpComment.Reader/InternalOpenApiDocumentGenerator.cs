@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System;
@@ -28,12 +28,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
-        public DocumentGenerationResultSerializedDocument Result
-        {
-            get;
-            private set;
-        }
-
         private static readonly IList<IDocumentConfigFilter> _defaultDocumentConfigFilters =
             new List<IDocumentConfigFilter>
             {
@@ -111,7 +105,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             {
                 var path = pathToPathItem.Key;
                 var pathItem = pathToPathItem.Value;
-                
+
                 foreach (var operationMethodToOperation in pathItem.Operations)
                 {
                     var operationMethod = operationMethodToOperation.Key;
@@ -194,8 +188,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="annotationXml">The serialized XDocument representing annotation.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
-        /// <returns>A string representing serialized version of 
-        /// <see cref="DocumentGenerationResultSerializedDocument"/>></returns>
+        /// <returns>
+        /// A string representing serialized version of
+        /// <see cref="DocumentGenerationResultSerializedDocument"/>>
+        /// </returns>
         /// <remarks>
         /// Given that this function is expected to be called from an isolated domain,
         /// the input and output must be serialized to string.
@@ -249,12 +245,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 result = new DocumentGenerationResultSerializedDocument();
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
-                
+
                 var pathGenerationResults = GenerateSpecificationDocuments(
                     typeFetcher,
                     operationElements,
                     operationConfigElement,
-                    documentVariantElementNames, 
+                    documentVariantElementNames,
                     out var documents);
 
                 foreach (var pathGenerationResult in pathGenerationResults)
@@ -309,10 +305,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             }
                         });
                 }
-                
+
                 foreach (var variantInfoDocumentPair in documents)
                 {
-                    result.Documents[variantInfoDocumentPair.Key] = 
+                    result.Documents[variantInfoDocumentPair.Key] =
                         variantInfoDocumentPair.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
                 }
 
