@@ -9,7 +9,7 @@ using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
 {
@@ -31,7 +31,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
         /// between the attributes in the existing document variant info and the new one.
         /// </exception>
         public void Apply(
-            IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> documents,
+            IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement element,
             XDocument xmlDocument,
             DocumentConfigFilterSettings settings)
@@ -91,7 +91,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
         }
 
         private void PopulateAttributesInExistingDocumentVariantInfo(
-            IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> documents,
+            IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             DocumentVariantInfo documentVariantInfo)
         {
             foreach (var existingDocumentVariantInfo in documents.Keys)

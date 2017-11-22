@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
@@ -25,7 +25,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocument">The document representing annotation xml.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiV3SpecificationDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
+        public void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
         {
             var propertyMembers = xmlDocument.XPathSelectElements("//doc/members/member")
                 .Where(m => m.Attribute(KnownXmlStrings.Name) != null && m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:"))

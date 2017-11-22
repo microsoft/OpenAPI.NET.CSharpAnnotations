@@ -8,7 +8,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
@@ -29,7 +29,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var paramElements = element.Elements()
                 .Where(
@@ -63,12 +63,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 var schema = GenerateSchemaFromCref(cref, settings);
 
                 operation.Parameters.Add(
-                    new Parameter
+                    new OpenApiParameter
                     {
                         Name = name,
                         In = GetParameterKind(inValue),
                         Description = description,
-                        IsRequired = Convert.ToBoolean(isRequired),
+                        Required = Convert.ToBoolean(isRequired),
 
                         Schema = schema
                     });
@@ -82,7 +82,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// Schema from type in cref if the type is resolvable.
         /// Otherwise, default to schema for string type.
         /// </returns>
-        private static Schema GenerateSchemaFromCref(string cref, OperationFilterSettings settings)
+        private static OpenApiSchema GenerateSchemaFromCref(string cref, OperationFilterSettings settings)
         {
             var type = typeof(string);
 
@@ -95,18 +95,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
             return settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
         }
 
-        private static ParameterKind GetParameterKind(string parameterKind)
+        private static ParameterLocation GetParameterKind(string parameterKind)
         {
             switch (parameterKind)
             {
                 case KnownXmlStrings.Header:
-                    return ParameterKind.Header;
+                    return ParameterLocation.Header;
 
                 case KnownXmlStrings.Query:
-                    return ParameterKind.Query;
+                    return ParameterLocation.Query;
 
                 default:
-                    return ParameterKind.Path;
+                    return ParameterLocation.Path;
             }
         }
     }

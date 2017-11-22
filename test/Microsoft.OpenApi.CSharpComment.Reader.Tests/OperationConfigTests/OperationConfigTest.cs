@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -8,8 +8,8 @@ using System.IO;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
-using Microsoft.OpenApiSpecification.Core.Models;
-using Newtonsoft.Json;
+using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi.Readers;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -35,6 +35,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             string configXmlFile,
+            OpenApiSpecVersion openApiSpecVersion,
             int expectedPathGenerationResultsCount,
             string expectedJsonFile)
         {
@@ -45,26 +46,28 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
 
             var generator = new OpenApiDocumentGenerator();
 
-            var result = generator.GenerateV3Documents(
+            var result = generator.GenerateOpenApiDocuments(
                 document,
                 inputBinaryFiles,
-                configDocument);
+                configDocument,
+                openApiSpecVersion);
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();
             result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
 
-            var actualDocument = JsonConvert.SerializeObject(result.MainDocument);
+            var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
             _output.WriteLine(actualDocument);
 
-            JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(actualDocument)
+            var openApiStringReader = new OpenApiStringReader();
+            openApiStringReader.Read(actualDocument, out var _)
                 .Should()
                 .BeEquivalentTo(
-                    JsonConvert.DeserializeObject<OpenApiV3SpecificationDocument>(expectedDocument),
+                    openApiStringReader.Read(expectedDocument, out var _),
                     o => o.WithStrictOrdering());
         }
 
@@ -84,6 +87,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigNoOperation.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -104,6 +108,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigBlankOperation.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -124,6 +129,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigApplyToAllOperations.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -144,6 +150,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigApplyToSomeOperations.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -164,6 +171,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOverridden.xml"),
+                OpenApiSpecVersion.OpenApi3_0_0,
                 7,
                 Path.Combine(
                     OutputDirectory,

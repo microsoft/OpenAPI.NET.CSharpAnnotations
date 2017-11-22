@@ -4,7 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Xml.Linq;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 {
@@ -19,6 +19,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocument">The document representing annotation xml.</param>
         /// <param name="settings">Settings for document filters.</param>
-        void Apply(OpenApiV3SpecificationDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings);
+        void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings);
     }
 }

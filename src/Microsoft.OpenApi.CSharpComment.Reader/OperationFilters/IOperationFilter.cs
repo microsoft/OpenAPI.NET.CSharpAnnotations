@@ -4,7 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Xml.Linq;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
@@ -25,6 +25,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        void Apply(Operation operation, XElement element, OperationFilterSettings settings);
+        void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings);
     }
 }

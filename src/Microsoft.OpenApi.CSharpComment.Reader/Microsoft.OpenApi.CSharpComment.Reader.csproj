@@ -11,6 +11,7 @@
     <AssemblyName>Microsoft.OpenApi.CSharpComment.Reader</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,8 +33,17 @@
     <DocumentationFile>bin\Release\Microsoft.OpenApi.CSharpComment.Reader.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.OpenApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta004\lib\net46\Microsoft.OpenApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OpenApi.Readers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.OpenApi.Readers.1.0.0-beta004\lib\net46\Microsoft.OpenApi.Readers.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpYaml, Version=1.6.1.0, Culture=neutral, PublicKeyToken=1ced8108e942bc02, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpYaml.1.6.1\lib\net45\SharpYaml.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -48,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AppDomainCreator.cs" />
     <Compile Include="DocumentConfigFilters\DocumentVariantAttributesFilter.cs" />
+    <Compile Include="DocumentFilters\AddSpecVersionFilter.cs" />
     <Compile Include="DocumentFilters\MemberSummaryToSchemaDescriptionFilter.cs" />
     <Compile Include="DocumentFilters\DocumentFilterSettings.cs" />
     <Compile Include="Exceptions\ConflictingDocumentVariantAttributesException.cs" />
@@ -56,6 +67,7 @@
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
+    <Compile Include="Models\DocumentGenerationResultSerializedDocument.cs" />
     <Compile Include="OperationConfigFilters\CommonAnnotationFilter.cs" />
     <Compile Include="OperationConfigFilters\IOperationConfigFilter.cs" />
     <Compile Include="OperationConfigFilters\OperationConfigFilterSettings.cs" />
@@ -105,14 +117,10 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OpenApiSpecification.Core\OpenApiSpecification.Core.csproj">
-      <Project>{9fce4f1b-304e-414e-a74b-a38d07248ab3}</Project>
-      <Name>OpenApiSpecification.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Microsoft.OpenApi.CSharpComment.Reader.nuspec" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System;
@@ -17,13 +17,14 @@ using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
-    /// Provides functionality to parse xml into OpenApiV3Specification
+    /// Provides functionality to parse xml documentation and contract assemblies into Open API documents.
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
@@ -35,6 +36,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
         private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
+            new AddSpecVersionFilter(),
             new AssemblyNameToInfoFilter(),
             new UrlToServerFilter(),
             new MemberSummaryToSchemaDescriptionFilter()
@@ -77,14 +79,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Add operation and update the operation filter settings based on the given document variant info.
         /// </summary>
         private void AddOperation(
-            IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> specificationDocuments,
+            IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments,
             IDictionary<DocumentVariantInfo, ReferenceRegistryManager> referenceRegistryManagerMap,
             DocumentVariantInfo documentVariantInfo,
             XElement operationElement,
             XElement operationConfigElement,
             TypeFetcher typeFetcher)
         {
-            var paths = new Paths();
+            var paths = new OpenApiPaths();
 
             foreach (var preprocessingOperationFilter in _generatorConfig.PreprocessingOperationFilters)
             {
@@ -104,7 +106,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 var path = pathToPathItem.Key;
                 var pathItem = pathToPathItem.Value;
 
-                foreach (var operationMethodToOperation in pathItem)
+                foreach (var operationMethodToOperation in pathItem.Operations)
                 {
                     var operationMethod = operationMethodToOperation.Key;
                     var operation = operationMethodToOperation.Value;
@@ -150,7 +152,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     {
                         specificationDocuments.Add(
                             documentVariantInfo,
-                            new OpenApiV3SpecificationDocument());
+                            new OpenApiDocument
+                            {
+                                Components = new OpenApiComponents()
+                            });
                     }
 
                     // Copy operations from local Paths object to the Paths in the specification document.
@@ -160,14 +165,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     {
                         documentPaths.Add(
                             path,
-                            new PathItem
+                            new OpenApiPathItem
                             {
-                                [operationMethod] = operation
+                                Operations =
+                                {
+                                    [operationMethod] = operation
+                                }
                             });
                     }
                     else
                     {
-                        documentPaths[path].Add(operationMethod, operation);
+                        documentPaths[path].Operations.Add(operationMethod, operation);
                     }
                 }
             }
@@ -180,15 +188,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="annotationXml">The serialized XDocument representing annotation.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
-        /// <returns>A string representing serialized version of <see cref="DocumentGenerationResult"/>></returns>
+        /// <param name="openApiSpecVersion">Specification version of the Open API documents to generate.</param>
+        /// <returns>
+        /// A string representing serialized version of
+        /// <see cref="DocumentGenerationResultSerializedDocument"/>>
+        /// </returns>
         /// <remarks>
         /// Given that this function is expected to be called from an isolated domain,
-        /// the input and output must be serialized to string.
+        /// the input and output must be serializable to string or value type.
         /// </remarks>
         public string GenerateOpenApiDocuments(
             string annotationXml,
             IList<string> contractAssemblyPaths,
-            string configurationXml)
+            string configurationXml,
+            OpenApiSpecVersion openApiSpecVersion)
         {
             var annotationXmlDocument = XDocument.Parse(annotationXml);
             var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]")
@@ -212,11 +225,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .ToList();
             }
 
-            DocumentGenerationResult result;
+            DocumentGenerationResultSerializedDocument result;
 
             if (!operationElements.Any())
             {
-                result = new DocumentGenerationResult(
+                result = new DocumentGenerationResultSerializedDocument(
                     new List<PathGenerationResult>
                     {
                         new PathGenerationResult
@@ -231,20 +244,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
             try
             {
-                result = new DocumentGenerationResult();
+                result = new DocumentGenerationResultSerializedDocument();
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
-
-                IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> documents;
 
                 var pathGenerationResults = GenerateSpecificationDocuments(
                     typeFetcher,
                     operationElements,
                     operationConfigElement,
                     documentVariantElementNames,
-                    out documents);
-
-                result.Documents = documents;
+                    out var documents);
 
                 foreach (var pathGenerationResult in pathGenerationResults)
                 {
@@ -253,9 +262,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
                 try
                 {
-                    foreach (var documentVariantInfo in result.Documents.Keys)
+                    foreach (var variantInfoDocumentValuePair in documents)
                     {
-                        var openApiDocument = result.Documents[documentVariantInfo];
+                        var openApiDocument = variantInfoDocumentValuePair.Value;
 
                         foreach (var documentFilter in _generatorConfig.DocumentFilters)
                         {
@@ -287,7 +296,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     // This exception may not be tied to a particular operation and the resulting
                     // documents may be in bad state. We simply return empty document with
                     // an exception message in the path generation result.
-                    result = new DocumentGenerationResult(
+                    result = new DocumentGenerationResultSerializedDocument(
                         new List<PathGenerationResult>
                         {
                             new PathGenerationResult
@@ -299,11 +308,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         });
                 }
 
+                foreach (var variantInfoDocumentPair in documents)
+                {
+                    result.Documents[variantInfoDocumentPair.Key] =
+                        variantInfoDocumentPair.Value.SerializeAsJson(openApiSpecVersion);
+                }
+
                 return JsonConvert.SerializeObject(result);
             }
             catch (Exception e)
             {
-                result = new DocumentGenerationResult(
+                result = new DocumentGenerationResultSerializedDocument(
                     new List<PathGenerationResult>
                     {
                         new PathGenerationResult
@@ -327,9 +342,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             IList<XElement> operationElements,
             XElement operationConfigElement,
             IList<string> documentVariantElementNames,
-            out IDictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument> specificationDocuments)
+            out IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments)
         {
-            specificationDocuments = new Dictionary<DocumentVariantInfo, OpenApiV3SpecificationDocument>();
+            specificationDocuments = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
             var pathGenerationResults = new List<PathGenerationResult>();
 
@@ -338,7 +353,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             foreach (var operationElement in operationElements)
             {
                 string url;
-                OperationMethod operationMethod;
+                OperationType operationMethod;
 
                 try
                 {

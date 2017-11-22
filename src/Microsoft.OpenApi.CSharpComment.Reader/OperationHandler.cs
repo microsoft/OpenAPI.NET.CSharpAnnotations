@@ -12,7 +12,7 @@ using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
@@ -21,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <summary>
         /// Gets the operation id by parsing segments out of the absolute path.
         /// </summary>
-        public static string GetOperationId(string absolutePath, OperationMethod operationMethod)
+        public static string GetOperationId(string absolutePath, OperationType operationMethod)
         {
             var operationId = new StringBuilder(operationMethod.ToString().ToLowerInvariant());
 
@@ -64,7 +64,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Extracts the operation method from the operation element
         /// </summary>
         /// <exception cref="InvalidVerbException">Thrown if the verb is missing or has invalid format.</exception>
-        public static OperationMethod GetOperationMethod(
+        public static OperationType GetOperationMethod(
             string url,
             XElement operationElement)
         {
@@ -72,7 +72,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
             var verb = verbElement?.Value.Trim();
 
-            OperationMethod operationMethod;
+            OperationType operationMethod;
 
             if (Enum.TryParse(verb, true, out operationMethod))
             {

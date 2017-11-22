@@ -5,29 +5,31 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
-    /// The class to store the open api document generation result.
+    /// The class to store the open api document generation result with the document explicitly stored as string.
+    /// This is needed to allow JsonConvert to serialize the entire object correctly given that
+    /// <see cref="OpenApiDocument"/> cannot directly be serialized with JsonConvert.
     /// </summary>
-    public class DocumentGenerationResult
+    public class DocumentGenerationResultSerializedDocument
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResult"/>.
+        /// Initializes a new instance of <see cref="DocumentGenerationResultSerializedDocument"/>.
         /// </summary>
-        public DocumentGenerationResult()
+        public DocumentGenerationResultSerializedDocument()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResult"/>.
+        /// Initializes a new instance of <see cref="DocumentGenerationResultSerializedDocument"/>.
         /// </summary>
         /// <param name="pathGenerationResults">The path generation results.</param>
-        public DocumentGenerationResult(IList<PathGenerationResult> pathGenerationResults)
+        public DocumentGenerationResultSerializedDocument(IList<PathGenerationResult> pathGenerationResults)
         {
             foreach (var pathGenerationResult in pathGenerationResults)
             {
@@ -39,9 +41,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// Dictionary mapping a document variant information to its associated specification document.
         /// </summary>
         [JsonProperty]
-        [JsonConverter(typeof(DictionaryJsonConverter<DocumentVariantInfo, OpenApiDocument>))]
-        public IDictionary<DocumentVariantInfo, OpenApiDocument>
-            Documents { get; internal set; } = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
+        [JsonConverter(typeof(DictionaryJsonConverter<DocumentVariantInfo, string>))]
+        public IDictionary<DocumentVariantInfo, string>
+            Documents { get; internal set; } = new Dictionary<DocumentVariantInfo, string>();
 
         /// <summary>
         /// The generation status.
@@ -69,7 +71,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// Gets the document generated from the entire documentation regardless of document variant info.
         /// </summary>
         [JsonIgnore]
-        public OpenApiDocument MainDocument
+        public string MainDocument
         {
             get
             {
@@ -90,12 +92,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             new List<PathGenerationResult>();
 
         /// <summary>
-        /// Converts this object to <see cref="DocumentGenerationResultSerializedDocument"/>.
+        /// Converts this object to <see cref="DocumentGenerationResult"/>.
         /// </summary>
-        public DocumentGenerationResultSerializedDocument ToDocumentGenerationResultSerializedDocument(
-            OpenApiSpecVersion openApiSpecVersion)
+        public DocumentGenerationResult ToDocumentGenerationResult()
         {
-            var documentGenerationResult = new DocumentGenerationResultSerializedDocument();
+            var documentGenerationResult = new DocumentGenerationResult();
 
             foreach (var pathGenerationResult in PathGenerationResults)
             {
@@ -106,7 +107,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             foreach (var variantInfoDocumentKeyValuePair in Documents)
             {
                 documentGenerationResult.Documents[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
-                    = variantInfoDocumentKeyValuePair.Value.SerializeAsJson(openApiSpecVersion);
+                    = new OpenApiStringReader().Read(variantInfoDocumentKeyValuePair.Value, out var _);
             }
 
             return documentGenerationResult;

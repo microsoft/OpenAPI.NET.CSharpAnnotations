@@ -6,36 +6,35 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
-    /// Reference Registry for <see cref="Schema"/>
+    /// Reference Registry for <see cref="OpenApiSchema"/>
     /// </summary>
-    public class SchemaReferenceRegistry : ReferenceRegistry<Type, Schema>
+    public class SchemaReferenceRegistry : ReferenceRegistry<Type, OpenApiSchema>
     {
         /// <summary>
         /// The dictionary containing all references of the given type.
         /// </summary>
-        public override IDictionary<string, Schema> References { get; } = new Dictionary<string, Schema>();
+        public override IDictionary<string, OpenApiSchema> References { get; } = new Dictionary<string, OpenApiSchema>();
 
         /// <summary>
         /// Finds the existing reference object based on the key from the input or creates a new one.
         /// </summary>
         /// <returns>The existing or created reference object.</returns>
-        internal override Schema FindOrAddReference(Type input)
+        internal override OpenApiSchema FindOrAddReference(Type input)
         {
-            const string PathToSchemaReferences = "#/components/schemas/";
-
             // Return empty schema when the type does not have a name. 
             // This can occur, for example, when a generic type without the generic argument specified
             // is passed in.
             if (input == null || input.FullName == null)
             {
-                return new Schema();
+                return new OpenApiSchema();
             }
 
             var key = GetKey(input);
@@ -43,9 +42,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
             // If the schema already exists in the References, simply return.
             if (References.ContainsKey(key))
             {
-                return new Schema
+                return new OpenApiSchema
                 {
-                    Reference = PathToSchemaReferences + key
+                    Reference = new OpenApiReference()
+                    {
+                        Id = key,
+                        Type = ReferenceType.Schema
+                    }
                 };
             }
 
@@ -56,7 +59,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
             // 3. Dictionary Type
             // 4. Enumerable Type
             // 5. Object Type
-            var schema = new Schema();
+            var schema = new OpenApiSchema();
 
             if (input.IsSimple())
             {
@@ -72,7 +75,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
                 }
                 else if (input == typeof(Guid))
                 {
-                    schema.Example = Guid.Empty.ToString();
+                    schema.Example = new OpenApiString(Guid.Empty.ToString());
                     schema.MinLength = 36;
                     schema.MaxLength = 36;
                 }
@@ -85,7 +88,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
                 schema.Type = "string";
                 foreach (var name in Enum.GetNames(input))
                 {
-                    schema.Enum.Add(name);
+                    schema.Enum.Add(new OpenApiString(name));
                 }
 
                 return schema;
@@ -114,7 +117,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
             {
                 var propertyName = propertyInfo.Name;
                 var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
-
+                
                 // Check if the property is read-only.
                 innerSchema.ReadOnly = !propertyInfo.CanWrite;
 
@@ -130,7 +133,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
                     // Check if the property is required.
                     if (jsonPropertyAttributes[0].Required == Required.Always)
                     {
-                        schema.RequiredProperties.Add(propertyName);
+                        schema.Required.Add(propertyName);
                     }
                 }
 
@@ -139,9 +142,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 
             References[key] = schema;
 
-            return new Schema
+            return new OpenApiSchema
             {
-                Reference = PathToSchemaReferences + key
+                Reference = new OpenApiReference()
+                {
+                    Id = key,
+                    Type = ReferenceType.Schema
+                }
             };
         }
 

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
@@ -28,14 +28,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             string description = null;
-            var descriptionElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Remarks);
+            var remarksElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Remarks);
 
-            if (descriptionElement != null)
+            if (remarksElement != null)
             {
-                description = descriptionElement.Value.Trim().RemoveBlankLines();
+                description = remarksElement.Value.Trim().RemoveBlankLines();
             }
 
             if (string.IsNullOrWhiteSpace(operation.Description))

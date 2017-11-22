@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
-using Microsoft.OpenApiSpecification.Core.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
@@ -31,7 +31,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public void Apply(Operation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var bodyElements = element.Elements()
                 .Where(p => p.Name == KnownXmlStrings.Param && p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
@@ -71,14 +71,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                 if (operation.RequestBody == null)
                 {
-                    operation.RequestBody = new RequestBody
+                    operation.RequestBody = new OpenApiRequestBody
                     {
                         Description = description.RemoveBlankLines(),
-                        Content =
+                        Content = 
                         {
-                            [mediaType] = new MediaType {Schema = schema}
+                            [mediaType] = new OpenApiMediaType {Schema = schema}
                         },
-                        IsRequired = true
+                        Required = true
                     };
                 }
                 else
@@ -90,14 +90,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                     if (!operation.RequestBody.Content.ContainsKey(mediaType))
                     {
-                        operation.RequestBody.Content[mediaType] = new MediaType {Schema = schema};
+                        operation.RequestBody.Content[mediaType] = new OpenApiMediaType
+                        {
+                            Schema = schema
+                        };
                     }
                     else
                     {
                         if (!operation.RequestBody.Content[mediaType].Schema.AnyOf.Any())
                         {
                             var existingSchema = operation.RequestBody.Content[mediaType].Schema;
-                            var newSchema = new Schema();
+                            var newSchema = new OpenApiSchema();
                             newSchema.AnyOf.Add(existingSchema);
 
                             operation.RequestBody.Content[mediaType].Schema = newSchema;
