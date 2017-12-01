@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
 {
@@ -16,23 +17,41 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
     /// </summary>
     public static class TypeExtensions
     {
-        private static readonly Dictionary<Type, OpenApiDataTypeFormatPair> _simpleTypeToOpenApiDataTypeFormat =
-            new Dictionary<Type, OpenApiDataTypeFormatPair>
+        private static readonly Dictionary<Type, Func<OpenApiSchema>> _simpleTypeToOpenApiDataSchema =
+            new Dictionary<Type, Func<OpenApiSchema>>
             {
-                [typeof(bool)] = new OpenApiDataTypeFormatPair {DataType = "boolean"},
-                [typeof(byte)] = new OpenApiDataTypeFormatPair {DataType = "string", Format = "byte"},
-                [typeof(int)] = new OpenApiDataTypeFormatPair {DataType = "integer", Format = "int32"},
-                [typeof(uint)] = new OpenApiDataTypeFormatPair {DataType = "integer", Format = "int32"},
-                [typeof(long)] = new OpenApiDataTypeFormatPair {DataType = "integer", Format = "int64"},
-                [typeof(ulong)] = new OpenApiDataTypeFormatPair {DataType = "integer", Format = "int64"},
-                [typeof(float)] = new OpenApiDataTypeFormatPair {DataType = "number", Format = "float"},
-                [typeof(double)] = new OpenApiDataTypeFormatPair {DataType = "number", Format = "double"},
-                [typeof(decimal)] = new OpenApiDataTypeFormatPair {DataType = "number", Format = "double"},
-                [typeof(DateTime)] = new OpenApiDataTypeFormatPair {DataType = "string", Format = "date-time"},
-                [typeof(DateTimeOffset)] = new OpenApiDataTypeFormatPair {DataType = "string", Format = "date-time"},
-                [typeof(Guid)] = new OpenApiDataTypeFormatPair {DataType = "string", Format = "uuid"},
-                [typeof(char)] = new OpenApiDataTypeFormatPair { DataType = "string" },
-                [typeof(string)] = new OpenApiDataTypeFormatPair {DataType = "string"}
+                [typeof(bool)] = () => new OpenApiSchema { Type = "boolean"},
+                [typeof(byte)] = () => new OpenApiSchema { Type = "string", Format = "byte"},
+                [typeof(int)] = () => new OpenApiSchema { Type = "integer", Format = "int32"},
+                [typeof(uint)] = () => new OpenApiSchema { Type = "integer", Format = "int32"},
+                [typeof(long)] = () => new OpenApiSchema { Type = "integer", Format = "int64"},
+                [typeof(ulong)] = () => new OpenApiSchema { Type = "integer", Format = "int64"},
+                [typeof(float)] = () => new OpenApiSchema { Type = "number", Format = "float"},
+                [typeof(double)] = () => new OpenApiSchema { Type = "number", Format = "double"},
+                [typeof(decimal)] = () => new OpenApiSchema { Type = "number", Format = "double"},
+                [typeof(DateTime)] = () => new OpenApiSchema { Type = "string", Format = "date-time"},
+                [typeof(DateTimeOffset)] = () => new OpenApiSchema { Type = "string", Format = "date-time"},
+                [typeof(Guid)] = () => new OpenApiSchema { Type = "string", Format = "uuid"},
+                [typeof(char)] = () => new OpenApiSchema { Type = "string" },
+
+                [typeof(bool?)] = () => new OpenApiSchema { Type = "boolean", Nullable = true },
+                [typeof(byte?)] = () => new OpenApiSchema { Type = "string", Format = "byte", Nullable = true },
+                [typeof(int?)] = () => new OpenApiSchema { Type = "integer", Format = "int32", Nullable = true },
+                [typeof(uint?)] = () => new OpenApiSchema { Type = "integer", Format = "int32", Nullable = true },
+                [typeof(long?)] = () => new OpenApiSchema { Type = "integer", Format = "int64", Nullable = true },
+                [typeof(ulong?)] = () => new OpenApiSchema { Type = "integer", Format = "int64", Nullable = true },
+                [typeof(float?)] = () => new OpenApiSchema { Type = "number", Format = "float", Nullable = true },
+                [typeof(double?)] = () => new OpenApiSchema { Type = "number", Format = "double", Nullable = true },
+                [typeof(decimal?)] = () => new OpenApiSchema { Type = "number", Format = "double", Nullable = true },
+                [typeof(DateTime?)] = () => new OpenApiSchema { Type = "string", Format = "date-time", Nullable = true },
+                [typeof(DateTimeOffset?)] = () => new OpenApiSchema { Type = "string", Format = "date-time", Nullable = true },
+                [typeof(Guid?)] = () => new OpenApiSchema { Type = "string", Format = "uuid", Nullable = true },
+                [typeof(char?)] = () => new OpenApiSchema { Type = "string", Nullable = true },
+
+                // Uri is treated as simple string.
+                [typeof(Uri)] = () => new OpenApiSchema { Type = "string" },
+
+                [typeof(string)] = () => new OpenApiSchema { Type = "string"}
             };
 
         /// <summary>
@@ -86,7 +105,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// </remarks>
         public static bool IsSimple(this Type type)
         {
-            return _simpleTypeToOpenApiDataTypeFormat.ContainsKey(type);
+            return _simpleTypeToOpenApiDataSchema.ContainsKey(type);
         }
 
         /// <summary>
@@ -94,7 +113,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// </summary>
         /// <param name="type">Simple type.</param>
         /// <remarks>
-        /// From http://swagger.io/specification/#data-types-12
+        /// All the following types from http://swagger.io/specification/#data-types-12 are supported.
+        /// Other types including nullables and URL are also supported.
         /// Common Name      type    format      Comments
         /// ===========      ======= ======      =========================================
         /// integer          integer int32       signed 32 bits
@@ -110,18 +130,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// password         string  password    Used to hint UIs the input needs to be obscured.
         /// If the type is not recognized as "simple", System.String will be returned.
         /// </remarks>
-        public static OpenApiDataTypeFormatPair MapToOpenApiDataTypeFormatPair(this Type type)
+        public static OpenApiSchema MapToOpenApiSchema(this Type type)
         {
             if (type == null)
             {
                 throw new ArgumentNullException(nameof(type));
             }
 
-            OpenApiDataTypeFormatPair result;
-
-            return _simpleTypeToOpenApiDataTypeFormat.TryGetValue(type, out result)
-                ? result
-                : new OpenApiDataTypeFormatPair {DataType = "string"};
+            return _simpleTypeToOpenApiDataSchema.TryGetValue(type, out var result)
+                ? result()
+                : new OpenApiSchema { Type = "string"};
         }
     }
 }

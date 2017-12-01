@@ -39,9 +39,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
             {
                 var code = responseElement.Attribute(KnownXmlStrings.Code)?.Value;
 
-                if (code == null)
+                if (string.IsNullOrWhiteSpace(code))
                 {
-                    continue;
+                    // If code is not specified, assume it is for a sucessful operation.
+                    code = "200";
                 }
 
                 var mediaType = responseElement.Attribute(KnownXmlStrings.Type)?.Value ?? "application/json";

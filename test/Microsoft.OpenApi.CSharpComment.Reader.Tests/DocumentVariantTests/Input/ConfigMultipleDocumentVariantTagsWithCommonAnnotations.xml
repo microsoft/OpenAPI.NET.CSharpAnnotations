@@ -17,7 +17,7 @@
     </variant>
   </document>
   <operation>
-    <annotation tag="$default">
+    <annotation>
       <param name="SampleAddedHeaderParam" required="false" cref="T:System.String" in="header">Added Header Param.</param>
     </annotation>
   </operation>

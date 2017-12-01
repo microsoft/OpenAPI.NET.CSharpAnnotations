@@ -30,8 +30,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
             {
                 var targetedTag = annotationElement.Attribute(KnownXmlStrings.Tag);
 
-                if (targetedTag == null ||
-                    !string.Equals(targetedTag.Value.Trim(), "$default", StringComparison.InvariantCultureIgnoreCase) &&
+                // Only proceed if the target tag is null (indicating that the annotation applies to all operations)
+                // or if the target tag matches with tags in this operation.
+                if (targetedTag != null &&
                     !operation.Tags.Select(t => t.Name)
                         .Contains(targetedTag.Value.Trim(), StringComparer.InvariantCultureIgnoreCase))
                 {

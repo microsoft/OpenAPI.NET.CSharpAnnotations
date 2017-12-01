@@ -94,15 +94,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 _output.WriteLine(actualDocumentAsString);
 
                 var openApiStringReader = new OpenApiStringReader();
-                
-                actualDocuments.Add(
-                    openApiStringReader.Read(actualDocumentAsString, out var _));
 
-                expectedDocuments.Add(
-                    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
+                var actualDocument = openApiStringReader.Read(actualDocumentAsString, out var _);
+                var expectedDocument = openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _);
+
+                actualDocument.Should().BeEquivalentTo(expectedDocument);
+
+                // Bug in fluent assertion method. Comparing the array of documents yields incorrect result.
+                // Root cause unknown. This should be enabled once that bug is resolved.
+                //actualDocuments.Add(
+                //    openApiStringReader.Read(actualDocumentAsString, out var _));
+
+                //expectedDocuments.Add(
+                //    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
             }
 
-            actualDocuments.Should().BeEquivalentTo(expectedDocuments);
+            //actualDocuments.Should().BeEquivalentTo(expectedDocuments);
         }
 
         [Theory]
@@ -166,14 +173,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 
                 var openApiStringReader = new OpenApiStringReader();
 
-                actualDocuments.Add(
-                    openApiStringReader.Read(actualDocumentAsString, out var _));
+                var actualDocument = openApiStringReader.Read(actualDocumentAsString, out var _);
+                var expectedDocument = openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _);
 
-                expectedDocuments.Add(
-                    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
+                actualDocument.Should().BeEquivalentTo(expectedDocument);
+
+                // Bug in fluent assertion method. Comparing the array of documents yields incorrect result.
+                // Root cause unknown. This should be enabled once that bug is resolved.
+                //actualDocuments.Add(actualDocument);
+
+                //expectedDocuments.Add(expectedDocument);
             }
 
-            actualDocuments.Should().BeEquivalentTo(expectedDocuments);
+            //actualDocuments.Should().BeEquivalentTo(expectedDocuments);
         }
     }
 }

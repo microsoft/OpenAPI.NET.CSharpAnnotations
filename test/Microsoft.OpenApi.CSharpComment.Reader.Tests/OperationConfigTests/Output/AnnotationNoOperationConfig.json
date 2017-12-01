@@ -1,173 +1,61 @@
 {
-    "components": {
-        "schemas": {
-            "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1": {
-                "properties": {
-                    "samplePropertyBool": {
-                        "description": "Gets or sets the sample property bool",
-                        "readOnly": false,
-                        "type": "boolean"
-                    },
-                    "samplePropertyStringInt": {
-                        "description": "Gets or sets the sample property int",
-                        "format": "int32",
-                        "readOnly": false,
-                        "type": "integer"
-                    },
-                    "samplePropertyString1": {
-                        "description": "Gets or sets the sample property string 1",
-                        "readOnly": false,
-                        "type": "string"
-                    },
-                    "samplePropertyString2": {
-                        "description": "Gets or sets the sample property string 2",
-                        "readOnly": false,
-                        "type": "string"
-                    },
-                    "samplePropertyString3": {
-                        "description": "Gets or sets the sample property string 3",
-                        "readOnly": false,
-                        "type": "string"
-                    },
-                    "samplePropertyString4": {
-                        "description": "Gets or sets the sample property string 4",
-                        "readOnly": false,
-                        "type": "string"
-                    },
-                    "samplePropertyEnum": {
-                        "description": "Gets or sets the sample property enum",
-                        "enum": [
-                            "SampleEnumValue1",
-                            "SampleEnumValue2"
-                        ],
-                        "readOnly": false,
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "samplePropertyString3",
-                    "samplePropertyString4",
-                    "samplePropertyEnum"
-                ],
-                "type": "object"
-            },
-            "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3": {
-                "properties": {
-                    "samplePropertyObject": {
-                        "description": "Gets or sets sample property object",
-                        "readOnly": false,
-                        "$ref":
-                            "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
-                    },
-                    "samplePropertyObjectList": {
-                        "description": "Gets the sample property object list",
-                        "items": {
-                            "$ref":
-                                "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
-                        },
-                        "readOnly": true,
-                        "type": "array"
-                    }
-                },
-                "required": ["samplePropertyObject"],
-                "type": "object"
-            },
-            "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2": {
-                "properties": {
-                    "samplePropertyEnum": {
-                        "description": "Gets or sets the sample property enum",
-                        "enum": [
-                            "SampleEnumValue1",
-                            "SampleEnumValue2"
-                        ],
-                        "readOnly": false,
-                        "type": "string"
-                    },
-                    "samplePropertyInt": {
-                        "description": "Gets or sets the sample property string 1",
-                        "readOnly": false,
-                        "type": "string"
-                    },
-                    "samplePropertyObjectDictionary": {
-                        "additionalProperties": {
-                            "$ref":
-                                "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
-                        },
-                        "description": "Gets the sample property object dictionary",
-                        "readOnly": true,
-                        "type": "object"
-                    },
-                    "samplePropertyObjectList": {
-                        "description": "Gets the sample property object list",
-                        "items": {
-                            "$ref":
-                                "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
-                        },
-                        "readOnly": true,
-                        "type": "array"
-                    },
-                    "samplePropertyString1": {
-                        "description": "Gets or sets the sample property string 1",
-                        "readOnly": false,
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "samplePropertyInt",
-                    "samplePropertyObjectDictionary",
-                    "samplePropertyObjectList"
-                ],
-                "type": "object"
-            }
-        }
-    },
+    "openapi": "3.0.0",
     "info": {
         "title": "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis",
         "version": "1.0.0"
     },
-    "openapi": "3.0.0",
+    "servers": [
+        {
+            "url": "http://localhost:9000"
+        }
+    ],
     "paths": {
         "/V1/samples/{id}": {
             "get": {
+                "tags": [
+                    "Sample V1"
+                ],
+                "summary": "Sample Get 1",
                 "operationId": "getV1SamplesById",
                 "parameters": [
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
                         "schema": {
-                            "format": "float",
-                            "type": "number"
+                            "type": "number",
+                            "format": "float"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam2",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "in": "header",
-                        "required": false,
+                        "description": "Header param 2",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "path",
-                        "required": false,
                         "name": "id",
+                        "in": "path",
+                        "description": "The object id",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "query",
-                        "required": true,
                         "name": "queryBool",
+                        "in": "query",
+                        "description": "Sample query boolean",
+                        "required": true,
                         "schema": {
                             "type": "boolean"
                         }
@@ -175,6 +63,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "Sample object retrieved",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -182,62 +71,76 @@
                                         "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
                                 }
                             }
-                        },
-                        "description": "Sample object retrieved"
+                        }
                     },
                     "400": {
+                        "description": "Bad request",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "description": "Bad request"
+                        }
                     }
-                },
-                "summary": "Sample Get 1",
-                "tags": ["Sample V1"]
+                }
             },
             "put": {
+                "tags": [
+                    "Sample V1"
+                ],
+                "summary": "Sample put",
                 "operationId": "putV1SamplesById",
                 "parameters": [
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
                         "schema": {
-                            "format": "float",
-                            "type": "number"
+                            "type": "number",
+                            "format": "float"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam2",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "in": "header",
-                        "required": false,
-                        "name": "sampleHeaderParam3",
+                        "description": "Header param 2",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "path",
-                        "required": false,
+                        "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "id",
+                        "in": "path",
+                        "description": "The object id",
                         "schema": {
                             "type": "string"
                         }
                     }
                 ],
+                "requestBody": {
+                    "description": "Sample object",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":
+                                    "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
+                        "description": "The sample object updated",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -245,49 +148,50 @@
                                         "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
                                 }
                             }
-                        },
-                        "description": "The sample object updated"
+                        }
                     },
                     "400": {
+                        "description": "Bad request",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "description": "Bad request"
+                        }
                     }
-                },
-                "summary": "Sample put",
-                "tags": ["Sample V1"]
+                }
             }
         },
         "/V1/samples": {
             "get": {
+                "tags": [
+                    "Sample V1"
+                ],
+                "summary": "Sample Get 2",
                 "operationId": "getV1Samples",
                 "parameters": [
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
                         "schema": {
-                            "format": "float",
-                            "type": "number"
+                            "type": "number",
+                            "format": "float"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam2",
+                        "in": "header",
+                        "description": "Header param 2",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
                         "schema": {
                             "type": "string"
                         }
@@ -295,6 +199,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "Paged Entity contract",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -302,54 +207,68 @@
                                         "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
                                 }
                             }
-                        },
-                        "description": "Paged Entity contract"
+                        }
                     },
                     "400": {
+                        "description": "Bad request",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "description": "Bad request"
+                        }
                     }
-                },
-                "summary": "Sample Get 2",
-                "tags": ["Sample V1"]
+                }
             },
             "post": {
+                "tags": [
+                    "Sample V1"
+                ],
+                "summary": "Sample Post",
                 "operationId": "postV1Samples",
                 "parameters": [
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
                         "schema": {
-                            "format": "float",
-                            "type": "number"
+                            "type": "number",
+                            "format": "float"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam2",
+                        "in": "header",
+                        "description": "Header param 2",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
                         "schema": {
                             "type": "string"
                         }
                     }
                 ],
+                "requestBody": {
+                    "description": "Sample object",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":
+                                    "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
+                        "description": "Sample object posted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -357,57 +276,58 @@
                                         "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
                                 }
                             }
-                        },
-                        "description": "Sample object posted"
+                        }
                     },
                     "400": {
+                        "description": "Bad request",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "description": "Bad request"
+                        }
                     }
-                },
-                "summary": "Sample Post",
-                "tags": ["Sample V1"]
+                }
             }
         },
         "/V2/samples/{id}": {
             "delete": {
+                "tags": [
+                    "Sample V2"
+                ],
+                "summary": "Sample delete",
                 "operationId": "deleteV2SamplesById",
                 "parameters": [
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
                         "schema": {
-                            "format": "float",
-                            "type": "number"
+                            "type": "number",
+                            "format": "float"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam2",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "in": "header",
-                        "required": false,
-                        "name": "sampleHeaderParam3",
+                        "description": "Header param 2",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "path",
-                        "required": false,
+                        "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "id",
+                        "in": "path",
+                        "description": "The object id",
                         "schema": {
                             "type": "string"
                         }
@@ -415,6 +335,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "Sample object deleted",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -422,63 +343,64 @@
                                         "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
                                 }
                             }
-                        },
-                        "description": "Sample object deleted"
+                        }
                     },
                     "400": {
+                        "description": "Bad request",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "description": "Bad request"
+                        }
                     }
-                },
-                "summary": "Sample delete",
-                "tags": ["Sample V2"]
+                }
             },
             "get": {
+                "tags": [
+                    "Sample V2"
+                ],
+                "summary": "Sample get 2",
                 "operationId": "getV2SamplesById",
                 "parameters": [
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
                         "schema": {
-                            "format": "float",
-                            "type": "number"
+                            "type": "number",
+                            "format": "float"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam2",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "in": "header",
-                        "required": false,
+                        "description": "Header param 2",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "path",
-                        "required": false,
                         "name": "id",
+                        "in": "path",
+                        "description": "The object id",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "query",
-                        "required": false,
                         "name": "queryString",
+                        "in": "query",
+                        "description": "The sample query string",
                         "schema": {
                             "type": "string"
                         }
@@ -486,6 +408,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "Sample object retrieved",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -493,49 +416,50 @@
                                         "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
                                 }
                             }
-                        },
-                        "description": "Sample object retrieved"
+                        }
                     },
                     "400": {
+                        "description": "Bad request",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "description": "Bad request"
+                        }
                     }
-                },
-                "summary": "Sample get 2",
-                "tags": ["Sample V2"]
+                }
             }
         },
         "/V2/samples/": {
             "get": {
+                "tags": [
+                    "Sample V2"
+                ],
+                "summary": "Sample get 1",
                 "operationId": "getV2Samples",
                 "parameters": [
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
                         "schema": {
-                            "format": "float",
-                            "type": "number"
+                            "type": "number",
+                            "format": "float"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam2",
+                        "in": "header",
+                        "description": "Header param 2",
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "in": "header",
-                        "required": false,
                         "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
                         "schema": {
                             "type": "string"
                         }
@@ -543,38 +467,143 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "List of sample objects",
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "type": "array",
                                     "items": {
                                         "$ref":
                                             "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
-                                    },
-                                    "type": "array"
+                                    }
                                 }
                             }
-                        },
-                        "description": "List of sample objects"
+                        }
                     },
                     "400": {
+                        "description": "Bad request",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "type": "string"
                                 }
                             }
-                        },
-                        "description": "Bad request"
+                        }
                     }
-                },
-                "summary": "Sample get 1",
-                "tags": ["Sample V2"]
+                }
             }
         }
     },
-    "servers": [
-        {
-            "url": "http://localhost:9000"
+    "components": {
+        "schemas": {
+            "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1": {
+                "required": [
+                    "samplePropertyString3",
+                    "samplePropertyString4",
+                    "samplePropertyEnum"
+                ],
+                "type": "object",
+                "properties": {
+                    "samplePropertyBool": {
+                        "type": "boolean",
+                        "description": "Gets or sets the sample property bool"
+                    },
+                    "samplePropertyStringInt": {
+                        "type": "integer",
+                        "description": "Gets or sets the sample property int",
+                        "format": "int32"
+                    },
+                    "samplePropertyString1": {
+                        "type": "string",
+                        "description": "Gets or sets the sample property string 1"
+                    },
+                    "samplePropertyString2": {
+                        "type": "string",
+                        "description": "Gets or sets the sample property string 2"
+                    },
+                    "samplePropertyString3": {
+                        "type": "string",
+                        "description": "Gets or sets the sample property string 3"
+                    },
+                    "samplePropertyString4": {
+                        "type": "string",
+                        "description": "Gets or sets the sample property string 4"
+                    },
+                    "samplePropertyEnum": {
+                        "enum": [
+                            "SampleEnumValue1",
+                            "SampleEnumValue2"
+                        ],
+                        "type": "string",
+                        "description": "Gets or sets the sample property enum"
+                    }
+                }
+            },
+            "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3": {
+                "required": [
+                    "samplePropertyObject"
+                ],
+                "type": "object",
+                "properties": {
+                    "samplePropertyObject": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+                    },
+                    "samplePropertyObjectList": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                        },
+                        "description": "Gets the sample property object list",
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2": {
+                "required": [
+                    "samplePropertyInt",
+                    "samplePropertyObjectDictionary",
+                    "samplePropertyObjectList"
+                ],
+                "type": "object",
+                "properties": {
+                    "samplePropertyEnum": {
+                        "enum": [
+                            "SampleEnumValue1",
+                            "SampleEnumValue2"
+                        ],
+                        "type": "string",
+                        "description": "Gets or sets the sample property enum"
+                    },
+                    "samplePropertyInt": {
+                        "type": "string",
+                        "description": "Gets or sets the sample property string 1"
+                    },
+                    "samplePropertyObjectDictionary": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                        },
+                        "description": "Gets the sample property object dictionary",
+                        "readOnly": true
+                    },
+                    "samplePropertyObjectList": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                        },
+                        "description": "Gets the sample property object list",
+                        "readOnly": true
+                    },
+                    "samplePropertyString1": {
+                        "type": "string",
+                        "description": "Gets or sets the sample property string 1"
+                    }
+                }
+            }
         }
-    ]
+    }
 }

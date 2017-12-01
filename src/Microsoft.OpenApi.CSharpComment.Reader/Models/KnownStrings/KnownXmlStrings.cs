@@ -11,6 +11,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
         public const string Body = "body";
         public const string Code = "code";
         public const string Cref = "cref";
+        public const string Default = "default";
         public const string Description = "description";
         public const string Group = "group";
         public const string Header = "header";
