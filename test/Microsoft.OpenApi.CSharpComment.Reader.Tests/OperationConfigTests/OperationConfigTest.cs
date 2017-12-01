@@ -71,7 +71,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                     o => o.WithStrictOrdering());
         }
 
-        private static IEnumerable<object[]> GetTestCasesForGenerateDocumentWithOperationConfigShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentWithOperationConfigShouldSucceed()
         {
             // No operation section in config files
             yield return new object[]

@@ -42,7 +42,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.FilterTests
             result.Should().BeEquivalentTo(possiblePaths);
         }
 
-        private static IEnumerable<object[]> GetTestCasesForGeneratePathsShouldYieldCorrectPossiblePaths()
+        public static IEnumerable<object[]> GetTestCasesForGeneratePathsShouldYieldCorrectPossiblePaths()
         {
             // Simple types
 

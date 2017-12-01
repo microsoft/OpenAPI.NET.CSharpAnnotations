@@ -2,9 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <RuntimeIdentifiers>win</RuntimeIdentifiers>
-  </PropertyGroup>
-  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{14D2C330-AAA0-4813-960F-BD3D46D6CE1D}</ProjectGuid>
@@ -122,9 +119,6 @@
   <ItemGroup>
     <None Include="Microsoft.OpenApi.CSharpComment.Reader.nuspec" />
     <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

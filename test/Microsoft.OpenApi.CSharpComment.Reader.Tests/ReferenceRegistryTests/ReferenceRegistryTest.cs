@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests
             actualReferences.Should().BeEquivalentTo(expectedReferences);
         }
 
-        private static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
         {
             // Simple types
             yield return new object[]

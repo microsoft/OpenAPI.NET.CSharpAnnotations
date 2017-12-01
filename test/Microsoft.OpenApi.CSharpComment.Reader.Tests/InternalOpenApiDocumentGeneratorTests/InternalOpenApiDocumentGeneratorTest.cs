@@ -32,7 +32,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             _output = output;
         }
 
-        private static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldFailGeneration()
+        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldFailGeneration()
         {
             // Invalid Verb
             yield return new object[]
@@ -249,7 +249,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             };
         }
 
-        private static IEnumerable<object[]> GetTestCasesForValidDocumentationShouldPassGeneration()
+        public static IEnumerable<object[]> GetTestCasesForValidDocumentationShouldPassGeneration()
         {
             // Standard, original valid XML document
             yield return new object[]
