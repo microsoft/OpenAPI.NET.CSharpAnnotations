@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters;
@@ -74,6 +75,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             OperationFilters = _defaultOperationFilters,
             PreprocessingOperationFilters = _defaultPreprocessingOperationFilters
         };
+
+        public InternalOpenApiDocumentGenerator()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += ResolveNewtonsoftJsonVersion;
+        }
+
+        private static Assembly ResolveNewtonsoftJsonVersion(object sender, ResolveEventArgs args)
+        {
+            if (args.Name.Contains("Newtonsoft.Json"))
+            {
+                // Load from the existing version of Newtonsoft.Json
+                var assembly = Assembly.LoadFrom("Newtonsoft.Json.dll");
+                return assembly;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Add operation and update the operation filter settings based on the given document variant info.

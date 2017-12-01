@@ -27,7 +27,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             // The privateBinPath is a ; seperated list of paths located in the base path of the 
             // application where the CLR will attempt to locate assemblies during the load process.
             // Here we add the location where we will copy dlls to.
-            setupInformation.PrivateBinPath += ";" + "DefaultGenerationBin";
+            setupInformation.PrivateBinPath += String.IsNullOrEmpty(setupInformation.PrivateBinPath)
+                ? "DefaultGenerationBin"
+                : ";" + "DefaultGenerationBin";
 
             // Setup the domain.
             Domain = AppDomain.CreateDomain(

@@ -24,8 +24,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
         public const string Query = "query";
         public const string QueryParam = "queryParam";
         public const string Remarks = "remarks";
+        public const string RequestType = "requestType";
         public const string Required = "required";
         public const string Response = "response";
+        public const string ResponseType = "responseType";
         public const string See = "see";
         public const string Summary = "summary";
         public const string T = "T";

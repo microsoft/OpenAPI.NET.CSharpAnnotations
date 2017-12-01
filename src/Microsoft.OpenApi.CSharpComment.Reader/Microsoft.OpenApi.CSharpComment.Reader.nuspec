@@ -6,7 +6,9 @@
       <authors>Microsoft</authors>
       <description>Reader that translates Visual Studio C# comments into .NET objects representing OpenAPI specification.</description>
       <dependencies>
-          <dependency id="Newtonsoft.Json" version="8.0.3" />
+        <dependency id="Newtonsoft.Json" version="8.0.3" />
+        <dependency id="Microsoft.OpenApi" version="1.0.0-beta004"/>
+        <dependency id="Microsoft.OpenApi.Readers" version="1.0.0-beta004"/>
       </dependencies>
     </metadata>
 </package>

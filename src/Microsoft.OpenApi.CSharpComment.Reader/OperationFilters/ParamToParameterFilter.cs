@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                 var isRequired = paramElement.Attribute(KnownXmlStrings.Required)?.Value.Trim();
                 var cref = paramElement.Attribute(KnownXmlStrings.Cref)?.Value.Trim();
-                var description = paramElement.Attribute(KnownXmlStrings.Description)?.Value.RemoveBlankLines();
+                var description = paramElement.Value.RemoveBlankLines();
 
                 var schema = GenerateSchemaFromCref(cref, settings);
 

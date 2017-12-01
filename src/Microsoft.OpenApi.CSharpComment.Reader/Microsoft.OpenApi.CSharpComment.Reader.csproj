@@ -2,6 +2,9 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{14D2C330-AAA0-4813-960F-BD3D46D6CE1D}</ProjectGuid>
@@ -34,13 +37,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.OpenApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta004\lib\net46\Microsoft.OpenApi.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta006\lib\net46\Microsoft.OpenApi.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.OpenApi.Readers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OpenApi.Readers.1.0.0-beta004\lib\net46\Microsoft.OpenApi.Readers.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.OpenApi.Readers.1.0.0-beta006\lib\net46\Microsoft.OpenApi.Readers.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SharpYaml, Version=1.6.1.0, Culture=neutral, PublicKeyToken=1ced8108e942bc02, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SharpYaml.1.6.1\lib\net45\SharpYaml.dll</HintPath>
@@ -119,6 +122,9 @@
   <ItemGroup>
     <None Include="Microsoft.OpenApi.CSharpComment.Reader.nuspec" />
     <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
