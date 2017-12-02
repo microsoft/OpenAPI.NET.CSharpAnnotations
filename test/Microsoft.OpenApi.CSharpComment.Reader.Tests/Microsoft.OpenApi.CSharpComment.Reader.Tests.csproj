@@ -88,7 +88,6 @@
     <Compile Include="FilterTests\BranchOptionalPathParametersFilterTest.cs" />
     <Compile Include="DocumentVariantTests\DocumentVariantTestCases.cs" />
     <Compile Include="NewtonsoftVersionTests\NewtonsoftVersionTest.cs" />
-    <Compile Include="SampleServiceTests\SampleServiceTest.cs" />
     <Compile Include="OperationConfigTests\OperationConfigTest.cs" />
     <Compile Include="DefaultSettingsFixtureCollection.cs" />
     <Compile Include="DefaultSettingsFixture.cs" />
@@ -142,37 +141,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="NewtonsoftVersionTests\Input\V9.0.1\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\DCatFD\DCatFD.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\DCatFD\DCatFD.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="SampleServiceTests\Input\DCatFD\Microsoft.MarketplaceServices.DisplayCatalog.BackendContracts.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\DCatFD\Microsoft.MarketplaceServices.DisplayCatalog.Contracts.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\DCatFD\Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\StoreEdgeFD\Microsoft.Marketplace.Storefront.Contracts.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\StoreEdgeFD\StoreEdgeFD.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\SwaggerSample\Config.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\SwaggerSample\NativeXml.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Input\SwaggerSample\NativeXml.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationArrayInParamTags.xml">
@@ -359,9 +327,6 @@
     <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationArrayInParamTags.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SampleServiceTests\Output\SwaggerSample\Annotation.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="NewtonsoftVersionTests\Output\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -413,12 +378,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="SampleServiceTests\Output\DCatFD\Annotation.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SampleServiceTests\Output\StoreEdgeFD\Annotation.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="xunit.runner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
