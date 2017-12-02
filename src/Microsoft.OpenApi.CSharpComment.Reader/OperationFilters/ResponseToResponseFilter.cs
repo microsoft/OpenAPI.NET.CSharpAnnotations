@@ -33,7 +33,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var responseElements = element.Elements().Where(p => p.Name == KnownXmlStrings.Response ||
-            p.Name == KnownXmlStrings.ResponseType);
+                p.Name == KnownXmlStrings.ResponseType);
 
             foreach (var responseElement in responseElements)
             {

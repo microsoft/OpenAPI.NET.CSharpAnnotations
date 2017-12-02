@@ -291,6 +291,43 @@
                 }
             }
         },
+        "/V3/samples/": {
+            "get": {
+                "tags": [
+                    "Sample V3"
+                ],
+                "summary": "Sample get 1",
+                "operationId": "getV3Samples",
+                "parameters": [
+                    {
+                        "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "sampleHeaderParam2",
+                        "in": "header",
+                        "description": "Header param 2",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/V3/samples/{id}": {
             "get": {
                 "tags": [

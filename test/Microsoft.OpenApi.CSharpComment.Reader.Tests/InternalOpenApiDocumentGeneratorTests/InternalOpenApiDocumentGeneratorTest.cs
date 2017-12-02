@@ -177,13 +177,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                                     SpecificationGenerationMessages.ConflictingPathAndQueryParameters,
                                     "id",
                                     "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
-                            },
-                            new OperationGenerationError()
-                            {
-                                ExceptionType = typeof(MissingInAttributeException),
-                                Message = string.Format(
-                                    SpecificationGenerationMessages.MissingInAttribute,
-                                    string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
                             }
                         },
                         GenerationStatus = GenerationStatus.Warning

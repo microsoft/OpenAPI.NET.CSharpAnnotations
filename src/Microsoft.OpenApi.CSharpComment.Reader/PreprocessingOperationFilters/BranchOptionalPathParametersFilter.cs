@@ -170,10 +170,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
                         pathParamName,
                         StringComparison.OrdinalIgnoreCase));
 
-                // Throw an exception if it is not found as this is a mistake in the documentation.
+                // All path params must be documented, so this is a mistake in the documentation.
+                // We will simply bail here and let the exception be thrown when
+                // PopulateInAttributeFilter is processed.
                 if (pathParam == null)
                 {
-                    throw new UndocumentedPathParameterException(pathParamName, path);
+                    return false;
                 }
 
                 // If required attribute is not included, the segment defaults to required.
