@@ -62,6 +62,9 @@
     <Compile Include="DocumentFilters\MemberSummaryToSchemaDescriptionFilter.cs" />
     <Compile Include="DocumentFilters\DocumentFilterSettings.cs" />
     <Compile Include="Exceptions\ConflictingDocumentVariantAttributesException.cs" />
+    <Compile Include="Exceptions\DuplicateOperationException.cs" />
+    <Compile Include="Exceptions\InvalidResponseException.cs" />
+    <Compile Include="Exceptions\InvalidRequestBodyException.cs" />
     <Compile Include="Exceptions\InvalidVerbException.cs" />
     <Compile Include="Exceptions\InvalidUrlException.cs" />
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />

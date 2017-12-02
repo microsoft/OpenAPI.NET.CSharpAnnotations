@@ -32,53 +32,53 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleServiceTests
 
         public static IEnumerable<object[]> GetTestCasesForSampleServiceShouldPassGeneration()
         {
-            // Swagger Sample
-            yield return new object[]
-            {
-                "Swagger Sample",
-                Path.Combine(InputDirectory, "SwaggerSample", "NativeXml.xml"),
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "SwaggerSample",
-                        "NativeXml.exe")
-                },
-                OpenApiSpecVersion.OpenApi3_0_0,
-                7,
-                Path.Combine(
-                    OutputDirectory,
-                    "SwaggerSample",
-                    "Annotation.Json")
-            };
+            //// Swagger Sample
+            //yield return new object[]
+            //{
+            //    "Swagger Sample",
+            //    Path.Combine(InputDirectory, "SwaggerSample", "NativeXml.xml"),
+            //    new List<string>
+            //    {
+            //        Path.Combine(
+            //            InputDirectory,
+            //            "SwaggerSample",
+            //            "NativeXml.exe")
+            //    },
+            //    OpenApiSpecVersion.OpenApi3_0_0,
+            //    7,
+            //    Path.Combine(
+            //        OutputDirectory,
+            //        "SwaggerSample",
+            //        "Annotation.Json")
+            //};
 
-            // DCat FD
-            yield return new object[]
-            {
-                "DCat FD",
-                Path.Combine(InputDirectory, "DCatFD", "DCatFD.xml"),
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "DCatFD",
-                        "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "DCatFD",
-                        "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "DCatFD",
-                        "DCatFD.exe"),
-                },
-                OpenApiSpecVersion.OpenApi3_0_0,
-                28,
-                Path.Combine(
-                    OutputDirectory,
-                    "DCatFD",
-                    "Annotation.Json")
-            };
+            //// DCat FD
+            //yield return new object[]
+            //{
+            //    "DCat FD",
+            //    Path.Combine(InputDirectory, "DCatFD", "DCatFD.xml"),
+            //    new List<string>
+            //    {
+            //        Path.Combine(
+            //            InputDirectory,
+            //            "DCatFD",
+            //            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.dll"),
+            //        Path.Combine(
+            //            InputDirectory,
+            //            "DCatFD",
+            //            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.dll"),
+            //        Path.Combine(
+            //            InputDirectory,
+            //            "DCatFD",
+            //            "DCatFD.exe"),
+            //    },
+            //    OpenApiSpecVersion.OpenApi3_0_0,
+            //    28,
+            //    Path.Combine(
+            //        OutputDirectory,
+            //        "DCatFD",
+            //        "Annotation.Json")
+            //};
 
             // StoreEdge FD
             yield return new object[]

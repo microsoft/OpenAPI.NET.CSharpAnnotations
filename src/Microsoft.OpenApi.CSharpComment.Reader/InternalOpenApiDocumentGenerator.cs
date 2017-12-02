@@ -234,6 +234,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     }
                     else
                     {
+                        if (documentPaths[path].Operations.ContainsKey(operationMethod))
+                        {
+                            throw new DuplicateOperationException(path, operationMethod.ToString());
+                        }
+
                         documentPaths[path].Operations.Add(operationMethod, operation);
                     }
                 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
@@ -68,6 +69,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 }
 
                 var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+
+                if (type == null)
+                {
+                    throw new InvalidRequestBodyException(bodyElement.Value);
+                }
 
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
 

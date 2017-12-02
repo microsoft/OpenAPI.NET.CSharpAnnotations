@@ -156,6 +156,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <returns>The type.</returns>
         public Type LoadTypeFromCrefValues(IList<string> crefValues)
         {
+            if (!crefValues.Any())
+            {
+                return null;
+            }
+
             string typeName;
 
             if (crefValues.First().Contains("[]"))
