@@ -36,7 +36,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     InputDirectory,
                     "ConfigOneDocumentVariantTagSwagger2NoOptions.xml"),
                 OpenApiSpecVersion.OpenApi3_0_0,
-                1,
+                // 9 operations + 1 document-scope result
+                9 + 1,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
@@ -60,9 +61,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     {
                         Errors =
                         {
-                            new OperationGenerationError()
+                            new OperationGenerationError
                             {
-
                                 ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
                                 Message = string.Format(
                                     SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
@@ -82,7 +82,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                                         })),
                             }
                         },
-                        GenerationStatus = GenerationStatus.Failure
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };
@@ -102,7 +102,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
                 OpenApiSpecVersion.OpenApi3_0_0,
-                1,
+                // 9 operations + 1 document-scope result
+                9 + 1,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
@@ -134,31 +135,31 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 new List<OperationGenerationResult>
                 {
                     new OperationGenerationResult
-                    {Errors =
+                    {
+                        Errors =
                         {
-                            new OperationGenerationError()
+                            new OperationGenerationError
                             {
-
-                        ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
-                        Message = string.Format(
-                            SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
-                            "swagger",
-                            "Group1",
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "V2"
-                                }),
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "VConflict"
-                                })),
-                        }
-                            },
-                        GenerationStatus = GenerationStatus.Failure
+                                ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
+                                    "swagger",
+                                    "Group1",
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "V2"
+                                        }),
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "VConflict"
+                                        })),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };

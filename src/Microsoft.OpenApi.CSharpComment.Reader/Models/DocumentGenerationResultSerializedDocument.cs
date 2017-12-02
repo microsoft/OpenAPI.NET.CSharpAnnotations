@@ -28,12 +28,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// Initializes a new instance of <see cref="DocumentGenerationResultSerializedDocument"/>.
         /// </summary>
-        /// <param name="pathGenerationResults">The path generation results.</param>
-        public DocumentGenerationResultSerializedDocument(IList<OperationGenerationResult> pathGenerationResults)
+        /// <param name="operationGenerationResults">The operation generation results.</param>
+        public DocumentGenerationResultSerializedDocument(IList<OperationGenerationResult> operationGenerationResults)
         {
-            foreach (var pathGenerationResult in pathGenerationResults)
+            foreach (var pathGenerationResult in operationGenerationResults)
             {
-                PathGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
+                OperationGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
             }
         }
 
@@ -53,12 +53,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         {
             get
             {
-                if (PathGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure))
+                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure))
                 {
                     return GenerationStatus.Failure;
                 }
 
-                if (PathGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning))
+                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning))
                 {
                     return GenerationStatus.Warning;
                 }
@@ -85,10 +85,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         }
 
         /// <summary>
-        /// List of path generations results.
+        /// List of operation generations results.
         /// </summary>
         [JsonProperty]
-        public IList<OperationGenerationResult> PathGenerationResults { get; internal set; } =
+        public IList<OperationGenerationResult> OperationGenerationResults { get; internal set; } =
             new List<OperationGenerationResult>();
 
         /// <summary>
@@ -98,9 +98,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         {
             var documentGenerationResult = new DocumentGenerationResult();
 
-            foreach (var pathGenerationResult in PathGenerationResults)
+            foreach (var pathGenerationResult in OperationGenerationResults)
             {
-                documentGenerationResult.PathGenerationResults.Add(
+                documentGenerationResult.OperationGenerationResults.Add(
                     new OperationGenerationResult(pathGenerationResult));
             }
 

@@ -318,25 +318,27 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
 
-                var pathGenerationResults = GenerateSpecificationDocuments(
+                var operationGenerationResults = GenerateSpecificationDocuments(
                     typeFetcher,
                     operationElements,
                     operationConfigElement,
                     documentVariantElementNames,
                     out var documents);
 
-                foreach (var pathGenerationResult in pathGenerationResults)
+                foreach (var pathGenerationResult in operationGenerationResults)
                 {
-                    result.PathGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
+                    result.OperationGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
                 }
 
-                try
-                {
-                    foreach (var variantInfoDocumentValuePair in documents)
-                    {
-                        var openApiDocument = variantInfoDocumentValuePair.Value;
+                var documentScopeGenerationResult = new OperationGenerationResult();
 
-                        foreach (var documentFilter in _generatorConfig.DocumentFilters)
+                foreach (var variantInfoDocumentValuePair in documents)
+                {
+                    var openApiDocument = variantInfoDocumentValuePair.Value;
+
+                    foreach (var documentFilter in _generatorConfig.DocumentFilters)
+                    {
+                        try
                         {
                             documentFilter.Apply(
                                 openApiDocument,
@@ -346,11 +348,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     TypeFetcher = typeFetcher
                                 });
                         }
+                        catch (Exception e)
+                        {
+                            documentScopeGenerationResult.Errors.Add(
+                                new OperationGenerationError
+                                {
+                                    ExceptionType = e.GetType(),
+                                    Message = e.Message,
+                                });
+                        }
                     }
+                }
 
-                    if (documentConfigElement != null)
+                if (documentConfigElement != null)
+                {
+                    foreach (var documentConfigFilter in _generatorConfig.DocumentConfigFilters)
                     {
-                        foreach (var documentConfigFilter in _generatorConfig.DocumentConfigFilters)
+                        try
                         {
                             documentConfigFilter.Apply(
                                 documents,
@@ -358,30 +372,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                 annotationXmlDocument,
                                 new DocumentConfigFilterSettings());
                         }
+                        catch (Exception e)
+                        {
+                            documentScopeGenerationResult.Errors.Add(
+                                new OperationGenerationError
+                                {
+                                    ExceptionType = e.GetType(),
+                                    Message = e.Message,
+                                });
+                        }
                     }
                 }
-                catch (Exception e)
+
+                if (documentScopeGenerationResult.Errors.Any())
                 {
-                    // Document and document config filters yield an exception.
-                    // This exception may not be tied to a particular operation and the resulting
-                    // documents may be in bad state. We simply return empty document with
-                    // an exception message in the path generation result.
-                    result = new DocumentGenerationResultSerializedDocument(
-                        new List<OperationGenerationResult>
-                        {
-                            new OperationGenerationResult
-                            {
-                                Errors =
-                                {
-                                    new OperationGenerationError
-                                    {
-                                        ExceptionType = e.GetType(),
-                                        Message = e.Message,
-                                    }
-                                },
-                                GenerationStatus = GenerationStatus.Failure
-                            }
-                        });
+                    documentScopeGenerationResult.GenerationStatus = GenerationStatus.Warning;
+                    result.OperationGenerationResults.Add(documentScopeGenerationResult);
                 }
 
                 foreach (var variantInfoDocumentPair in documents)
@@ -491,7 +497,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 try
                 {
                     var operationGenerationErrors = new List<OperationGenerationError>();
-                    
+
                     AddOperation(
                         specificationDocuments,
                         referenceRegistryManagerMap,

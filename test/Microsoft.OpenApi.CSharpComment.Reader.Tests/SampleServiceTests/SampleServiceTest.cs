@@ -108,7 +108,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleServiceTests
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             string expectedJsonFile)
         {
             _output.WriteLine(testCaseName);
@@ -143,7 +143,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleServiceTests
                     openApiStringReader.Read(expectedDocument, out var _));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
         }
     }
 }

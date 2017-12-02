@@ -36,7 +36,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             string expectedJsonFile)
         {
             _output.WriteLine(testCaseName);
@@ -55,7 +55,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 

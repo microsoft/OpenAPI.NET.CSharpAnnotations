@@ -65,7 +65,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();
-            result.PathGenerationResults.Count.Should().Be(9);
+            result.OperationGenerationResults.Count.Should().Be(9);
 
             var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 

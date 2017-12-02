@@ -478,9 +478,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             string expectedJsonFile,
-            IList<OperationGenerationResult> expectedFailedPathGenerationResults)
+            IList<OperationGenerationResult> expectedFailedOperationGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -500,9 +500,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             result.GenerationStatus.Should().Be(GenerationStatus.Failure);
             result.MainDocument.Should().NotBeNull();
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
 
-            var failedPaths = result.PathGenerationResults.Where(
+            var failedPaths = result.OperationGenerationResults.Where(
                     p => p.GenerationStatus == GenerationStatus.Failure)
                 .ToList();
 
@@ -512,7 +512,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             _output.WriteLine(actualDocument);
 
-            failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
+            failedPaths.Should().BeEquivalentTo(expectedFailedOperationGenerationResults);
 
             // We are doing serialization and deserialization to force the resulting actual document
             // to have the exact fields we will see in the resulting document based on the contract resolver.
@@ -531,9 +531,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             string expectedJsonFile,
-            IList<OperationGenerationResult> expectedFailedPathGenerationResults)
+            IList<OperationGenerationResult> expectedFailedOperationGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -553,9 +553,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
             result.MainDocument.Should().NotBeNull();
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
 
-            var failedPaths = result.PathGenerationResults.Where(
+            var failedPaths = result.OperationGenerationResults.Where(
                     p => p.GenerationStatus == GenerationStatus.Warning)
                 .ToList();
 
@@ -565,7 +565,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             _output.WriteLine(actualDocument);
 
-            failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
+            failedPaths.Should().BeEquivalentTo(expectedFailedOperationGenerationResults);
 
             // We are doing serialization and deserialization to force the resulting actual document
             // to have the exact fields we will see in the resulting document based on the contract resolver.
@@ -595,7 +595,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().BeNull();
-            result.PathGenerationResults.Should()
+            result.OperationGenerationResults.Should()
                 .BeEquivalentTo(
                     new List<OperationGenerationResult>
                     {
@@ -619,7 +619,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             string expectedJsonFile)
         {
             _output.WriteLine(testCaseName);
@@ -641,7 +641,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 

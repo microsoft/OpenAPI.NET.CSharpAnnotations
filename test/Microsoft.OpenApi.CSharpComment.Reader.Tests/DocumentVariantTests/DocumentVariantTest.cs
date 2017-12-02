@@ -38,9 +38,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
-            List<OperationGenerationResult> expectedFailedPathGenerationResults)
+            List<OperationGenerationResult> expectedFailedOperationGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -66,13 +66,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
 
             result.Should().NotBeNull();
-            result.GenerationStatus.Should().Be(GenerationStatus.Failure);
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
-            var failedPaths = result.PathGenerationResults.Where(
-                    p => p.GenerationStatus == GenerationStatus.Failure)
+            result.GenerationStatus.Should().Be(GenerationStatus.Warning);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
+            var warningOperations = result.OperationGenerationResults.Where(
+                    p => p.GenerationStatus == GenerationStatus.Warning)
                 .ToList();
 
-            failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
+            warningOperations.Should().BeEquivalentTo(expectedFailedOperationGenerationResults);
 
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
@@ -122,7 +122,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap)
         {
             _output.WriteLine(testCaseName);
@@ -151,7 +151,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
 
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
