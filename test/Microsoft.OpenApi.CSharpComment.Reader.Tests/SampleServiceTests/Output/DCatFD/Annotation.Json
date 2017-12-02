@@ -1,0 +1,4165 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "DCatFD",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://displaycatalog.mp.microsoft.com"
+        },
+        {
+            "url": "https://displaycatalog-int.mp.microsoft.com"
+        },
+        {
+            "url": "https://bn2.displaycatalog.mp.microsoft.com"
+        },
+        {
+            "url": "http://displaycatalog.mp.microsoft.com"
+        }
+    ],
+    "paths": {
+        "/v7/priceschedules": {
+            "get": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Performs pricing evaluation per pricing rule to create a price schedule for each product.",
+                "operationId": "getV7Priceschedules",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "bigIds",
+                        "in": "query",
+                        "description": "a comma separated list of bigIds to hydrate.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "Filters the product sections based on this market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the first found language (using fallback rules) in this comma delimited list.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the availabilities which match this catalogId.  If this is a private catalog, AuthZ checks are enforced.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "enforceCatalogAuth",
+                        "in": "query",
+                        "description": "Enforces resource set authentication.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PriceSchedulesResponseV7"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/autosuggest": {
+            "get": {
+                "tags": [
+                    "AutoSuggest"
+                ],
+                "summary": "Gets the product and query suggestions for a searched term",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6Autosuggest",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rank",
+                        "in": "query",
+                        "description":
+                            "the rank for the AutoSuggest; allowed values: \"AutosuggestApps\",\"AutosuggestCanaryApps\", \"AutosuggestVideo\", \"AutosuggestCanaryVideo\", \"AutosuggestMusic\", \"AutosuggestCanaryMusic\"",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "the autosuggest query that is searched for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "countProducts",
+                        "in": "query",
+                        "description": "the number of product suggestions returned; maximum value: 10",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "countQueries",
+                        "in": "query",
+                        "description": "the number of query suggestions returned; maximum value: 10",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "platformDependenciesName",
+                        "in": "query",
+                        "description":
+                            "the platform name(s) for the query (example: Windows.Windows8x+OR+Windows.Desktop)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "architecture",
+                        "in": "query",
+                        "description": "the desired architecture",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "hardware",
+                        "in": "query",
+                        "description": "the desired hardware constraints (three-letter codes, comma delimited)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productType",
+                        "in": "query",
+                        "description": "the product type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/catalogManifests/": {
+            "get": {
+                "tags": [
+                    "CatalogManifests V6"
+                ],
+                "summary": "Get catalog manifests the user has access to.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6CatalogManifests",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.GetCatalogManifestResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/domaindata/{typeName}": {
+            "get": {
+                "tags": [
+                    "Domain Data V6"
+                ],
+                "summary":
+                    "Allows callers to enumerate the values for a Domain data type e.g. Market, Language, Action etc.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6DomaindataByTypeName",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "typeName",
+                        "in": "path",
+                        "description": "the desired domain type",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "the desired domain",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "ddversion",
+                        "in": "query",
+                        "description": "the desired domain data version (or latest, if not present)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "excludeneutrallanguage",
+                        "in": "query",
+                        "description": "filter out neutral language key for language typename",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataTypeContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/domaindata/": {
+            "get": {
+                "tags": [
+                    "Domain Data V6"
+                ],
+                "summary": "Allows callers to enumerate all the Domain data types.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6Domaindata",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "the desired domain",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataSetContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/domains/": {
+            "get": {
+                "tags": [
+                    "Domain Data V6"
+                ],
+                "summary": "Allows callers to enumerate all of the domain names.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6Domains",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainsContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/products/{productId}": {
+            "get": {
+                "tags": [
+                    "Hydration V6"
+                ],
+                "summary": "Performs a catalog Product [details] hydration.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6ProductsByProductId",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "the desired product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userAge",
+                        "in": "query",
+                        "description":
+                            "if present used to filter the content with maturity ratings based on the age of the user.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description":
+                            "if present used to filter availability; allowed values: \"Purchase\",\"License\",\"Fulfill\",\"Browse\")",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields filtering template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetailsResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/products/{productId}/{skuId}": {
+            "get": {
+                "tags": [
+                    "Hydration V6"
+                ],
+                "summary": "Performs a catalog Product SKU hydration.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6ProductsByProductIdBySkuId",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "the desired product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "skuId",
+                        "in": "path",
+                        "description": "the desired product SKU",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userAge",
+                        "in": "query",
+                        "description":
+                            "if present used to filter the content with maturity ratings based on the age of the user.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description":
+                            "if present used to filter availability; allowed values: \"Purchase\",\"License\",\"Fulfill\",\"Browse\")",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields filtering template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetailsResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/products/{productId}/{skuId}/{availabilityId}": {
+            "get": {
+                "tags": [
+                    "Hydration V6"
+                ],
+                "summary": "Performs a catalog Product Availability hydration.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6ProductsByProductIdBySkuIdByAvailabilityId",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "the desired product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "skuId",
+                        "in": "path",
+                        "description": "the desired product sku",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "availabilityId",
+                        "in": "path",
+                        "description": "the desired product availability",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetailsResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/products/bulk": {
+            "get": {
+                "tags": [
+                    "Hydration V6"
+                ],
+                "summary": "Performs a catalog bulk Product [details] hydration.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details",
+                "operationId": "getV6ProductsBulk",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productIds",
+                        "in": "query",
+                        "description": "the desired products identifiers, comma-separated",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description":
+                            "if present used to filter availability; allowed values:\"Purchase\",\"License\",\"Fulfill\",\"Browse\")",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userAge",
+                        "in": "query",
+                        "description":
+                            "if present used to filter the content with maturity ratings based on the age of the user.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields filtering template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":
+                                    "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.BulkProductDetailsRequestContract"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.BulkProductDetailsResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/products": {
+            "get": {
+                "tags": [
+                    "Search V6"
+                ],
+                "summary": "Performs a catalog search.",
+                "description":
+                    "This api also supports an arbitrary set of filters on the search query using a key=value pattern where the key is the filter name. Also, see our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6Products",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rank",
+                        "in": "query",
+                        "description": "which ranking to use for searching",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "search query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$top",
+                        "in": "query",
+                        "description": "maximum number of items to return, soft cap at 25",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$skip",
+                        "in": "query",
+                        "description": "specifies how many items to skip before returning results",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description":
+                            "if present used to filter availability; allowed values:\"Purchase\",\"License\",\"Fulfill\",\"Browse\"",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "alternateId",
+                        "in": "query",
+                        "description": "if present, used as a filter for an alternate id rank search",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "description": "Personalize the search for the specified PUID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields filtering template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SearchResultResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hydration V6"
+                ],
+                "summary": "Performs a catalog bulk Product [details] hydration.",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details",
+                "operationId": "postV6Products",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "userAge",
+                        "in": "query",
+                        "description":
+                            "if present used to filter the content with maturity ratings based on the age of the user.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description":
+                            "if present used to filter availability; allowed values:\"Purchase\",\"License\",\"Fulfill\",\"Browse\")",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields filtering template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":
+                                    "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.BulkProductDetailsRequestContract"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.BulkProductDetailsResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/ratings": {
+            "get": {
+                "tags": [
+                    "Ratings V6"
+                ],
+                "summary": "Returns the set of content ratings.",
+                "description":
+                    "This API returns ratings metadata information. This is essentially \"domain data\" for ratings, although\n        the ratings data is different from standard domain data and this is why this is a separate endpoint.\n        The API is used to retrieve ratings metadata for a single market and language. Optionally, a domain\n        parameter allows filtering on ratings for a specific media type (application, game, movie, tv).\n        The response object is a dictionary of rating boards, each of which contains a set of ratings.\n        For example, ESRB is a rating board for games containing ratings of ESRB:T and ESRB:E, among others.\n        Each rating and rating board contains a set of market and localized properties. Each rating also contains\n        an age, which represents the minimum age of the user that this content is appropriate for per\n        the rating board. A set of restrictions are defined on the rating to determine what is restricted if a user\n        does not meet the minimum age requirement. There is also a priority defined on each rating board,\n        which determines which rating's minimum age requirement to apply if more than one rating applies\n        to a product (lowest priority numeral wins; i.e., a rating board with priority of 1 wins over a rating\n        board of priority of 2). All rating boards in a market are guaranteed to have a unique priority.\n        For more information about this API or general information about all catalog APIs, refer to the\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">catalog API documentation</a>.",
+                "operationId": "getV6Ratings",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "The desired market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "A comma separated list of the desired languages used for localized data.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "The domain (game, tv, video, application...) to query.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingsContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/search/ranks": {
+            "get": {
+                "tags": [
+                    "Search V6"
+                ],
+                "summary": "Gets metadata about available ranking and fields",
+                "description":
+                    "See our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6SearchRanks",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RankDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v6/skus": {
+            "get": {
+                "tags": [
+                    "Search SKUs V6"
+                ],
+                "summary": "Performs a catalog SKU search.",
+                "description":
+                    "This api also supports an arbitrary set of filters on the search query using a key=value pattern where the key is the filter name. Also, see our documentation\n         <a href=\"https://microsoft.sharepoint.com/teams/osg_oss/marketplace/m$/Shared%20Documents/M$%20Feature%20Crews/Catalog/Threshold%20Docs/V6%20API%20Contracts/DCatFD%20V6%20APIs.docx?web=1\">here</a>\n        for more details.",
+                "operationId": "getV6Skus",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "rank",
+                        "in": "query",
+                        "description": "which ranking to use for searching",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$top",
+                        "in": "query",
+                        "description": "maximum number of items to return, soft cap at 25",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$skip",
+                        "in": "query",
+                        "description": "specifies how many items to skip before returning results",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description":
+                            "if present used to filter availability; allowed values:\"Purchase\",\"License\",\"Fulfill\",\"Browse\"",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "alternateId",
+                        "in": "query",
+                        "description": "optional arg used in alternate id lookups",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields filtering template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SkuSearchResultResponseContract"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v7/prices": {
+            "post": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Performs pricing evaluation for products, and responds with the evaluation result",
+                "operationId": "postV7Prices",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "Filters the product sections based on this market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the first found language (using fallback rules) in this comma delimited list.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the availabilities which match this catalogId.  If this is a private catalog, AuthZ checks are enforced.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "enforceCatalogAuth",
+                        "in": "query",
+                        "description": "Enforces resource set authentication.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "allowExpiredAvailabilities",
+                        "in": "query",
+                        "description":
+                            "flag indicating whether to allow expired availabilities to be returned in the pricing response.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":
+                                    "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingRequestV7"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingResponseV7"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v7.0/products/lookup": {
+            "get": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Performs an alternateId lookup and returns bigIds and/or product documents.",
+                "operationId": "getV70ProductsLookup",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation id for the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productFamilyNames",
+                        "in": "query",
+                        "description":
+                            "Comma delimited list of product family names to include in the lookup.  Specify “All” to query all product families available.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "The desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "A comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "alternateId",
+                        "in": "query",
+                        "description": "Alternate Id used to lookup",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "value",
+                        "in": "query",
+                        "description": "Value of the alternate id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "Requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description": "If present, used to filter availability",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "effectiveAge",
+                        "in": "query",
+                        "description": "Effective age",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "clientType",
+                        "in": "query",
+                        "description": "client type to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "Fields filtering template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "The mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "The oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "The scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$top",
+                        "in": "query",
+                        "description": "Maximum number of items to return, cap at 25",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$skip",
+                        "in": "query",
+                        "description": "Specifies how many items to skip before returning results",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Frontdoor.Contracts.V7.AlternateIdLookupResponseV7"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v7.0/productFamilies/autosuggest": {
+            "get": {
+                "tags": [
+                    "Search V7"
+                ],
+                "summary": "Gets the product suggestions for a searched term.",
+                "operationId": "getV70ProductFamiliesAutosuggest",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The autosuggest query that is searched for.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productFamilyNames",
+                        "in": "query",
+                        "description":
+                            "Comma delimited list of product family names to include in the search.  Specify “All” to query all product families available in the market and language.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "Filters the product sections based on this market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the first found language (using fallback rules) in this comma delimited list.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$topFamilies",
+                        "in": "query",
+                        "description": "The maximum number of families to specify in a page of results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$topProducts",
+                        "in": "query",
+                        "description": "The maximum number of product suggestions to return per product family.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the availabilities which match this catalogId.  If this is a private catalog, AuthZ checks are enforced.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/catalogManifests/": {
+            "get": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Get catalog manifests the user has access to.",
+                "operationId": "getV70CatalogManifests",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/products": {
+            "get": {
+                "tags": [
+                    "Hydration V7"
+                ],
+                "summary": "Performs a catalog bulk details hydration.",
+                "operationId": "getV70Products",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "bigIds",
+                        "in": "query",
+                        "description": "a comma separated list of bigIds to hydrate",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description": "the action filter to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "effectiveAge",
+                        "in": "query",
+                        "description": "the maturity setting to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "clientType",
+                        "in": "query",
+                        "description": "client type to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "allowExpiredAvailabilities",
+                        "in": "query",
+                        "description":
+                            "flag indicating whether to allow expired availabilities to be returned in the product document.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/products/{productId}/{skuId}/{availabilityId}": {
+            "get": {
+                "tags": [
+                    "Hydration V7"
+                ],
+                "summary": "Performs a catalog Product Availability hydration.",
+                "operationId": "getV70ProductsByProductIdBySkuIdByAvailabilityId",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "the desired product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "skuId",
+                        "in": "path",
+                        "description": "the desired product sku",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "availabilityId",
+                        "in": "path",
+                        "description": "the desired product availability",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description": "the action filter to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "effectiveAge",
+                        "in": "query",
+                        "description": "the maturity setting to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "clientType",
+                        "in": "query",
+                        "description": "client type to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "allowExpiredAvailabilities",
+                        "in": "query",
+                        "description":
+                            "flag indicating whether to allow expired availabilities to be returned in the product document.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/products/{productId}/{skuId}": {
+            "get": {
+                "tags": [
+                    "Hydration V7"
+                ],
+                "summary": "Performs a catalog Product Availability hydration.",
+                "operationId": "getV70ProductsByProductIdBySkuId",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "the desired product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "skuId",
+                        "in": "path",
+                        "description": "the desired product sku",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description": "the action filter to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "effectiveAge",
+                        "in": "query",
+                        "description": "the maturity setting to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "clientType",
+                        "in": "query",
+                        "description": "client type to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "allowExpiredAvailabilities",
+                        "in": "query",
+                        "description":
+                            "flag indicating whether to allow expired availabilities to be returned in the product document.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/products/{productId}": {
+            "get": {
+                "tags": [
+                    "Hydration V7"
+                ],
+                "summary": "Performs a catalog Product Availability hydration.",
+                "operationId": "getV70ProductsByProductId",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "the desired product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "the desired market",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "a comma separated list of the desired languages used for localized data",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description": "requested catalog",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description": "the action filter to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "effectiveAge",
+                        "in": "query",
+                        "description": "the maturity setting to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "clientType",
+                        "in": "query",
+                        "description": "client type to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "fields template to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "allowExpiredAvailabilities",
+                        "in": "query",
+                        "description":
+                            "flag indicating whether to allow expired availabilities to be returned in the product document.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/productFamilies": {
+            "get": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Gets all product families and associated supported languages in the client's market.",
+                "operationId": "getV70ProductFamilies",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "Filters the product families to those available in the specified market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/productFamilies/{productFamilyName}": {
+            "get": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Gets localized details about a product family including the full category tree.",
+                "operationId": "getV70ProductFamiliesByProductFamilyName",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productFamilyName",
+                        "in": "path",
+                        "description": "The requested product family name.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "Filters the product family data for the specified market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "Localizes the product family by languages.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/productFamilies/{productFamilyName}/partD": {
+            "put": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Updates the type D fragment on the product.",
+                "operationId": "putV70ProductFamiliesByProductFamilyNamePartD",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization data for the request",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productFamilyName",
+                        "in": "path",
+                        "description": "The requested product family name.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/products/{productId}/fragments/{fragmentName}": {
+            "put": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Updates or places an override of the specified fragment on the product.",
+                "operationId": "putV70ProductsByProductIdFragmentsByFragmentName",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization data for the request",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "description": "The requested product id.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fragmentName",
+                        "in": "path",
+                        "description": "The requested product fragment name.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/ratings": {
+            "get": {
+                "tags": [
+                    "Catalog V7"
+                ],
+                "summary": "Returns the set of content ratings.",
+                "description":
+                    "This API returns ratings metadata information. This is essentially \"domain data\" for ratings, although\n        the ratings data is different from standard domain data and this is why this is a separate endpoint.\n        The API is used to retrieve ratings metadata for a single market and language. Optionally, a domain\n        parameter allows filtering on ratings for a specific media type (application, game, movie, tv).\n        The response object is a dictionary of rating boards, each of which contains a set of ratings.\n        For example, ESRB is a rating board for games containing ratings of ESRB:T and ESRB:E, among others.\n        Each rating and rating board contains a set of market and localized properties. Each rating also contains\n        an age, which represents the minimum age of the user that this content is appropriate for per\n        the rating board. A set of restrictions are defined on the rating to determine what is restricted if a user\n        does not meet the minimum age requirement. There is also a priority defined on each rating board,\n        which determines which rating's minimum age requirement to apply if more than one rating applies\n        to a product (lowest priority numeral wins; i.e., a rating board with priority of 1 wins over a rating\n        board of priority of 2). All rating boards in a market are guaranteed to have a unique priority.",
+                "operationId": "getV70Ratings",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "The desired market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description": "A comma separated list of the desired languages used for localized data.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "The domain (game, tv, video, application...) to query.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/productFamilies/products": {
+            "get": {
+                "tags": [
+                    "Search V7"
+                ],
+                "summary": "Searches cross-product family for the specified query.",
+                "operationId": "getV70ProductFamiliesProducts",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "the query term",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productFamilyNames",
+                        "in": "query",
+                        "description":
+                            "Comma delimited list of product family names to include in the search.  Specify “All” to query all product families available in the market and language.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "Filters the product sections based on this market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the first found language (using fallback rules) in this comma delimited list.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$topProducts",
+                        "in": "query",
+                        "description": "Specifies the maximum number of products to return for each product family.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$topFamilies",
+                        "in": "query",
+                        "description": "Specifies the maximum number of product families to receive in a single page.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$skipFamilies",
+                        "in": "query",
+                        "description": "Skips the specified number of product families in the result set.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the availabilities which match this catalogId.  If this is a private catalog, AuthZ checks are enforced.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description": "Filters the product based on availabilities which match this action.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "effectiveAge",
+                        "in": "query",
+                        "description": "Filters the product based on maturity settings.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "clientType",
+                        "in": "query",
+                        "description": "client type to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "Reduces the product schema based on the definition of the field template.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        },
+        "/v7.0/productFamilies/{productFamilyName}/products": {
+            "get": {
+                "tags": [
+                    "Search V7"
+                ],
+                "summary":
+                    "Searches a single product family for the specified query and returns category-based counts.",
+                "operationId": "getV70ProductFamiliesByProductFamilyNameProducts",
+                "parameters": [
+                    {
+                        "name": "MS-CV",
+                        "in": "header",
+                        "description":
+                            "Correlation Vector for the request. Must be sent as header or as query string parameter",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "x-generationid",
+                        "in": "header",
+                        "description": "Generation Id the request.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "productFamilyName",
+                        "in": "path",
+                        "description": "The requested product family name.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "The query term.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "market",
+                        "in": "query",
+                        "description": "Filters the product sections based on this market.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "languages",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the first found language (using fallback rules) in this comma delimited list.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "aggregatedCategory",
+                        "in": "query",
+                        "description": "Specifies canonical categories to use in faceted search.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$top",
+                        "in": "query",
+                        "description": "OneAPI client driven page size specification.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$skip",
+                        "in": "query",
+                        "description": "OneAPI client driven pagination.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "$orderBy",
+                        "in": "query",
+                        "description": "Orders the returned results using the specified value",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catalogId",
+                        "in": "query",
+                        "description":
+                            "Filters the product based on the availabilities which match this catalogId.  If this is a private catalog, AuthZ checks are enforced.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "actionFilter",
+                        "in": "query",
+                        "description": "Filters the product based on availabilities which match this action.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "effectiveAge",
+                        "in": "query",
+                        "description": "Filters the product based on maturity settings.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "clientType",
+                        "in": "query",
+                        "description": "client type to apply",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fieldsTemplate",
+                        "in": "query",
+                        "description": "Reduces the product schema based on the definition of the field template.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "moId",
+                        "in": "query",
+                        "description": "the mobile operator",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "oemId",
+                        "in": "query",
+                        "description": "the oem Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "scmId",
+                        "in": "query",
+                        "description": "the scm Id (also called as hardware type)",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Cannot locate responses in the documentation!"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PriceSchedulesResponseV7": {
+                "required": [
+                    "Products"
+                ],
+                "type": "object",
+                "properties": {
+                    "Products": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ProductPriceScheduleV7"
+                        },
+                        "readOnly": true
+                    },
+                    "ProductsNotFound": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ProductPriceScheduleV7": {
+                "required": [
+                    "BigId",
+                    "CurrencyCode",
+                    "UnitPrice",
+                    "PricingRules"
+                ],
+                "type": "object",
+                "properties": {
+                    "BigId": {
+                        "type": "string"
+                    },
+                    "CurrencyCode": {
+                        "type": "string"
+                    },
+                    "UnitPrice": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "PricingRules": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PriceScheduleRuleV7"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PriceScheduleRuleV7": {
+                "required": [
+                    "Type",
+                    "Operator",
+                    "Classifications"
+                ],
+                "type": "object",
+                "properties": {
+                    "Type": {
+                        "type": "string"
+                    },
+                    "Operator": {
+                        "type": "string"
+                    },
+                    "Classifications": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ClassificationV7"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ClassificationV7": {
+                "required": [
+                    "ModifiedUnitPrice"
+                ],
+                "type": "object",
+                "properties": {
+                    "Value": {
+                        "type": "string"
+                    },
+                    "ValueRange": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ValueRangeV7"
+                    },
+                    "ModifiedUnitPrice": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ValueRangeV7": {
+                "required": [
+                    "RangeBegin",
+                    "RangeEnd"
+                ],
+                "type": "object",
+                "properties": {
+                    "RangeBegin": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "RangeEnd": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultResponseContract": {
+                "type": "object",
+                "properties": {
+                    "ProductFamilyName": {
+                        "type": "string"
+                    },
+                    "Products": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultProduct"
+                        }
+                    },
+                    "Queries": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultQuery"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultProduct": {
+                "type": "object",
+                "properties": {
+                    "ProductId": {
+                        "type": "string"
+                    },
+                    "ProductType": {
+                        "type": "string"
+                    },
+                    "ProductTitle": {
+                        "type": "string"
+                    },
+                    "AverageUserRating": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Price": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "PrimaryIcon": {
+                        "type": "string"
+                    },
+                    "NumberOfRatings": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "BackgroundColor": {
+                        "type": "string"
+                    },
+                    "ImageHeight": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ImageWidth": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "ImageType": {
+                        "type": "string"
+                    },
+                    "PlatformProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultPlatformProperty"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultPlatformProperty": {
+                "type": "object",
+                "properties": {
+                    "PlatformName": {
+                        "type": "string"
+                    },
+                    "TitleOverride": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.AutosuggestResultQuery": {
+                "type": "object",
+                "properties": {
+                    "Query": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.GetCatalogManifestResponse": {
+                "type": "object",
+                "properties": {
+                    "CatalogManifests": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.CatalogManifestResponseContract"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.CatalogManifestResponseContract": {
+                "type": "object",
+                "properties": {
+                    "CatalogId": {
+                        "type": "string"
+                    },
+                    "CatalogType": {
+                        "type": "string"
+                    },
+                    "CatalogName": {
+                        "type": "string"
+                    },
+                    "CatalogTitle": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataTypeContract": {
+                "type": "object",
+                "properties": {
+                    "DomainDataVersion": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "Market": {
+                        "type": "string"
+                    },
+                    "Language": {
+                        "type": "string"
+                    },
+                    "Keys": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataKeyContract"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataKeyContract": {
+                "type": "object",
+                "properties": {
+                    "Name": {
+                        "type": "string"
+                    },
+                    "LocalizedString": {
+                        "type": "string"
+                    },
+                    "HasChildren": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataSetContract": {
+                "type": "object",
+                "properties": {
+                    "Domain": {
+                        "type": "string"
+                    },
+                    "Types": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataTypeDescriptor"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainDataTypeDescriptor": {
+                "type": "object",
+                "properties": {
+                    "Name": {
+                        "type": "string"
+                    },
+                    "Parent": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.DomainsContract": {
+                "type": "object",
+                "properties": {
+                    "Domains": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetailsResponseContract": {
+                "type": "object",
+                "properties": {
+                    "Product": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetails"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetails": {
+                "type": "object",
+                "properties": {
+                    "DisplaySkuAvailabilities": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SkuAvailabilities"
+                        }
+                    },
+                    "LastModifiedDate": {
+                        "type": "string"
+                    },
+                    "LocalizedProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "MarketProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "ProductASchema": {
+                        "type": "string"
+                    },
+                    "ProductBSchema": {
+                        "type": "string"
+                    },
+                    "ProductId": {
+                        "type": "string"
+                    },
+                    "DomainDataVersion": {
+                        "type": "string"
+                    },
+                    "Properties": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "AlternateIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "IngestionSource": {
+                        "type": "string"
+                    },
+                    "IsMicrosoftProduct": {
+                        "type": "boolean"
+                    },
+                    "PreferredSkuId": {
+                        "type": "string"
+                    },
+                    "ProductType": {
+                        "type": "string"
+                    },
+                    "ValidationData": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "MerchandizingTags": {
+                        "type": "array",
+                        "items": {}
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SkuAvailabilities": {
+                "type": "object",
+                "properties": {
+                    "Availabilities": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.Availability"
+                        }
+                    },
+                    "Sku": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.Sku"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.Availability": {
+                "type": "object",
+                "properties": {
+                    "Actions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "readOnly": true
+                    },
+                    "AvailabilityASchema": {
+                        "type": "string"
+                    },
+                    "AvailabilityBSchema": {
+                        "type": "string"
+                    },
+                    "AvailabilityId": {
+                        "type": "string"
+                    },
+                    "LastModifiedDate": {
+                        "type": "string"
+                    },
+                    "Markets": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "readOnly": true
+                    },
+                    "Properties": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "SkuId": {
+                        "type": "string"
+                    },
+                    "Conditions": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "ReportingData": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "OrderManagementData": {
+                        "type": "array",
+                        "items": {}
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.Sku": {
+                "type": "object",
+                "properties": {
+                    "LastModifiedDate": {
+                        "type": "string"
+                    },
+                    "LocalizedProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "MarketProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "ProductId": {
+                        "type": "string"
+                    },
+                    "Properties": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "SkuASchema": {
+                        "type": "string"
+                    },
+                    "SkuBSchema": {
+                        "type": "string"
+                    },
+                    "SkuId": {
+                        "type": "string"
+                    },
+                    "SkuType": {
+                        "type": "string"
+                    },
+                    "RecurrencePolicy": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RecurrencePolicy"
+                    },
+                    "SubscriptionPolicyId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RecurrencePolicy": {
+                "type": "object",
+                "properties": {
+                    "RecurrenceGracePeriodInSeconds": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "RecurrencePeriodicity": {
+                        "type": "string"
+                    },
+                    "RecurrenceTerms": {
+                        "type": "string"
+                    },
+                    "RecurrencePolicyId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.BulkProductDetailsRequestContract": {
+                "type": "object",
+                "properties": {
+                    "ProductIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.BulkProductDetailsResponseContract": {
+                "type": "object",
+                "properties": {
+                    "Products": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetails"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SearchResultResponseContract": {
+                "type": "object",
+                "properties": {
+                    "DisplayProductSearchResult": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SearchResultContract"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SearchResultContract": {
+                "type": "object",
+                "properties": {
+                    "ProductIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "Products": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetails"
+                        }
+                    },
+                    "TotalResultCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "HasMorePages": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingsContract": {
+                "type": "object",
+                "properties": {
+                    "RatingBoards": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoard"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoard": {
+                "type": "object",
+                "properties": {
+                    "Name": {
+                        "type": "string"
+                    },
+                    "Domains": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "DefaultForDomains": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "AlternateIds": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardAlternateId"
+                        }
+                    },
+                    "LocalizedProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardLocalizedProperties"
+                        }
+                    },
+                    "MarketProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardMarketProperties"
+                        }
+                    },
+                    "Ratings": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.Rating"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardAlternateId": {
+                "type": "object",
+                "properties": {
+                    "IdType": {
+                        "type": "string"
+                    },
+                    "Value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardLocalizedProperties": {
+                "type": "object",
+                "properties": {
+                    "Language": {
+                        "type": "string"
+                    },
+                    "ShortName": {
+                        "type": "string"
+                    },
+                    "LongName": {
+                        "type": "string"
+                    },
+                    "Url": {
+                        "type": "string"
+                    },
+                    "Descriptors": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardDescriptor"
+                        }
+                    },
+                    "Disclaimers": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardDisclaimer"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardDescriptor": {
+                "type": "object",
+                "properties": {
+                    "Descriptor": {
+                        "type": "string"
+                    },
+                    "LogoUrl": {
+                        "type": "string"
+                    },
+                    "Key": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardDisclaimer": {
+                "type": "object",
+                "properties": {
+                    "Disclaimer": {
+                        "type": "string"
+                    },
+                    "LogoUrl": {
+                        "type": "string"
+                    },
+                    "Key": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingBoardMarketProperties": {
+                "type": "object",
+                "properties": {
+                    "Market": {
+                        "type": "string"
+                    },
+                    "Priority": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.Rating": {
+                "type": "object",
+                "properties": {
+                    "Name": {
+                        "type": "string"
+                    },
+                    "Age": {
+                        "type": "string",
+                        "format": "byte"
+                    },
+                    "IsExpired": {
+                        "type": "boolean"
+                    },
+                    "AlternateIds": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingAlternateId"
+                        }
+                    },
+                    "LocalizedProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingLocalizedProperties"
+                        }
+                    },
+                    "MarketProperties": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingMarketProperties"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingAlternateId": {
+                "type": "object",
+                "properties": {
+                    "IdType": {
+                        "type": "string"
+                    },
+                    "Value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingLocalizedProperties": {
+                "type": "object",
+                "properties": {
+                    "Language": {
+                        "type": "string"
+                    },
+                    "ShortName": {
+                        "type": "string"
+                    },
+                    "LongName": {
+                        "type": "string"
+                    },
+                    "Description": {
+                        "type": "string"
+                    },
+                    "Logo": {
+                        "type": "string"
+                    },
+                    "LogoUrl": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RatingMarketProperties": {
+                "type": "object",
+                "properties": {
+                    "Market": {
+                        "type": "string"
+                    },
+                    "ExcludedDomains": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "RestrictMetadata": {
+                        "type": "boolean"
+                    },
+                    "RestrictPurchase": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.RankDetails": {
+                "type": "object",
+                "properties": {
+                    "RankName": {
+                        "type": "string"
+                    },
+                    "SupportedFields": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SkuSearchResultResponseContract": {
+                "type": "object",
+                "properties": {
+                    "DisplaySkuSearchResult": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SkuSearchResultContract"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.SkuSearchResultContract": {
+                "type": "object",
+                "properties": {
+                    "SkuIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "Products": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.Contracts.Version6.ProductDetails"
+                        }
+                    },
+                    "TotalResultCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "HasMorePages": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingRequestV7": {
+                "required": [
+                    "ProductPricingParameters"
+                ],
+                "type": "object",
+                "properties": {
+                    "ProductPricingParameters": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ProductPricingParametersV7"
+                        },
+                        "readOnly": true
+                    },
+                    "RequestPricingParameters": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.RequestPricingParametersV7"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ProductPricingParametersV7": {
+                "required": [
+                    "BigId"
+                ],
+                "type": "object",
+                "properties": {
+                    "BigId": {
+                        "type": "string"
+                    },
+                    "Parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "readOnly": true
+                    },
+                    "RatedUsage": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.RatedUsageV7"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.RatedUsageV7": {
+                "required": [
+                    "RateId",
+                    "Usage"
+                ],
+                "type": "object",
+                "properties": {
+                    "RateId": {
+                        "type": "string"
+                    },
+                    "Usage": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.RequestPricingParametersV7": {
+                "type": "object",
+                "properties": {
+                    "OrderHistory": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.OrderHistoryV7"
+                        },
+                        "readOnly": true
+                    },
+                    "Parameters": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.OrderHistoryV7": {
+                "required": [
+                    "PricingGroupId",
+                    "Volume"
+                ],
+                "type": "object",
+                "properties": {
+                    "PricingGroupId": {
+                        "type": "string"
+                    },
+                    "Volume": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingResponseV7": {
+                "required": [
+                    "PricingParameters",
+                    "Products"
+                ],
+                "type": "object",
+                "properties": {
+                    "PricingParameters": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingParametersV7"
+                    },
+                    "Products": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingProductV7"
+                        },
+                        "readOnly": true
+                    },
+                    "ProductsNotFound": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingParametersV7": {
+                "required": [
+                    "ProductPricingParameters"
+                ],
+                "type": "object",
+                "properties": {
+                    "ProductPricingParameters": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.ProductPricingParametersV7"
+                        },
+                        "readOnly": true
+                    },
+                    "RequestPricingParameters": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.RequestPricingParametersV7"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingProductV7": {
+                "required": [
+                    "BigId",
+                    "IsExpired",
+                    "Price",
+                    "PricingContext"
+                ],
+                "type": "object",
+                "properties": {
+                    "BigId": {
+                        "type": "string"
+                    },
+                    "IsExpired": {
+                        "type": "boolean"
+                    },
+                    "Price": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PriceV7"
+                    },
+                    "PricingContext": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingContextV7"
+                    },
+                    "Rates": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.RateV7"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PriceV7": {
+                "required": [
+                    "CurrencyCode",
+                    "ModifiedUnitPrice",
+                    "ModifiedUnitPrices",
+                    "TotalPrice",
+                    "UnitPrice"
+                ],
+                "type": "object",
+                "properties": {
+                    "CurrencyCode": {
+                        "type": "string"
+                    },
+                    "ModifiedUnitPrice": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "ModifiedUnitPrices": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.TierV7"
+                        },
+                        "readOnly": true
+                    },
+                    "TotalPrice": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "UnitPrice": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.TierV7": {
+                "required": [
+                    "Count",
+                    "ModifiedUnitPrice"
+                ],
+                "type": "object",
+                "properties": {
+                    "Count": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "ModifiedUnitPrice": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingContextV7": {
+                "required": [
+                    "PricingRulesApplied"
+                ],
+                "type": "object",
+                "properties": {
+                    "PricingRulesApplied": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingRuleV7"
+                        },
+                        "readOnly": true
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingRuleV7": {
+                "required": [
+                    "Affirmation",
+                    "PricingRuleId"
+                ],
+                "type": "object",
+                "properties": {
+                    "Affirmation": {
+                        "type": "string"
+                    },
+                    "AffirmationParameters": {
+                        "type": "array",
+                        "items": {
+                            "$ref":
+                                "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.AffirmationParameterV7"
+                        },
+                        "readOnly": true
+                    },
+                    "PricingRuleId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.AffirmationParameterV7": {
+                "required": [
+                    "Key",
+                    "Type",
+                    "Value"
+                ],
+                "type": "object",
+                "properties": {
+                    "Key": {
+                        "type": "string"
+                    },
+                    "Type": {
+                        "type": "string"
+                    },
+                    "Value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.RateV7": {
+                "required": [
+                    "RateId",
+                    "Price",
+                    "PricingContext"
+                ],
+                "type": "object",
+                "properties": {
+                    "RateId": {
+                        "type": "string"
+                    },
+                    "Price": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PriceV7"
+                    },
+                    "PricingContext": {
+                        "$ref":
+                            "#/components/schemas/Microsoft.MarketplaceServices.DisplayCatalog.DCatFDPricingContracts.V7.PricingContextV7"
+                    }
+                }
+            },
+            "Microsoft.MarketplaceServices.DisplayCatalog.Frontdoor.Contracts.V7.AlternateIdLookupResponseV7": {
+                "required": [
+                    "BigIds",
+                    "Products",
+                    "TotalResultCount"
+                ],
+                "type": "object",
+                "properties": {
+                    "BigIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Gets the list of big ids.",
+                        "readOnly": true
+                    },
+                    "HasMorePages": {
+                        "type": "boolean",
+                        "description":
+                            "Gets or sets the bool indicating whether or not there are more pages in this result."
+                    },
+                    "Products": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {}
+                        },
+                        "description": "Gets the list of hydrated products.",
+                        "readOnly": true
+                    },
+                    "TotalResultCount": {
+                        "type": "integer",
+                        "description": "Gets or sets the total result count.",
+                        "format": "int32"
+                    }
+                }
+            }
+        }
+    }
+}

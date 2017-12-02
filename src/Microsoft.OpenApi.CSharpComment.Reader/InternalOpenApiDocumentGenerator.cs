@@ -85,7 +85,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         {
             if (args.Name.Contains("Newtonsoft.Json"))
             {
-                // Load from the existing version of Newtonsoft.Json
+                // For any assembly conflict regarding Newtonsoft.Json versions,
+                // just load from the existing version of Newtonsoft.Json.
                 var assembly = Assembly.LoadFrom("Newtonsoft.Json.dll");
                 return assembly;
             }
@@ -99,6 +100,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         private void AddOperation(
             IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments,
             IDictionary<DocumentVariantInfo, ReferenceRegistryManager> referenceRegistryManagerMap,
+            IList<OperationGenerationError> operationGenerationErrors,
             DocumentVariantInfo documentVariantInfo,
             XElement operationElement,
             XElement operationConfigElement,
@@ -108,10 +110,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
             foreach (var preprocessingOperationFilter in _generatorConfig.PreprocessingOperationFilters)
             {
-                preprocessingOperationFilter.Apply(
-                    paths,
-                    operationElement,
-                    new PreprocessingOperationFilterSettings());
+                try
+                {
+                    preprocessingOperationFilter.Apply(
+                        paths,
+                        operationElement,
+                        new PreprocessingOperationFilterSettings());
+                }
+                catch (Exception e)
+                {
+                    operationGenerationErrors.Add(
+                        new OperationGenerationError
+                        {
+                            ExceptionType = e.GetType(),
+                            Message = e.Message,
+                        }
+                    );
+                }
             }
 
             if (!referenceRegistryManagerMap.ContainsKey(documentVariantInfo))
@@ -142,10 +157,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     // since the config filters may rely on information generated from operation filters.
                     foreach (var operationFilter in _generatorConfig.OperationFilters)
                     {
-                        operationFilter.Apply(
-                            operation,
-                            operationElement,
-                            operationFilterSettings);
+                        try
+                        {
+                            operationFilter.Apply(
+                                operation,
+                                operationElement,
+                                operationFilterSettings);
+                        }
+                        catch (Exception e)
+                        {
+                            operationGenerationErrors.Add(
+                                new OperationGenerationError
+                                {
+                                    ExceptionType = e.GetType(),
+                                    Message = e.Message,
+                                }
+                            );
+                        }
                     }
 
                     if (operationConfigElement != null)
@@ -154,14 +182,27 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         // that can be applied to the operations.
                         foreach (var configFilter in _generatorConfig.OperationConfigFilters)
                         {
-                            configFilter.Apply(
-                                operation,
-                                operationConfigElement,
-                                new OperationConfigFilterSettings
-                                {
-                                    OperationFilterSettings = operationFilterSettings,
-                                    OperationFilters = _generatorConfig.OperationFilters
-                                });
+                            try
+                            {
+                                configFilter.Apply(
+                                    operation,
+                                    operationConfigElement,
+                                    new OperationConfigFilterSettings
+                                    {
+                                        OperationFilterSettings = operationFilterSettings,
+                                        OperationFilters = _generatorConfig.OperationFilters
+                                    });
+                            }
+                            catch (Exception e)
+                            {
+                                operationGenerationErrors.Add(
+                                    new OperationGenerationError
+                                    {
+                                        ExceptionType = e.GetType(),
+                                        Message = e.Message,
+                                    }
+                                );
+                            }
                         }
                     }
 
@@ -248,11 +289,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             if (!operationElements.Any())
             {
                 result = new DocumentGenerationResultSerializedDocument(
-                    new List<PathGenerationResult>
+                    new List<OperationGenerationResult>
                     {
-                        new PathGenerationResult
+                        new OperationGenerationResult
                         {
-                            Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                            Errors =
+                            {
+                                new OperationGenerationError
+                                {
+                                    Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                                }
+                            },
                             GenerationStatus = GenerationStatus.Success
                         }
                     });
@@ -275,7 +322,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
                 foreach (var pathGenerationResult in pathGenerationResults)
                 {
-                    result.PathGenerationResults.Add(new PathGenerationResult(pathGenerationResult));
+                    result.PathGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
                 }
 
                 try
@@ -315,12 +362,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     // documents may be in bad state. We simply return empty document with
                     // an exception message in the path generation result.
                     result = new DocumentGenerationResultSerializedDocument(
-                        new List<PathGenerationResult>
+                        new List<OperationGenerationResult>
                         {
-                            new PathGenerationResult
+                            new OperationGenerationResult
                             {
-                                ExceptionType = e.GetType(),
-                                Message = e.Message,
+                                Errors =
+                                {
+                                    new OperationGenerationError
+                                    {
+                                        ExceptionType = e.GetType(),
+                                        Message = e.Message,
+                                    }
+                                },
                                 GenerationStatus = GenerationStatus.Failure
                             }
                         });
@@ -337,12 +390,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             catch (Exception e)
             {
                 result = new DocumentGenerationResultSerializedDocument(
-                    new List<PathGenerationResult>
+                    new List<OperationGenerationResult>
                     {
-                        new PathGenerationResult
+                        new OperationGenerationResult
                         {
-                            ExceptionType = e.GetType(),
-                            Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
+                            Errors =
+                            {
+                                new OperationGenerationError
+                                {
+                                    ExceptionType = e.GetType(),
+                                    Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
+                                }
+                            },
                             GenerationStatus = GenerationStatus.Failure
                         }
                     });
@@ -354,8 +413,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <summary>
         /// Populate the specification documents for all document variant infos.
         /// </summary>
-        /// <returns>The path generation results from populating the specification documents.</returns>
-        private IList<PathGenerationResult> GenerateSpecificationDocuments(
+        /// <returns>The operation generation results from populating the specification documents.</returns>
+        private IList<OperationGenerationResult> GenerateSpecificationDocuments(
             TypeFetcher typeFetcher,
             IList<XElement> operationElements,
             XElement operationConfigElement,
@@ -364,7 +423,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         {
             specificationDocuments = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
-            var pathGenerationResults = new List<PathGenerationResult>();
+            var operationGenerationResults = new List<OperationGenerationResult>();
 
             var referenceRegistryManagerMap = new Dictionary<DocumentVariantInfo, ReferenceRegistryManager>();
 
@@ -379,14 +438,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 }
                 catch (InvalidUrlException e)
                 {
-                    pathGenerationResults.Add(
-                        new PathGenerationResult
+                    operationGenerationResults.Add(
+                        new OperationGenerationResult
                         {
+                            Errors =
+                            {
+                                new OperationGenerationError
+                                {
+                                    ExceptionType = e.GetType(),
+                                    Message = e.Message,
+                                }
+                            },
+                            GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
                             Path = e.Url,
-                            ExceptionType = e.GetType(),
-                            Message = e.Message,
-                            GenerationStatus = GenerationStatus.Failure
                         });
 
                     continue;
@@ -398,14 +463,21 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 }
                 catch (InvalidVerbException e)
                 {
-                    pathGenerationResults.Add(
-                        new PathGenerationResult
+                    operationGenerationResults.Add(
+                        new OperationGenerationResult
                         {
+                            Errors =
+                            {
+                                new OperationGenerationError
+                                {
+                                    ExceptionType = e.GetType(),
+                                    Message = e.Message,
+                                }
+                            },
+                            GenerationStatus = GenerationStatus.Failure,
+
                             OperationMethod = e.Verb,
                             Path = url,
-                            ExceptionType = e.GetType(),
-                            Message = e.Message,
-                            GenerationStatus = GenerationStatus.Failure
                         });
 
                     continue;
@@ -413,9 +485,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
                 try
                 {
+                    var operationGenerationErrors = new List<OperationGenerationError>();
+                    
                     AddOperation(
                         specificationDocuments,
                         referenceRegistryManagerMap,
+                        operationGenerationErrors,
                         DocumentVariantInfo.Default,
                         operationElement,
                         operationConfigElement,
@@ -435,6 +510,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             AddOperation(
                                 specificationDocuments,
                                 referenceRegistryManagerMap,
+                                operationGenerationErrors,
                                 documentVariantInfo,
                                 operationElement,
                                 operationConfigElement,
@@ -442,25 +518,45 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                     }
 
-                    pathGenerationResults.Add(
-                        new PathGenerationResult
+                    var operationGenerationResult = new OperationGenerationResult
+                    {
+                        OperationMethod = operationMethod.ToString(),
+                        Path = url,
+                    };
+
+                    if (operationGenerationErrors.Any())
+                    {
+                        foreach (var error in operationGenerationErrors)
                         {
-                            OperationMethod = operationMethod.ToString(),
-                            Path = url,
-                            Message = SpecificationGenerationMessages.SuccessfulPathGeneration,
-                            GenerationStatus = GenerationStatus.Success
-                        });
+                            operationGenerationResult.Errors.Add(new OperationGenerationError(error));
+                        }
+
+                        operationGenerationResult.GenerationStatus = GenerationStatus.Warning;
+                    }
+                    else
+                    {
+                        operationGenerationResult.GenerationStatus = GenerationStatus.Success;
+                    }
+
+                    operationGenerationResults.Add(operationGenerationResult);
                 }
                 catch (Exception e)
                 {
-                    pathGenerationResults.Add(
-                        new PathGenerationResult
+                    operationGenerationResults.Add(
+                        new OperationGenerationResult
                         {
+                            Errors =
+                            {
+                                new OperationGenerationError
+                                {
+                                    ExceptionType = e.GetType(),
+                                    Message = e.Message,
+                                }
+                            },
+
+                            GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = operationMethod.ToString(),
                             Path = url,
-                            ExceptionType = e.GetType(),
-                            Message = e.Message,
-                            GenerationStatus = GenerationStatus.Failure
                         });
                 }
             }
@@ -472,7 +568,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         specificationDocuments[documentVariantInfo].Components.Schemas);
             }
 
-            return pathGenerationResults;
+            return operationGenerationResults;
         }
     }
 }

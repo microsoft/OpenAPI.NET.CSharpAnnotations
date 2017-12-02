@@ -40,7 +40,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             OpenApiSpecVersion openApiSpecVersion,
             int expectedPathGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
-            List<PathGenerationResult> expectedFailedPathGenerationResults)
+            List<OperationGenerationResult> expectedFailedPathGenerationResults)
         {
             _output.WriteLine(testCaseName);
 

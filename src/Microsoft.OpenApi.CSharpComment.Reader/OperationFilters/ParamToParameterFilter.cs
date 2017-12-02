@@ -37,7 +37,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 .ToList();
 
             // Query paramElements again to get all the parameter elements that have "in" attribute.
-            // This will include those whose "in" attribute were just populated above, but exclude
+            // This will include those whose "in" attribute were just populated in PopulateInAttributeFilter, but exclude
             // those that have "in" attribute being "body" since they will be handled as a request body.
             var paramElementsWithIn = paramElements.Where(
                     p =>

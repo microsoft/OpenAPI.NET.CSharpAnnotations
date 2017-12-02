@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<configuration>
+  <document>
+    <variant>
+      <name>swagger</name>
+    </variant>
+  </document>
+  <operation>
+    <annotation>
+      <param name="Swagger-Test" cref="T:System.String" in="header">Test header for default annotations. Safely ignore.</param>
+      <param name="Dummy" cref="T:System.String" in="header">Test header for default annotations. Safely ignore.</param>
+      <param name="MS-CorrelationId" cref="T:System.String" in="header">Correlation ID for the request. Should not be picked up where exists.</param>
+    </annotation>
+  </operation>
+</configuration>

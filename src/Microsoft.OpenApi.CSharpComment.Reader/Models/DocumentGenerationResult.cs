@@ -27,11 +27,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// Initializes a new instance of <see cref="DocumentGenerationResult"/>.
         /// </summary>
         /// <param name="pathGenerationResults">The path generation results.</param>
-        public DocumentGenerationResult(IList<PathGenerationResult> pathGenerationResults)
+        public DocumentGenerationResult(IList<OperationGenerationResult> pathGenerationResults)
         {
             foreach (var pathGenerationResult in pathGenerationResults)
             {
-                PathGenerationResults.Add(new PathGenerationResult(pathGenerationResult));
+                PathGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
             }
         }
 
@@ -86,8 +86,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// List of path generations results.
         /// </summary>
         [JsonProperty]
-        public IList<PathGenerationResult> PathGenerationResults { get; internal set; } =
-            new List<PathGenerationResult>();
+        public IList<OperationGenerationResult> PathGenerationResults { get; internal set; } =
+            new List<OperationGenerationResult>();
 
         /// <summary>
         /// Converts this object to <see cref="DocumentGenerationResultSerializedDocument"/>.
@@ -100,7 +100,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             foreach (var pathGenerationResult in PathGenerationResults)
             {
                 documentGenerationResult.PathGenerationResults.Add(
-                    new PathGenerationResult(pathGenerationResult));
+                    new OperationGenerationResult(pathGenerationResult));
             }
 
             foreach (var variantInfoDocumentKeyValuePair in Documents)

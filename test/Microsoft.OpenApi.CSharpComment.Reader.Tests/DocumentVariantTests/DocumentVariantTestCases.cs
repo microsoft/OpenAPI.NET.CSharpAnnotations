@@ -54,27 +54,34 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwagger2Group1.json"),
                 },
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
-                        ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
-                        Message = string.Format(
-                            SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
-                            "swagger2",
-                            "Group1",
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "V2"
-                                }),
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "VConflict"
-                                })),
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
+
+                                ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
+                                    "swagger2",
+                                    "Group1",
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "V2"
+                                        }),
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "VConflict"
+                                        })),
+                            }
+                        },
                         GenerationStatus = GenerationStatus.Failure
                     }
                 }
@@ -124,10 +131,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
                 },
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
-                    {
+                    new OperationGenerationResult
+                    {Errors =
+                        {
+                            new OperationGenerationError()
+                            {
+
                         ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
                         Message = string.Format(
                             SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
@@ -145,6 +156,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                                     ["security"] = "sg1",
                                     ["version"] = "VConflict"
                                 })),
+                        }
+                            },
                         GenerationStatus = GenerationStatus.Failure
                     }
                 }

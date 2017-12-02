@@ -32,7 +32,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             _output = output;
         }
 
-        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldFailGeneration()
+        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldYieldFailure()
         {
             // Invalid Verb
             yield return new object[]
@@ -50,14 +50,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationInvalidVerb.Json"),
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
                         OperationMethod = "Invalid",
                         Path = "/V1/samples/{id}",
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
+
                         ExceptionType = typeof(InvalidVerbException),
                         Message = string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"),
+                       }},
                         GenerationStatus = GenerationStatus.Failure
                     }
                 }
@@ -79,22 +85,30 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationInvalidUri.Json"),
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
                         OperationMethod = SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
                         Path = "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
                         ExceptionType = typeof(InvalidUrlException),
                         Message = string.Format(
                             SpecificationGenerationMessages.InvalidUrl,
                             "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
                             SpecificationGenerationMessages.MalformattedUrl),
+                        }},
                         GenerationStatus = GenerationStatus.Failure
                     }
                 }
             };
+        }
 
+        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldYieldWarning()
+        {
             // Parameters that have no in attributes and not present in the URL.
             yield return new object[]
             {
@@ -111,17 +125,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationParamWithoutInNotPresentInUrl.Json"),
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
                         OperationMethod = OperationType.Get.ToString(),
                         Path = "/V1/samples/{id}",
-                        ExceptionType = typeof(MissingInAttributeException),
-                        Message = string.Format(
-                            SpecificationGenerationMessages.MissingInAttribute,
-                            string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
-                        GenerationStatus = GenerationStatus.Failure
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
+                                ExceptionType = typeof(MissingInAttributeException),
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.MissingInAttribute,
+                                    string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };
@@ -142,18 +162,31 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationConflictingPathAndQueryParameters.Json"),
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
                         OperationMethod = OperationType.Get.ToString(),
                         Path = "/V1/samples/{id}",
-                        ExceptionType = typeof(ConflictingPathAndQueryParametersException),
-                        Message = string.Format(
-                            SpecificationGenerationMessages.ConflictingPathAndQueryParameters,
-                            "id",
-                            "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
-                        GenerationStatus = GenerationStatus.Failure
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
+                                ExceptionType = typeof(ConflictingPathAndQueryParametersException),
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.ConflictingPathAndQueryParameters,
+                                    "id",
+                                    "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
+                            },
+                            new OperationGenerationError()
+                            {
+                                ExceptionType = typeof(MissingInAttributeException),
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.MissingInAttribute,
+                                    string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };
@@ -174,18 +207,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationUndocumentedPathParam.Json"),
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
                         OperationMethod = OperationType.Get.ToString(),
                         Path = "/V1/samples/{id}",
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
                         ExceptionType = typeof(UndocumentedPathParameterException),
                         Message = string.Format(
                             SpecificationGenerationMessages.UndocumentedPathParameter,
                             "id",
-                            "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}"),
-                        GenerationStatus = GenerationStatus.Failure
+                            "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}"),}},
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };
@@ -206,15 +243,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationUndocumentedGeneric.Json"),
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
                         OperationMethod = OperationType.Get.ToString(),
                         Path = "/V3/samples/{id}",
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
                         ExceptionType = typeof(UndocumentedGenericTypeException),
-                        Message = SpecificationGenerationMessages.UndocumentedGenericType,
-                        GenerationStatus = GenerationStatus.Failure
+                        Message = SpecificationGenerationMessages.UndocumentedGenericType,}},
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };
@@ -235,15 +276,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationIncorrectlyOrderedGeneric.Json"),
-                new List<PathGenerationResult>
+                new List<OperationGenerationResult>
                 {
-                    new PathGenerationResult
+                    new OperationGenerationResult
                     {
                         OperationMethod = OperationType.Get.ToString(),
                         Path = "/V3/samples/",
+                        Errors =
+                        {
+                            new OperationGenerationError()
+                            {
                         ExceptionType = typeof(UnorderedGenericTypeException),
-                        Message = SpecificationGenerationMessages.UnorderedGenericType,
-                        GenerationStatus = GenerationStatus.Failure
+                        Message = SpecificationGenerationMessages.UnorderedGenericType,}},
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };
@@ -434,15 +479,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldFailGeneration))]
-        public void InvalidDocumentationShouldFailGeneration(
+        [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldYieldFailure))]
+        public void InvalidDocumentationShouldYieldFailure(
             string testCaseName,
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
             int expectedPathGenerationResultsCount,
             string expectedJsonFile,
-            IList<PathGenerationResult> expectedFailedPathGenerationResults)
+            IList<OperationGenerationResult> expectedFailedPathGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -487,6 +532,59 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
         }
 
         [Theory]
+        [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldYieldWarning))]
+        public void InvalidDocumentationShouldYieldWarning(
+            string testCaseName,
+            string inputXmlFile,
+            IList<string> inputBinaryFiles,
+            OpenApiSpecVersion openApiSpecVersion,
+            int expectedPathGenerationResultsCount,
+            string expectedJsonFile,
+            IList<OperationGenerationResult> expectedFailedPathGenerationResults)
+        {
+            _output.WriteLine(testCaseName);
+
+            var document = XDocument.Load(inputXmlFile);
+
+            var generator = new OpenApiDocumentGenerator();
+
+            var result = generator.GenerateOpenApiDocuments(
+                document,
+                inputBinaryFiles,
+                openApiSpecVersion);
+
+            result.Should().NotBeNull();
+
+            _output.WriteLine(JsonConvert.SerializeObject(
+                result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
+
+            result.GenerationStatus.Should().Be(GenerationStatus.Warning);
+            result.MainDocument.Should().NotBeNull();
+            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+
+            var failedPaths = result.PathGenerationResults.Where(
+                    p => p.GenerationStatus == GenerationStatus.Warning)
+                .ToList();
+
+            var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
+
+            var expectedDocument = File.ReadAllText(expectedJsonFile);
+
+            _output.WriteLine(actualDocument);
+
+            failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
+
+            // We are doing serialization and deserialization to force the resulting actual document
+            // to have the exact fields we will see in the resulting document based on the contract resolver.
+            // Without serialization and deserialization, the actual document may have fields that should
+            // not be present, such as empty list fields.
+            var openApiStringReader = new OpenApiStringReader();
+            openApiStringReader.Read(actualDocument, out var _)
+                .Should()
+                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
+        }
+
+        [Theory]
         [InlineData(OpenApiSpecVersion.OpenApi3_0_0)]
         public void NoOperationsToParseShouldReturnEmptyDocument(OpenApiSpecVersion openApiSpecVersion)
         {
@@ -506,11 +604,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             result.MainDocument.Should().BeNull();
             result.PathGenerationResults.Should()
                 .BeEquivalentTo(
-                    new List<PathGenerationResult>
+                    new List<OperationGenerationResult>
                     {
-                        new PathGenerationResult
+                        new OperationGenerationResult
                         {
+                            Errors =
+                            {
+                                new OperationGenerationError()
+                                {
                             Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                            }},
                             GenerationStatus = GenerationStatus.Success
                         }
                     });
