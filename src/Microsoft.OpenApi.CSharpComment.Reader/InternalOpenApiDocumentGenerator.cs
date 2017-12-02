@@ -486,7 +486,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                 }
                             },
                             GenerationStatus = GenerationStatus.Failure,
-
                             OperationMethod = e.Verb,
                             Path = url,
                         });
@@ -564,7 +563,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     Message = e.Message,
                                 }
                             },
-
                             GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = operationMethod.ToString(),
                             Path = url,

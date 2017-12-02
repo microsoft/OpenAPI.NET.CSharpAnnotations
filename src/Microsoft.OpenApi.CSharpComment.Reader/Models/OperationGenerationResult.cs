@@ -60,33 +60,5 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// </summary>
         [JsonProperty]
         public string Path { get; set; }
-
-        ///// <summary>
-        ///// Determines whether this equals to the other object.
-        ///// </summary>
-        //public override bool Equals(object other)
-        //{
-        //    var pathGenerationResult = other as OperationGenerationResult;
-
-        //    return pathGenerationResult != null && Equals(pathGenerationResult);
-        //}
-
-        ///// <summary>
-        ///// Determines whether this equals to the other path generation result.
-        ///// </summary>
-        //public bool Equals(OperationGenerationResult other)
-        //{
-        //    return other != null &&
-        //        OperationMethod == other.OperationMethod &&
-        //        GenerationStatus == other.GenerationStatus &&
-        //        Path == other.Path &&
-        //        Errors.SequenceEqual( other.Errors );
-        //}
-
-        ///// <summary>
-        ///// Gets the hash code of this path generation result.
-        ///// </summary>
-        //public override int GetHashCode() => 
-        //    new {OperationMethod, GenerationStatus, Errors, Path}.GetHashCode();
     }
 }

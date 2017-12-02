@@ -19,7 +19,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
         private const string CommonAnnotationsDirectory =
             "AnnotationsWithCommonAnnotations";
 
-        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldFail()
+        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldWarning()
         {
             // Document variant info inside document annotation that self-conflicts.
             yield return new object[]

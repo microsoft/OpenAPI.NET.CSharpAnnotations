@@ -330,51 +330,6 @@
     <Content Include="NewtonsoftVersionTests\Output\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationArrayInParamTags.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationConflictingPathAndQueryParameters.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationIncorrectlyOrderedGeneric.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationInvalidUri.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationInvalidVerb.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationMultipleRequestMediaTypes.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationMultipleRequestTypes.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationMultipleResponseMediaTypes.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationMultipleResponseTypes.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationOptionalPathParametersBranching.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationParamNoTypeSpecified.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationParamWithoutInButPresentInUrl.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationParamWithoutInNotPresentInUrl.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationUndocumentedGeneric.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\AnnotationUndocumentedPathParam.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

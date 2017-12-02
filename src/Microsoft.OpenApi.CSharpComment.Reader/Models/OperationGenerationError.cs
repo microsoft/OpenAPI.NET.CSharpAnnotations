@@ -40,31 +40,5 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// </summary>
         [JsonProperty]
         public string Message { get; set; }
-
-        ///// <summary>
-        ///// Determines whether this equals to the other object.
-        ///// </summary>
-        //public override bool Equals(object other)
-        //{
-        //    var pathGenerationResult = other as OperationGenerationError;
-
-        //    return pathGenerationResult != null && Equals(pathGenerationResult);
-        //}
-
-        ///// <summary>
-        ///// Determines whether this equals to the other <see cref="OperationGenerationError"/>.
-        ///// </summary>
-        //public bool Equals(OperationGenerationError other)
-        //{
-        //    return other != null &&
-        //        ExceptionType == other.ExceptionType &&
-        //        Message == other.Message;
-        //}
-
-        ///// <summary>
-        ///// Gets the hash code of this <see cref="OperationGenerationError"/>.
-        ///// </summary>
-        //public override int GetHashCode() =>
-        //    new {ExceptionType, Message}.GetHashCode();
     }
 }

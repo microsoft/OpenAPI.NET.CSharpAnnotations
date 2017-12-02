@@ -30,9 +30,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
         [Theory]
         [MemberData(
-            nameof(DocumentVariantTestCases.GetTestCasesForGenerateDocumentMultipleVariantsShouldFail),
+            nameof(DocumentVariantTestCases.GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldWarning),
             MemberType = typeof(DocumentVariantTestCases))]
-        public void GenerateDocumentMultipleVariantsShouldFail(
+        public void GenerateDocumentMultipleVariantsShouldYieldWarning(
             string testCaseName,
             string inputXmlFile,
             IList<string> inputBinaryFiles,
@@ -40,7 +40,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
-            List<OperationGenerationResult> expectedFailedOperationGenerationResults)
+            List<OperationGenerationResult> expectedWarningOperationGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -72,7 +72,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     p => p.GenerationStatus == GenerationStatus.Warning)
                 .ToList();
 
-            warningOperations.Should().BeEquivalentTo(expectedFailedOperationGenerationResults);
+            warningOperations.Should().BeEquivalentTo(expectedWarningOperationGenerationResults);
 
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);

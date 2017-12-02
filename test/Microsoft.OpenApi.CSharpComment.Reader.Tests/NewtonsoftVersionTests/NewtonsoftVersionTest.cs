@@ -5,13 +5,10 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
-using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Extensions;
-using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 using Newtonsoft.Json;
 using Xunit;
@@ -60,8 +57,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
 
             result.Should().NotBeNull();
 
-            _output.WriteLine(JsonConvert.SerializeObject(
-                result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
+            _output.WriteLine(
+                JsonConvert.SerializeObject(
+                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();
@@ -69,12 +67,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
 
             var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 
-            var expectedDocument = File.ReadAllText(Path.Combine(
-                OutputDirectory,
-                "Annotation.Json"));
+            var expectedDocument = File.ReadAllText(
+                Path.Combine(
+                    OutputDirectory,
+                    "Annotation.Json"));
 
             _output.WriteLine(actualDocument);
-            
+
             var openApiStringReader = new OpenApiStringReader();
             openApiStringReader.Read(actualDocument, out var _)
                 .Should()

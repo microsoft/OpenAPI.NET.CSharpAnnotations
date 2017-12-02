@@ -94,7 +94,6 @@
     <Compile Include="DocumentFilters\IDocumentFilter.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\DocumentVariantInfo.cs" />
-    <Compile Include="Models\OpenApiDataTypeFormatPair.cs" />
     <Compile Include="OpenApiDocumentGeneratorConfig.cs" />
     <Compile Include="OperationFilters\GroupToTagFilter.cs" />
     <Compile Include="PreprocessingOperationFilters\BranchOptionalPathParametersFilter.cs" />

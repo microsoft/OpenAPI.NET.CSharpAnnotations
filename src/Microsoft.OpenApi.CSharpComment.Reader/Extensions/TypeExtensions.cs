@@ -16,7 +16,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
     /// </summary>
     public static class TypeExtensions
     {
-        private static readonly Dictionary<Type, Func<OpenApiSchema>> _simpleTypeToOpenApiDataSchema =
+        private static readonly Dictionary<Type, Func<OpenApiSchema>> _simpleTypeToOpenApiSchema =
             new Dictionary<Type, Func<OpenApiSchema>>
             {
                 [typeof(bool)] = () => new OpenApiSchema {Type = "boolean"},
@@ -107,7 +107,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// </remarks>
         public static bool IsSimple(this Type type)
         {
-            return _simpleTypeToOpenApiDataSchema.ContainsKey(type);
+            return _simpleTypeToOpenApiSchema.ContainsKey(type);
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
                 throw new ArgumentNullException(nameof(type));
             }
 
-            return _simpleTypeToOpenApiDataSchema.TryGetValue(type, out var result)
+            return _simpleTypeToOpenApiSchema.TryGetValue(type, out var result)
                 ? result()
                 : new OpenApiSchema {Type = "string"};
         }
