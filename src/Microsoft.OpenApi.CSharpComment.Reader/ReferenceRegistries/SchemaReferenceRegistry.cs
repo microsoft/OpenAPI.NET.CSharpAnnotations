@@ -63,9 +63,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 
             if (input.IsSimple())
             {
-                var dataTypeAndFormatPair = input.MapToOpenApiDataTypeFormatPair();
-                schema.Type = dataTypeAndFormatPair.DataType;
-                schema.Format = dataTypeAndFormatPair.Format;
+                schema = input.MapToOpenApiSchema();
 
                 // Certain simple types yield more specific information.
                 if (input == typeof(char))

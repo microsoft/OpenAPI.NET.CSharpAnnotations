@@ -52,7 +52,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             assemblyPath = assemblyPath.Trim();
             var fullPath = Path.GetFullPath(assemblyPath);
 
-            var binPath = Path.Combine(domain.SetupInformation.PrivateBinPath);
+            var binPath = Path.Combine(domain.BaseDirectory, domain.SetupInformation.PrivateBinPath);
             Directory.CreateDirectory(binPath);
 
             var newFilePath = Path.Combine(binPath, Path.GetFileName(assemblyPath));
@@ -156,6 +156,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <returns>The type.</returns>
         public Type LoadTypeFromCrefValues(IList<string> crefValues)
         {
+            if (!crefValues.Any())
+            {
+                return null;
+            }
+
             string typeName;
 
             if (crefValues.First().Contains("[]"))

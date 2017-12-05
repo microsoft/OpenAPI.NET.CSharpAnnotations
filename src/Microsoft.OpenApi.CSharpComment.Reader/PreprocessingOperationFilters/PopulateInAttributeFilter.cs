@@ -92,7 +92,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
             paramElementsWithoutIn = paramElements.Where(
                     p => !KnownXmlStrings.AllowedInValues.Contains(p.Attribute(KnownXmlStrings.In)?.Value))
                 .ToList();
-
+            
             if (paramElementsWithoutIn.Any())
             {
                 throw new MissingInAttributeException(

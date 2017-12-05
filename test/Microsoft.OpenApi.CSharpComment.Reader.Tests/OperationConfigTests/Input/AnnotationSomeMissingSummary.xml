@@ -192,7 +192,7 @@
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <requestType>
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>The sample object
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>Sample object
       </requestType>
       <response code="200">
         <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>The sample object updated

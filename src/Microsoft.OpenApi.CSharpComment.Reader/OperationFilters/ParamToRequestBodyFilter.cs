@@ -1,12 +1,13 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
@@ -34,7 +35,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var bodyElements = element.Elements()
-                .Where(p => p.Name == KnownXmlStrings.Param && p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
+                .Where(
+                    p => p.Name == KnownXmlStrings.Param &&
+                        p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
                 .ToList();
 
             foreach (var bodyElement in bodyElements)
@@ -67,6 +70,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                 var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
 
+                if (type == null)
+                {
+                    throw new InvalidRequestBodyException(bodyElement.Value);
+                }
+
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
 
                 if (operation.RequestBody == null)
@@ -74,7 +82,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                     operation.RequestBody = new OpenApiRequestBody
                     {
                         Description = description.RemoveBlankLines(),
-                        Content = 
+                        Content =
                         {
                             [mediaType] = new OpenApiMediaType {Schema = schema}
                         },

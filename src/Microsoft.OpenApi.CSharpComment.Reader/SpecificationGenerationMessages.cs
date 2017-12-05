@@ -15,7 +15,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             "{2} | {3}";
 
         public const string ConflictingPathAndQueryParameters = "The parameter {0} is both present in path and query of the url {1}";
-        
+
+        public const string DuplicateOperation = "There are duplicates for this operation: {0} {1}";
+
+        public const string InvalidRequestBody = "The documented request body {0} is not valid.";
+
+        public const string InvalidResponse = "The documented response {0} is not valid.";
+
         public const string InvalidHttpMethod = "The documented verb {0} is not a valid http Method.";
 
         public const string InvalidUrl = "The documented url ({0}) is not a valid uri due to this error: {1}.";

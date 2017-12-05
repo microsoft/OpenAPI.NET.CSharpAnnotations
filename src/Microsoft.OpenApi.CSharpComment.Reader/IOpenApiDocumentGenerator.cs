@@ -21,8 +21,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
         /// <param name="configurationXmlDocument">The XDocument representing the generation configuration.</param>
         /// <param name="openApiSpecVersion">Specification version of the Open API document to generate.</param>
-        /// <returns>The open api document generation result.</returns>
-        DocumentGenerationResult GenerateOpenApiDocuments(
+        /// <returns>The open api document overall generation result.</returns>
+        OverallGenerationResult GenerateOpenApiDocuments(
             XDocument annotationXmlDocument,
             IList<string> contractAssemblyPaths,
             XDocument configurationXmlDocument,
@@ -34,8 +34,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
         /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
         /// <param name="openApiSpecVersion">Specification version of the Open API document to generate.</param>
-        /// <returns>The open api document generation result.</returns>
-        DocumentGenerationResult GenerateOpenApiDocuments(
+        /// <returns>The open api document overall generation result.</returns>
+        OverallGenerationResult GenerateOpenApiDocuments(
             XDocument annotationXmlDocument,
             IList<string> contractAssemblyPaths,
             OpenApiSpecVersion openApiSpecVersion);
@@ -46,8 +46,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="summaryComment">The visual studio summary comment.</param>
         /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
         /// <param name="openApiSpecVersion">Specification version of the Open API document to generate.</param>
-        /// <returns>The open api document generation result.</returns>
-        DocumentGenerationResult GenerateOpenApiDocuments(
+        /// <returns>The open api document overall generation result.</returns>
+        OverallGenerationResult GenerateOpenApiDocuments(
             string summaryComment,
             IList<string> contractAssemblyPaths,
             OpenApiSpecVersion openApiSpecVersion);

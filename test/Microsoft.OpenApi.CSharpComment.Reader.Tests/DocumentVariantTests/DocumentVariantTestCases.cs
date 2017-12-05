@@ -19,7 +19,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
         private const string CommonAnnotationsDirectory =
             "AnnotationsWithCommonAnnotations";
 
-        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldFail()
+        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldWarning()
         {
             // Document variant info inside document annotation that self-conflicts.
             yield return new object[]
@@ -36,7 +36,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     InputDirectory,
                     "ConfigOneDocumentVariantTagSwagger2NoOptions.xml"),
                 OpenApiSpecVersion.OpenApi3_0_0,
-                1,
+                9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
@@ -54,28 +54,34 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwagger2Group1.json"),
                 },
-                new List<PathGenerationResult>
+                new List<DocumentGenerationResult>
                 {
-                    new PathGenerationResult
+                    new DocumentGenerationResult()
                     {
-                        ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
-                        Message = string.Format(
-                            SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
-                            "swagger2",
-                            "Group1",
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "V2"
-                                }),
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "VConflict"
-                                })),
-                        GenerationStatus = GenerationStatus.Failure
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
+                                    "swagger2",
+                                    "Group1",
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "V2"
+                                        }),
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "VConflict"
+                                        })),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };
@@ -95,7 +101,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     InputDirectory,
                     "ConfigOneDocumentVariantTag.xml"),
                 OpenApiSpecVersion.OpenApi3_0_0,
-                1,
+                9,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
@@ -124,28 +130,34 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
                 },
-                new List<PathGenerationResult>
+                new List<DocumentGenerationResult>
                 {
-                    new PathGenerationResult
+                    new DocumentGenerationResult()
                     {
-                        ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
-                        Message = string.Format(
-                            SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
-                            "swagger",
-                            "Group1",
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "V2"
-                                }),
-                            JsonConvert.SerializeObject(
-                                new Dictionary<string, string>
-                                {
-                                    ["security"] = "sg1",
-                                    ["version"] = "VConflict"
-                                })),
-                        GenerationStatus = GenerationStatus.Failure
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
+                                    "swagger",
+                                    "Group1",
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "V2"
+                                        }),
+                                    JsonConvert.SerializeObject(
+                                        new Dictionary<string, string>
+                                        {
+                                            ["security"] = "sg1",
+                                            ["version"] = "VConflict"
+                                        })),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
                     }
                 }
             };

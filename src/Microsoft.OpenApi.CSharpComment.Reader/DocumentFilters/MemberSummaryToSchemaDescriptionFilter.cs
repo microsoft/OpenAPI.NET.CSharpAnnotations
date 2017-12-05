@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Linq;
@@ -28,7 +28,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         public void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
         {
             var propertyMembers = xmlDocument.XPathSelectElements("//doc/members/member")
-                .Where(m => m.Attribute(KnownXmlStrings.Name) != null && m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:"))
+                .Where(
+                    m => m.Attribute(KnownXmlStrings.Name) != null &&
+                        m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:"))
                 .ToList();
 
             foreach (var propertyMember in propertyMembers)
@@ -42,15 +44,36 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
                     string.Join(".", splitPropertyName.Take(splitPropertyName.Length - 1))
                         .Substring(startIndex: 2);
 
+                // We need to sanitize class name to match the format in the schema reference registry.
+                // Note that this class may also match several classes in the registry given that generics
+                // with different types are treated as different schemas.
+                // For example, summary information for properties in class name A 
+                // should apply to those properties in schema A, A_B_, and A_B_C__ as well.
+                var sanitizedClassName = className.SanitizeClassName();
+
+                var schemas = specificationDocument.Components.Schemas.Where(
+                        s => s.Key == sanitizedClassName ||
+                            s.Key.StartsWith(sanitizedClassName + "_"))
+                    .ToList();
+
+                if (!schemas.Any())
+                {
+                    continue;
+                }
+
                 var propertyName =
                     splitPropertyName[splitPropertyName.Length - 1];
 
-                var propertyInfo = settings.TypeFetcher.LoadType(className)?.GetProperties().FirstOrDefault(p => p.Name == propertyName);
+                var propertyInfo = settings.TypeFetcher.LoadType(className)
+                    ?.GetProperties()
+                    .FirstOrDefault(p => p.Name == propertyName);
 
                 if (propertyInfo != null)
                 {
                     var jsonPropertyAttributes =
-                        (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), inherit: false);
+                        (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(
+                            typeof(JsonPropertyAttribute),
+                            inherit: false);
                     if (jsonPropertyAttributes.Any())
                     {
                         // Extract the property name in JsonProperty if given.
@@ -61,16 +84,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
                     }
                 }
 
-                // We need to sanitize class name to match the format in the schema reference registry.
-                // Note that this class may also match several classes in the registry given that generics
-                // with different types are treated as different schemas.
-                // For example, summary information for properties in class name A 
-                // should apply to those properties in schema A, A_B_, and A_B_C__ as well.
-                var sanitizedClassName = className.SanitizeClassName();
-
-                foreach (var schema in specificationDocument.Components.Schemas.Where(
-                    s => s.Key == sanitizedClassName ||
-                        s.Key.StartsWith(sanitizedClassName + "_")))
+                foreach (var schema in schemas)
                 {
                     if (schema.Value.Properties.ContainsKey(propertyName))
                     {

@@ -34,6 +34,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
             var headerParamElements = element.Elements()
                 .Where(p => p.Name == KnownXmlStrings.Header)
                 .ToList();
+            
+            var requestTypeElements = element.Elements()
+                .Where(p => p.Name == KnownXmlStrings.RequestType)
+                .ToList();
 
             foreach (var pathParamElement in pathParamElements)
             {
@@ -51,6 +55,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
             {
                 headerParamElement.Name = KnownXmlStrings.Param;
                 headerParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Header));
+            }
+
+            foreach (var requestTypeElement in requestTypeElements)
+            {
+                requestTypeElement.Name = KnownXmlStrings.Param;
+                requestTypeElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Body));
             }
         }
     }

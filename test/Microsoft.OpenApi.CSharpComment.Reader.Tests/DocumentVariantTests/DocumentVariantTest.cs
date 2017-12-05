@@ -30,17 +30,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
         [Theory]
         [MemberData(
-            nameof(DocumentVariantTestCases.GetTestCasesForGenerateDocumentMultipleVariantsShouldFail),
+            nameof(DocumentVariantTestCases.GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldWarning),
             MemberType = typeof(DocumentVariantTestCases))]
-        public void GenerateDocumentMultipleVariantsShouldFail(
+        public void GenerateDocumentMultipleVariantsShouldYieldWarning(
             string testCaseName,
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
-            List<PathGenerationResult> expectedFailedPathGenerationResults)
+            List<DocumentGenerationResult> expectedDocumentGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -66,13 +66,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
 
             result.Should().NotBeNull();
-            result.GenerationStatus.Should().Be(GenerationStatus.Failure);
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
-            var failedPaths = result.PathGenerationResults.Where(
-                    p => p.GenerationStatus == GenerationStatus.Failure)
-                .ToList();
+            result.GenerationStatus.Should().Be(GenerationStatus.Warning);
 
-            failedPaths.Should().BeEquivalentTo(expectedFailedPathGenerationResults);
+            // All operation generations should succeed.
+            result.OperationGenerationResults.Count(r => r.GenerationStatus == GenerationStatus.Success)
+                .Should().Be(expectedOperationGenerationResultsCount);
+
+            // Some document generations should yield warning as expected in the test cases.
+            result.DocumentGenerationResults.Should().BeEquivalentTo(expectedDocumentGenerationResults);
 
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
@@ -94,15 +95,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 _output.WriteLine(actualDocumentAsString);
 
                 var openApiStringReader = new OpenApiStringReader();
-                
-                actualDocuments.Add(
-                    openApiStringReader.Read(actualDocumentAsString, out var _));
 
-                expectedDocuments.Add(
-                    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
+                var actualDocument = openApiStringReader.Read(actualDocumentAsString, out var _);
+                var expectedDocument = openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _);
+
+                actualDocument.Should().BeEquivalentTo(expectedDocument);
+
+                // Bug in fluent assertion method. Comparing the array of documents yields incorrect result.
+                // Root cause unknown. This should be enabled once that bug is resolved.
+                //actualDocuments.Add(
+                //    openApiStringReader.Read(actualDocumentAsString, out var _));
+
+                //expectedDocuments.Add(
+                //    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
             }
 
-            actualDocuments.Should().BeEquivalentTo(expectedDocuments);
+            //actualDocuments.Should().BeEquivalentTo(expectedDocuments);
         }
 
         [Theory]
@@ -115,7 +123,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
-            int expectedPathGenerationResultsCount,
+            int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap)
         {
             _output.WriteLine(testCaseName);
@@ -144,7 +152,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
 
-            result.PathGenerationResults.Count.Should().Be(expectedPathGenerationResultsCount);
+            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
@@ -166,14 +174,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 
                 var openApiStringReader = new OpenApiStringReader();
 
-                actualDocuments.Add(
-                    openApiStringReader.Read(actualDocumentAsString, out var _));
+                var actualDocument = openApiStringReader.Read(actualDocumentAsString, out var _);
+                var expectedDocument = openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _);
 
-                expectedDocuments.Add(
-                    openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
+                actualDocument.Should().BeEquivalentTo(expectedDocument);
+
+                // Bug in fluent assertion method. Comparing the array of documents yields incorrect result.
+                // Root cause unknown. This should be enabled once that bug is resolved.
+                //actualDocuments.Add(actualDocument);
+
+                //expectedDocuments.Add(expectedDocument);
             }
 
-            actualDocuments.Should().BeEquivalentTo(expectedDocuments);
+            //actualDocuments.Should().BeEquivalentTo(expectedDocuments);
         }
     }
 }

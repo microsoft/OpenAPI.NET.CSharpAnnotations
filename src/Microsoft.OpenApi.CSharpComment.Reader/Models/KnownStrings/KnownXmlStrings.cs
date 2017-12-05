@@ -11,6 +11,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
         public const string Body = "body";
         public const string Code = "code";
         public const string Cref = "cref";
+        public const string Default = "default";
         public const string Description = "description";
         public const string Group = "group";
         public const string Header = "header";
@@ -24,8 +25,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
         public const string Query = "query";
         public const string QueryParam = "queryParam";
         public const string Remarks = "remarks";
+        public const string RequestType = "requestType";
         public const string Required = "required";
         public const string Response = "response";
+        public const string ResponseType = "responseType";
         public const string See = "see";
         public const string Summary = "summary";
         public const string T = "T";
