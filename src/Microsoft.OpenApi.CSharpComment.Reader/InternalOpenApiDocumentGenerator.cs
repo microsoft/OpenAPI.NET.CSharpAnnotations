@@ -297,7 +297,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             {
                 result = new OverallGenerationResultSerializedDocument();
                 result.DocumentGenerationResults.Add(
-                    new DocumentGenerationResult()
+                    new DocumentGenerationResult
                     {
                         Errors =
                         {
@@ -402,18 +402,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             catch (Exception e)
             {
                 result = new OverallGenerationResultSerializedDocument();
-                result.DocumentGenerationResults.Add(new DocumentGenerationResult()
-                {
-                    Errors =
+                result.DocumentGenerationResults.Add(
+                    new DocumentGenerationResult
                     {
-                        new GenerationError
+                        Errors =
                         {
-                            ExceptionType = e.GetType(),
-                            Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
-                        }
-                    },
-                    GenerationStatus = GenerationStatus.Failure
-                });
+                            new GenerationError
+                            {
+                                ExceptionType = e.GetType(),
+                                Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Failure
+                    });
 
                 return JsonConvert.SerializeObject(result);
             }
