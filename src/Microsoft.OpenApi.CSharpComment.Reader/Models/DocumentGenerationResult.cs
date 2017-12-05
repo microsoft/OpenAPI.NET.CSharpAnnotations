@@ -22,13 +22,25 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 
         /// <summary>
         /// Initializes a new instance of <see cref="DocumentGenerationResult"/> based on the other instance.
+        /// If the other instance given is null, the DocumentGenerationResult with all properties being their 
+        /// default values is initialized.
         /// </summary>
+        /// <param name="other">Other instance.</param>
         public DocumentGenerationResult(DocumentGenerationResult other)
         {
-            GenerationStatus = other.GenerationStatus;
-            foreach (var error in other.Errors)
+            if (other == null)
             {
-                Errors.Add(new GenerationError(error));
+                return;
+            }
+
+            GenerationStatus = other.GenerationStatus;
+
+            if (other.Errors != null)
+            {
+                foreach (var error in other.Errors)
+                {
+                    Errors.Add(new GenerationError(error));
+                }
             }
         }
 

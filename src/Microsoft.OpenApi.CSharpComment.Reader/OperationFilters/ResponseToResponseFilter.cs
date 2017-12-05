@@ -138,7 +138,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
             {
                 operation.Responses.Add(
                     "default",
-                    new OpenApiResponse {Description = "Cannot locate responses in the documentation!"});
+                    new OpenApiResponse {Description = "Responses cannot be located for this operation."});
             }
         }
     }

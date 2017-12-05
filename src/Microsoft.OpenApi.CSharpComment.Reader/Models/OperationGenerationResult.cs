@@ -22,7 +22,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 
         /// <summary>
         /// Initializes a new instance of <see cref="OperationGenerationResult"/> based on the other instance.
+        /// If the other instance given is null, the OperationGenerationResult with all properties being their 
+        /// default values is initialized.
         /// </summary>
+        /// <param name="other">Other instance.</param>
         public OperationGenerationResult(OperationGenerationResult other)
         {
             if (other == null)
