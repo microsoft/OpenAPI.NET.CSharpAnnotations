@@ -40,7 +40,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
-            List<OperationGenerationResult> expectedWarningOperationGenerationResults)
+            List<DocumentGenerationResult> expectedDocumentGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -67,12 +67,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
-            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
-            var warningOperations = result.OperationGenerationResults.Where(
-                    p => p.GenerationStatus == GenerationStatus.Warning)
-                .ToList();
 
-            warningOperations.Should().BeEquivalentTo(expectedWarningOperationGenerationResults);
+            // All operation generations should succeed.
+            result.OperationGenerationResults.Count(r => r.GenerationStatus == GenerationStatus.Success)
+                .Should().Be(expectedOperationGenerationResultsCount);
+
+            // Some document generations should yield warning as expected in the test cases.
+            result.DocumentGenerationResults.Should().BeEquivalentTo(expectedDocumentGenerationResults);
 
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);

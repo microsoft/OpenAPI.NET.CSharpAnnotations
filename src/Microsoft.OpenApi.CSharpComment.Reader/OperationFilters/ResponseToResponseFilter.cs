@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -33,8 +33,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         /// </remarks>
         public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
-            var responseElements = element.Elements().Where(p => p.Name == KnownXmlStrings.Response ||
-                p.Name == KnownXmlStrings.ResponseType);
+            var responseElements = element.Elements()
+                .Where(
+                    p => p.Name == KnownXmlStrings.Response ||
+                        p.Name == KnownXmlStrings.ResponseType);
 
             foreach (var responseElement in responseElements)
             {
@@ -42,7 +44,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                 if (string.IsNullOrWhiteSpace(code))
                 {
-                    // If code is not specified, assume it is for a sucessful operation.
+                    // Most APIs only document responses for a successful operation, so if code is not specified, 
+                    // we will assume it is for a successful operation. This also allows us to comply with OpenAPI spec:
+                    //     The Responses Object MUST contain at least one response code, 
+                    //     and it SHOULD be the response for a successful operation call.
                     code = "200";
                 }
 
@@ -110,7 +115,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                             operation.Responses[code].Content[mediaType].Schema = newSchema;
                         }
-                        
+
                         operation.Responses[code].Content[mediaType].Schema.AnyOf.Add(schema);
                     }
                 }
@@ -131,7 +136,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
             if (!operation.Responses.Any())
             {
-                operation.Responses.Add("default", new OpenApiResponse { Description = "Cannot locate responses in the documentation!"});
+                operation.Responses.Add(
+                    "default",
+                    new OpenApiResponse {Description = "Cannot locate responses in the documentation!"});
             }
         }
     }

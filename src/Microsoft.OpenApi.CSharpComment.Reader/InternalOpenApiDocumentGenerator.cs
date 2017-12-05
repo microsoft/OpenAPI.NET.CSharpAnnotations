@@ -76,6 +76,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             PreprocessingOperationFilters = _defaultPreprocessingOperationFilters
         };
 
+        /// <summary>
+        /// The internal implementation of an Open Api Document generator.
+        /// </summary>
         public InternalOpenApiDocumentGenerator()
         {
             AppDomain.CurrentDomain.AssemblyResolve += ResolveNewtonsoftJsonVersion;
@@ -83,12 +86,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
         private static Assembly ResolveNewtonsoftJsonVersion(object sender, ResolveEventArgs args)
         {
-            if (args.Name.Contains("Newtonsoft.Json"))
+            if (args?.Name != null && args.Name.Contains("Newtonsoft.Json"))
             {
                 // For any assembly conflict regarding Newtonsoft.Json versions,
                 // just load from the existing version of Newtonsoft.Json.
-                var assembly = Assembly.LoadFrom("Newtonsoft.Json.dll");
-                return assembly;
+                return Assembly.LoadFrom("Newtonsoft.Json.dll");
             }
 
             return null;
@@ -100,7 +102,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         private void AddOperation(
             IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments,
             IDictionary<DocumentVariantInfo, ReferenceRegistryManager> referenceRegistryManagerMap,
-            IList<OperationGenerationError> operationGenerationErrors,
+            IList<GenerationError> operationGenerationErrors,
             DocumentVariantInfo documentVariantInfo,
             XElement operationElement,
             XElement operationConfigElement,
@@ -120,7 +122,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 catch (Exception e)
                 {
                     operationGenerationErrors.Add(
-                        new OperationGenerationError
+                        new GenerationError
                         {
                             ExceptionType = e.GetType(),
                             Message = e.Message,
@@ -167,7 +169,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         catch (Exception e)
                         {
                             operationGenerationErrors.Add(
-                                new OperationGenerationError
+                                new GenerationError
                                 {
                                     ExceptionType = e.GetType(),
                                     Message = e.Message,
@@ -196,7 +198,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             catch (Exception e)
                             {
                                 operationGenerationErrors.Add(
-                                    new OperationGenerationError
+                                    new GenerationError
                                     {
                                         ExceptionType = e.GetType(),
                                         Message = e.Message,
@@ -255,7 +257,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="openApiSpecVersion">Specification version of the Open API documents to generate.</param>
         /// <returns>
         /// A string representing serialized version of
-        /// <see cref="DocumentGenerationResultSerializedDocument"/>>
+        /// <see cref="OverallGenerationResultSerializedDocument"/>>
         /// </returns>
         /// <remarks>
         /// Given that this function is expected to be called from an isolated domain,
@@ -289,24 +291,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .ToList();
             }
 
-            DocumentGenerationResultSerializedDocument result;
+            OverallGenerationResultSerializedDocument result;
 
             if (!operationElements.Any())
             {
-                result = new DocumentGenerationResultSerializedDocument(
-                    new List<OperationGenerationResult>
+                result = new OverallGenerationResultSerializedDocument();
+                result.DocumentGenerationResults.Add(
+                    new DocumentGenerationResult()
                     {
-                        new OperationGenerationResult
+                        Errors =
                         {
-                            Errors =
+                            new GenerationError
                             {
-                                new OperationGenerationError
-                                {
-                                    Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
-                                }
-                            },
-                            GenerationStatus = GenerationStatus.Success
-                        }
+                                Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
                     });
 
                 return JsonConvert.SerializeObject(result);
@@ -314,7 +314,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
             try
             {
-                result = new DocumentGenerationResultSerializedDocument();
+                result = new OverallGenerationResultSerializedDocument();
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
 
@@ -325,12 +325,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     documentVariantElementNames,
                     out var documents);
 
-                foreach (var pathGenerationResult in operationGenerationResults)
+                foreach (var operationGenerationResult in operationGenerationResults)
                 {
-                    result.OperationGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
+                    result.OperationGenerationResults.Add(
+                        new OperationGenerationResult(operationGenerationResult));
                 }
 
-                var documentScopeGenerationResult = new OperationGenerationResult();
+                var documentGenerationResult = new DocumentGenerationResult();
 
                 foreach (var variantInfoDocumentValuePair in documents)
                 {
@@ -350,8 +351,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                         catch (Exception e)
                         {
-                            documentScopeGenerationResult.Errors.Add(
-                                new OperationGenerationError
+                            documentGenerationResult.Errors.Add(
+                                new GenerationError
                                 {
                                     ExceptionType = e.GetType(),
                                     Message = e.Message,
@@ -374,8 +375,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                         catch (Exception e)
                         {
-                            documentScopeGenerationResult.Errors.Add(
-                                new OperationGenerationError
+                            documentGenerationResult.Errors.Add(
+                                new GenerationError
                                 {
                                     ExceptionType = e.GetType(),
                                     Message = e.Message,
@@ -384,10 +385,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     }
                 }
 
-                if (documentScopeGenerationResult.Errors.Any())
+                if (documentGenerationResult.Errors.Any())
                 {
-                    documentScopeGenerationResult.GenerationStatus = GenerationStatus.Warning;
-                    result.OperationGenerationResults.Add(documentScopeGenerationResult);
+                    documentGenerationResult.GenerationStatus = GenerationStatus.Warning;
+                    result.DocumentGenerationResults.Add(documentGenerationResult);
                 }
 
                 foreach (var variantInfoDocumentPair in documents)
@@ -400,22 +401,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             }
             catch (Exception e)
             {
-                result = new DocumentGenerationResultSerializedDocument(
-                    new List<OperationGenerationResult>
+                result = new OverallGenerationResultSerializedDocument();
+                result.DocumentGenerationResults.Add(new DocumentGenerationResult()
+                {
+                    Errors =
                     {
-                        new OperationGenerationResult
+                        new GenerationError
                         {
-                            Errors =
-                            {
-                                new OperationGenerationError
-                                {
-                                    ExceptionType = e.GetType(),
-                                    Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
-                                }
-                            },
-                            GenerationStatus = GenerationStatus.Failure
+                            ExceptionType = e.GetType(),
+                            Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
                         }
-                    });
+                    },
+                    GenerationStatus = GenerationStatus.Failure
+                });
 
                 return JsonConvert.SerializeObject(result);
             }
@@ -454,7 +452,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         {
                             Errors =
                             {
-                                new OperationGenerationError
+                                new GenerationError
                                 {
                                     ExceptionType = e.GetType(),
                                     Message = e.Message,
@@ -479,7 +477,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         {
                             Errors =
                             {
-                                new OperationGenerationError
+                                new GenerationError
                                 {
                                     ExceptionType = e.GetType(),
                                     Message = e.Message,
@@ -495,7 +493,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
                 try
                 {
-                    var operationGenerationErrors = new List<OperationGenerationError>();
+                    var operationGenerationErrors = new List<GenerationError>();
 
                     AddOperation(
                         specificationDocuments,
@@ -538,7 +536,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     {
                         foreach (var error in operationGenerationErrors)
                         {
-                            operationGenerationResult.Errors.Add(new OperationGenerationError(error));
+                            operationGenerationResult.Errors.Add(new GenerationError(error));
                         }
 
                         operationGenerationResult.GenerationStatus = GenerationStatus.Warning;
@@ -557,7 +555,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         {
                             Errors =
                             {
-                                new OperationGenerationError
+                                new GenerationError
                                 {
                                     ExceptionType = e.GetType(),
                                     Message = e.Message,

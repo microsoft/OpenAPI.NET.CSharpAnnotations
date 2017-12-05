@@ -57,6 +57,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             result.MainDocument.Should().NotBeNull();
             result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
 
+            // All document generations should succeed.
+            result.DocumentGenerationResults.Should().BeEmpty();
+
             var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 
             var expectedDocument = File.ReadAllText(expectedJsonFile);

@@ -4,112 +4,43 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.OpenApi.Extensions;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
-    /// The class to store the open api document generation result.
+    /// Model representing the result of the document-level portion of the generation process.
     /// </summary>
     public class DocumentGenerationResult
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResult"/>.
+        /// Default constructor. Required for deserialization.
         /// </summary>
         public DocumentGenerationResult()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResult"/>.
+        /// Initializes a new instance of <see cref="DocumentGenerationResult"/> based on the other instance.
         /// </summary>
-        /// <param name="operationGenerationResults">The operation generation results.</param>
-        public DocumentGenerationResult(IList<OperationGenerationResult> operationGenerationResults)
+        public DocumentGenerationResult(DocumentGenerationResult other)
         {
-            foreach (var pathGenerationResult in operationGenerationResults)
+            GenerationStatus = other.GenerationStatus;
+            foreach (var error in other.Errors)
             {
-                OperationGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
+                Errors.Add(new GenerationError(error));
             }
         }
 
         /// <summary>
-        /// Dictionary mapping a document variant information to its associated specification document.
+        /// List of generation errors for this operation.
+        /// </summary>
+        public IList<GenerationError> Errors { get; } = new List<GenerationError>();
+
+        /// <summary>
+        /// The generation status for the operation.
         /// </summary>
         [JsonProperty]
-        [JsonConverter(typeof(DictionaryJsonConverter<DocumentVariantInfo, OpenApiDocument>))]
-        public IDictionary<DocumentVariantInfo, OpenApiDocument>
-            Documents { get; internal set; } = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
-
-        /// <summary>
-        /// The generation status.
-        /// </summary>
-        [JsonIgnore]
-        public GenerationStatus GenerationStatus
-        {
-            get
-            {
-                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure))
-                {
-                    return GenerationStatus.Failure;
-                }
-
-                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning))
-                {
-                    return GenerationStatus.Warning;
-                }
-
-                return GenerationStatus.Success;
-            }
-        }
-
-        /// <summary>
-        /// Gets the document generated from the entire documentation regardless of document variant info.
-        /// </summary>
-        [JsonIgnore]
-        public OpenApiDocument MainDocument
-        {
-            get
-            {
-                if (Documents.ContainsKey(DocumentVariantInfo.Default))
-                {
-                    return Documents[DocumentVariantInfo.Default];
-                }
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// List of operation generations results.
-        /// </summary>
-        [JsonProperty]
-        public IList<OperationGenerationResult> OperationGenerationResults { get; internal set; } =
-            new List<OperationGenerationResult>();
-
-        /// <summary>
-        /// Converts this object to <see cref="DocumentGenerationResultSerializedDocument"/>.
-        /// </summary>
-        public DocumentGenerationResultSerializedDocument ToDocumentGenerationResultSerializedDocument(
-            OpenApiSpecVersion openApiSpecVersion)
-        {
-            var documentGenerationResult = new DocumentGenerationResultSerializedDocument();
-
-            foreach (var pathGenerationResult in OperationGenerationResults)
-            {
-                documentGenerationResult.OperationGenerationResults.Add(
-                    new OperationGenerationResult(pathGenerationResult));
-            }
-
-            foreach (var variantInfoDocumentKeyValuePair in Documents)
-            {
-                documentGenerationResult.Documents[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
-                    = variantInfoDocumentKeyValuePair.Value.SerializeAsJson(openApiSpecVersion);
-            }
-
-            return documentGenerationResult;
-        }
+        public GenerationStatus GenerationStatus { get; set; }
     }
 }

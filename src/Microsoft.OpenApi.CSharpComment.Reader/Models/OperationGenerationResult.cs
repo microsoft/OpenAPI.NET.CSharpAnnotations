@@ -1,17 +1,15 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
-    /// Model representing the generation result for the path.
+    /// Model representing the result of the operation-level portion of the generation process.
     /// </summary>
     public class OperationGenerationResult
     {
@@ -27,22 +25,29 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// </summary>
         public OperationGenerationResult(OperationGenerationResult other)
         {
+            if (other == null)
+            {
+                return;
+            }
+
             OperationMethod = other.OperationMethod;
             Path = other.Path;
             GenerationStatus = other.GenerationStatus;
-            foreach (var error in other.Errors)
+
+            if (other.Errors != null)
             {
-                Errors.Add(new OperationGenerationError(error));
+                foreach (var error in other.Errors)
+                {
+                    Errors.Add(new GenerationError(error));
+                }
             }
         }
-
 
         /// <summary>
         /// List of generation errors for this operation.
         /// </summary>
-        public IList<OperationGenerationError> Errors { get; } = new List<OperationGenerationError>();
+        public IList<GenerationError> Errors { get; } = new List<GenerationError>();
 
-       
         /// <summary>
         /// The generation status for the operation.
         /// </summary>
@@ -50,7 +55,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         public GenerationStatus GenerationStatus { get; set; }
 
         /// <summary>
-        /// The path.
+        /// The operation method.
         /// </summary>
         [JsonProperty]
         public string OperationMethod { get; set; }

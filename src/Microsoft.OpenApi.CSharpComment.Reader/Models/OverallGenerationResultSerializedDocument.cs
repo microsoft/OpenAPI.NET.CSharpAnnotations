@@ -12,31 +12,12 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
-    /// The class to store the open api document generation result with the document explicitly stored as string.
+    /// The class to store the overall open api document generation result with the document explicitly stored as string.
     /// This is needed to allow JsonConvert to serialize the entire object correctly given that
     /// <see cref="OpenApiDocument"/> cannot directly be serialized with JsonConvert.
     /// </summary>
-    public class DocumentGenerationResultSerializedDocument
+    public class OverallGenerationResultSerializedDocument
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResultSerializedDocument"/>.
-        /// </summary>
-        public DocumentGenerationResultSerializedDocument()
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResultSerializedDocument"/>.
-        /// </summary>
-        /// <param name="operationGenerationResults">The operation generation results.</param>
-        public DocumentGenerationResultSerializedDocument(IList<OperationGenerationResult> operationGenerationResults)
-        {
-            foreach (var pathGenerationResult in operationGenerationResults)
-            {
-                OperationGenerationResults.Add(new OperationGenerationResult(pathGenerationResult));
-            }
-        }
-
         /// <summary>
         /// Dictionary mapping a document variant information to its associated specification document.
         /// </summary>
@@ -53,12 +34,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         {
             get
             {
-                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure))
+                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure) ||
+                    DocumentGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure))
                 {
                     return GenerationStatus.Failure;
                 }
 
-                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning))
+                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning) ||
+                    DocumentGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning))
                 {
                     return GenerationStatus.Warning;
                 }
@@ -85,32 +68,45 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         }
 
         /// <summary>
-        /// List of operation generations results.
+        /// List of operation-level generations results.
         /// </summary>
         [JsonProperty]
         public IList<OperationGenerationResult> OperationGenerationResults { get; internal set; } =
             new List<OperationGenerationResult>();
 
         /// <summary>
-        /// Converts this object to <see cref="DocumentGenerationResult"/>.
+        /// List of document-level generations results.
         /// </summary>
-        public DocumentGenerationResult ToDocumentGenerationResult()
+        [JsonProperty]
+        public IList<DocumentGenerationResult> DocumentGenerationResults { get; internal set; } =
+            new List<DocumentGenerationResult>();
+
+        /// <summary>
+        /// Converts this object to <see cref="OverallGenerationResult"/>.
+        /// </summary>
+        public OverallGenerationResult ToDocumentGenerationResult()
         {
-            var documentGenerationResult = new DocumentGenerationResult();
+            var generationResult = new OverallGenerationResult();
 
             foreach (var pathGenerationResult in OperationGenerationResults)
             {
-                documentGenerationResult.OperationGenerationResults.Add(
+                generationResult.OperationGenerationResults.Add(
                     new OperationGenerationResult(pathGenerationResult));
+            }
+
+            foreach (var documentGenerationResult in DocumentGenerationResults)
+            {
+                generationResult.DocumentGenerationResults.Add(
+                    new DocumentGenerationResult(documentGenerationResult));
             }
 
             foreach (var variantInfoDocumentKeyValuePair in Documents)
             {
-                documentGenerationResult.Documents[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
+                generationResult.Documents[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
                     = new OpenApiStringReader().Read(variantInfoDocumentKeyValuePair.Value, out var _);
             }
 
-            return documentGenerationResult;
+            return generationResult;
         }
     }
 }

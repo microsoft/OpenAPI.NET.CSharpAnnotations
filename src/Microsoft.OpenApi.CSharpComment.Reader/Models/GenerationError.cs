@@ -1,10 +1,9 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System;
-using System.IO;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
@@ -12,20 +11,25 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
     /// <summary>
     /// Model representing the generation error for the operation.
     /// </summary>
-    public class OperationGenerationError
+    public class GenerationError
     {
         /// <summary>
         /// Default constructor. Required for deserialization.
         /// </summary>
-        public OperationGenerationError()
+        public GenerationError()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="OperationGenerationError"/> based on the other instance.
+        /// Initializes a new instance of <see cref="GenerationError"/> based on the other instance.
         /// </summary>
-        public OperationGenerationError(OperationGenerationError other)
+        public GenerationError(GenerationError other)
         {
+            if (other == null)
+            {
+                return;
+            }
+
             Message = other.Message;
             ExceptionType = other.ExceptionType;
         }

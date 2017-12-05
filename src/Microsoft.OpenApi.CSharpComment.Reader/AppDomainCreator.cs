@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
 using System;
@@ -27,9 +27,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             // The privateBinPath is a ; seperated list of paths located in the base path of the 
             // application where the CLR will attempt to locate assemblies during the load process.
             // Here we add the location where we will copy dlls to.
-            setupInformation.PrivateBinPath += String.IsNullOrEmpty(setupInformation.PrivateBinPath)
+            setupInformation.PrivateBinPath += string.IsNullOrWhiteSpace(setupInformation.PrivateBinPath)
                 ? "DefaultGenerationBin"
-                : ";" + "DefaultGenerationBin";
+                : ";DefaultGenerationBin";
 
             // Setup the domain.
             Domain = AppDomain.CreateDomain(
@@ -39,7 +39,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
             var type = typeof(T);
 
-            Object = (T) Domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
+            Object = (T)Domain.CreateInstanceAndUnwrap(type.Assembly.FullName, type.FullName);
         }
 
         /// <summary>

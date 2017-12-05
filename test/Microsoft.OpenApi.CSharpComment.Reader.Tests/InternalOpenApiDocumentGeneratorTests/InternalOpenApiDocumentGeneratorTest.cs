@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         Path = "/V1/samples/{id}",
                         Errors =
                         {
-                            new OperationGenerationError
+                            new GenerationError
                             {
                                 ExceptionType = typeof(InvalidVerbException),
                                 Message = string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"),
@@ -93,7 +93,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         Path = "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
                         Errors =
                         {
-                            new OperationGenerationError
+                            new GenerationError
                             {
                                 ExceptionType = typeof(InvalidUrlException),
                                 Message = string.Format(
@@ -134,7 +134,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         Path = "/V1/samples/{id}",
                         Errors =
                         {
-                            new OperationGenerationError
+                            new GenerationError
                             {
                                 ExceptionType = typeof(MissingInAttributeException),
                                 Message = string.Format(
@@ -171,7 +171,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         Path = "/V1/samples/{id}",
                         Errors =
                         {
-                            new OperationGenerationError
+                            new GenerationError
                             {
                                 ExceptionType = typeof(ConflictingPathAndQueryParametersException),
                                 Message = string.Format(
@@ -209,7 +209,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         Path = "/V1/samples/{id}",
                         Errors =
                         {
-                            new OperationGenerationError
+                            new GenerationError
                             {
                                 ExceptionType = typeof(UndocumentedPathParameterException),
                                 Message = string.Format(
@@ -247,7 +247,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         Path = "/V3/samples/{id}",
                         Errors =
                         {
-                            new OperationGenerationError
+                            new GenerationError
                             {
                                 ExceptionType = typeof(UndocumentedGenericTypeException),
                                 Message = SpecificationGenerationMessages.UndocumentedGenericType,
@@ -282,7 +282,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         Path = "/V3/samples/",
                         Errors =
                         {
-                            new OperationGenerationError
+                            new GenerationError
                             {
                                 ExceptionType = typeof(UnorderedGenericTypeException),
                                 Message = SpecificationGenerationMessages.UnorderedGenericType,
@@ -602,22 +602,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                 openApiSpecVersion);
 
             result.Should().NotBeNull();
-            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.GenerationStatus.Should().Be(GenerationStatus.Warning);
             result.MainDocument.Should().BeNull();
-            result.OperationGenerationResults.Should()
+            result.DocumentGenerationResults.Should()
                 .BeEquivalentTo(
-                    new List<OperationGenerationResult>
+                    new List<DocumentGenerationResult>
                     {
-                        new OperationGenerationResult
+                        new DocumentGenerationResult
                         {
                             Errors =
                             {
-                                new OperationGenerationError
+                                new GenerationError
                                 {
                                     Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
                                 }
                             },
-                            GenerationStatus = GenerationStatus.Success
+                            GenerationStatus = GenerationStatus.Warning
                         }
                     });
         }

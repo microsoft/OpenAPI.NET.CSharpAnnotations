@@ -70,8 +70,9 @@
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
-    <Compile Include="Models\DocumentGenerationResultSerializedDocument.cs" />
-    <Compile Include="Models\OperationGenerationError.cs" />
+    <Compile Include="Models\OverallGenerationResultSerializedDocument.cs" />
+    <Compile Include="Models\GenerationError.cs" />
+    <Compile Include="Models\DocumentGenerationResult.cs" />
     <Compile Include="OperationConfigFilters\CommonAnnotationFilter.cs" />
     <Compile Include="OperationConfigFilters\IOperationConfigFilter.cs" />
     <Compile Include="OperationConfigFilters\OperationConfigFilterSettings.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="InternalOpenApiDocumentGenerator.cs" />
     <Compile Include="IOpenApiDocumentGenerator.cs" />
     <Compile Include="Models\GenerationStatus.cs" />
-    <Compile Include="Models\DocumentGenerationResult.cs" />
+    <Compile Include="Models\OverallGenerationResult.cs" />
     <Compile Include="Models\OperationGenerationResult.cs" />
     <Compile Include="ReferenceRegistries\ParameterReferenceRegistry.cs" />
     <Compile Include="ReferenceRegistries\ExampleReferenceRegistry.cs" />
