@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System.Collections.Generic;
 using System.IO;
@@ -57,8 +55,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             result.MainDocument.Should().NotBeNull();
             result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
 
-            // All document generations should succeed.
-            result.DocumentGenerationResults.Should().BeEmpty();
+            // Document-level generation should succeed.
+            result.DocumentGenerationResult.Should()
+                .BeEquivalentTo(
+                    new DocumentGenerationResult
+                    {
+                        GenerationStatus = GenerationStatus.Success
+                    });
 
             var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
 

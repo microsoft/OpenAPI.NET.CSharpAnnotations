@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System.Collections.Generic;
 using System.IO;
@@ -60,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(InvalidVerbException),
+                                ExceptionType = typeof(InvalidVerbException).Name,
                                 Message = string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"),
                             }
                         },
@@ -95,7 +93,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(InvalidUrlException),
+                                ExceptionType = typeof(InvalidUrlException).Name,
                                 Message = string.Format(
                                     SpecificationGenerationMessages.InvalidUrl,
                                     "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
@@ -136,7 +134,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(MissingInAttributeException),
+                                ExceptionType = typeof(MissingInAttributeException).Name,
                                 Message = string.Format(
                                     SpecificationGenerationMessages.MissingInAttribute,
                                     string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
@@ -173,7 +171,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(ConflictingPathAndQueryParametersException),
+                                ExceptionType = typeof(ConflictingPathAndQueryParametersException).Name,
                                 Message = string.Format(
                                     SpecificationGenerationMessages.ConflictingPathAndQueryParameters,
                                     "id",
@@ -211,7 +209,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(UndocumentedPathParameterException),
+                                ExceptionType = typeof(UndocumentedPathParameterException).Name,
                                 Message = string.Format(
                                     SpecificationGenerationMessages.UndocumentedPathParameter,
                                     "id",
@@ -249,7 +247,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(UndocumentedGenericTypeException),
+                                ExceptionType = typeof(UndocumentedGenericTypeException).Name,
                                 Message = SpecificationGenerationMessages.UndocumentedGenericType,
                             }
                         },
@@ -284,7 +282,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(UnorderedGenericTypeException),
+                                ExceptionType = typeof(UnorderedGenericTypeException).Name,
                                 Message = SpecificationGenerationMessages.UnorderedGenericType,
                             }
                         },
@@ -604,22 +602,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
             result.MainDocument.Should().BeNull();
-            result.DocumentGenerationResults.Should()
+            result.DocumentGenerationResult.Should()
                 .BeEquivalentTo(
-                    new List<DocumentGenerationResult>
+                    new DocumentGenerationResult
                     {
-                        new DocumentGenerationResult
+                        Errors =
                         {
-                            Errors =
+                            new GenerationError
                             {
-                                new GenerationError
-                                {
-                                    Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
-                                }
-                            },
-                            GenerationStatus = GenerationStatus.Warning
-                        }
-                    });
+                                Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
+                    }
+                );
         }
 
         [Theory]

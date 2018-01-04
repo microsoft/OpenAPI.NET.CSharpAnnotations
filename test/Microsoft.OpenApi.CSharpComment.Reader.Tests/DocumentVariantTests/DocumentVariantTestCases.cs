@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System.Collections.Generic;
 using System.IO;
@@ -54,35 +52,32 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwagger2Group1.json"),
                 },
-                new List<DocumentGenerationResult>
+                new DocumentGenerationResult
                 {
-                    new DocumentGenerationResult()
+                    Errors =
                     {
-                        Errors =
+                        new GenerationError
                         {
-                            new GenerationError
-                            {
-                                ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
-                                Message = string.Format(
-                                    SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
-                                    "swagger2",
-                                    "Group1",
-                                    JsonConvert.SerializeObject(
-                                        new Dictionary<string, string>
-                                        {
-                                            ["security"] = "sg1",
-                                            ["version"] = "V2"
-                                        }),
-                                    JsonConvert.SerializeObject(
-                                        new Dictionary<string, string>
-                                        {
-                                            ["security"] = "sg1",
-                                            ["version"] = "VConflict"
-                                        })),
-                            }
-                        },
-                        GenerationStatus = GenerationStatus.Warning
-                    }
+                            ExceptionType = typeof(ConflictingDocumentVariantAttributesException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
+                                "swagger2",
+                                "Group1",
+                                JsonConvert.SerializeObject(
+                                    new Dictionary<string, string>
+                                    {
+                                        ["security"] = "sg1",
+                                        ["version"] = "V2"
+                                    }),
+                                JsonConvert.SerializeObject(
+                                    new Dictionary<string, string>
+                                    {
+                                        ["security"] = "sg1",
+                                        ["version"] = "VConflict"
+                                    })),
+                        }
+                    },
+                    GenerationStatus = GenerationStatus.Warning
                 }
             };
 
@@ -130,35 +125,32 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
                 },
-                new List<DocumentGenerationResult>
+                new DocumentGenerationResult
                 {
-                    new DocumentGenerationResult()
+                    Errors =
                     {
-                        Errors =
+                        new GenerationError
                         {
-                            new GenerationError
-                            {
-                                ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
-                                Message = string.Format(
-                                    SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
-                                    "swagger",
-                                    "Group1",
-                                    JsonConvert.SerializeObject(
-                                        new Dictionary<string, string>
-                                        {
-                                            ["security"] = "sg1",
-                                            ["version"] = "V2"
-                                        }),
-                                    JsonConvert.SerializeObject(
-                                        new Dictionary<string, string>
-                                        {
-                                            ["security"] = "sg1",
-                                            ["version"] = "VConflict"
-                                        })),
-                            }
-                        },
-                        GenerationStatus = GenerationStatus.Warning
-                    }
+                            ExceptionType = typeof(ConflictingDocumentVariantAttributesException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
+                                "swagger",
+                                "Group1",
+                                JsonConvert.SerializeObject(
+                                    new Dictionary<string, string>
+                                    {
+                                        ["security"] = "sg1",
+                                        ["version"] = "V2"
+                                    }),
+                                JsonConvert.SerializeObject(
+                                    new Dictionary<string, string>
+                                    {
+                                        ["security"] = "sg1",
+                                        ["version"] = "VConflict"
+                                    })),
+                        }
+                    },
+                    GenerationStatus = GenerationStatus.Warning
                 }
             };
         }
