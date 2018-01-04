@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System;
 using System.Runtime.Serialization;
@@ -24,14 +22,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
         /// <param name="newDocumentVariantInfo">The new equivalent document variant info but with different attributes.</param>
         public ConflictingDocumentVariantAttributesException(
             DocumentVariantInfo existingDocumentVariantInfo,
-            DocumentVariantInfo newDocumentVariantInfo )
+            DocumentVariantInfo newDocumentVariantInfo)
             : base(
                 string.Format(
                     SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
                     existingDocumentVariantInfo.Categorizer,
                     existingDocumentVariantInfo.Title,
                     JsonConvert.SerializeObject(existingDocumentVariantInfo.Attributes),
-                    JsonConvert.SerializeObject(newDocumentVariantInfo.Attributes) ) )
+                    JsonConvert.SerializeObject(newDocumentVariantInfo.Attributes)))
         {
         }
 

@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System;
 using System.Runtime.Serialization;
@@ -9,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
 {
     /// <summary>
-    /// The exception that is recorded when a verb that is missing or 
+    /// The exception that is recorded when a verb that is missing or
     /// cannot be parsed into a recognized HTTP operation method.
     /// </summary>
     [Serializable]
