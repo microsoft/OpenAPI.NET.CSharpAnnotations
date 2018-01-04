@@ -37,7 +37,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// The type name of the exception.
         /// </summary>
-        public Type ExceptionType { get; set; }
+        public string ExceptionType { get; set; }
 
         /// <summary>
         /// The message providing details on the generation.

@@ -15,7 +15,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// are given for a document variant.
     /// </summary>
     [Serializable]
-    public class ConflictingDocumentVariantAttributesException : DocumentationException
+    internal class ConflictingDocumentVariantAttributesException : DocumentationException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConflictingDocumentVariantAttributesException"/> class.

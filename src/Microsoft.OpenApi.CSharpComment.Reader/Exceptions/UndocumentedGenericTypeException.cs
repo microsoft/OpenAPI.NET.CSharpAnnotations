@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is thrown when there is an undocumented generic type in the xml documentation.
     /// </summary>
     [Serializable]
-    public class UndocumentedGenericTypeException : DocumentationException
+    internal class UndocumentedGenericTypeException : DocumentationException
     {
         /// <summary>
         /// Default undocumented generic type exception.

@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is thrown when the URL contains the same parameter in both path and query.
     /// </summary>
     [Serializable]
-    public class ConflictingPathAndQueryParametersException : DocumentationException
+    internal class ConflictingPathAndQueryParametersException : DocumentationException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConflictingPathAndQueryParametersException"/> class.

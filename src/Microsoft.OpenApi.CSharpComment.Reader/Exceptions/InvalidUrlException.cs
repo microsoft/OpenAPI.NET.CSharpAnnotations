@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is recorded when a URL is missing or has invalid format.
     /// </summary>
     [Serializable]
-    public class InvalidUrlException : DocumentationException
+    internal class InvalidUrlException : DocumentationException
     {
         /// <summary>
         /// The default <see cref="InvalidUrlException"/>.

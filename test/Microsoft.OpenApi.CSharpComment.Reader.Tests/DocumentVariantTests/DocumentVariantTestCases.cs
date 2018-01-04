@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     {
                         new GenerationError
                         {
-                            ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
+                            ExceptionType = typeof(ConflictingDocumentVariantAttributesException).Name,
                             Message = string.Format(
                                 SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
                                 "swagger2",
@@ -131,7 +131,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     {
                         new GenerationError
                         {
-                            ExceptionType = typeof(ConflictingDocumentVariantAttributesException),
+                            ExceptionType = typeof(ConflictingDocumentVariantAttributesException).Name,
                             Message = string.Format(
                                 SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
                                 "swagger",

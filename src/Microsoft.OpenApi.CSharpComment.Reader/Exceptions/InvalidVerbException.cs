@@ -13,7 +13,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// cannot be parsed into a recognized HTTP operation method.
     /// </summary>
     [Serializable]
-    public class InvalidVerbException : DocumentationException
+    internal class InvalidVerbException : DocumentationException
     {
         /// <summary>
         /// The default <see cref="InvalidVerbException"/>.

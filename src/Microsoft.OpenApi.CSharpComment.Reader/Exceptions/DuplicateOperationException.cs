@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is recorded when the documentation contains operations with the same path and operation method.
     /// </summary>
     [Serializable]
-    public class DuplicateOperationException : DocumentationException
+    internal class DuplicateOperationException : DocumentationException
     {
         /// <summary>
         /// The default <see cref="DuplicateOperationException"/>.

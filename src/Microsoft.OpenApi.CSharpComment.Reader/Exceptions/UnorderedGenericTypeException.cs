@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is thrown when generic types are not documented in order in the xml documentation.
     /// </summary>
     [Serializable]
-    public class UnorderedGenericTypeException : DocumentationException
+    internal class UnorderedGenericTypeException : DocumentationException
     {
         /// <summary>
         /// The default constructor.

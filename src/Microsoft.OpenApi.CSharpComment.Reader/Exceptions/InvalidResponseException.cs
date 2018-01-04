@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is recorded when the documentation for a response is invalid.
     /// </summary>
     [Serializable]
-    public class InvalidResponseException : DocumentationException
+    internal class InvalidResponseException : DocumentationException
     {
         /// <summary>
         /// The default <see cref="InvalidResponseException"/>

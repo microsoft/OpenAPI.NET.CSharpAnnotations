@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is recorded when the documentation for a request body is invalid.
     /// </summary>
     [Serializable]
-    public class InvalidRequestBodyException : DocumentationException
+    internal class InvalidRequestBodyException : DocumentationException
     {
         /// <summary>
         /// The default <see cref="InvalidRequestBodyException"/>.

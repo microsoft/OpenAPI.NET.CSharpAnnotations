@@ -122,7 +122,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     operationGenerationErrors.Add(
                         new GenerationError
                         {
-                            ExceptionType = e.GetType(),
+                            ExceptionType = e.GetType().Name,
                             Message = e.Message,
                         }
                     );
@@ -169,7 +169,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             operationGenerationErrors.Add(
                                 new GenerationError
                                 {
-                                    ExceptionType = e.GetType(),
+                                    ExceptionType = e.GetType().Name,
                                     Message = e.Message,
                                 }
                             );
@@ -198,7 +198,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                 operationGenerationErrors.Add(
                                     new GenerationError
                                     {
-                                        ExceptionType = e.GetType(),
+                                        ExceptionType = e.GetType().Name,
                                         Message = e.Message,
                                     }
                                 );
@@ -351,7 +351,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             documentGenerationResult.Errors.Add(
                                 new GenerationError
                                 {
-                                    ExceptionType = e.GetType(),
+                                    ExceptionType = e.GetType().Name,
                                     Message = e.Message,
                                 });
                         }
@@ -375,7 +375,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             documentGenerationResult.Errors.Add(
                                 new GenerationError
                                 {
-                                    ExceptionType = e.GetType(),
+                                    ExceptionType = e.GetType().Name,
                                     Message = e.Message,
                                 });
                         }
@@ -411,7 +411,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         {
                             new GenerationError
                             {
-                                ExceptionType = e.GetType(),
+                                ExceptionType = e.GetType().Name,
                                 Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
                             }
                         },
@@ -457,7 +457,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             {
                                 new GenerationError
                                 {
-                                    ExceptionType = e.GetType(),
+                                    ExceptionType = e.GetType().Name,
                                     Message = e.Message,
                                 }
                             },
@@ -482,7 +482,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             {
                                 new GenerationError
                                 {
-                                    ExceptionType = e.GetType(),
+                                    ExceptionType = e.GetType().Name,
                                     Message = e.Message,
                                 }
                             },
@@ -560,7 +560,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             {
                                 new GenerationError
                                 {
-                                    ExceptionType = e.GetType(),
+                                    ExceptionType = e.GetType().Name,
                                     Message = e.Message,
                                 }
                             },

@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is thrown when there is an undocumented path parameter in the xml documentation.
     /// </summary>
     [Serializable]
-    public class UndocumentedPathParameterException : DocumentationException
+    internal class UndocumentedPathParameterException : DocumentationException
     {
         /// <summary>
         /// The default undocumented path parameter exception.

@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// to populate it using other context clues failed.
     /// </summary>
     [Serializable]
-    public class MissingInAttributeException : DocumentationException
+    internal class MissingInAttributeException : DocumentationException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MissingInAttributeException"/> class.
