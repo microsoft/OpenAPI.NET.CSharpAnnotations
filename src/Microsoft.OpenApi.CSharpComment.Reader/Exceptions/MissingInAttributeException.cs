@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// to populate it using other context clues failed.
     /// </summary>
     [Serializable]
-    public class MissingInAttributeException : DocumentationException
+    internal class MissingInAttributeException : DocumentationException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MissingInAttributeException"/> class.

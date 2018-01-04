@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System;
 using System.Runtime.Serialization;
@@ -12,7 +10,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is thrown when the URL contains the same parameter in both path and query.
     /// </summary>
     [Serializable]
-    public class ConflictingPathAndQueryParametersException : DocumentationException
+    internal class ConflictingPathAndQueryParametersException : DocumentationException
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConflictingPathAndQueryParametersException"/> class.

@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System.Collections.Generic;
 using System.IO;
@@ -40,7 +38,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
-            List<DocumentGenerationResult> expectedDocumentGenerationResults)
+            DocumentGenerationResult expectedDocumentGenerationResult)
         {
             _output.WriteLine(testCaseName);
 
@@ -70,10 +68,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
             // All operation generations should succeed.
             result.OperationGenerationResults.Count(r => r.GenerationStatus == GenerationStatus.Success)
-                .Should().Be(expectedOperationGenerationResultsCount);
+                .Should()
+                .Be(expectedOperationGenerationResultsCount);
 
-            // Some document generations should yield warning as expected in the test cases.
-            result.DocumentGenerationResults.Should().BeEquivalentTo(expectedDocumentGenerationResults);
+            // Document generation should yield warning as expected in the test cases.
+            result.DocumentGenerationResult.Should().BeEquivalentTo(expectedDocumentGenerationResult);
 
             result.Documents.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
@@ -171,7 +170,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
                 _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);
-                
+
                 var openApiStringReader = new OpenApiStringReader();
 
                 var actualDocument = openApiStringReader.Read(actualDocumentAsString, out var _);

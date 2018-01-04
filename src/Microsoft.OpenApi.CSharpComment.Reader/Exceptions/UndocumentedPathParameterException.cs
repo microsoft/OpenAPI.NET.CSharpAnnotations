@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System;
 using System.Runtime.Serialization;
@@ -12,7 +10,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
     /// The exception that is thrown when there is an undocumented path parameter in the xml documentation.
     /// </summary>
     [Serializable]
-    public class UndocumentedPathParameterException : DocumentationException
+    internal class UndocumentedPathParameterException : DocumentationException
     {
         /// <summary>
         /// The default undocumented path parameter exception.
