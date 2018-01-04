@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System;
 using System.Collections.Generic;
@@ -296,18 +294,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             if (!operationElements.Any())
             {
                 result = new OverallGenerationResultSerializedDocument();
-                result.DocumentGenerationResults.Add(
-                    new DocumentGenerationResult
+                result.DocumentGenerationResult = new DocumentGenerationResult
+                {
+                    Errors =
                     {
-                        Errors =
+                        new GenerationError
                         {
-                            new GenerationError
-                            {
-                                Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
-                            }
-                        },
-                        GenerationStatus = GenerationStatus.Warning
-                    });
+                            Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                        }
+                    },
+                    GenerationStatus = GenerationStatus.Warning
+                };
 
                 return JsonConvert.SerializeObject(result);
             }
@@ -388,7 +385,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 if (documentGenerationResult.Errors.Any())
                 {
                     documentGenerationResult.GenerationStatus = GenerationStatus.Warning;
-                    result.DocumentGenerationResults.Add(documentGenerationResult);
+                    result.DocumentGenerationResult = documentGenerationResult;
+                }
+                else
+                {
+                    documentGenerationResult.GenerationStatus = GenerationStatus.Success;
+                    result.DocumentGenerationResult = documentGenerationResult;
                 }
 
                 foreach (var variantInfoDocumentPair in documents)
@@ -402,7 +404,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             catch (Exception e)
             {
                 result = new OverallGenerationResultSerializedDocument();
-                result.DocumentGenerationResults.Add(
+                result.DocumentGenerationResult =
                     new DocumentGenerationResult
                     {
                         Errors =
@@ -414,7 +416,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             }
                         },
                         GenerationStatus = GenerationStatus.Failure
-                    });
+                    };
 
                 return JsonConvert.SerializeObject(result);
             }

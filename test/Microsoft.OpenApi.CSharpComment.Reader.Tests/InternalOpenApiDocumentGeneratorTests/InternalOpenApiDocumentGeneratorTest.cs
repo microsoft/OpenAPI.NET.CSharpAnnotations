@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System.Collections.Generic;
 using System.IO;
@@ -604,22 +602,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
             result.MainDocument.Should().BeNull();
-            result.DocumentGenerationResults.Should()
+            result.DocumentGenerationResult.Should()
                 .BeEquivalentTo(
-                    new List<DocumentGenerationResult>
+                    new DocumentGenerationResult
                     {
-                        new DocumentGenerationResult
+                        Errors =
                         {
-                            Errors =
+                            new GenerationError
                             {
-                                new GenerationError
-                                {
-                                    Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
-                                }
-                            },
-                            GenerationStatus = GenerationStatus.Warning
-                        }
-                    });
+                                Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
+                    }
+                );
         }
 
         [Theory]

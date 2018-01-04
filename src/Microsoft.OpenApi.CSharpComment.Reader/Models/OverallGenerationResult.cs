@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System.Collections.Generic;
 using System.Linq;
@@ -33,13 +31,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             get
             {
                 if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure) ||
-                    DocumentGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure))
+                    DocumentGenerationResult.GenerationStatus == GenerationStatus.Failure)
                 {
                     return GenerationStatus.Failure;
                 }
 
                 if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning) ||
-                    DocumentGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning))
+                    DocumentGenerationResult.GenerationStatus == GenerationStatus.Warning)
                 {
                     return GenerationStatus.Warning;
                 }
@@ -66,18 +64,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         }
 
         /// <summary>
-        /// List of operation-level generations results.
+        /// List of operation-level generation results.
         /// </summary>
         [JsonProperty]
         public IList<OperationGenerationResult> OperationGenerationResults { get; internal set; } =
             new List<OperationGenerationResult>();
 
         /// <summary>
-        /// List of document-level generations results.
+        /// The document-level generation result (e.g. from applying document-level filters)
         /// </summary>
         [JsonProperty]
-        public IList<DocumentGenerationResult> DocumentGenerationResults { get; internal set; } =
-            new List<DocumentGenerationResult>();
+        public DocumentGenerationResult DocumentGenerationResult { get; set; }
 
         /// <summary>
         /// Converts this object to <see cref="OverallGenerationResultSerializedDocument"/>.
@@ -93,11 +90,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
                     new OperationGenerationResult(operationGenerationResult));
             }
 
-            foreach (var documentGenerationResult in DocumentGenerationResults)
-            {
-                generationResult.DocumentGenerationResults.Add(
-                    new DocumentGenerationResult(documentGenerationResult));
-            }
+            generationResult.DocumentGenerationResult = DocumentGenerationResult;
 
             foreach (var variantInfoDocumentKeyValuePair in Documents)
             {
