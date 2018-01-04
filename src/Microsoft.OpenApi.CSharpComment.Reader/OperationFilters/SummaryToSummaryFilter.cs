@@ -39,7 +39,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
             if (string.IsNullOrWhiteSpace(operation.Summary))
             {
-                operation.Summary = summaryElement.Value.Trim().RemoveBlankLines();
+                operation.Summary = summaryElement.GetDescriptionText();
             }
         }
     }

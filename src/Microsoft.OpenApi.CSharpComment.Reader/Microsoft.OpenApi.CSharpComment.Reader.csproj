@@ -70,6 +70,7 @@
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
+    <Compile Include="Extensions\XElementExtensions.cs" />
     <Compile Include="Models\OverallGenerationResultSerializedDocument.cs" />
     <Compile Include="Models\GenerationError.cs" />
     <Compile Include="Models\DocumentGenerationResult.cs" />

@@ -476,6 +476,24 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
                     OutputDirectory,
                     "AnnotationArrayInParamTags.Json")
             };
+
+            // Valid XML document with summary including tags
+            yield return new object[]
+            {
+                "Summary With Tags (see cref or paramref)",
+                Path.Combine(InputDirectory, "AnnotationSummaryWithTags.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0_0,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationSummaryWithTags.Json")
+            };
         }
 
         [Theory]

@@ -35,7 +35,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
             if (remarksElement != null)
             {
-                description = remarksElement.Value.Trim().RemoveBlankLines();
+                description = remarksElement.GetDescriptionText();
             }
 
             if (string.IsNullOrWhiteSpace(operation.Description))
