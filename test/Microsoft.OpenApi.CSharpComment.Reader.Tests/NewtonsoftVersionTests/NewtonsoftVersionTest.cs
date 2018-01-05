@@ -1,7 +1,5 @@
-﻿// ------------------------------------------------------------
-//  Copyright (c) Microsoft Corporation.  All rights reserved.
-//  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
-// ------------------------------------------------------------
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license. 
 
 using System.Collections.Generic;
 using System.IO;
@@ -30,10 +28,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
         }
 
         [Theory]
-        [InlineData("10.0.3", OpenApiSpecVersion.OpenApi3_0_0)]
-        [InlineData("9.0.1", OpenApiSpecVersion.OpenApi3_0_0)]
-        [InlineData("8.0.3", OpenApiSpecVersion.OpenApi3_0_0)]
-        [InlineData("7.0.1", OpenApiSpecVersion.OpenApi3_0_0)]
+        [InlineData("10.0.3", OpenApiSpecVersion.OpenApi3_0)]
+        [InlineData("9.0.1", OpenApiSpecVersion.OpenApi3_0)]
+        [InlineData("8.0.3", OpenApiSpecVersion.OpenApi3_0)]
+        [InlineData("7.0.1", OpenApiSpecVersion.OpenApi3_0)]
         public void DocumentGenerationWithDllsReferencingAnyNewtonsoftVersionShouldSucceed(
             string newtonsoftVersion,
             OpenApiSpecVersion openApiSpecVersion)
@@ -59,7 +57,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
 
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
+                    result.ToOverallGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();

@@ -1,28 +1,24 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Readers;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
-    /// The class to store the overall open api document generation result with the document explicitly stored as string.
-    /// This is needed to allow JsonConvert to serialize the entire object correctly given that
-    /// <see cref="OpenApiDocument"/> cannot directly be serialized with JsonConvert.
+    /// The class to store the overall generation result.
     /// </summary>
-    public class OverallGenerationResultSerializedDocument
+    public abstract class OverallGenerationResultBase<TDocument>
     {
         /// <summary>
         /// Dictionary mapping a document variant information to its associated specification document.
         /// </summary>
         [JsonProperty]
-        [JsonConverter(typeof(DictionaryJsonConverter<DocumentVariantInfo, string>))]
-        public IDictionary<DocumentVariantInfo, string>
-            Documents { get; internal set; } = new Dictionary<DocumentVariantInfo, string>();
+        public abstract IDictionary<DocumentVariantInfo, TDocument>
+            Documents { get; internal set; }
 
         /// <summary>
         /// The generation status.
@@ -52,7 +48,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// Gets the document generated from the entire documentation regardless of document variant info.
         /// </summary>
         [JsonIgnore]
-        public string MainDocument
+        public TDocument MainDocument
         {
             get
             {
@@ -61,7 +57,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
                     return Documents[DocumentVariantInfo.Default];
                 }
 
-                return null;
+                return default(TDocument);
             }
         }
 
@@ -73,22 +69,24 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             new List<OperationGenerationResult>();
 
         /// <summary>
-        /// The document-level generation result (e.g. from applying document-level filters).
+        /// The document-level generation result (e.g. from applying document-level filters)
         /// </summary>
         [JsonProperty]
         public DocumentGenerationResult DocumentGenerationResult { get; set; }
 
         /// <summary>
-        /// Converts this object to <see cref="OverallGenerationResult"/>.
+        /// Converts this object to some other type of <see cref="OverallGenerationResultBase{TOutputDocument}"/>
         /// </summary>
-        public OverallGenerationResult ToDocumentGenerationResult()
+        protected TOverallGenerationResult ToOverallGenerationResult<TOverallGenerationResult, TOutputDocument>(
+            Func<TDocument, TOutputDocument> convertFunc)
+            where TOverallGenerationResult : OverallGenerationResultBase<TOutputDocument>, new()
         {
-            var generationResult = new OverallGenerationResult();
+            var generationResult = new TOverallGenerationResult();
 
-            foreach (var pathGenerationResult in OperationGenerationResults)
+            foreach (var operationGenerationResult in OperationGenerationResults)
             {
                 generationResult.OperationGenerationResults.Add(
-                    new OperationGenerationResult(pathGenerationResult));
+                    new OperationGenerationResult(operationGenerationResult));
             }
 
             generationResult.DocumentGenerationResult = DocumentGenerationResult;
@@ -96,7 +94,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             foreach (var variantInfoDocumentKeyValuePair in Documents)
             {
                 generationResult.Documents[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
-                    = new OpenApiStringReader().Read(variantInfoDocumentKeyValuePair.Value, out var _);
+                    = convertFunc(variantInfoDocumentKeyValuePair.Value);
             }
 
             return generationResult;

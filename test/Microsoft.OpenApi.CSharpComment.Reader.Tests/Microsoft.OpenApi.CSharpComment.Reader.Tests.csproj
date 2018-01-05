@@ -43,11 +43,11 @@
     <Reference Include="FluentAssertions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\FluentAssertions.5.0.0-beta0001\lib\net451\FluentAssertions.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.OpenApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta006\lib\net46\Microsoft.OpenApi.dll</HintPath>
+    <Reference Include="Microsoft.OpenApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3f5743946376f042, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta009\lib\net46\Microsoft.OpenApi.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.OpenApi.Readers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OpenApi.Readers.1.0.0-beta006\lib\net46\Microsoft.OpenApi.Readers.dll</HintPath>
+    <Reference Include="Microsoft.OpenApi.Readers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3f5743946376f042, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.OpenApi.Readers.1.0.0-beta009\lib\net46\Microsoft.OpenApi.Readers.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -98,7 +98,7 @@
     <Compile Include="ReferenceRegistryTests\Types\SampleSelfReferencingType.cs" />
     <Compile Include="ReferenceRegistryTests\Types\SampleInnerType.cs" />
     <Compile Include="ReferenceRegistryTests\ReferenceRegistryTest.cs" />
-    <Compile Include="InternalOpenApiDocumentGeneratorTests\InternalOpenApiDocumentGeneratorTest.cs" />
+    <Compile Include="OpenApiDocumentGeneratorTests\OpenApiDocumentGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReferenceRegistryTests\Types\SampleType.cs" />
     <Content Include="DocumentVariantTests\Input\AnnotationWithVariantAttributesConflictWithConfig.xml">
@@ -128,7 +128,7 @@
     <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationSummaryWithTags.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationSummaryWithTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="NewtonsoftVersionTests\Input\Annotation.xml">
@@ -146,61 +146,61 @@
     <Content Include="NewtonsoftVersionTests\Input\V9.0.1\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationArrayInParamTags.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationArrayInParamTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationAlternativeParamTags.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationAlternativeParamTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationOptionalPathParametersBranching.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationOptionalPathParametersBranching.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationUndocumentedPathParam.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationUndocumentedPathParam.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationParamWithoutInNotPresentInUrl.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationParamWithoutInNotPresentInUrl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationParamWithoutInButPresentInUrl.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationParamWithoutInButPresentInUrl.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleRequestMediaTypes.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationMultipleRequestMediaTypes.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleRequestTypes.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationMultipleRequestTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleResponseMediaTypes.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationMultipleResponseMediaTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationMultipleResponseTypes.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationMultipleResponseTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\Annotation.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationIncorrectlyOrderedGeneric.json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationIncorrectlyOrderedGeneric.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationInvalidUri.json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationInvalidUri.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationInvalidVerb.json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationInvalidVerb.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationParamNoTypeSpecified.json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationParamNoTypeSpecified.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationUndocumentedGeneric.json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationUndocumentedGeneric.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationConflictingPathAndQueryParameters.json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationConflictingPathAndQueryParameters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\Input\Annotation.xml">
@@ -232,28 +232,28 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\Annotation.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\Annotation.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationInvalidUri.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationInvalidUri.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationInvalidVerb.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationInvalidVerb.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationNoOperationsToParse.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationNoOperationsToParse.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationParamNoTypeSpecified.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationParamNoTypeSpecified.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationConflictingPathAndQueryParameters.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationConflictingPathAndQueryParameters.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationUndocumentedGeneric.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationUndocumentedGeneric.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationIncorrectlyOrderedGeneric.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationIncorrectlyOrderedGeneric.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -303,37 +303,37 @@
     <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleResponseTypes.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationMultipleResponseTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleRequestTypes.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationMultipleRequestTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleResponseMediaTypes.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationMultipleResponseMediaTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationMultipleRequestMediaTypes.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationMultipleRequestMediaTypes.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationParamWithoutInButPresentInUrl.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationParamWithoutInButPresentInUrl.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationParamWithoutInNotPresentInUrl.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationParamWithoutInNotPresentInUrl.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationUndocumentedPathParam.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationUndocumentedPathParam.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationOptionalPathParametersBranching.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationOptionalPathParametersBranching.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationArrayInParamTags.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationArrayInParamTags.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="NewtonsoftVersionTests\Output\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationSummaryWithTags.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationSummaryWithTags.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">
