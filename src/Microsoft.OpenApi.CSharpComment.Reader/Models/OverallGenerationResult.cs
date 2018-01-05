@@ -79,7 +79,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// Converts this object to <see cref="OverallGenerationResultSerializedDocument"/>.
         /// </summary>
-        public OverallGenerationResultSerializedDocument ToDocumentGenerationResultSerializedDocument(
+        public OverallGenerationResultSerializedDocument ToOverallGenerationResultSerializedDocument(
             OpenApiSpecVersion openApiSpecVersion,
             OpenApiFormat openApiFormat)
         {

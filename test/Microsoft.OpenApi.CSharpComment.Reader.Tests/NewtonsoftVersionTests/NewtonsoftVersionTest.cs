@@ -57,7 +57,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
 
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
+                    result.ToOverallGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();

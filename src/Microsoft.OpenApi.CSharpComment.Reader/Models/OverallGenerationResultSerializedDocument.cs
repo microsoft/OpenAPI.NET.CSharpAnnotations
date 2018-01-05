@@ -81,7 +81,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// Converts this object to <see cref="OverallGenerationResult"/>.
         /// </summary>
-        public OverallGenerationResult ToDocumentGenerationResult()
+        public OverallGenerationResult ToOverallGenerationResult()
         {
             var generationResult = new OverallGenerationResult();
 
