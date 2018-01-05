@@ -80,7 +80,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// Converts this object to <see cref="OverallGenerationResultSerializedDocument"/>.
         /// </summary>
         public OverallGenerationResultSerializedDocument ToDocumentGenerationResultSerializedDocument(
-            OpenApiSpecVersion openApiSpecVersion)
+            OpenApiSpecVersion openApiSpecVersion,
+            OpenApiFormat openApiFormat)
         {
             var generationResult = new OverallGenerationResultSerializedDocument();
 
@@ -95,7 +96,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             foreach (var variantInfoDocumentKeyValuePair in Documents)
             {
                 generationResult.Documents[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
-                    = variantInfoDocumentKeyValuePair.Value.SerializeAsJson(openApiSpecVersion);
+                    = variantInfoDocumentKeyValuePair.Value.Serialize(openApiSpecVersion, openApiFormat);
             }
 
             return generationResult;

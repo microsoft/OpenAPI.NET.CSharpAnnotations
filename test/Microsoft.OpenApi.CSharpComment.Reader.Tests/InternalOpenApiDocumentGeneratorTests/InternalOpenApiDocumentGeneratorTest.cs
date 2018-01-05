@@ -502,7 +502,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
+                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Failure);
             result.MainDocument.Should().NotBeNull();
@@ -556,7 +556,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
+                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
             result.MainDocument.Should().NotBeNull();
@@ -643,7 +643,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.InternalOpenApiDocumentGe
 
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion)));
+                    result.ToDocumentGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             result.MainDocument.Should().NotBeNull();

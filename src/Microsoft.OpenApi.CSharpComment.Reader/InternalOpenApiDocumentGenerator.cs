@@ -265,7 +265,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             string annotationXml,
             IList<string> contractAssemblyPaths,
             string configurationXml,
-            OpenApiSpecVersion openApiSpecVersion)
+            OpenApiSpecVersion openApiSpecVersion,
+            OpenApiFormat openApiFormat)
         {
             var annotationXmlDocument = XDocument.Parse(annotationXml);
             var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]")
@@ -396,7 +397,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 foreach (var variantInfoDocumentPair in documents)
                 {
                     result.Documents[variantInfoDocumentPair.Key] =
-                        variantInfoDocumentPair.Value.SerializeAsJson(openApiSpecVersion);
+                        variantInfoDocumentPair.Value.Serialize(openApiSpecVersion, openApiFormat);
                 }
 
                 return JsonConvert.SerializeObject(result);
