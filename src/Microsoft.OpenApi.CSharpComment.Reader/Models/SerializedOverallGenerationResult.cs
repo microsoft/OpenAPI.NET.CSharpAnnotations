@@ -13,7 +13,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
     /// This is needed to allow JsonConvert to serialize the entire object correctly given that
     /// <see cref="OpenApiDocument"/> cannot be serialized directly with JsonConvert.
     /// </summary>
-    public class OverallGenerationResultSerializedDocument : OverallGenerationResultBase<string>
+    public class SerializedOverallGenerationResult : OverallGenerationResultBase<string>
     {
         /// <summary>
         /// Dictionary mapping a document variant information to its associated specification document.

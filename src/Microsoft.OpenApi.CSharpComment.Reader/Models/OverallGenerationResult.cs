@@ -22,13 +22,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
             Documents { get; internal set; } = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
         /// <summary>
-        /// Converts this object to <see cref="OverallGenerationResultSerializedDocument"/>.
+        /// Converts this object to <see cref="SerializedOverallGenerationResult"/>.
         /// </summary>
-        public OverallGenerationResultSerializedDocument ToOverallGenerationResultSerializedDocument(
+        public SerializedOverallGenerationResult ToOverallGenerationResultSerializedDocument(
             OpenApiSpecVersion openApiSpecVersion,
             OpenApiFormat openApiFormat)
         {
-            return ToOverallGenerationResult<OverallGenerationResultSerializedDocument, string>(
+            return ToOverallGenerationResult<SerializedOverallGenerationResult, string>(
                 document => document.Serialize(openApiSpecVersion, openApiFormat));
         }
     }

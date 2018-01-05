@@ -254,7 +254,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="openApiSpecVersion">Specification version of the Open API documents to generate.</param>
         /// <returns>
         /// A string representing serialized version of
-        /// <see cref="OverallGenerationResultSerializedDocument"/>>
+        /// <see cref="SerializedOverallGenerationResult"/>>
         /// </returns>
         /// <remarks>
         /// Given that this function is expected to be called from an isolated domain,
@@ -289,11 +289,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .ToList();
             }
 
-            OverallGenerationResultSerializedDocument result;
+            SerializedOverallGenerationResult result;
 
             if (!operationElements.Any())
             {
-                result = new OverallGenerationResultSerializedDocument();
+                result = new SerializedOverallGenerationResult();
                 result.DocumentGenerationResult = new DocumentGenerationResult
                 {
                     Errors =
@@ -311,7 +311,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
             try
             {
-                result = new OverallGenerationResultSerializedDocument();
+                result = new SerializedOverallGenerationResult();
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
 
@@ -403,7 +403,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             }
             catch (Exception e)
             {
-                result = new OverallGenerationResultSerializedDocument();
+                result = new SerializedOverallGenerationResult();
                 result.DocumentGenerationResult =
                     new DocumentGenerationResult
                     {

@@ -72,7 +72,7 @@
     <Compile Include="Extensions\XElementExtensions.cs" />
     <Compile Include="Models\DictionaryJsonConverter.cs" />
     <Compile Include="Models\OverallGenerationResultBase.cs" />
-    <Compile Include="Models\OverallGenerationResultSerializedDocument.cs" />
+    <Compile Include="Models\SerializedOverallGenerationResult.cs" />
     <Compile Include="Models\GenerationError.cs" />
     <Compile Include="Models\DocumentGenerationResult.cs" />
     <Compile Include="OperationConfigFilters\CommonAnnotationFilter.cs" />
