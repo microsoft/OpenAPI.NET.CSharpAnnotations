@@ -15,41 +15,85 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     public interface IOpenApiDocumentGenerator
     {
         /// <summary>
-        /// Generates Open API documents using the provided xdocument and contract assemblies.
+        /// Generates OpenAPI documents using the provided XDocument and contract assemblies.
         /// </summary>
         /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
         /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI document to generate.</param>
+        /// <returns>The overall generation result.</returns>
+        OverallGenerationResult GenerateOpenApiDocuments(
+            XDocument annotationXmlDocument,
+            IList<string> contractAssemblyPaths,
+            OpenApiSpecVersion openApiSpecVersion);
+
+        /// <summary>
+        /// Generates OpenAPI documents using the provided XDocument and contract assemblies.
+        /// </summary>
+        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI document to generate.</param>
         /// <param name="configurationXmlDocument">The XDocument representing the generation configuration.</param>
-        /// <param name="openApiSpecVersion">Specification version of the Open API document to generate.</param>
-        /// <returns>The open api document overall generation result.</returns>
+        /// <returns>The overall generation result.</returns>
         OverallGenerationResult GenerateOpenApiDocuments(
             XDocument annotationXmlDocument,
             IList<string> contractAssemblyPaths,
-            XDocument configurationXmlDocument,
-            OpenApiSpecVersion openApiSpecVersion);
+            OpenApiSpecVersion openApiSpecVersion,
+            XDocument configurationXmlDocument);
 
         /// <summary>
-        /// Generates Open API documents using the provided xdocument and contract assemblies.
-        /// </summary>
-        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
-        /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
-        /// <param name="openApiSpecVersion">Specification version of the Open API document to generate.</param>
-        /// <returns>The open api document overall generation result.</returns>
-        OverallGenerationResult GenerateOpenApiDocuments(
-            XDocument annotationXmlDocument,
-            IList<string> contractAssemblyPaths,
-            OpenApiSpecVersion openApiSpecVersion);
-
-        /// <summary>
-        /// Generates Open API documents using the provided visual studio summary comment and contract assemblies.
+        /// Generates OpenAPI documents using the provided visual studio summary comment and contract assemblies.
         /// </summary>
         /// <param name="summaryComment">The visual studio summary comment.</param>
         /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
-        /// <param name="openApiSpecVersion">Specification version of the Open API document to generate.</param>
-        /// <returns>The open api document overall generation result.</returns>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI document to generate.</param>
+        /// <returns>The overall generation result.</returns>
         OverallGenerationResult GenerateOpenApiDocuments(
             string summaryComment,
             IList<string> contractAssemblyPaths,
             OpenApiSpecVersion openApiSpecVersion);
+
+        /// <summary>
+        /// Generates OpenAPI documents using the provided XDocument and contract assemblies.
+        /// </summary>
+        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI document to generate.</param>
+        /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
+        /// <returns>The overall generation result with serialized documents.</returns>
+        SerializedOverallGenerationResult GenerateSerializedOpenApiDocuments(
+            XDocument annotationXmlDocument,
+            IList<string> contractAssemblyPaths,
+            OpenApiSpecVersion openApiSpecVersion,
+            OpenApiFormat openApiFormat);
+
+        /// <summary>
+        /// Generates OpenAPI documents using the provided XDocument and contract assemblies.
+        /// </summary>
+        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI document to generate.</param>
+        /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
+        /// <param name="configurationXmlDocument">The XDocument representing the generation configuration.</param>
+        /// <returns>The overall generation result with serialized documents.</returns>
+        SerializedOverallGenerationResult GenerateSerializedOpenApiDocuments(
+            XDocument annotationXmlDocument,
+            IList<string> contractAssemblyPaths,
+            OpenApiSpecVersion openApiSpecVersion,
+            OpenApiFormat openApiFormat,
+            XDocument configurationXmlDocument);
+
+        /// <summary>
+        /// Generates OpenAPI documents using the provided visual studio summary comment and contract assemblies.
+        /// </summary>
+        /// <param name="summaryComment">The visual studio summary comment.</param>
+        /// <param name="contractAssemblyPaths">The list of relative or absolute paths to the contract assemblies.</param>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI document to generate.</param>
+        /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
+        /// <returns>The overall generation result with serialized documents.</returns>
+        SerializedOverallGenerationResult GenerateSerializedOpenApiDocuments(
+            string summaryComment,
+            IList<string> contractAssemblyPaths,
+            OpenApiSpecVersion openApiSpecVersion,
+            OpenApiFormat openApiFormat);
     }
 }
