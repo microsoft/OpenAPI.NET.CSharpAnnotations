@@ -128,7 +128,7 @@
     <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Input\AnnotationSummaryWithTags.xml">
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationSummaryWithTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="NewtonsoftVersionTests\Input\Annotation.xml">
@@ -333,7 +333,7 @@
     <Content Include="NewtonsoftVersionTests\Output\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="InternalOpenApiDocumentGeneratorTests\Output\AnnotationSummaryWithTags.Json">
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationSummaryWithTags.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">

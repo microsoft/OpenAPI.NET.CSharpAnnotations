@@ -70,6 +70,8 @@
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
     <Compile Include="Extensions\XElementExtensions.cs" />
+    <Compile Include="Models\DictionaryJsonConverter.cs" />
+    <Compile Include="Models\OverallGenerationResultBase.cs" />
     <Compile Include="Models\OverallGenerationResultSerializedDocument.cs" />
     <Compile Include="Models\GenerationError.cs" />
     <Compile Include="Models\DocumentGenerationResult.cs" />
@@ -79,7 +81,6 @@
     <Compile Include="Exceptions\UndocumentedGenericTypeException.cs" />
     <Compile Include="Exceptions\ConflictingPathAndQueryParametersException.cs" />
     <Compile Include="Exceptions\UnorderedGenericTypeException.cs" />
-    <Compile Include="Models\DictionaryJsonConverter.cs" />
     <Compile Include="Models\KnownStrings\KnownXmlStrings.cs" />
     <Compile Include="OperationFilters\ParamToParameterFilter.cs" />
     <Compile Include="OperationFilters\ResponseToResponseFilter.cs" />

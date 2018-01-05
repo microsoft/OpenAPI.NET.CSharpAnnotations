@@ -486,7 +486,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                         InputDirectory,
                         "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
-                OpenApiSpecVersion.OpenApi3_0_0,
+                OpenApiSpecVersion.OpenApi3_0,
                 9,
                 Path.Combine(
                     OutputDirectory,
