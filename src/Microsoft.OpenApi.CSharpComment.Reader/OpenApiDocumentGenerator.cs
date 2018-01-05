@@ -30,8 +30,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             return GenerateOpenApiDocuments(
                 annotationXmlDocument,
                 contractAssemblyPaths,
-                configurationXmlDocument: null,
-                openApiSpecVersion: openApiSpecVersion);
+                openApiSpecVersion,
+                configurationXmlDocument: null);
         }
 
         /// <summary>
@@ -91,9 +91,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             return GenerateSerializedOpenApiDocuments(
                 annotationXmlDocument,
                 contractAssemblyPaths,
-                configurationXmlDocument: null,
-                openApiSpecVersion: openApiSpecVersion,
-                openApiFormat: openApiFormat);
+                openApiSpecVersion,
+                openApiFormat,
+                configurationXmlDocument: null);
         }
 
         /// <summary>
