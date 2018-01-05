@@ -47,8 +47,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             var result = generator.GenerateOpenApiDocuments(
                 document,
                 inputBinaryFiles,
-                configDocument,
-                openApiSpecVersion);
+                openApiSpecVersion,
+                configDocument);
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);

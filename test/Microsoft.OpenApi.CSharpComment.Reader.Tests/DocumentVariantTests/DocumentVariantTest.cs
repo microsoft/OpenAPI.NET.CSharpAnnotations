@@ -55,8 +55,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var result = generator.GenerateOpenApiDocuments(
                 document,
                 inputBinaryFiles,
-                configDocument,
-                openApiSpecVersion);
+                openApiSpecVersion,
+                configDocument);
 
             // Assert
             _output.WriteLine(
@@ -140,8 +140,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var result = generator.GenerateOpenApiDocuments(
                 document,
                 inputBinaryFiles,
-                configDocument,
-                openApiSpecVersion);
+                openApiSpecVersion,
+                configDocument);
 
             // Assert
             _output.WriteLine(
