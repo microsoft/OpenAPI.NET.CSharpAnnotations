@@ -35,7 +35,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
         private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
         {
-            new AddSpecVersionFilter(),
             new AssemblyNameToInfoFilter(),
             new UrlToServerFilter(),
             new MemberSummaryToSchemaDescriptionFilter()
