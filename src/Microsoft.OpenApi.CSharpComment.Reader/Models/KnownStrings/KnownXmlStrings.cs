@@ -19,7 +19,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
         public const string Name = "name";
         public const string Option = "option";
         public const string Options = "options";
+        public const string Para = "para";
         public const string Param = "param";
+        public const string Paramref = "paramref";
         public const string Path = "path";
         public const string PathParam = "pathParam";
         public const string Query = "query";
@@ -30,8 +32,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
         public const string Response = "response";
         public const string ResponseType = "responseType";
         public const string See = "see";
+        public const string Seealso = "seealso";
         public const string Summary = "summary";
         public const string T = "T";
+        public const string Typeparamref = "Typeparamref";
         public const string Tag = "tag";
         public const string Type = "type";
         public const string Url = "url";
