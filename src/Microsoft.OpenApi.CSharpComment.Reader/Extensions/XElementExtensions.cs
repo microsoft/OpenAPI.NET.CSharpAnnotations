@@ -15,7 +15,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
     {
         /// <summary>
         /// Get the text inside the element with the following modifications:
-        /// 1. The see/seealso cref value and th paramref/typeparamref name value extracted out of the inner XML elements.
+        /// 1. The see/seealso cref value and the paramref/typeparamref name value extracted out of the inner XML elements.
         /// 2. The para tag is ignored.
         /// 3. Any blank lines are removed.
         /// 4. Beginning and trailing whitespaces are trimmed.
