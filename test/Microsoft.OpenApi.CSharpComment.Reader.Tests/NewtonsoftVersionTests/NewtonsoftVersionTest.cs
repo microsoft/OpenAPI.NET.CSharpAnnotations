@@ -58,19 +58,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
             _output.WriteLine(
                 JsonConvert.SerializeObject(
                     result.ToOverallGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
-
-            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            
             result.MainDocument.Should().NotBeNull();
-            result.OperationGenerationResults.Count.Should().Be(9);
 
             var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
+            _output.WriteLine(actualDocument);
 
+            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.OperationGenerationResults.Count.Should().Be(9);
+            
             var expectedDocument = File.ReadAllText(
                 Path.Combine(
                     OutputDirectory,
                     "Annotation.Json"));
-
-            _output.WriteLine(actualDocument);
 
             var openApiStringReader = new OpenApiStringReader();
             openApiStringReader.Read(actualDocument, out var _)
