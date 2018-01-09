@@ -30,10 +30,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
         }
 
         [Theory]
-        [InlineData("10.0.3", OpenApiSpecVersion.OpenApi3_0_0)]
-        [InlineData("9.0.1", OpenApiSpecVersion.OpenApi3_0_0)]
-        [InlineData("8.0.3", OpenApiSpecVersion.OpenApi3_0_0)]
-        [InlineData("7.0.1", OpenApiSpecVersion.OpenApi3_0_0)]
+        [InlineData("10.0.3", OpenApiSpecVersion.OpenApi3_0)]
+        [InlineData("9.0.1", OpenApiSpecVersion.OpenApi3_0)]
+        [InlineData("8.0.3", OpenApiSpecVersion.OpenApi3_0)]
+        [InlineData("7.0.1", OpenApiSpecVersion.OpenApi3_0)]
         public void DocumentGenerationWithDllsReferencingAnyNewtonsoftVersionShouldSucceed(
             string newtonsoftVersion,
             OpenApiSpecVersion openApiSpecVersion)

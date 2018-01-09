@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -83,7 +84,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 {
                     throw new InvalidResponseException(responseElement.Value);
                 }
-
+                
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
                     responseContractType);
 

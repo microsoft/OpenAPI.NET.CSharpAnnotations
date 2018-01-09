@@ -22,7 +22,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// <param name="settings">Settings for document filters.</param>
         public void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
         {
-            specificationDocument.SpecVersion = new Version(3, 0, 0);
         }
     }
 }

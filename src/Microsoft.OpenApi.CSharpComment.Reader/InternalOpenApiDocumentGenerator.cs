@@ -81,7 +81,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// </summary>
         public InternalOpenApiDocumentGenerator()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += ResolveNewtonsoftJsonVersion;
+            // AppDomain.CurrentDomain.AssemblyResolve += ResolveNewtonsoftJsonVersion;
         }
 
         private static Assembly ResolveNewtonsoftJsonVersion(object sender, ResolveEventArgs args)

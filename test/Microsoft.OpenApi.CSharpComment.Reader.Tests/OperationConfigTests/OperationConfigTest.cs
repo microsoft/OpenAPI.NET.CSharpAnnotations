@@ -90,7 +90,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigNoOperation.xml"),
-                OpenApiSpecVersion.OpenApi3_0_0,
+                OpenApiSpecVersion.OpenApi3_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -111,7 +111,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigBlankOperation.xml"),
-                OpenApiSpecVersion.OpenApi3_0_0,
+                OpenApiSpecVersion.OpenApi3_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -132,7 +132,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigApplyToAllOperations.xml"),
-                OpenApiSpecVersion.OpenApi3_0_0,
+                OpenApiSpecVersion.OpenApi3_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -153,7 +153,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigApplyToSomeOperations.xml"),
-                OpenApiSpecVersion.OpenApi3_0_0,
+                OpenApiSpecVersion.OpenApi3_0,
                 7,
                 Path.Combine(
                     OutputDirectory,
@@ -174,7 +174,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 Path.Combine(
                     InputDirectory,
                     "ConfigOverridden.xml"),
-                OpenApiSpecVersion.OpenApi3_0_0,
+                OpenApiSpecVersion.OpenApi3_0,
                 7,
                 Path.Combine(
                     OutputDirectory,

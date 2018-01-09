@@ -109,7 +109,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
                 return schema;
             }
 
-            References[key] = null;
+            References[key] = new OpenApiSchema();
+
             schema.Type = "object";
             foreach (var propertyInfo in input.GetProperties())
             {

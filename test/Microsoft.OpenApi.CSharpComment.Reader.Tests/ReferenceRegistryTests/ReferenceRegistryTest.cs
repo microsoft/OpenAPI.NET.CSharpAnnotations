@@ -47,11 +47,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.ReferenceRegistryTests
             var actualSchema = returnedSchema;
             var actualReferences = referenceRegistryManager.SchemaReferenceRegistry.References;
 
-            _output.WriteLine(actualSchema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0));
+            _output.WriteLine(actualSchema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0));
             foreach (var reference in actualReferences)
             {
                 _output.WriteLine(reference.Key);
-                _output.WriteLine(reference.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0));
+                _output.WriteLine(reference.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0));
             }
 
             actualSchema.Should().BeEquivalentTo(expectedSchema);

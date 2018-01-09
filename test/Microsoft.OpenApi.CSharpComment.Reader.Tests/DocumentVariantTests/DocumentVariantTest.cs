@@ -89,7 +89,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
                 result.Documents.TryGetValue(documentVariantInfo, out var specificationDocument);
 
-                var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0_0);
+                var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
 
                 _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);
