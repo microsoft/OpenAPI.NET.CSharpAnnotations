@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -51,103 +52,115 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
                     }
                 };
             }
-
-            // There are multiple cases for input types that should be handled differently to match the OpenAPI spec.
-            //
-            // 1. Simple Type
-            // 2. Enum Type
-            // 3. Dictionary Type
-            // 4. Enumerable Type
-            // 5. Object Type
-            var schema = new OpenApiSchema();
-
-            if (input.IsSimple())
+            
+            try
             {
-                schema = input.MapToOpenApiSchema();
+                // There are multiple cases for input types that should be handled differently to match the OpenAPI spec.
+                //
+                // 1. Simple Type
+                // 2. Enum Type
+                // 3. Dictionary Type
+                // 4. Enumerable Type
+                // 5. Object Type
+                var schema = new OpenApiSchema();
 
-                // Certain simple types yield more specific information.
-                if (input == typeof(char))
+                if (input.IsSimple())
                 {
-                    schema.MinLength = 1;
-                    schema.MaxLength = 1;
-                }
-                else if (input == typeof(Guid))
-                {
-                    schema.Example = new OpenApiString(Guid.Empty.ToString());
-                    schema.MinLength = 36;
-                    schema.MaxLength = 36;
-                }
+                    schema = input.MapToOpenApiSchema();
 
-                return schema;
-            }
+                    // Certain simple types yield more specific information.
+                    if (input == typeof(char))
+                    {
+                        schema.MinLength = 1;
+                        schema.MaxLength = 1;
+                    }
+                    else if (input == typeof(Guid))
+                    {
+                        schema.Example = new OpenApiString(Guid.Empty.ToString());
+                        schema.MinLength = 36;
+                        schema.MaxLength = 36;
+                    }
 
-            if (input.IsEnum)
-            {
-                schema.Type = "string";
-                foreach (var name in Enum.GetNames(input))
-                {
-                    schema.Enum.Add(new OpenApiString(name));
+                    return schema;
                 }
 
-                return schema;
-            }
+                if (input.IsEnum)
+                {
+                    schema.Type = "string";
+                    foreach (var name in Enum.GetNames(input))
+                    {
+                        schema.Enum.Add(new OpenApiString(name));
+                    }
 
-            if (input.IsDictionary())
-            {
+                    return schema;
+                }
+
+                if (input.IsDictionary())
+                {
+                    schema.Type = "object";
+                    schema.AdditionalProperties = FindOrAddReference(input.GetGenericArguments()[1]);
+
+                    return schema;
+                }
+
+                if (input.IsEnumerable())
+                {
+                    schema.Type = "array";
+
+                    schema.Items = FindOrAddReference(input.GetEnumerableItemType());
+
+                    return schema;
+                }
+
                 schema.Type = "object";
-                schema.AdditionalProperties = FindOrAddReference(input.GetGenericArguments()[1]);
-
-                return schema;
-            }
-
-            if (input.IsEnumerable())
-            {
-                schema.Type = "array";
-
-                schema.Items = FindOrAddReference(input.GetEnumerableItemType());
-
-                return schema;
-            }
-
-            References[key] = null;
-            schema.Type = "object";
-            foreach (var propertyInfo in input.GetProperties())
-            {
-                var propertyName = propertyInfo.Name;
-                var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
                 
-                // Check if the property is read-only.
-                innerSchema.ReadOnly = !propertyInfo.CanWrite;
+                // Note this assignment is necessary to allow self-referencing type to finish
+                // without causing stack overflow.
+                // We can also assume that the schema is an object type at this point.
+                References[key] = schema;
 
-                var jsonPropertyAttributes = (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), inherit: false);
-                if (jsonPropertyAttributes.Any())
+                foreach (var propertyInfo in input.GetProperties())
                 {
-                    // Use the property name in JsonProperty if given.
-                    if (jsonPropertyAttributes[0].PropertyName != null)
+                    var propertyName = propertyInfo.Name;
+                    var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
+
+                    // Check if the property is read-only.
+                    innerSchema.ReadOnly = !propertyInfo.CanWrite;
+
+                    var jsonPropertyAttributes = (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), inherit: false);
+                    if (jsonPropertyAttributes.Any())
                     {
-                        propertyName = jsonPropertyAttributes[0].PropertyName;
+                        // Use the property name in JsonProperty if given.
+                        if (jsonPropertyAttributes[0].PropertyName != null)
+                        {
+                            propertyName = jsonPropertyAttributes[0].PropertyName;
+                        }
+
+                        // Check if the property is required.
+                        if (jsonPropertyAttributes[0].Required == Required.Always)
+                        {
+                            schema.Required.Add(propertyName);
+                        }
                     }
 
-                    // Check if the property is required.
-                    if (jsonPropertyAttributes[0].Required == Required.Always)
-                    {
-                        schema.Required.Add(propertyName);
-                    }
+                    schema.Properties[propertyName] = innerSchema;
                 }
 
-                schema.Properties[propertyName] = innerSchema;
+                References[key] = schema;
+
+                return new OpenApiSchema
+                {
+                    Reference = new OpenApiReference()
+                    {
+                        Id = key,
+                        Type = ReferenceType.Schema
+                    }
+                };
             }
-
-            References[key] = schema;
-
-            return new OpenApiSchema
+            catch (Exception e)
             {
-                Reference = new OpenApiReference()
-                {
-                    Id = key,
-                    Type = ReferenceType.Schema
-                }
-            };
+                throw new AddingSchemaReferenceFailedException(key, e.Message);
+            }
         }
 
         /// <summary>

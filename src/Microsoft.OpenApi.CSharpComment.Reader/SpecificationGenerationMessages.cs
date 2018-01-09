@@ -26,6 +26,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
         public const string InvalidUrl = "The documented url ({0}) is not a valid uri due to this error: {1}.";
 
+        public const string AddingSchemaReferenceFailed = "Adding schema {0} to the schema reference registry failed with the following error: {1}.";
+        
         public const string NullUrl = "Url is null";
 
         public const string MalformattedUrl = "Url is malformatted and cannot be decoded properly.";
