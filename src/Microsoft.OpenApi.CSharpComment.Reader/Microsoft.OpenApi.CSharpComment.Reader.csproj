@@ -64,6 +64,7 @@
     <Compile Include="Exceptions\DuplicateOperationException.cs" />
     <Compile Include="Exceptions\InvalidResponseException.cs" />
     <Compile Include="Exceptions\InvalidRequestBodyException.cs" />
+    <Compile Include="Exceptions\AddingSchemaReferenceFailedException.cs" />
     <Compile Include="Exceptions\InvalidVerbException.cs" />
     <Compile Include="Exceptions\InvalidUrlException.cs" />
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />

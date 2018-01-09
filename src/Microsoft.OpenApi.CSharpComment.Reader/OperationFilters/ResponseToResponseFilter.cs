@@ -83,7 +83,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 {
                     throw new InvalidResponseException(responseElement.Value);
                 }
-
+                
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
                     responseContractType);
 

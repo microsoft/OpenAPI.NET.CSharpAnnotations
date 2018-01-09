@@ -58,11 +58,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             var newFilePath = Path.Combine(binPath, Path.GetFileName(assemblyPath));
 
             // Manually copy file to location where CLR will be able to locate it.
-            if (!File.Exists(newFilePath))
-            {
-                File.Copy(fullPath, newFilePath, true);
-            }
-
+            File.Copy(fullPath, newFilePath, overwrite: true);
+            
             return newFilePath;
         }
 
