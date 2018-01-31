@@ -290,6 +290,43 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                     }
                 }
             };
+
+            // Invalid latencies definition
+            yield return new object[]
+            {
+                "Invalid Latencies",
+                Path.Combine(InputDirectory, "AnnotationInvalidLatencies.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationInvalidLatencies.Json"),
+                new List<OperationGenerationResult>
+                {
+                    new OperationGenerationResult
+                    {
+                        OperationMethod = OperationType.Get.ToString(),
+                        Path = "/V1/samples/{id}",
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(InvalidLatencyException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.InvalidLatency,
+                                    "non-number latency"),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
+                    }
+                }
+            };
         }
 
         public static IEnumerable<object[]> GetTestCasesForValidDocumentationShouldReturnCorrectDocument()
@@ -491,6 +528,24 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationSummaryWithTags.Json")
+            };
+
+            // Valid XML document with definition for latencies.
+            yield return new object[]
+            {
+                "Define Latencies",
+                Path.Combine(InputDirectory, "AnnotationLatencies.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationLatencies.Json")
             };
         }
 
