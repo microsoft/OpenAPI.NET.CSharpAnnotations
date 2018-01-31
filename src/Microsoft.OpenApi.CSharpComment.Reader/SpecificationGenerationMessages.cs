@@ -20,6 +20,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
         public const string InvalidRequestBody = "The documented request body {0} is not valid.";
 
+        public const string InvalidLatency = "The documented latency {0} is not valid.";
+
         public const string InvalidResponse = "The documented response {0} is not valid.";
 
         public const string InvalidHttpMethod = "The documented verb {0} is not a valid http Method.";

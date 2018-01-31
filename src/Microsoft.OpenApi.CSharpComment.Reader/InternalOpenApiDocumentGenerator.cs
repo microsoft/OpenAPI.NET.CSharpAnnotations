@@ -53,7 +53,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             new ParamToRequestBodyFilter(),
             new ResponseToResponseFilter(),
             new RemarksToDescriptionFilter(),
-            new SummaryToSummaryFilter()
+            new SummaryToSummaryFilter(),
+            new LatenciesToLatenciesFilter()
         };
 
         private static readonly IList<IPreprocessingOperationFilter> _defaultPreprocessingOperationFilters =
