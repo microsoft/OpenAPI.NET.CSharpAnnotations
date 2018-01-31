@@ -23,7 +23,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
         /// Initializes a new instance of the <see cref="InvalidLatencyException"/>.
         /// </summary>
         public InvalidLatencyException(string latency)
-            : base(string.Format(SpecificationGenerationMessages.InvalidRequestBody, latency))
+            : base(string.Format(SpecificationGenerationMessages.InvalidLatency, latency))
         {
         }
 

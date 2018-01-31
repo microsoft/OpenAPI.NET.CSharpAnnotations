@@ -317,11 +317,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                         {
                             new GenerationError
                             {
-                                ExceptionType = typeof(ConflictingPathAndQueryParametersException).Name,
+                                ExceptionType = typeof(InvalidLatencyException).Name,
                                 Message = string.Format(
-                                    SpecificationGenerationMessages.ConflictingPathAndQueryParameters,
-                                    "id",
-                                    "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
+                                    SpecificationGenerationMessages.InvalidLatency,
+                                    "non-number latency"),
                             }
                         },
                         GenerationStatus = GenerationStatus.Warning

@@ -1,5 +1,5 @@
 ﻿{
-    "openapi": "3.0.0",
+    "openapi": "3.0.1",
     "info": {
         "title": "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis",
         "version": "1.0.0"
@@ -81,6 +81,20 @@
                                     "type": "string"
                                 }
                             }
+                        }
+                    }
+                },
+                "x-latencies": {
+                    "displaycatalog-int.mp.microsoft.com": {
+                        "timeout": {
+                            "default": 100
+                        }
+                    },
+                    "default": {
+                        "timeout": {
+                            "default": 200,
+                            "crossDC": 3000,
+                            "specialUser": 5000
                         }
                     }
                 }
@@ -549,7 +563,8 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+                                    "$ref":
+                                        "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
                                 }
                             }
                         }
