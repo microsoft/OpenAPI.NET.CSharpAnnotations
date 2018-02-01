@@ -42,6 +42,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
         public const string Variant = "variant";
         public const string Verb = "verb";
 
+        // x-latencies extension
+        public const string Latencies = "latencies";
+        public const string Latency = "latency";
+        public const string Timeout = "timeout";
+        public const string Host = "host";
+        public const string Class = "class";
+
         public static string[] AllowedInValues => new[] {Header, Path, Query, Body};
 
         // "body" in attribute is translated to a requestBody instead of a parameter.
