@@ -2,34 +2,48 @@
 // Licensed under the MIT license. 
 
 using System.Collections.Generic;
-using Microsoft.OpenApi.Extensions;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
+using System.Linq;
+using Microsoft.OpenApi.Readers.Interface;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
     /// The class to store the overall generation result.
     /// </summary>
-    public class OverallGenerationResult : OverallGenerationResultBase<OpenApiDocument>
+    public class OverallGenerationResult : IDiagnostic
     {
         /// <summary>
-        /// Dictionary mapping a document variant information to its associated specification document.
+        /// The document-level generation result (e.g. from applying document-level filters)
         /// </summary>
-        [JsonProperty]
-        [JsonConverter(typeof(DictionaryJsonConverter<DocumentVariantInfo, OpenApiDocument>))]
-        public override IDictionary<DocumentVariantInfo, OpenApiDocument>
-            Documents { get; internal set; } = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
+        public DocumentGenerationResult DocumentGenerationResult { get; set; }
 
         /// <summary>
-        /// Converts this object to <see cref="SerializedOverallGenerationResult"/>.
+        /// The generation status.
         /// </summary>
-        public SerializedOverallGenerationResult ToOverallGenerationResultSerializedDocument(
-            OpenApiSpecVersion openApiSpecVersion,
-            OpenApiFormat openApiFormat)
+        public GenerationStatus GenerationStatus
         {
-            return ToOverallGenerationResult<SerializedOverallGenerationResult, string>(
-                document => document.Serialize(openApiSpecVersion, openApiFormat));
+            get
+            {
+                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Failure) ||
+                    DocumentGenerationResult.GenerationStatus == GenerationStatus.Failure)
+                {
+                    return GenerationStatus.Failure;
+                }
+
+                if (OperationGenerationResults.Any(i => i.GenerationStatus == GenerationStatus.Warning) ||
+                    DocumentGenerationResult.GenerationStatus == GenerationStatus.Warning)
+                {
+                    return GenerationStatus.Warning;
+                }
+
+                return GenerationStatus.Success;
+            }
         }
+
+        /// <summary>
+        /// List of operation-level generation results.
+        /// </summary>
+        public IList<OperationGenerationResult> OperationGenerationResults { get; internal set; } =
+            new List<OperationGenerationResult>();
     }
 }

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDomainCreator.cs" />
+    <Compile Include="CSharpCommentOpenApiGeneratorInput.cs" />
     <Compile Include="DocumentConfigFilters\DocumentVariantAttributesFilter.cs" />
     <Compile Include="DocumentFilters\MemberSummaryToSchemaDescriptionFilter.cs" />
     <Compile Include="DocumentFilters\DocumentFilterSettings.cs" />
@@ -72,9 +73,8 @@
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
     <Compile Include="Extensions\XElementExtensions.cs" />
+    <Compile Include="ICSharpCommentOpenApiGenerator.cs" />
     <Compile Include="Models\DictionaryJsonConverter.cs" />
-    <Compile Include="Models\OverallGenerationResultBase.cs" />
-    <Compile Include="Models\SerializedOverallGenerationResult.cs" />
     <Compile Include="Models\GenerationError.cs" />
     <Compile Include="Models\DocumentGenerationResult.cs" />
     <Compile Include="OperationConfigFilters\CommonAnnotationFilter.cs" />
@@ -109,7 +109,6 @@
     <Compile Include="Exceptions\MissingInAttributeException.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="InternalOpenApiDocumentGenerator.cs" />
-    <Compile Include="IOpenApiDocumentGenerator.cs" />
     <Compile Include="Models\GenerationStatus.cs" />
     <Compile Include="Models\OverallGenerationResult.cs" />
     <Compile Include="Models\OperationGenerationResult.cs" />
@@ -118,7 +117,7 @@
     <Compile Include="ReferenceRegistries\SchemaReferenceRegistry.cs" />
     <Compile Include="ReferenceRegistries\ReferenceRegistryManager.cs" />
     <Compile Include="ReferenceRegistries\ReferenceRegistry.cs" />
-    <Compile Include="OpenApiDocumentGenerator.cs" />
+    <Compile Include="CSharpCommentOpenApiGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpecificationGenerationMessages.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />

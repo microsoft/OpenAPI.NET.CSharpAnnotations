@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -16,7 +17,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
     {
         public override bool CanConvert(Type objectType)
         {
-            return true;
+            return typeof(IDictionary).IsAssignableFrom(objectType);
         }
 
         public override object ReadJson(

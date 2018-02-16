@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
@@ -49,19 +50,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var configPath = configXmlFile;
             var configDocument = XDocument.Load(configPath);
 
-            var generator = new OpenApiDocumentGenerator();
+            var generator = new CSharpCommentOpenApiGenerator();
+
+            var input = new CSharpCommentOpenApiGeneratorInput(document, inputBinaryFiles, openApiSpecVersion)
+            {
+                ConfigurationXmlDocument = configDocument
+            };
+            OverallGenerationResult result;
 
             // Act
-            var result = generator.GenerateOpenApiDocuments(
-                document,
-                inputBinaryFiles,
-                openApiSpecVersion,
-                configDocument);
+            var openApiDocuments = generator.Generate(input, out result);
 
             // Assert
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToOverallGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
+                    openApiDocuments.ToSerializedOpenApiDocuments(),
+                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
@@ -74,7 +78,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             // Document generation should yield warning as expected in the test cases.
             result.DocumentGenerationResult.Should().BeEquivalentTo(expectedDocumentGenerationResult);
 
-            result.Documents.Keys.Should()
+            openApiDocuments.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
             var actualDocuments = new List<OpenApiDocument>();
@@ -86,7 +90,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 var documentVariantInfo = documentVariantInfoToExpectedJsonFile.Key;
                 var expectedJsonFile = documentVariantInfoToExpectedJsonFile.Value;
 
-                result.Documents.TryGetValue(documentVariantInfo, out var specificationDocument);
+                openApiDocuments.TryGetValue(documentVariantInfo, out var specificationDocument);
 
                 var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
 
@@ -134,25 +138,27 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var configPath = configXmlFile;
             var configDocument = XDocument.Load(configPath);
 
-            var generator = new OpenApiDocumentGenerator();
+            var generator = new CSharpCommentOpenApiGenerator();
+            var input = new CSharpCommentOpenApiGeneratorInput(document, inputBinaryFiles, openApiSpecVersion)
+            {
+                ConfigurationXmlDocument = configDocument
+            };
+            OverallGenerationResult result;
 
             // Act
-            var result = generator.GenerateOpenApiDocuments(
-                document,
-                inputBinaryFiles,
-                openApiSpecVersion,
-                configDocument);
+            var openApiDocuments = generator.Generate(input, out result);
 
             // Assert
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToOverallGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
+                    openApiDocuments.ToSerializedOpenApiDocuments(),
+                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
 
             result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
-            result.Documents.Keys.Should()
+            openApiDocuments.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 
             var actualDocuments = new List<OpenApiDocument>();
@@ -164,7 +170,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                 var documentVariantInfo = documentVariantInfoToExpectedJsonFile.Key;
                 var expectedJsonFile = documentVariantInfoToExpectedJsonFile.Value;
 
-                result.Documents.TryGetValue(documentVariantInfo, out var specificationDocument);
+                openApiDocuments.TryGetValue(documentVariantInfo, out var specificationDocument);
 
                 var actualDocumentAsString = specificationDocument.SerializeAsJson(openApiSpecVersion);
 

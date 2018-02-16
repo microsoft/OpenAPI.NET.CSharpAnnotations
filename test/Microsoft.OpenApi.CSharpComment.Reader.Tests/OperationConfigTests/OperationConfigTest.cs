@@ -42,17 +42,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             var document = XDocument.Load(inputXmlFile);
             var configDocument = XDocument.Load(configXmlFile);
 
-            var generator = new OpenApiDocumentGenerator();
+            var generator = new CSharpCommentOpenApiGenerator();
+            var input = new CSharpCommentOpenApiGeneratorInput(document, inputBinaryFiles, openApiSpecVersion);
+            OverallGenerationResult result;
 
-            var result = generator.GenerateOpenApiDocuments(
-                document,
-                inputBinaryFiles,
-                openApiSpecVersion,
-                configDocument);
+            var openApiDocuments = generator.Generate(
+                input,
+                out result);
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
-            result.MainDocument.Should().NotBeNull();
+            openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
             result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             // Document-level generation should succeed.
@@ -63,8 +63,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                         GenerationStatus = GenerationStatus.Success
                     });
 
-            var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
-
+            var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
             _output.WriteLine(actualDocument);
