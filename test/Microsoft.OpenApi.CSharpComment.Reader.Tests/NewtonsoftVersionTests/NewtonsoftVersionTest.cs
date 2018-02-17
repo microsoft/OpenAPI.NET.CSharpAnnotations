@@ -43,7 +43,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
 
             var generator = new CSharpCommentOpenApiGenerator();
 
-            var input = new CSharpCommentOpenApiGeneratorInput(
+            var input = new CSharpCommentOpenApiGeneratorConfig(
                 document,
                 new List<string>
                 {
@@ -53,9 +53,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
                         "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 openApiSpecVersion);
-            OverallGenerationResult result;
+            GenerationDiagnostic result;
 
-            var openApiDocuments = generator.Generate(
+            var openApiDocuments = generator.GenerateMultiple(
                 input,
                 out result);
 
@@ -73,7 +73,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
             _output.WriteLine(actualDocument);
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
-            result.OperationGenerationResults.Count.Should().Be(9);
+            result.OperationGenerationDiagnostics.Count.Should().Be(9);
 
             var expectedDocument = File.ReadAllText(
                 Path.Combine(

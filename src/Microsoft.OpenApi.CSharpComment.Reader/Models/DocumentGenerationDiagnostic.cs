@@ -9,24 +9,24 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
-    /// Model representing the result of the document-level portion of the generation process.
+    /// Object containing all diagnostic information related to document-level of generation process.
     /// </summary>
-    public class DocumentGenerationResult
+    public class DocumentGenerationDiagnostic
     {
         /// <summary>
         /// Default constructor. Required for deserialization.
         /// </summary>
-        public DocumentGenerationResult()
+        public DocumentGenerationDiagnostic()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DocumentGenerationResult"/> based on the other instance.
-        /// If the other instance given is null, the DocumentGenerationResult with all properties being their 
+        /// Initializes a new instance of <see cref="DocumentGenerationDiagnostic"/> based on the other instance.
+        /// If the other instance given is null, the DocumentGenerationDiagnostic with all properties being their 
         /// default values is initialized.
         /// </summary>
         /// <param name="other">Other instance.</param>
-        public DocumentGenerationResult(DocumentGenerationResult other)
+        public DocumentGenerationDiagnostic(DocumentGenerationDiagnostic other)
         {
             if (other == null)
             {

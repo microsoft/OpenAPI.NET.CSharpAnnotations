@@ -52,7 +52,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwagger2Group1.json"),
                 },
-                new DocumentGenerationResult
+                new DocumentGenerationDiagnostic
                 {
                     Errors =
                     {
@@ -125,7 +125,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                         }
                     }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
                 },
-                new DocumentGenerationResult
+                new DocumentGenerationDiagnostic
                 {
                     Errors =
                     {

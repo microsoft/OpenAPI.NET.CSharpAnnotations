@@ -39,7 +39,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
-            DocumentGenerationResult expectedDocumentGenerationResult)
+            DocumentGenerationDiagnostic expectedDocumentGenerationResult)
         {
             _output.WriteLine(testCaseName);
 
@@ -52,14 +52,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
             var generator = new CSharpCommentOpenApiGenerator();
 
-            var input = new CSharpCommentOpenApiGeneratorInput(document, inputBinaryFiles, openApiSpecVersion)
+            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion)
             {
-                ConfigurationXmlDocument = configDocument
+                AdvancedConfigurationXmlDocument = configDocument
             };
-            OverallGenerationResult result;
+            GenerationDiagnostic result;
 
             // Act
-            var openApiDocuments = generator.Generate(input, out result);
+            var openApiDocuments = generator.GenerateMultiple(input, out result);
 
             // Assert
             _output.WriteLine(
@@ -71,12 +71,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
 
             // All operation generations should succeed.
-            result.OperationGenerationResults.Count(r => r.GenerationStatus == GenerationStatus.Success)
+            result.OperationGenerationDiagnostics.Count(r => r.GenerationStatus == GenerationStatus.Success)
                 .Should()
                 .Be(expectedOperationGenerationResultsCount);
 
             // Document generation should yield warning as expected in the test cases.
-            result.DocumentGenerationResult.Should().BeEquivalentTo(expectedDocumentGenerationResult);
+            result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
 
             openApiDocuments.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
@@ -139,14 +139,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var configDocument = XDocument.Load(configPath);
 
             var generator = new CSharpCommentOpenApiGenerator();
-            var input = new CSharpCommentOpenApiGeneratorInput(document, inputBinaryFiles, openApiSpecVersion)
+            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion)
             {
-                ConfigurationXmlDocument = configDocument
+                AdvancedConfigurationXmlDocument = configDocument
             };
-            OverallGenerationResult result;
+            GenerationDiagnostic result;
 
             // Act
-            var openApiDocuments = generator.Generate(input, out result);
+            var openApiDocuments = generator.GenerateMultiple(input, out result);
 
             // Assert
             _output.WriteLine(
@@ -157,7 +157,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
 
-            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
+            result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
             openApiDocuments.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 

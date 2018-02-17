@@ -83,46 +83,65 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         }
 
         /// <summary>
-        /// Converts dictionary of serialized open api documents to dictionary of open api documents.</summary>
+        /// Converts <see cref="Dictionary{TKey,TValue}"/>where TKey is <see cref="DocumentVariantInfo"/>
+        /// and TValue is <see cref="string"/>
+        /// To <see cref="Dictionary{TKey,TValue}"/>where TKey is <see cref="DocumentVariantInfo"/>
+        /// and TValue is <see cref="OpenApiDocument"/>.
+        /// </summary>
         /// <param name="sourceDictionary">The serialized open api documents dictionary.</param>
-        /// <returns><see cref="IDictionary{DocumentVariantInfo,OpenApiDocument}"/></returns>
+        /// <returns>Dictionary mapping document variant metadata to their respective OpenAPI document.
+        /// </returns>
         public static IDictionary<DocumentVariantInfo, OpenApiDocument> ToOpenApiDocuments(
             this IDictionary<DocumentVariantInfo, string> sourceDictionary)
         {
-            IDictionary<DocumentVariantInfo, OpenApiDocument> result =
+            if (sourceDictionary == null)
+            {
+                throw new ArgumentNullException(nameof(sourceDictionary));
+            }
+
+            IDictionary<DocumentVariantInfo, OpenApiDocument> openApiDocuments =
                 new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
             foreach (var variantInfoDocumentKeyValuePair in sourceDictionary)
             {
-                result[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
+                openApiDocuments[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
                     = new OpenApiStringReader().Read(variantInfoDocumentKeyValuePair.Value, out var _);
             }
 
-            return result;
+            return openApiDocuments;
         }
 
         /// <summary>
-        /// Converts dictionary of open api documents to serialized open api documents.
+        /// Converts <see cref="Dictionary{TKey,TValue}"/>where TKey is <see cref="DocumentVariantInfo"/>
+        /// and TValue is <see cref="OpenApiDocument"/>
+        /// To <see cref="Dictionary{TKey,TValue}"/>where TKey is <see cref="DocumentVariantInfo"/>
+        /// and TValue is <see cref="string"/>.
         /// </summary>
         /// <param name="sourceDictionary">The dictionary of open api documents.</param>
         /// <param name="openApiSpecVersion">The open api spec version to serialize to.</param>
         /// <param name="openApiFormat">The open api format to serialize to.</param>
-        /// <returns>Dictionary of serialized open api documents </returns>
+        /// <returns>Dictionary mapping document variant metadata to their respective serialized OpenAPI document.
+        /// </returns>
         public static IDictionary<DocumentVariantInfo, string> ToSerializedOpenApiDocuments(
             this IDictionary<DocumentVariantInfo, OpenApiDocument> sourceDictionary,
             OpenApiSpecVersion openApiSpecVersion = OpenApiSpecVersion.OpenApi3_0,
             OpenApiFormat openApiFormat = OpenApiFormat.Json)
         {
-            IDictionary<DocumentVariantInfo, string> result =
+            if (sourceDictionary == null)
+            {
+                throw new ArgumentNullException(nameof(sourceDictionary));
+            }
+
+            IDictionary<DocumentVariantInfo, string> openApiDocuments =
                 new Dictionary<DocumentVariantInfo, string>();
 
             foreach (var variantInfoDocumentKeyValuePair in sourceDictionary)
             {
-                result[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
+                openApiDocuments[new DocumentVariantInfo(variantInfoDocumentKeyValuePair.Key)]
                     = variantInfoDocumentKeyValuePair.Value.Serialize(openApiSpecVersion, openApiFormat);
             }
 
-            return result;
+            return openApiDocuments;
         }
     }
 }

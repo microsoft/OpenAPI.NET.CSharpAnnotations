@@ -241,7 +241,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="openApiSpecVersion">Specification version of the Open API documents to generate.</param>
         /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
         /// <param name="generationResult">A string representing serialized version of
-        /// <see cref="OverallGenerationResult"/>>
+        /// <see cref="GenerationDiagnostic"/>>
         /// </param>
         /// <returns>
         /// A string representing serialized version of <see cref="IDictionary{DocumentVariantInfo, OpenApiDocument}"/>>
@@ -282,13 +282,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .ToList();
             }
 
-            OverallGenerationResult result;
+            GenerationDiagnostic generationDiagnostic;
 
             if (!operationElements.Any())
             {
-                result = new OverallGenerationResult()
+                generationDiagnostic = new GenerationDiagnostic()
                 {
-                    DocumentGenerationResult = new DocumentGenerationResult
+                    DocumentGenerationDiagnostic = new DocumentGenerationDiagnostic
                     {
                         Errors =
                         {
@@ -301,31 +301,31 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     }
                 };
 
-                generationResult = JsonConvert.SerializeObject(result);
+                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
                 return JsonConvert.SerializeObject(openApiDocuments,
                     new DictionaryJsonConverter<DocumentVariantInfo, string>());
             }
 
             try
             {
-                result = new OverallGenerationResult();
+                generationDiagnostic = new GenerationDiagnostic();
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
 
-                var operationGenerationResults = GenerateSpecificationDocuments(
+                var operationGenerationDiagnostics = GenerateSpecificationDocuments(
                     typeFetcher,
                     operationElements,
                     operationConfigElement,
                     documentVariantElementNames,
                     out var documents);
 
-                foreach (var operationGenerationResult in operationGenerationResults)
+                foreach (var operationGenerationDiagnostic in operationGenerationDiagnostics)
                 {
-                    result.OperationGenerationResults.Add(
-                        new OperationGenerationResult(operationGenerationResult));
+                    generationDiagnostic.OperationGenerationDiagnostics.Add(
+                        new OperationGenerationDiagnostic(operationGenerationDiagnostic));
                 }
 
-                var documentGenerationResult = new DocumentGenerationResult();
+                var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
 
                 foreach (var variantInfoDocumentValuePair in documents)
                 {
@@ -345,7 +345,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                         catch (Exception e)
                         {
-                            documentGenerationResult.Errors.Add(
+                            documentGenerationDiagnostic.Errors.Add(
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
@@ -369,7 +369,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                         catch (Exception e)
                         {
-                            documentGenerationResult.Errors.Add(
+                            documentGenerationDiagnostic.Errors.Add(
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
@@ -379,18 +379,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     }
                 }
 
-                if (documentGenerationResult.Errors.Any())
+                if (documentGenerationDiagnostic.Errors.Any())
                 {
-                    documentGenerationResult.GenerationStatus = GenerationStatus.Warning;
-                    result.DocumentGenerationResult = documentGenerationResult;
+                    documentGenerationDiagnostic.GenerationStatus = GenerationStatus.Warning;
+                    generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
                 }
                 else
                 {
-                    documentGenerationResult.GenerationStatus = GenerationStatus.Success;
-                    result.DocumentGenerationResult = documentGenerationResult;
+                    documentGenerationDiagnostic.GenerationStatus = GenerationStatus.Success;
+                    generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
                 }
 
-                generationResult = JsonConvert.SerializeObject(result);
+                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
                 openApiDocuments = documents.ToSerializedOpenApiDocuments();
 
                 return JsonConvert.SerializeObject(
@@ -399,10 +399,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             }
             catch (Exception e)
             {
-                result = new OverallGenerationResult
+                generationDiagnostic = new GenerationDiagnostic
                 {
-                    DocumentGenerationResult =
-                        new DocumentGenerationResult
+                    DocumentGenerationDiagnostic =
+                        new DocumentGenerationDiagnostic
                         {
                             Errors =
                             {
@@ -416,7 +416,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                 };
 
-                generationResult = JsonConvert.SerializeObject(result);
+                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
 
                 return JsonConvert.SerializeObject(
                     openApiDocuments,
@@ -428,7 +428,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Populate the specification documents for all document variant infos.
         /// </summary>
         /// <returns>The operation generation results from populating the specification documents.</returns>
-        private IList<OperationGenerationResult> GenerateSpecificationDocuments(
+        private IList<OperationGenerationDiagnostic> GenerateSpecificationDocuments(
             TypeFetcher typeFetcher,
             IList<XElement> operationElements,
             XElement operationConfigElement,
@@ -437,7 +437,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         {
             specificationDocuments = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
-            var operationGenerationResults = new List<OperationGenerationResult>();
+            var operationGenerationResults = new List<OperationGenerationDiagnostic>();
 
             var referenceRegistryManagerMap = new Dictionary<DocumentVariantInfo, ReferenceRegistryManager>();
 
@@ -453,7 +453,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 catch (InvalidUrlException e)
                 {
                     operationGenerationResults.Add(
-                        new OperationGenerationResult
+                        new OperationGenerationDiagnostic
                         {
                             Errors =
                             {
@@ -478,7 +478,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 catch (InvalidVerbException e)
                 {
                     operationGenerationResults.Add(
-                        new OperationGenerationResult
+                        new OperationGenerationDiagnostic
                         {
                             Errors =
                             {
@@ -531,7 +531,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                     }
 
-                    var operationGenerationResult = new OperationGenerationResult
+                    var operationGenerationResult = new OperationGenerationDiagnostic
                     {
                         OperationMethod = operationMethod.ToString(),
                         Path = url
@@ -556,7 +556,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 catch (Exception e)
                 {
                     operationGenerationResults.Add(
-                        new OperationGenerationResult
+                        new OperationGenerationDiagnostic
                         {
                             Errors =
                             {

@@ -43,22 +43,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             var configDocument = XDocument.Load(configXmlFile);
 
             var generator = new CSharpCommentOpenApiGenerator();
-            var input = new CSharpCommentOpenApiGeneratorInput(document, inputBinaryFiles, openApiSpecVersion);
-            OverallGenerationResult result;
+            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
+            GenerationDiagnostic result;
 
-            var openApiDocuments = generator.Generate(
+            var openApiDocuments = generator.GenerateMultiple(
                 input,
                 out result);
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
-            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
+            result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             // Document-level generation should succeed.
-            result.DocumentGenerationResult.Should()
+            result.DocumentGenerationDiagnostic.Should()
                 .BeEquivalentTo(
-                    new DocumentGenerationResult
+                    new DocumentGenerationDiagnostic
                     {
                         GenerationStatus = GenerationStatus.Success
                     });

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
+using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
@@ -16,73 +17,98 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     public class CSharpCommentOpenApiGenerator : ICSharpCommentOpenApiGenerator
     {
         /// <summary>
-        /// Generates OpenAPI document using the provided input.
+        /// Generates a serialized OpenAPI document based on the provided configuration, but ignores any variant
+        /// configuration that may be present.
         /// </summary>
-        /// <param name="openApiDocumentGeneratorInput">Required input to generate the document.</param>
-        /// <param name="overallGenerationResult">The overall generation result.</param>
-        /// <returns>The generated open api document</returns>
-        public OpenApiDocument Read(
-            CSharpCommentOpenApiGeneratorInput openApiDocumentGeneratorInput,
-            out OverallGenerationResult overallGenerationResult)
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The required input to generate the document.</param>
+        /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <returns>The generated serialized OpenAPI document.</returns>
+        public string GenerateSingleSerialized(
+            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
+            out GenerationDiagnostic generationDiagnostic)
         {
-            var documents = Generate(openApiDocumentGeneratorInput, out overallGenerationResult);
+            var document = GenerateSingle(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
+
+            return document?.Serialize(
+                cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
+                cSharpCommentOpenApiGeneratorConfig.OpenApiFormat);
+        }
+
+        /// <summary>
+        /// Generates an OpenAPI document based on the provided configuration, but ignores any variant configuration
+        /// that may be present.
+        /// </summary>
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
+        /// the document.</param>
+        /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <returns>The generated OpenAPI document.</returns>
+        public OpenApiDocument GenerateSingle(
+            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
+            out GenerationDiagnostic generationDiagnostic)
+        {
+            var documents = GenerateMultiple(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
 
             return documents?.Count == 0 ? null : documents[DocumentVariantInfo.Default];
         }
 
         /// <summary>
-        /// Generates Open API document(s) using the provided input.
+        /// Generates an OpenAPI document per variant specified in configuration.
+        /// In addition, a "default" variant document is generated, which contains no alterations based on
+        /// variant metadata.
         /// </summary>
-        /// <param name="openApiDocumentGeneratorInput">Required input to generate the document.</param>
-        /// <param name="overallGenerationResult">The overall generation result.</param>
-        /// <returns>The generated open api documents.</returns>
-        public IDictionary<DocumentVariantInfo, OpenApiDocument> Generate(
-            CSharpCommentOpenApiGeneratorInput openApiDocumentGeneratorInput,
-            out OverallGenerationResult overallGenerationResult)
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The required input to generated the document.</param>
+        /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <returns>Dictionary mapping document variant metadata to their respective OpenAPI document.</returns>
+        public IDictionary<DocumentVariantInfo, OpenApiDocument> GenerateMultiple(
+            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
+            out GenerationDiagnostic generationDiagnostic)
         {
-            var result = GenerateSerialized(
-                openApiDocumentGeneratorInput,
-                out overallGenerationResult);
+            var result = GenerateMultipleSerialized(
+                cSharpCommentOpenApiGeneratorConfig,
+                out generationDiagnostic);
 
             return result.ToOpenApiDocuments();
         }
 
         /// <summary>
-        /// Generates OpenAPI documents using the provided input.
+        /// Generates a serialized OpenAPI document per variant specified in configuration.
+        /// In addition, a serialized "default" variant document is generated, which contains no alterations based on
+        /// variant metadata.
         /// </summary>
-        /// <param name="openApiDocumentGeneratorInput">The XDocument representing the annotation xml.</param>
-        /// <param name="overallGenerationResult">The overall generation result.</param>
-        /// <returns>The serialized open api documents.</returns>
-        public IDictionary<DocumentVariantInfo, string> GenerateSerialized(
-            CSharpCommentOpenApiGeneratorInput openApiDocumentGeneratorInput,
-            out OverallGenerationResult overallGenerationResult)
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The required input to generate the document.</param>
+        /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <returns>Dictionary mapping document variant metadata to their respective serialized OpenAPI document.
+        /// </returns>
+        public IDictionary<DocumentVariantInfo, string> GenerateMultipleSerialized(
+            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
+            out GenerationDiagnostic generationDiagnostic)
         {
-            foreach (var contractAssemblyPath in openApiDocumentGeneratorInput.ContractAssemblyPaths)
+            foreach (var assemblyPath in cSharpCommentOpenApiGeneratorConfig.AssemblyPaths)
             {
-                if (!File.Exists(contractAssemblyPath))
+                if (!File.Exists(assemblyPath))
                 {
-                    throw new FileNotFoundException(contractAssemblyPath);
+                    throw new FileNotFoundException(assemblyPath);
                 }
             }
 
             using (var isolatedDomain = new AppDomainCreator<InternalOpenApiDocumentGenerator>())
             {
-                string serializedOverallGenerationResult;
+                string serializedGenerationDiagnostic;
 
                 var documents = isolatedDomain.Object.GenerateOpenApiDocuments(
-                    openApiDocumentGeneratorInput.AnnotationXmlDocument.ToString(),
-                    openApiDocumentGeneratorInput.ContractAssemblyPaths,
-                    openApiDocumentGeneratorInput.ConfigurationXmlDocument?.ToString(),
-                    openApiDocumentGeneratorInput.OpenApiSpecVersion,
-                    openApiDocumentGeneratorInput.OpenApiFormat,
-                    out serializedOverallGenerationResult);
+                    cSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocument.ToString(),
+                    cSharpCommentOpenApiGeneratorConfig.AssemblyPaths,
+                    cSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument?.ToString(),
+                    cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
+                    cSharpCommentOpenApiGeneratorConfig.OpenApiFormat,
+                    out serializedGenerationDiagnostic);
 
-                overallGenerationResult =
-                    JsonConvert.DeserializeObject<OverallGenerationResult>(serializedOverallGenerationResult);
+                generationDiagnostic =
+                    JsonConvert.DeserializeObject<GenerationDiagnostic>(serializedGenerationDiagnostic);
 
                 return JsonConvert.DeserializeObject<Dictionary<DocumentVariantInfo, string>>(
-                        documents,
-                        new DictionaryJsonConverter<DocumentVariantInfo, string>());
+                    documents,
+                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
             }
         }
     }
