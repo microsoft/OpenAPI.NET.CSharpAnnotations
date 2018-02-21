@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
-    /// Provides functionality to parse xml documentation and contract assemblies into Open API documents.
+    /// Provides functionality to parse xml documentation and contract assemblies into OpenAPI documents.
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
@@ -73,7 +73,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         };
 
         /// <summary>
-        /// The internal implementation of an Open Api Document generator.
+        /// The internal implementation of an OpenAPI Document generator.
         /// </summary>
         public InternalOpenApiDocumentGenerator()
         {
@@ -238,7 +238,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="annotationXml">The serialized XDocument representing annotation.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
-        /// <param name="openApiSpecVersion">Specification version of the Open API documents to generate.</param>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI documents to generate.</param>
         /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
         /// <param name="generationResult">A string representing serialized version of
         /// <see cref="GenerationDiagnostic"/>>

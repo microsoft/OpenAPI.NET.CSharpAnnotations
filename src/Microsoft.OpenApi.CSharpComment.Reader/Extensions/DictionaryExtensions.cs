@@ -16,7 +16,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
     /// <summary>
     /// Extension methods for <see cref="IDictionary{TKey,TValue}"/>.
     /// </summary>
-    public static class DictionaryExtensions
+    internal static class DictionaryExtensions
     {
         /// <summary>
         /// Copies entries from the source dictionary into the target dictionary.
@@ -26,7 +26,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// <typeparam name="TValue">Type of value.</typeparam>
         /// <param name="sourceDictionary">The source dictionary.</param>
         /// <param name="targetDictionary">The target dictionary.</param>
-        public static void CopyInto<TKey, TValue>(
+        internal static void CopyInto<TKey, TValue>(
             this IDictionary<TKey, TValue> sourceDictionary,
             IDictionary<TKey, TValue> targetDictionary)
         {
@@ -59,7 +59,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// <param name="targetDictionary">The target dictionary.</param>
         /// <returns>True if both dictionaries are null or both dictionary contains the same keys and values based on
         /// their definition of Equals. False otherwise.</returns>
-        public static bool EquivalentTo<TKey, TValue>(
+        internal static bool EquivalentTo<TKey, TValue>(
             this IDictionary<TKey, TValue> sourceDictionary,
             IDictionary<TKey, TValue> targetDictionary)
         {
@@ -88,10 +88,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// To <see cref="Dictionary{TKey,TValue}"/>where TKey is <see cref="DocumentVariantInfo"/>
         /// and TValue is <see cref="OpenApiDocument"/>.
         /// </summary>
-        /// <param name="sourceDictionary">The serialized open api documents dictionary.</param>
+        /// <param name="sourceDictionary">The serialized OpenAPI documents dictionary.</param>
         /// <returns>Dictionary mapping document variant metadata to their respective OpenAPI document.
         /// </returns>
-        public static IDictionary<DocumentVariantInfo, OpenApiDocument> ToOpenApiDocuments(
+        internal static IDictionary<DocumentVariantInfo, OpenApiDocument> ToOpenApiDocuments(
             this IDictionary<DocumentVariantInfo, string> sourceDictionary)
         {
             if (sourceDictionary == null)
@@ -117,12 +117,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
         /// To <see cref="Dictionary{TKey,TValue}"/>where TKey is <see cref="DocumentVariantInfo"/>
         /// and TValue is <see cref="string"/>.
         /// </summary>
-        /// <param name="sourceDictionary">The dictionary of open api documents.</param>
-        /// <param name="openApiSpecVersion">The open api spec version to serialize to.</param>
-        /// <param name="openApiFormat">The open api format to serialize to.</param>
+        /// <param name="sourceDictionary">The dictionary of OpenAPI documents.</param>
+        /// <param name="openApiSpecVersion">The OpenAPI spec version to serialize to.</param>
+        /// <param name="openApiFormat">The OpenAPI format to serialize to.</param>
         /// <returns>Dictionary mapping document variant metadata to their respective serialized OpenAPI document.
         /// </returns>
-        public static IDictionary<DocumentVariantInfo, string> ToSerializedOpenApiDocuments(
+        internal static IDictionary<DocumentVariantInfo, string> ToSerializedOpenApiDocuments(
             this IDictionary<DocumentVariantInfo, OpenApiDocument> sourceDictionary,
             OpenApiSpecVersion openApiSpecVersion = OpenApiSpecVersion.OpenApi3_0,
             OpenApiFormat openApiFormat = OpenApiFormat.Json)

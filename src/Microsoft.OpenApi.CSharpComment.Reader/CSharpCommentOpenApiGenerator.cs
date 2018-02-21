@@ -20,14 +20,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Generates a serialized OpenAPI document based on the provided configuration, but ignores any variant
         /// configuration that may be present.
         /// </summary>
-        /// <param name="cSharpCommentOpenApiGeneratorConfig">The required input to generate the document.</param>
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
+        /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
         /// <returns>The generated serialized OpenAPI document.</returns>
-        public string GenerateSingleSerialized(
+        public string GenerateSerializedDocument(
             CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
             out GenerationDiagnostic generationDiagnostic)
         {
-            var document = GenerateSingle(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
+            var document = GenerateDocument(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
 
             return document?.Serialize(
                 cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
@@ -42,11 +43,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
         /// <returns>The generated OpenAPI document.</returns>
-        public OpenApiDocument GenerateSingle(
+        public OpenApiDocument GenerateDocument(
             CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
             out GenerationDiagnostic generationDiagnostic)
         {
-            var documents = GenerateMultiple(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
+            var documents = GenerateDocuments(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
 
             return documents?.Count == 0 ? null : documents[DocumentVariantInfo.Default];
         }
@@ -56,14 +57,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// In addition, a "default" variant document is generated, which contains no alterations based on
         /// variant metadata.
         /// </summary>
-        /// <param name="cSharpCommentOpenApiGeneratorConfig">The required input to generated the document.</param>
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
+        /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
         /// <returns>Dictionary mapping document variant metadata to their respective OpenAPI document.</returns>
-        public IDictionary<DocumentVariantInfo, OpenApiDocument> GenerateMultiple(
+        public IDictionary<DocumentVariantInfo, OpenApiDocument> GenerateDocuments(
             CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
             out GenerationDiagnostic generationDiagnostic)
         {
-            var result = GenerateMultipleSerialized(
+            var result = GenerateSerializedDocuments(
                 cSharpCommentOpenApiGeneratorConfig,
                 out generationDiagnostic);
 
@@ -75,11 +77,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// In addition, a serialized "default" variant document is generated, which contains no alterations based on
         /// variant metadata.
         /// </summary>
-        /// <param name="cSharpCommentOpenApiGeneratorConfig">The required input to generate the document.</param>
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
+        /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
         /// <returns>Dictionary mapping document variant metadata to their respective serialized OpenAPI document.
         /// </returns>
-        public IDictionary<DocumentVariantInfo, string> GenerateMultipleSerialized(
+        public IDictionary<DocumentVariantInfo, string> GenerateSerializedDocuments(
             CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
             out GenerationDiagnostic generationDiagnostic)
         {

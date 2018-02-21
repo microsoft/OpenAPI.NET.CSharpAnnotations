@@ -3,13 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
-    /// The class to store the configuration that will be used to generate the open api document from csharp
+    /// The class to store the configuration that will be used to generate the OpenAPI document from csharp
     /// documentation.
     /// </summary>
     public class CSharpCommentOpenApiGeneratorConfig
@@ -36,14 +35,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         }
 
         /// <summary>
-        /// The XDocument representing the annotation xml.
-        /// </summary>
-        public XDocument AnnotationXmlDocument { get; }
-
-        /// <summary>
         /// The XDocument representing the advanced generation configuration.
         /// </summary>
         public XDocument AdvancedConfigurationXmlDocument { get; set; }
+
+        /// <summary>
+        /// The XDocument representing the annotation xml.
+        /// </summary>
+        public XDocument AnnotationXmlDocument { get; }
 
         /// <summary>
         /// The list of relative or absolute paths to the assemblies that will be used to reflect into the

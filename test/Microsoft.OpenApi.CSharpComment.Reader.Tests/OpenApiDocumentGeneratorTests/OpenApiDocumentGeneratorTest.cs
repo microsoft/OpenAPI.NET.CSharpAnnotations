@@ -560,7 +560,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             var generator = new CSharpCommentOpenApiGenerator();
 
-            var openApiDocuments = generator.GenerateMultiple(input, out result);
+            var openApiDocuments = generator.GenerateDocuments(input, out result);
 
             document.Should().NotBeNull();
 
@@ -615,7 +615,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             var generator = new CSharpCommentOpenApiGenerator();
 
-            var openApiDocuments = generator.GenerateMultiple(input, out result);
+            var openApiDocuments = generator.GenerateDocuments(input, out result);
 
             result.Should().NotBeNull();
 
@@ -661,7 +661,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             GenerationDiagnostic result;
 
             var generator = new CSharpCommentOpenApiGenerator();
-            var openApiDocument = generator.GenerateSingle(input, out result);
+            var openApiDocument = generator.GenerateDocument(input, out result);
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Warning);
@@ -700,7 +700,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             GenerationDiagnostic result;
 
             var generator = new CSharpCommentOpenApiGenerator();
-            var openApiDocuments = generator.GenerateMultiple(input, out result);
+            var openApiDocuments = generator.GenerateDocuments(input, out result);
 
             result.Should().NotBeNull();
 
@@ -749,7 +749,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             GenerationDiagnostic result;
 
-            var serializedDocuments = generator.GenerateMultipleSerialized(input, out result);
+            var serializedDocuments = generator.GenerateSerializedDocuments(input, out result);
 
             result.Should().NotBeNull();
             serializedDocuments.Should().NotBeNull();

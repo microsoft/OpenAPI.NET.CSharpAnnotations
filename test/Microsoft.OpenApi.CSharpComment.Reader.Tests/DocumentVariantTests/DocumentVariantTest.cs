@@ -59,7 +59,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             GenerationDiagnostic result;
 
             // Act
-            var openApiDocuments = generator.GenerateMultiple(input, out result);
+            var openApiDocuments = generator.GenerateDocuments(input, out result);
 
             // Assert
             _output.WriteLine(
@@ -146,7 +146,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             GenerationDiagnostic result;
 
             // Act
-            var openApiDocuments = generator.GenerateMultiple(input, out result);
+            var openApiDocuments = generator.GenerateDocuments(input, out result);
 
             // Assert
             _output.WriteLine(
