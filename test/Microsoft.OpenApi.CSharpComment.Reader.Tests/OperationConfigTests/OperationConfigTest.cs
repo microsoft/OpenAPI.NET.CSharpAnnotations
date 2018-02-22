@@ -46,7 +46,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
             GenerationDiagnostic result;
 
-            var openApiDocuments = generator.GenerateMultiple(
+            var openApiDocuments = generator.GenerateDocuments(
                 input,
                 out result);
 
