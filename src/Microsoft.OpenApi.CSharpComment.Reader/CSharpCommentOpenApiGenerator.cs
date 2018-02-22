@@ -17,25 +17,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     public class CSharpCommentOpenApiGenerator : ICSharpCommentOpenApiGenerator
     {
         /// <summary>
-        /// Generates a serialized OpenAPI document based on the provided configuration, but ignores any variant
-        /// configuration that may be present.
-        /// </summary>
-        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
-        /// the document.</param>
-        /// <param name="generationDiagnostic">The generation diagnostics.</param>
-        /// <returns>The generated serialized OpenAPI document.</returns>
-        public string GenerateSerializedDocument(
-            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
-            out GenerationDiagnostic generationDiagnostic)
-        {
-            var document = GenerateDocument(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
-
-            return document?.Serialize(
-                cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
-                cSharpCommentOpenApiGeneratorConfig.OpenApiFormat);
-        }
-
-        /// <summary>
         /// Generates an OpenAPI document based on the provided configuration, but ignores any variant configuration
         /// that may be present.
         /// </summary>
@@ -70,6 +51,25 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 out generationDiagnostic);
 
             return result.ToOpenApiDocuments();
+        }
+
+        /// <summary>
+        /// Generates a serialized OpenAPI document based on the provided configuration, but ignores any variant
+        /// configuration that may be present.
+        /// </summary>
+        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
+        /// the document.</param>
+        /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <returns>The generated serialized OpenAPI document.</returns>
+        public string GenerateSerializedDocument(
+            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
+            out GenerationDiagnostic generationDiagnostic)
+        {
+            var document = GenerateDocument(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
+
+            return document?.Serialize(
+                cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
+                cSharpCommentOpenApiGeneratorConfig.OpenApiFormat);
         }
 
         /// <summary>
