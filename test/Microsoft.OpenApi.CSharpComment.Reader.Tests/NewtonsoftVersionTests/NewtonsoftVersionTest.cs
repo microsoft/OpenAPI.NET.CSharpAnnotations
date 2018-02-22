@@ -55,7 +55,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
                 openApiSpecVersion);
             GenerationDiagnostic result;
 
-            var openApiDocuments = generator.GenerateMultiple(
+            var openApiDocuments = generator.GenerateDocuments(
                 input,
                 out result);
 

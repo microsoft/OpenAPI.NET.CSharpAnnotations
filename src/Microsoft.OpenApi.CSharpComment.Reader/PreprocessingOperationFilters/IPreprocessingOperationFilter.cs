@@ -10,14 +10,16 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
 {
     /// <summary>
-    /// The class representing the contract of a filter to preprocess the <see cref="Operation"/> objects in <see cref="Paths"/>
-    /// before each <see cref="Operation"/> is processed by the <see cref="IOperationFilter"/>.
+    /// The class representing the contract of a filter to preprocess the <see cref="OpenApiOperation"/>
+    /// objects in <see cref="OpenApiPaths"/> before each <see cref="OpenApiOperation"/> is processed by the
+    /// <see cref="IOperationFilter"/>.
     /// </summary>
     public interface IPreprocessingOperationFilter
     {
         /// <summary>
-        /// Applies the filter to preprocess the the <see cref="Operation"/> objects in <see cref="Paths"/>
-        /// before each <see cref="Operation"/> is processed by the <see cref="IOperationFilter"/>.
+        /// Applies the filter to preprocess the the <see cref="OpenApiOperation"/> objects in
+        /// <see cref="OpenApiPaths"/> before each <see cref="OpenApiOperation"/> is processed by the
+        /// <see cref="IOperationFilter"/>.
         /// </summary>
         /// <param name="paths">The paths to be upated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>

@@ -9,6 +9,7 @@ using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
@@ -41,5 +42,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Gets the list of preprocessing operation filters.
         /// </summary>
         public IList<IPreprocessingOperationFilter> PreprocessingOperationFilters { get; set; }
+
+        /// <summary>
+        /// Gets the list of post processing operation filters.
+        /// </summary>
+        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
     }
 }
