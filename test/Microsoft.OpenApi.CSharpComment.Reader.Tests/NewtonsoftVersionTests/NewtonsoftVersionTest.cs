@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
 using FluentAssertions;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Readers;
@@ -40,9 +41,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
 
             var document = XDocument.Load(Path.Combine(InputDirectory, "Annotation.xml"));
 
-            var generator = new OpenApiDocumentGenerator();
+            var generator = new CSharpCommentOpenApiGenerator();
 
-            var result = generator.GenerateOpenApiDocuments(
+            var input = new CSharpCommentOpenApiGeneratorConfig(
                 document,
                 new List<string>
                 {
@@ -52,21 +53,28 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.NewtonsoftVersionTests
                         "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
                 },
                 openApiSpecVersion);
+            GenerationDiagnostic result;
+
+            var openApiDocuments = generator.GenerateDocuments(
+                input,
+                out result);
 
             result.Should().NotBeNull();
+            openApiDocuments.Should().NotBeNull();
 
             _output.WriteLine(
                 JsonConvert.SerializeObject(
-                    result.ToOverallGenerationResultSerializedDocument(openApiSpecVersion, OpenApiFormat.Json)));
-            
-            result.MainDocument.Should().NotBeNull();
+                    openApiDocuments.ToSerializedOpenApiDocuments(),
+                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
-            var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
+            openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+
+            var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
             _output.WriteLine(actualDocument);
 
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
-            result.OperationGenerationResults.Count.Should().Be(9);
-            
+            result.OperationGenerationDiagnostics.Count.Should().Be(9);
+
             var expectedDocument = File.ReadAllText(
                 Path.Combine(
                     OutputDirectory,

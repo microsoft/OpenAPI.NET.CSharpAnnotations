@@ -61,15 +61,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 var description = paramElement.Value.RemoveBlankLines();
 
                 var schema = GenerateSchemaFromCref(cref, settings);
+                var parameterLocation = GetParameterKind(inValue);
 
                 operation.Parameters.Add(
                     new OpenApiParameter
                     {
                         Name = name,
-                        In = GetParameterKind(inValue),
+                        In = parameterLocation,
                         Description = description,
-                        Required = Convert.ToBoolean(isRequired),
-
+                        Required = parameterLocation == ParameterLocation.Path || Convert.ToBoolean(isRequired),
                         Schema = schema
                     });
             }

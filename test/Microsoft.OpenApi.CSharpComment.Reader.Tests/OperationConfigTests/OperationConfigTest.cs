@@ -42,29 +42,28 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             var document = XDocument.Load(inputXmlFile);
             var configDocument = XDocument.Load(configXmlFile);
 
-            var generator = new OpenApiDocumentGenerator();
+            var generator = new CSharpCommentOpenApiGenerator();
+            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
+            GenerationDiagnostic result;
 
-            var result = generator.GenerateOpenApiDocuments(
-                document,
-                inputBinaryFiles,
-                openApiSpecVersion,
-                configDocument);
+            var openApiDocuments = generator.GenerateDocuments(
+                input,
+                out result);
 
             result.Should().NotBeNull();
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
-            result.MainDocument.Should().NotBeNull();
-            result.OperationGenerationResults.Count.Should().Be(expectedOperationGenerationResultsCount);
+            openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+            result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             // Document-level generation should succeed.
-            result.DocumentGenerationResult.Should()
+            result.DocumentGenerationDiagnostic.Should()
                 .BeEquivalentTo(
-                    new DocumentGenerationResult
+                    new DocumentGenerationDiagnostic
                     {
                         GenerationStatus = GenerationStatus.Success
                     });
 
-            var actualDocument = result.MainDocument.SerializeAsJson(openApiSpecVersion);
-
+            var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
             var expectedDocument = File.ReadAllText(expectedJsonFile);
 
             _output.WriteLine(actualDocument);

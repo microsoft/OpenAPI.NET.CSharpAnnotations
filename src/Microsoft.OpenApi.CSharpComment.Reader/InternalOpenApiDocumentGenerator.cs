@@ -16,14 +16,13 @@ using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
-using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
-    /// Provides functionality to parse xml documentation and contract assemblies into Open API documents.
+    /// Provides functionality to parse xml documentation and contract assemblies into OpenAPI documents.
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
@@ -74,23 +73,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         };
 
         /// <summary>
-        /// The internal implementation of an Open Api Document generator.
+        /// The internal implementation of an OpenAPI Document generator.
         /// </summary>
         public InternalOpenApiDocumentGenerator()
         {
             AppDomain.CurrentDomain.AssemblyResolve += ResolveNewtonsoftJsonVersion;
-        }
-
-        private static Assembly ResolveNewtonsoftJsonVersion(object sender, ResolveEventArgs args)
-        {
-            if (args?.Name != null && args.Name.Contains("Newtonsoft.Json"))
-            {
-                // For any assembly conflict regarding Newtonsoft.Json versions,
-                // just load from the existing version of Newtonsoft.Json.
-                return Assembly.LoadFrom("Newtonsoft.Json.dll");
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -122,7 +109,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         new GenerationError
                         {
                             ExceptionType = e.GetType().Name,
-                            Message = e.Message,
+                            Message = e.Message
                         }
                     );
                 }
@@ -148,7 +135,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         TypeFetcher = typeFetcher,
                         ReferenceRegistryManager = referenceRegistryManagerMap[documentVariantInfo],
                         Path = path,
-                        OperationMethod = operationMethod.ToString(),
+                        OperationMethod = operationMethod.ToString()
                     };
 
                     // Apply all the operation-related filters to extract information related to the operation.
@@ -169,7 +156,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
-                                    Message = e.Message,
+                                    Message = e.Message
                                 }
                             );
                         }
@@ -198,7 +185,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     new GenerationError
                                     {
                                         ExceptionType = e.GetType().Name,
-                                        Message = e.Message,
+                                        Message = e.Message
                                     }
                                 );
                             }
@@ -251,10 +238,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="annotationXml">The serialized XDocument representing annotation.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
-        /// <param name="openApiSpecVersion">Specification version of the Open API documents to generate.</param>
+        /// <param name="openApiSpecVersion">Specification version of the OpenAPI documents to generate.</param>
+        /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
+        /// <param name="generationResult">A string representing serialized version of
+        /// <see cref="GenerationDiagnostic"/>>
+        /// </param>
         /// <returns>
-        /// A string representing serialized version of
-        /// <see cref="SerializedOverallGenerationResult"/>>
+        /// A string representing serialized version of <see cref="IDictionary{DocumentVariantInfo, OpenApiDocument}"/>>
         /// </returns>
         /// <remarks>
         /// Given that this function is expected to be called from an isolated domain,
@@ -265,8 +255,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             IList<string> contractAssemblyPaths,
             string configurationXml,
             OpenApiSpecVersion openApiSpecVersion,
-            OpenApiFormat openApiFormat)
+            OpenApiFormat openApiFormat,
+            out string generationResult)
         {
+            IDictionary<DocumentVariantInfo, string> openApiDocuments = new Dictionary<DocumentVariantInfo, string>();
+
             var annotationXmlDocument = XDocument.Parse(annotationXml);
             var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]")
                 .ToList();
@@ -289,46 +282,50 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .ToList();
             }
 
-            SerializedOverallGenerationResult result;
+            GenerationDiagnostic generationDiagnostic;
 
             if (!operationElements.Any())
             {
-                result = new SerializedOverallGenerationResult();
-                result.DocumentGenerationResult = new DocumentGenerationResult
+                generationDiagnostic = new GenerationDiagnostic()
                 {
-                    Errors =
+                    DocumentGenerationDiagnostic = new DocumentGenerationDiagnostic
                     {
-                        new GenerationError
+                        Errors =
                         {
-                            Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
-                        }
-                    },
-                    GenerationStatus = GenerationStatus.Warning
+                            new GenerationError
+                            {
+                                Message = SpecificationGenerationMessages.NoOperationElementFoundToParse
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Warning
+                    }
                 };
 
-                return JsonConvert.SerializeObject(result);
+                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
+                return JsonConvert.SerializeObject(openApiDocuments,
+                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
             }
 
             try
             {
-                result = new SerializedOverallGenerationResult();
+                generationDiagnostic = new GenerationDiagnostic();
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
 
-                var operationGenerationResults = GenerateSpecificationDocuments(
+                var operationGenerationDiagnostics = GenerateSpecificationDocuments(
                     typeFetcher,
                     operationElements,
                     operationConfigElement,
                     documentVariantElementNames,
                     out var documents);
 
-                foreach (var operationGenerationResult in operationGenerationResults)
+                foreach (var operationGenerationDiagnostic in operationGenerationDiagnostics)
                 {
-                    result.OperationGenerationResults.Add(
-                        new OperationGenerationResult(operationGenerationResult));
+                    generationDiagnostic.OperationGenerationDiagnostics.Add(
+                        new OperationGenerationDiagnostic(operationGenerationDiagnostic));
                 }
 
-                var documentGenerationResult = new DocumentGenerationResult();
+                var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
 
                 foreach (var variantInfoDocumentValuePair in documents)
                 {
@@ -348,11 +345,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                         catch (Exception e)
                         {
-                            documentGenerationResult.Errors.Add(
+                            documentGenerationDiagnostic.Errors.Add(
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
-                                    Message = e.Message,
+                                    Message = e.Message
                                 });
                         }
                     }
@@ -372,53 +369,58 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                         catch (Exception e)
                         {
-                            documentGenerationResult.Errors.Add(
+                            documentGenerationDiagnostic.Errors.Add(
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
-                                    Message = e.Message,
+                                    Message = e.Message
                                 });
                         }
                     }
                 }
 
-                if (documentGenerationResult.Errors.Any())
+                if (documentGenerationDiagnostic.Errors.Any())
                 {
-                    documentGenerationResult.GenerationStatus = GenerationStatus.Warning;
-                    result.DocumentGenerationResult = documentGenerationResult;
+                    documentGenerationDiagnostic.GenerationStatus = GenerationStatus.Warning;
+                    generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
                 }
                 else
                 {
-                    documentGenerationResult.GenerationStatus = GenerationStatus.Success;
-                    result.DocumentGenerationResult = documentGenerationResult;
+                    documentGenerationDiagnostic.GenerationStatus = GenerationStatus.Success;
+                    generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
                 }
 
-                foreach (var variantInfoDocumentPair in documents)
-                {
-                    result.Documents[variantInfoDocumentPair.Key] =
-                        variantInfoDocumentPair.Value.Serialize(openApiSpecVersion, openApiFormat);
-                }
+                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
+                openApiDocuments = documents.ToSerializedOpenApiDocuments();
 
-                return JsonConvert.SerializeObject(result);
+                return JsonConvert.SerializeObject(
+                    openApiDocuments,
+                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
             }
             catch (Exception e)
             {
-                result = new SerializedOverallGenerationResult();
-                result.DocumentGenerationResult =
-                    new DocumentGenerationResult
-                    {
-                        Errors =
+                generationDiagnostic = new GenerationDiagnostic
+                {
+                    DocumentGenerationDiagnostic =
+                        new DocumentGenerationDiagnostic
                         {
-                            new GenerationError
+                            Errors =
                             {
-                                ExceptionType = e.GetType().Name,
-                                Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e),
-                            }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
-                    };
+                                new GenerationError
+                                {
+                                    ExceptionType = e.GetType().Name,
+                                    Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e)
+                                }
+                            },
+                            GenerationStatus = GenerationStatus.Failure
+                        }
+                };
 
-                return JsonConvert.SerializeObject(result);
+                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
+
+                return JsonConvert.SerializeObject(
+                    openApiDocuments,
+                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
             }
         }
 
@@ -426,7 +428,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Populate the specification documents for all document variant infos.
         /// </summary>
         /// <returns>The operation generation results from populating the specification documents.</returns>
-        private IList<OperationGenerationResult> GenerateSpecificationDocuments(
+        private IList<OperationGenerationDiagnostic> GenerateSpecificationDocuments(
             TypeFetcher typeFetcher,
             IList<XElement> operationElements,
             XElement operationConfigElement,
@@ -435,7 +437,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         {
             specificationDocuments = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
-            var operationGenerationResults = new List<OperationGenerationResult>();
+            var operationGenerationResults = new List<OperationGenerationDiagnostic>();
 
             var referenceRegistryManagerMap = new Dictionary<DocumentVariantInfo, ReferenceRegistryManager>();
 
@@ -451,19 +453,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 catch (InvalidUrlException e)
                 {
                     operationGenerationResults.Add(
-                        new OperationGenerationResult
+                        new OperationGenerationDiagnostic
                         {
                             Errors =
                             {
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
-                                    Message = e.Message,
+                                    Message = e.Message
                                 }
                             },
                             GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
-                            Path = e.Url,
+                            Path = e.Url
                         });
 
                     continue;
@@ -476,19 +478,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 catch (InvalidVerbException e)
                 {
                     operationGenerationResults.Add(
-                        new OperationGenerationResult
+                        new OperationGenerationDiagnostic
                         {
                             Errors =
                             {
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
-                                    Message = e.Message,
+                                    Message = e.Message
                                 }
                             },
                             GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = e.Verb,
-                            Path = url,
+                            Path = url
                         });
 
                     continue;
@@ -529,10 +531,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                     }
 
-                    var operationGenerationResult = new OperationGenerationResult
+                    var operationGenerationResult = new OperationGenerationDiagnostic
                     {
                         OperationMethod = operationMethod.ToString(),
-                        Path = url,
+                        Path = url
                     };
 
                     if (operationGenerationErrors.Any())
@@ -554,19 +556,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 catch (Exception e)
                 {
                     operationGenerationResults.Add(
-                        new OperationGenerationResult
+                        new OperationGenerationDiagnostic
                         {
                             Errors =
                             {
                                 new GenerationError
                                 {
                                     ExceptionType = e.GetType().Name,
-                                    Message = e.Message,
+                                    Message = e.Message
                                 }
                             },
                             GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = operationMethod.ToString(),
-                            Path = url,
+                            Path = url
                         });
                 }
             }
@@ -579,6 +581,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             }
 
             return operationGenerationResults;
+        }
+
+        private static Assembly ResolveNewtonsoftJsonVersion(object sender, ResolveEventArgs args)
+        {
+            if (args?.Name != null && args.Name.Contains("Newtonsoft.Json"))
+            {
+                // For any assembly conflict regarding Newtonsoft.Json versions,
+                // just load from the existing version of Newtonsoft.Json.
+                return Assembly.LoadFrom("Newtonsoft.Json.dll");
+            }
+
+            return null;
         }
     }
 }
