@@ -586,14 +586,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 referenceRegistryManagerMap[documentVariantInfo]
                     .SchemaReferenceRegistry.References.CopyInto(
                         specificationDocuments[documentVariantInfo].Components.Schemas);
-            }
 
-            foreach(var filter in _generatorConfig.PostProcessingDocumentFilters)
-            {
-                filter.Apply(
-                    specificationDocuments,
-                    new PostProcessingDocumentFilterSettings() {
-                        OperationGenerationDiagnostics = operationGenerationResults });
+                foreach (var filter in _generatorConfig.PostProcessingDocumentFilters)
+                {
+                    filter.Apply(
+                        specificationDocuments[documentVariantInfo],
+                        new PostProcessingDocumentFilterSettings()
+                        {
+                            OperationGenerationDiagnostics = operationGenerationResults
+                        });
+                }
             }
 
             return operationGenerationResults;

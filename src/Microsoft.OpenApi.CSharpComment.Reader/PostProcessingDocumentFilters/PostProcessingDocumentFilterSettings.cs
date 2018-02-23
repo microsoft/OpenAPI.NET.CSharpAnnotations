@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
 {
     /// <summary>
-    /// 
+    /// Settings for <see cref="IPostProcessingDocumentFilter"/>.
     /// </summary>
     public class PostProcessingDocumentFilterSettings
     {

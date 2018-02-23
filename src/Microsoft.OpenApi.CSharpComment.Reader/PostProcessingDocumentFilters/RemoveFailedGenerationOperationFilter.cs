@@ -4,7 +4,6 @@
 // ------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Models;
@@ -12,34 +11,45 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
 {
     /// <summary>
-    /// 
+    /// Removes the operation from the OpenAPI document for which generation failed.
     /// </summary>
     public class RemoveFailedGenerationOperationFilter : IPostProcessingDocumentFilter
     {
         /// <summary>
-        /// 
+        /// Removes the operation from the OpenAPI document for which generation failed.
         /// </summary>
-        /// <param name="specificationDocuments"></param>
-        /// <param name="settings"></param>
+        /// <param name="openApiDocument">The OpenAPI document to process.</param>
+        /// <param name="settings">The filter settings.</param>
         public void Apply(
-            IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments,
+            OpenApiDocument openApiDocument,
             PostProcessingDocumentFilterSettings settings)
         {
-            foreach(var operationDiagnostic in
+            foreach (var operationDiagnostic in
                 settings.OperationGenerationDiagnostics.Where(
                     operationDiagnostic => operationDiagnostic.GenerationStatus == GenerationStatus.Failure))
             {
-                foreach(var key in specificationDocuments.Keys)
+                OperationType operationMethod;
+
+                if (!Enum.TryParse(operationDiagnostic.OperationMethod, true, out operationMethod))
                 {
-                    var document = specificationDocuments[key];
+                    return;
+                }
 
-                    OperationType operationMethod;
-                    Enum.TryParse(operationDiagnostic.OperationMethod, true, out operationMethod);
+                if (!openApiDocument.Paths.ContainsKey(operationDiagnostic.Path))
+                {
+                    return;
+                }
 
-                    if (document.Paths.ContainsKey(operationDiagnostic.Path))
-                    {
-                        document.Paths[operationDiagnostic.Path].Operations.Remove(operationMethod);
-                    }
+                var operations = openApiDocument.Paths[operationDiagnostic.Path].Operations;
+
+                if (operations.Count == 1)
+                {
+                    // If there is only one operation under the path and it failed generation, remove complete path.
+                    openApiDocument.Paths.Remove(operationDiagnostic.Path);
+                }
+                else
+                {
+                    openApiDocument.Paths[operationDiagnostic.Path].Operations.Remove(operationMethod);
                 }
             }
         }

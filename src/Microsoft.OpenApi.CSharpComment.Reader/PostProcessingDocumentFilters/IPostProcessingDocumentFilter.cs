@@ -3,25 +3,25 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System.Collections.Generic;
-using Microsoft.OpenApi.CSharpComment.Reader.Models;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
 {
     /// <summary>
-    /// 
+    /// The class representing the contract of a filter to post process the <see cref="OpenApiDocument"/>
+    /// after its processed by <see cref="IOperationFilter"/> and <see cref="IDocumentFilter"/>.
     /// </summary>
     public interface IPostProcessingDocumentFilter
     {
         /// <summary>
-        /// Applies the filter to post process the <see cref="OpenApiDocument"/> objects in
-        /// <see cref="IDictionary{DocumentVariantInfo, OpenApiDocument}"/>.
+        /// Applies the filter to post process the <see cref="OpenApiDocument"/>.
         /// </summary>
-        /// <param name="specificationDocuments"></param>
-        /// <param name="settings"></param>
+        /// <param name="openApiDocument">The OpenAPI document to process.</param>
+        /// <param name="settings">The filter settings.</param>
         void Apply(
-            IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments,
+            OpenApiDocument openApiDocument,
             PostProcessingDocumentFilterSettings settings);
     }
 }

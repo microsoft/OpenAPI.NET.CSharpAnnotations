@@ -16,36 +16,36 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// <summary>
     /// Holds the configuration needed for the generator including filters.
     /// </summary>
-    public class OpenApiDocumentGeneratorConfig
+    internal class OpenApiDocumentGeneratorConfig
     {
         /// <summary>
         /// Gets the list of document config filters.
         /// </summary>
-        public IList<IDocumentConfigFilter> DocumentConfigFilters { get; set; }
+        internal IList<IDocumentConfigFilter> DocumentConfigFilters { get; set; }
 
         /// <summary>
         /// Gets the list of document filters.
         /// </summary>
-        public IList<IDocumentFilter> DocumentFilters { get; set; }
+        internal IList<IDocumentFilter> DocumentFilters { get; set; }
 
         /// <summary>
         /// Gets the list of operation config filters.
         /// </summary>
-        public IList<IOperationConfigFilter> OperationConfigFilters { get; set; }
+        internal IList<IOperationConfigFilter> OperationConfigFilters { get; set; }
 
         /// <summary>
         /// Gets the list of operation filters.
         /// </summary>
-        public IList<IOperationFilter> OperationFilters { get; set; }
+        internal IList<IOperationFilter> OperationFilters { get; set; }
 
         /// <summary>
         /// Gets the list of preprocessing operation filters.
         /// </summary>
-        public IList<IPreprocessingOperationFilter> PreprocessingOperationFilters { get; set; }
+        internal IList<IPreprocessingOperationFilter> PreprocessingOperationFilters { get; set; }
 
         /// <summary>
-        /// Gets the list of post processing operation filters.
+        /// Gets the list of post processing document filters.
         /// </summary>
-        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
+        internal IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
     }
 }
