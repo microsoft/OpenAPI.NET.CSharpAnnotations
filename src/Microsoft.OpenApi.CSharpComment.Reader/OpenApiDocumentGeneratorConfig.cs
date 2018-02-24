@@ -39,13 +39,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public IList<IOperationFilter> OperationFilters { get; set; }
 
         /// <summary>
-        /// Gets the list of preprocessing operation filters.
-        /// </summary>
-        public IList<IPreprocessingOperationFilter> PreprocessingOperationFilters { get; set; }
-
-        /// <summary>
         /// Gets the list of post processing document filters.
         /// </summary>
         public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
+
+        /// <summary>
+        /// Gets the list of preprocessing operation filters.
+        /// </summary>
+        public IList<IPreprocessingOperationFilter> PreprocessingOperationFilters { get; set; }
     }
 }
