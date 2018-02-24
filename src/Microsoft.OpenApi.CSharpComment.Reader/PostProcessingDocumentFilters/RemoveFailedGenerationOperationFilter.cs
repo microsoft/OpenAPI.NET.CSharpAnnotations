@@ -11,12 +11,12 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
 {
     /// <summary>
-    /// Removes the operation from the OpenAPI document for which generation failed.
+    /// Removes the operations from the OpenAPI document for which generation failed.
     /// </summary>
     public class RemoveFailedGenerationOperationFilter : IPostProcessingDocumentFilter
     {
         /// <summary>
-        /// Removes the operation from the OpenAPI document for which generation failed.
+        /// Removes the operations from the OpenAPI document for which generation failed.
         /// </summary>
         /// <param name="openApiDocument">The OpenAPI document to process.</param>
         /// <param name="settings">The filter settings.</param>
@@ -24,20 +24,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
             OpenApiDocument openApiDocument,
             PostProcessingDocumentFilterSettings settings)
         {
+            if(openApiDocument == null || settings == null)
+            {
+                return;
+            }
+
             foreach (var operationDiagnostic in
                 settings.OperationGenerationDiagnostics.Where(
                     operationDiagnostic => operationDiagnostic.GenerationStatus == GenerationStatus.Failure))
             {
-                OperationType operationMethod;
-
-                if (!Enum.TryParse(operationDiagnostic.OperationMethod, true, out operationMethod))
+                if (!Enum.TryParse(operationDiagnostic.OperationMethod, true, out OperationType operationMethod) ||
+                    !openApiDocument.Paths.ContainsKey(operationDiagnostic.Path))
                 {
-                    return;
-                }
-
-                if (!openApiDocument.Paths.ContainsKey(operationDiagnostic.Path))
-                {
-                    return;
+                    continue;
                 }
 
                 var operations = openApiDocument.Paths[operationDiagnostic.Path].Operations;

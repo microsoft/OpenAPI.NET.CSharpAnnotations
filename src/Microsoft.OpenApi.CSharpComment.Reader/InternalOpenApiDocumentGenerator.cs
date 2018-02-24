@@ -14,11 +14,11 @@ using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
@@ -64,7 +64,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new BranchOptionalPathParametersFilter()
             };
 
-        private static readonly IList<IPostProcessingDocumentFilter> _defaultPostProcessinDocumentFilters =
+        private static readonly IList<IPostProcessingDocumentFilter> _defaultPostProcessingDocumentFilters =
             new List<IPostProcessingDocumentFilter>
             {
                 new RemoveFailedGenerationOperationFilter()
@@ -77,7 +77,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             OperationConfigFilters = _defaultOperationConfigFilters,
             OperationFilters = _defaultOperationFilters,
             PreprocessingOperationFilters = _defaultPreprocessingOperationFilters,
-            PostProcessingDocumentFilters= _defaultPostProcessinDocumentFilters
+            PostProcessingDocumentFilters= _defaultPostProcessingDocumentFilters
         };
 
         /// <summary>

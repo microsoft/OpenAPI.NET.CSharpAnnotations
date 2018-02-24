@@ -21,31 +21,31 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <summary>
         /// Gets the list of document config filters.
         /// </summary>
-        internal IList<IDocumentConfigFilter> DocumentConfigFilters { get; set; }
+        public IList<IDocumentConfigFilter> DocumentConfigFilters { get; set; }
 
         /// <summary>
         /// Gets the list of document filters.
         /// </summary>
-        internal IList<IDocumentFilter> DocumentFilters { get; set; }
+        public IList<IDocumentFilter> DocumentFilters { get; set; }
 
         /// <summary>
         /// Gets the list of operation config filters.
         /// </summary>
-        internal IList<IOperationConfigFilter> OperationConfigFilters { get; set; }
+        public IList<IOperationConfigFilter> OperationConfigFilters { get; set; }
 
         /// <summary>
         /// Gets the list of operation filters.
         /// </summary>
-        internal IList<IOperationFilter> OperationFilters { get; set; }
+        public IList<IOperationFilter> OperationFilters { get; set; }
 
         /// <summary>
         /// Gets the list of preprocessing operation filters.
         /// </summary>
-        internal IList<IPreprocessingOperationFilter> PreprocessingOperationFilters { get; set; }
+        public IList<IPreprocessingOperationFilter> PreprocessingOperationFilters { get; set; }
 
         /// <summary>
         /// Gets the list of post processing document filters.
         /// </summary>
-        internal IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
+        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
     }
 }
