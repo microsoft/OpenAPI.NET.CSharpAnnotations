@@ -23,6 +23,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
         /// Initializes a new instance of the <see cref="InvalidUrlException"/>.
         /// </summary>
         /// <param name="url">The invalid url.</param>
+        /// <param name="message">The exception message.</param>
         public InvalidUrlException(string url, string message)
             : base(string.Format(SpecificationGenerationMessages.InvalidUrl, url, message))
         {

@@ -14,6 +14,7 @@ using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
@@ -63,13 +64,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new BranchOptionalPathParametersFilter()
             };
 
+        private static readonly IList<IPostProcessingDocumentFilter> _defaultPostProcessingDocumentFilters =
+            new List<IPostProcessingDocumentFilter>
+            {
+                new RemoveFailedGenerationOperationFilter()
+            };
+
         private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig
         {
             DocumentConfigFilters = _defaultDocumentConfigFilters,
             DocumentFilters = _defaultDocumentFilters,
             OperationConfigFilters = _defaultOperationConfigFilters,
             OperationFilters = _defaultOperationFilters,
-            PreprocessingOperationFilters = _defaultPreprocessingOperationFilters
+            PreprocessingOperationFilters = _defaultPreprocessingOperationFilters,
+            PostProcessingDocumentFilters= _defaultPostProcessingDocumentFilters
         };
 
         /// <summary>
@@ -544,7 +552,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             operationGenerationResult.Errors.Add(new GenerationError(error));
                         }
 
-                        operationGenerationResult.GenerationStatus = GenerationStatus.Warning;
+                        operationGenerationResult.GenerationStatus = GenerationStatus.Failure;
                     }
                     else
                     {
@@ -578,6 +586,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 referenceRegistryManagerMap[documentVariantInfo]
                     .SchemaReferenceRegistry.References.CopyInto(
                         specificationDocuments[documentVariantInfo].Components.Schemas);
+
+                foreach (var filter in _generatorConfig.PostProcessingDocumentFilters)
+                {
+                    filter.Apply(
+                        specificationDocuments[documentVariantInfo],
+                        new PostProcessingDocumentFilterSettings()
+                        {
+                            OperationGenerationDiagnostics = operationGenerationResults
+                        });
+                }
             }
 
             return operationGenerationResults;

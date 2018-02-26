@@ -348,60 +348,6 @@
         }
       }
     },
-    "/V3/samples/{id}": {
-      "get": {
-        "tags": [
-          "Sample V3"
-        ],
-        "summary": "Sample get 2",
-        "operationId": "getV3SamplesById",
-        "parameters": [
-          {
-            "name": "sampleHeaderParam1",
-            "in": "header",
-            "description": "Header param 1",
-            "schema": {
-              "type": "number",
-              "format": "float"
-            }
-          },
-          {
-            "name": "sampleHeaderParam2",
-            "in": "header",
-            "description": "Header param 2",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sampleHeaderParam3",
-            "in": "header",
-            "description": "Header param 3",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "The object id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "queryString",
-            "in": "query",
-            "description": "The sample query string",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": { }
-      }
-    },
     "/V2/samples/{id}": {
       "delete": {
         "tags": [

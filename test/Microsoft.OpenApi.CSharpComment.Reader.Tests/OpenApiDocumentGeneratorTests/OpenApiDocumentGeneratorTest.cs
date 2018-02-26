@@ -107,7 +107,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             };
         }
 
-        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldYieldWarning()
+        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldRemoveFailedOperations()
         {
             // Parameters that have no in attributes and not present in the URL.
             yield return new object[]
@@ -141,7 +141,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
                             }
                         },
-                        GenerationStatus = GenerationStatus.Warning
+                        GenerationStatus = GenerationStatus.Failure
                     }
                 }
             };
@@ -179,7 +179,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
                             }
                         },
-                        GenerationStatus = GenerationStatus.Warning
+                        GenerationStatus = GenerationStatus.Failure
                     }
                 }
             };
@@ -217,7 +217,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}"),
                             }
                         },
-                        GenerationStatus = GenerationStatus.Warning
+                        GenerationStatus = GenerationStatus.Failure
                     }
                 }
             };
@@ -252,7 +252,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                 Message = SpecificationGenerationMessages.UndocumentedGenericType,
                             }
                         },
-                        GenerationStatus = GenerationStatus.Warning
+                        GenerationStatus = GenerationStatus.Failure
                     }
                 }
             };
@@ -287,7 +287,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                 Message = SpecificationGenerationMessages.UnorderedGenericType,
                             }
                         },
-                        GenerationStatus = GenerationStatus.Warning
+                        GenerationStatus = GenerationStatus.Failure
                     }
                 }
             };
@@ -597,15 +597,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldYieldWarning))]
-        public void InvalidDocumentationShouldYieldWarning(
+        [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldRemoveFailedOperations))]
+        public void InvalidDocumentationShouldRemoveFailedOperations(
             string testCaseName,
             string inputXmlFile,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             string expectedJsonFile,
-            IList<OperationGenerationDiagnostic> expectedWarningOperationGenerationResults)
+            IList<OperationGenerationDiagnostic> expectedFailureOperationGenerationResults)
         {
             _output.WriteLine(testCaseName);
 
@@ -624,12 +624,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                      openApiDocuments.ToSerializedOpenApiDocuments(),
                      new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
-            result.GenerationStatus.Should().Be(GenerationStatus.Warning);
+            result.GenerationStatus.Should().Be(GenerationStatus.Failure);
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
-            var warningPaths = result.OperationGenerationDiagnostics.Where(
-                    p => p.GenerationStatus == GenerationStatus.Warning)
+            var failedPaths = result.OperationGenerationDiagnostics.Where(
+                    p => p.GenerationStatus == GenerationStatus.Failure)
                 .ToList();
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
@@ -637,7 +637,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             _output.WriteLine(actualDocument);
 
-            warningPaths.Should().BeEquivalentTo(expectedWarningOperationGenerationResults);
+            failedPaths.Should().BeEquivalentTo(expectedFailureOperationGenerationResults);
 
             // We are doing serialization and deserialization to force the resulting actual document
             // to have the exact fields we will see in the resulting document based on the contract resolver.
