@@ -82,6 +82,9 @@
     <Compile Include="OperationFilters\ParamToParameterFilter.cs" />
     <Compile Include="OperationFilters\ResponseToResponseFilter.cs" />
     <Compile Include="OperationFilters\OperationFilterSettings.cs" />
+    <Compile Include="PostProcessingDocumentFilters\IPostProcessingDocumentFilter.cs" />
+    <Compile Include="PostProcessingDocumentFilters\PostProcessingDocumentFilterSettings.cs" />
+    <Compile Include="PostProcessingDocumentFilters\RemoveFailedGenerationOperationFilter.cs" />
     <Compile Include="PreprocessingOperationFilters\ConvertAlternativeParamTagsFilter.cs" />
     <Compile Include="PreprocessingOperationFilters\PopulateInAttributeFilter.cs" />
     <Compile Include="PreprocessingOperationFilters\IPreprocessingOperationFilter.cs" />

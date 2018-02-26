@@ -9,13 +9,14 @@ using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
     /// <summary>
     /// Holds the configuration needed for the generator including filters.
     /// </summary>
-    public class OpenApiDocumentGeneratorConfig
+    internal class OpenApiDocumentGeneratorConfig
     {
         /// <summary>
         /// Gets the list of document config filters.
@@ -36,6 +37,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Gets the list of operation filters.
         /// </summary>
         public IList<IOperationFilter> OperationFilters { get; set; }
+
+        /// <summary>
+        /// Gets the list of post processing document filters.
+        /// </summary>
+        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
 
         /// <summary>
         /// Gets the list of preprocessing operation filters.
