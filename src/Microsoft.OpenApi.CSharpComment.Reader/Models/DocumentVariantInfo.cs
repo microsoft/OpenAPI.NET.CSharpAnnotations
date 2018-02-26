@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
@@ -42,13 +41,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// Gets or sets the other attributes related to this document variant.
         /// </summary>
-        [JsonProperty]
         public IDictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the categorizer used to fork the document.
         /// </summary>
-        [JsonProperty]
         public string Categorizer { get; set; }
 
         /// <summary>
@@ -60,7 +57,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// Gets or sets the title of this document variant.
         /// </summary>
-        [JsonProperty]
         public string Title { get; set; }
 
         /// <summary>
@@ -94,13 +90,5 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// Gets the hash code.
         /// </summary>
         public override int GetHashCode() => new {Title, Categorizer}.GetHashCode();
-
-        /// <summary>
-        /// Gets the string representation.
-        /// </summary>
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
     }
 }

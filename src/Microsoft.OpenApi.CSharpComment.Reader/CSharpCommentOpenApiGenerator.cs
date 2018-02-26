@@ -7,7 +7,6 @@ using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
@@ -94,25 +93,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 }
             }
 
-            using (var isolatedDomain = new AppDomainCreator<InternalOpenApiDocumentGenerator>())
-            {
-                string serializedGenerationDiagnostic;
+            var internalOpenApiDocumentGenerator = new InternalOpenApiDocumentGenerator();
 
-                var documents = isolatedDomain.Object.GenerateOpenApiDocuments(
-                    cSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocument.ToString(),
-                    cSharpCommentOpenApiGeneratorConfig.AssemblyPaths,
-                    cSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument?.ToString(),
-                    cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
-                    cSharpCommentOpenApiGeneratorConfig.OpenApiFormat,
-                    out serializedGenerationDiagnostic);
-
-                generationDiagnostic =
-                    JsonConvert.DeserializeObject<GenerationDiagnostic>(serializedGenerationDiagnostic);
-
-                return JsonConvert.DeserializeObject<Dictionary<DocumentVariantInfo, string>>(
-                    documents,
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
-            }
+            return internalOpenApiDocumentGenerator.GenerateOpenApiDocuments(
+                cSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocument.ToString(),
+                cSharpCommentOpenApiGeneratorConfig.AssemblyPaths,
+                cSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument?.ToString(),
+                cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
+                cSharpCommentOpenApiGeneratorConfig.OpenApiFormat,
+                out generationDiagnostic);
         }
     }
 }

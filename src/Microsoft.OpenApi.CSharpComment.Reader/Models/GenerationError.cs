@@ -3,9 +3,6 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
-using Newtonsoft.Json;
-
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
     /// <summary>
@@ -42,7 +39,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// The message providing details on the generation.
         /// </summary>
-        [JsonProperty]
         public string Message { get; set; }
     }
 }
