@@ -501,10 +501,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         /// </summary> 
         public static IEnumerable<object[]> GetTestCasesForValidDocumentationShouldReturnCorrectSerializedDocument()
         {
-            // Standard, original valid XML document with JSON as output
+            // Standard, original valid XML document with JSON - V3 Open Api Document as output
             yield return new object[]
             {
-                "Standard valid XML document (JSON)",
+                "Standard valid XML document (V3-JSON)",
                 Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
@@ -520,10 +520,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                     "Annotation.Json")
             };
 
-            // Standard, original valid XML document with YAML as output
+            // Standard, original valid XML document with YAML - V3 Open Api Document as output
             yield return new object[]
             {
-                "Standard valid XML document (YAML)",
+                "Standard valid XML document (V3-YAML)",
                 Path.Combine(InputDirectory, "Annotation.xml"),
                 new List<string>
                 {
@@ -537,6 +537,44 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "Annotation.Json")
+            };
+
+            // Standard, original valid XML document with YAML - V2 Open Api Document as output
+            yield return new object[]
+            {
+                "Standard valid XML document (V2-YAML)",
+                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                },
+                OpenApiSpecVersion.OpenApi2_0,
+                OpenApiFormat.Yaml,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationV2.Json")
+            };
+
+            // Standard, original valid XML document with JSON - V2 Open Api Document as output
+            yield return new object[]
+            {
+                "Standard valid XML document (V2-JSON)",
+                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                },
+                OpenApiSpecVersion.OpenApi2_0,
+                OpenApiFormat.Json,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationV2.Json")
             };
         }
 
