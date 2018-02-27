@@ -80,14 +80,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         };
 
         /// <summary>
-        /// The internal implementation of an OpenAPI Document generator.
-        /// </summary>
-        public InternalOpenApiDocumentGenerator()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += ResolveNewtonsoftJsonVersion;
-        }
-
-        /// <summary>
         /// Add operation and update the operation filter settings based on the given document variant info.
         /// </summary>
         private void AddOperation(
@@ -587,18 +579,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             }
 
             return operationGenerationResults;
-        }
-
-        private static Assembly ResolveNewtonsoftJsonVersion(object sender, ResolveEventArgs args)
-        {
-            if (args?.Name != null && args.Name.Contains("Newtonsoft.Json"))
-            {
-                // For any assembly conflict regarding Newtonsoft.Json versions,
-                // just load from the existing version of Newtonsoft.Json.
-                return Assembly.LoadFrom("Newtonsoft.Json.dll");
-            }
-
-            return null;
         }
     }
 }
