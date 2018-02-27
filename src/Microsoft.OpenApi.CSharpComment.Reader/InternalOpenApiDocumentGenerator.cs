@@ -385,9 +385,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
                 }
 
-                openApiDocuments = documents.ToSerializedOpenApiDocuments();
-
-                return openApiDocuments;
+                return documents.ToSerializedOpenApiDocuments();
             }
             catch (Exception e)
             {

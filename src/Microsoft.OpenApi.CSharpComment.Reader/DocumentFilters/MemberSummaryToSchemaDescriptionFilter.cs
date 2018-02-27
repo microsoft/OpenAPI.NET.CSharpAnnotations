@@ -63,10 +63,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
                 var propertyName =
                     splitPropertyName[splitPropertyName.Length - 1];
 
-                var propertyInfo = settings.TypeFetcher.LoadType(className)
-                    ?.GetProperties()
-                    .FirstOrDefault(p => p.Name == propertyName);
-
                 foreach (var schema in schemas)
                 {
                     if (schema.Value.Properties.ContainsKey(propertyName))
