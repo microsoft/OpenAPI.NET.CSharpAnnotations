@@ -10,7 +10,6 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
@@ -126,22 +125,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 
                     // Check if the property is read-only.
                     innerSchema.ReadOnly = !propertyInfo.CanWrite;
-
-                    var jsonPropertyAttributes = (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(typeof(JsonPropertyAttribute), inherit: false);
-                    if (jsonPropertyAttributes.Any())
-                    {
-                        // Use the property name in JsonProperty if given.
-                        if (jsonPropertyAttributes[0].PropertyName != null)
-                        {
-                            propertyName = jsonPropertyAttributes[0].PropertyName;
-                        }
-
-                        // Check if the property is required.
-                        if (jsonPropertyAttributes[0].Required == Required.Always)
-                        {
-                            schema.Required.Add(propertyName);
-                        }
-                    }
 
                     schema.Properties[propertyName] = innerSchema;
                 }

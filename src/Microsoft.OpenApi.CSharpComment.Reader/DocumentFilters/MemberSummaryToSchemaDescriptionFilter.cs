@@ -9,7 +9,6 @@ using System.Xml.XPath;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 {
@@ -63,26 +62,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 
                 var propertyName =
                     splitPropertyName[splitPropertyName.Length - 1];
-
-                var propertyInfo = settings.TypeFetcher.LoadType(className)
-                    ?.GetProperties()
-                    .FirstOrDefault(p => p.Name == propertyName);
-
-                if (propertyInfo != null)
-                {
-                    var jsonPropertyAttributes =
-                        (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(
-                            typeof(JsonPropertyAttribute),
-                            inherit: false);
-                    if (jsonPropertyAttributes.Any())
-                    {
-                        // Extract the property name in JsonProperty if given.
-                        if (jsonPropertyAttributes[0].PropertyName != null)
-                        {
-                            propertyName = jsonPropertyAttributes[0].PropertyName;
-                        }
-                    }
-                }
 
                 foreach (var schema in schemas)
                 {

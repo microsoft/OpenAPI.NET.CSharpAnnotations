@@ -4,7 +4,6 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 {
@@ -54,19 +53,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// The generation status for the operation.
         /// </summary>
-        [JsonProperty]
         public GenerationStatus GenerationStatus { get; set; }
 
         /// <summary>
         /// The operation method.
         /// </summary>
-        [JsonProperty]
         public string OperationMethod { get; set; }
 
         /// <summary>
         /// The path.
         /// </summary>
-        [JsonProperty]
         public string Path { get; set; }
     }
 }

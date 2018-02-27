@@ -3,8 +3,8 @@
 
 using System;
 using System.Runtime.Serialization;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
 {
@@ -28,8 +28,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
                     SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
                     existingDocumentVariantInfo.Categorizer,
                     existingDocumentVariantInfo.Title,
-                    JsonConvert.SerializeObject(existingDocumentVariantInfo.Attributes),
-                    JsonConvert.SerializeObject(newDocumentVariantInfo.Attributes)))
+                    existingDocumentVariantInfo.Attributes.ToSerializedString(),
+                    newDocumentVariantInfo.Attributes.ToSerializedString()))
         {
         }
 

@@ -18,7 +18,6 @@ using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
@@ -79,14 +78,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             PreprocessingOperationFilters = _defaultPreprocessingOperationFilters,
             PostProcessingDocumentFilters= _defaultPostProcessingDocumentFilters
         };
-
-        /// <summary>
-        /// The internal implementation of an OpenAPI Document generator.
-        /// </summary>
-        public InternalOpenApiDocumentGenerator()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += ResolveNewtonsoftJsonVersion;
-        }
 
         /// <summary>
         /// Add operation and update the operation filter settings based on the given document variant info.
@@ -248,7 +239,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
         /// <param name="openApiSpecVersion">Specification version of the OpenAPI documents to generate.</param>
         /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
-        /// <param name="generationResult">A string representing serialized version of
+        /// <param name="generationDiagnostic">A string representing serialized version of
         /// <see cref="GenerationDiagnostic"/>>
         /// </param>
         /// <returns>
@@ -258,13 +249,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Given that this function is expected to be called from an isolated domain,
         /// the input and output must be serializable to string or value type.
         /// </remarks>
-        public string GenerateOpenApiDocuments(
+        public IDictionary<DocumentVariantInfo, string> GenerateOpenApiDocuments(
             string annotationXml,
             IList<string> contractAssemblyPaths,
             string configurationXml,
             OpenApiSpecVersion openApiSpecVersion,
             OpenApiFormat openApiFormat,
-            out string generationResult)
+            out GenerationDiagnostic generationDiagnostic)
         {
             IDictionary<DocumentVariantInfo, string> openApiDocuments = new Dictionary<DocumentVariantInfo, string>();
 
@@ -290,8 +281,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .ToList();
             }
 
-            GenerationDiagnostic generationDiagnostic;
-
             if (!operationElements.Any())
             {
                 generationDiagnostic = new GenerationDiagnostic()
@@ -309,9 +298,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     }
                 };
 
-                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
-                return JsonConvert.SerializeObject(openApiDocuments,
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
+                return openApiDocuments;
             }
 
             try
@@ -398,12 +385,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
                 }
 
-                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
-                openApiDocuments = documents.ToSerializedOpenApiDocuments();
-
-                return JsonConvert.SerializeObject(
-                    openApiDocuments,
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
+                return documents.ToSerializedOpenApiDocuments();
             }
             catch (Exception e)
             {
@@ -424,11 +406,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         }
                 };
 
-                generationResult = JsonConvert.SerializeObject(generationDiagnostic);
-
-                return JsonConvert.SerializeObject(
-                    openApiDocuments,
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>());
+                return openApiDocuments;
             }
         }
 
@@ -599,18 +577,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             }
 
             return operationGenerationResults;
-        }
-
-        private static Assembly ResolveNewtonsoftJsonVersion(object sender, ResolveEventArgs args)
-        {
-            if (args?.Name != null && args.Name.Contains("Newtonsoft.Json"))
-            {
-                // For any assembly conflict regarding Newtonsoft.Json versions,
-                // just load from the existing version of Newtonsoft.Json.
-                return Assembly.LoadFrom("Newtonsoft.Json.dll");
-            }
-
-            return null;
         }
     }
 }
