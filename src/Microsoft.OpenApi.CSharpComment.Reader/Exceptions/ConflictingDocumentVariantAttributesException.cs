@@ -3,6 +3,7 @@
 
 using System;
 using System.Runtime.Serialization;
+using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
@@ -27,8 +28,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
                     SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
                     existingDocumentVariantInfo.Categorizer,
                     existingDocumentVariantInfo.Title,
-                    existingDocumentVariantInfo.Attributes.ToString(),
-                    newDocumentVariantInfo.Attributes.ToString()))
+                    existingDocumentVariantInfo.Attributes.ToSerializedString(),
+                    newDocumentVariantInfo.Attributes.ToSerializedString()))
         {
         }
 

@@ -89,7 +89,6 @@
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
     <Compile Include="FilterTests\BranchOptionalPathParametersFilterTest.cs" />
     <Compile Include="DocumentVariantTests\DocumentVariantTestCases.cs" />
-    <Compile Include="NewtonsoftVersionTests\NewtonsoftVersionTest.cs" />
     <Compile Include="OperationConfigTests\OperationConfigTest.cs" />
     <Compile Include="DefaultSettingsFixtureCollection.cs" />
     <Compile Include="DefaultSettingsFixture.cs" />
@@ -131,21 +130,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationSummaryWithTags.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Input\Annotation.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Input\V10.0.3\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Input\V7.0.1\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Input\V8.0.3\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Input\V9.0.1\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationArrayInParamTags.xml">
@@ -330,9 +314,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationArrayInParamTags.Json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NewtonsoftVersionTests\Output\Annotation.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationSummaryWithTags.Json">

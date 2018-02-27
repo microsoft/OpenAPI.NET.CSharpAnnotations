@@ -52,7 +52,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             assemblyPath = assemblyPath.Trim();
             var fullPath = Path.GetFullPath(assemblyPath);
 
-            var binPath = Path.Combine(domain.BaseDirectory, domain.SetupInformation.PrivateBinPath);
+            // The privateBinPath is a ; seperated list of paths located in the base path of the 
+            // application where the CLR will attempt to locate assemblies during the load process.
+            // Here we add the location where we will copy dlls to.
+            var privateBinPath = string.IsNullOrWhiteSpace(domain.SetupInformation.PrivateBinPath) ? "DefaultGenerationBin"
+                : domain.SetupInformation.PrivateBinPath + ";DefaultGenerationBin";
+
+            var binPath = Path.Combine(domain.BaseDirectory, privateBinPath);
             Directory.CreateDirectory(binPath);
 
             var newFilePath = Path.Combine(binPath, Path.GetFileName(assemblyPath));
