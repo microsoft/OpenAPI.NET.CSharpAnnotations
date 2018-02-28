@@ -19,7 +19,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
     /// Parses the value of the URL and creates multiple operations in the Paths object when
     /// there are optional path parameters.
     /// </summary>
-    public class BranchOptionalPathParametersFilter : IPreprocessingOperationFilter
+    public class BranchOptionalPathParametersFilter : IPreProcessingOperationFilter
     {
         /// <summary>
         /// Fetches the URL value and creates multiple operations based on optional parameters.
@@ -27,7 +27,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        public void Apply(OpenApiPaths paths, XElement element, PreprocessingOperationFilterSettings settings)
+        public void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
         {
             var paramElements = element.Elements()
                 .Where(

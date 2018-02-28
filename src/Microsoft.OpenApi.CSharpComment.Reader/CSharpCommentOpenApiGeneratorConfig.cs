@@ -4,6 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
+using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
@@ -29,9 +35,45 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         {
             AnnotationXmlDocument = annotationXmlDocument
                 ?? throw new ArgumentNullException(nameof(annotationXmlDocument));
+
             AssemblyPaths = assemblyPaths
                 ?? throw new ArgumentNullException(nameof(assemblyPaths));
+
             OpenApiSpecificationVersion = openApiSpecificationVersion;
+
+            DocumentConfigFilters = new List<IDocumentConfigFilter>
+                {
+                    new DocumentVariantAttributesFilter()
+                };
+            DocumentFilters = new List<IDocumentFilter>
+                {
+                    new AssemblyNameToInfoFilter(),
+                    new UrlToServerFilter(),
+                    new MemberSummaryToSchemaDescriptionFilter()
+                };
+            OperationConfigFilters = new List<IOperationConfigFilter>
+                {
+                    new CommonAnnotationFilter()
+                };
+            OperationFilters = new List<IOperationFilter>
+                {
+                    new GroupToTagFilter(),
+                    new ParamToParameterFilter(),
+                    new ParamToRequestBodyFilter(),
+                    new ResponseToResponseFilter(),
+                    new RemarksToDescriptionFilter(),
+                    new SummaryToSummaryFilter()
+                };
+            PreProcessingOperationFilters = new List<IPreProcessingOperationFilter>
+                {
+                    new ConvertAlternativeParamTagsFilter(),
+                    new PopulateInAttributeFilter(),
+                    new BranchOptionalPathParametersFilter()
+                };
+            PostProcessingDocumentFilters = new List<IPostProcessingDocumentFilter>
+                {
+                    new RemoveFailedGenerationOperationFilter()
+                };
         }
 
         /// <summary>
@@ -51,6 +93,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public IList<string> AssemblyPaths { get; }
 
         /// <summary>
+        /// Gets the list of document config filters.
+        /// </summary>
+        public IList<IDocumentConfigFilter> DocumentConfigFilters { get; set; }
+
+        /// <summary>
+        /// Gets the list of document filters.
+        /// </summary>
+        public IList<IDocumentFilter> DocumentFilters { get; }
+
+        /// <summary>
         /// The format (YAML or JSON) of the OpenAPI document to generate.
         /// </summary>
         public OpenApiFormat OpenApiFormat { get; set; } = OpenApiFormat.Json;
@@ -59,5 +111,25 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// The specification version of the OpenAPI document to generate.
         /// </summary>
         public OpenApiSpecVersion OpenApiSpecificationVersion { get; }
+
+        /// <summary>
+        /// Gets the list of operation config filters.
+        /// </summary>
+        public IList<IOperationConfigFilter> OperationConfigFilters { get; }
+
+        /// <summary>
+        /// Gets the list of operation filters.
+        /// </summary>
+        public IList<IOperationFilter> OperationFilters { get; }
+
+        /// <summary>
+        /// Gets the list of post processing document filters.
+        /// </summary>
+        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; }
+
+        /// <summary>
+        /// Gets the list of preprocessing operation filters.
+        /// </summary>
+        public IList<IPreProcessingOperationFilter> PreProcessingOperationFilters { get; }
     }
 }

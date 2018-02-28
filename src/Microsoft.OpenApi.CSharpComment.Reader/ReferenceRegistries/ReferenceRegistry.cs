@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Interfaces;
 namespace Microsoft.OpenApi.CSharpComment.Reader.ReferenceRegistries
 {
     /// <summary>
-    /// Reference Registry for an <see cref="IReferenceable"/> class.
+    /// Reference Registry for an <see cref="IOpenApiReferenceable"/> class.
     /// </summary>
     public abstract class ReferenceRegistry<TInput, TOutput>
         where TOutput : IOpenApiReferenceable

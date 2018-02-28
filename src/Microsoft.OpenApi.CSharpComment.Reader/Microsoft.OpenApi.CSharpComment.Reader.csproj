@@ -87,8 +87,8 @@
     <Compile Include="PostProcessingDocumentFilters\RemoveFailedGenerationOperationFilter.cs" />
     <Compile Include="PreprocessingOperationFilters\ConvertAlternativeParamTagsFilter.cs" />
     <Compile Include="PreprocessingOperationFilters\PopulateInAttributeFilter.cs" />
-    <Compile Include="PreprocessingOperationFilters\IPreprocessingOperationFilter.cs" />
-    <Compile Include="PreprocessingOperationFilters\PreprocessingOperationFilterSettings.cs" />
+    <Compile Include="PreprocessingOperationFilters\IPreProcessingOperationFilter.cs" />
+    <Compile Include="PreprocessingOperationFilters\PreProcessingOperationFilterSettings.cs" />
     <Compile Include="OperationHandler.cs" />
     <Compile Include="TypeFetcher.cs" />
     <Compile Include="DocumentFilters\AssemblyNameToInfoFilter.cs" />
@@ -96,7 +96,6 @@
     <Compile Include="DocumentFilters\IDocumentFilter.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Models\DocumentVariantInfo.cs" />
-    <Compile Include="OpenApiDocumentGeneratorConfig.cs" />
     <Compile Include="OperationFilters\GroupToTagFilter.cs" />
     <Compile Include="PreprocessingOperationFilters\BranchOptionalPathParametersFilter.cs" />
     <Compile Include="OperationFilters\ParamToRequestBodyFilter.cs" />

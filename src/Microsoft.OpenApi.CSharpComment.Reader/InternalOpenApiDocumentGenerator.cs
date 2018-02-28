@@ -26,58 +26,33 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
     {
-        private static readonly IList<IDocumentConfigFilter> _defaultDocumentConfigFilters =
-            new List<IDocumentConfigFilter>
-            {
-                new DocumentVariantAttributesFilter()
-            };
+        private readonly IList<IDocumentConfigFilter> _documentConfigFilters;
 
-        private static readonly IList<IDocumentFilter> _defaultDocumentFilters = new List<IDocumentFilter>
+        private readonly IList<IDocumentFilter> _documentFilters;
+
+        private readonly IList<IOperationConfigFilter> _operationConfigFilters;
+
+        private readonly IList<IOperationFilter> _operationFilters;
+
+        private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
+
+        private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
+
+        public InternalOpenApiDocumentGenerator(
+            IList<IDocumentConfigFilter> documentConfigFilters,
+            IList<IDocumentFilter> documentFilters,
+            IList<IOperationConfigFilter> operationConfigFilters,
+            IList<IOperationFilter> operationFilters,
+            IList<IPreProcessingOperationFilter> preProcessingOperationFilters,
+            IList<IPostProcessingDocumentFilter> postProcessingDocumentFilters)
         {
-            new AssemblyNameToInfoFilter(),
-            new UrlToServerFilter(),
-            new MemberSummaryToSchemaDescriptionFilter()
-        };
-
-        private static readonly IList<IOperationConfigFilter> _defaultOperationConfigFilters =
-            new List<IOperationConfigFilter>
-            {
-                new CommonAnnotationFilter()
-            };
-
-        private static readonly IList<IOperationFilter> _defaultOperationFilters = new List<IOperationFilter>
-        {
-            new GroupToTagFilter(),
-            new ParamToParameterFilter(),
-            new ParamToRequestBodyFilter(),
-            new ResponseToResponseFilter(),
-            new RemarksToDescriptionFilter(),
-            new SummaryToSummaryFilter()
-        };
-
-        private static readonly IList<IPreprocessingOperationFilter> _defaultPreprocessingOperationFilters =
-            new List<IPreprocessingOperationFilter>
-            {
-                new ConvertAlternativeParamTagsFilter(),
-                new PopulateInAttributeFilter(),
-                new BranchOptionalPathParametersFilter()
-            };
-
-        private static readonly IList<IPostProcessingDocumentFilter> _defaultPostProcessingDocumentFilters =
-            new List<IPostProcessingDocumentFilter>
-            {
-                new RemoveFailedGenerationOperationFilter()
-            };
-
-        private readonly OpenApiDocumentGeneratorConfig _generatorConfig = new OpenApiDocumentGeneratorConfig
-        {
-            DocumentConfigFilters = _defaultDocumentConfigFilters,
-            DocumentFilters = _defaultDocumentFilters,
-            OperationConfigFilters = _defaultOperationConfigFilters,
-            OperationFilters = _defaultOperationFilters,
-            PreprocessingOperationFilters = _defaultPreprocessingOperationFilters,
-            PostProcessingDocumentFilters= _defaultPostProcessingDocumentFilters
-        };
+            _documentConfigFilters = documentConfigFilters;
+            _documentFilters = documentFilters;
+            _operationConfigFilters = operationConfigFilters;
+            _operationFilters = operationFilters;
+            _preProcessingOperationFilters = preProcessingOperationFilters;
+            _postProcessingDocumentFilters = postProcessingDocumentFilters;
+        }
 
         /// <summary>
         /// Add operation and update the operation filter settings based on the given document variant info.
@@ -93,14 +68,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         {
             var paths = new OpenApiPaths();
 
-            foreach (var preprocessingOperationFilter in _generatorConfig.PreprocessingOperationFilters)
+            foreach (var preprocessingOperationFilter in _preProcessingOperationFilters)
             {
                 try
                 {
                     preprocessingOperationFilter.Apply(
                         paths,
                         operationElement,
-                        new PreprocessingOperationFilterSettings());
+                        new PreProcessingOperationFilterSettings());
                 }
                 catch (Exception e)
                 {
@@ -140,7 +115,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     // Apply all the operation-related filters to extract information related to the operation.
                     // It is important that these are applied before the config filters below
                     // since the config filters may rely on information generated from operation filters.
-                    foreach (var operationFilter in _generatorConfig.OperationFilters)
+                    foreach (var operationFilter in _operationFilters)
                     {
                         try
                         {
@@ -165,7 +140,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     {
                         // Apply the config-related filters to extract information from the config xml
                         // that can be applied to the operations.
-                        foreach (var configFilter in _generatorConfig.OperationConfigFilters)
+                        foreach (var configFilter in _operationConfigFilters)
                         {
                             try
                             {
@@ -175,7 +150,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     new OperationConfigFilterSettings
                                     {
                                         OperationFilterSettings = operationFilterSettings,
-                                        OperationFilters = _generatorConfig.OperationFilters
+                                        OperationFilters = _operationFilters
                                     });
                             }
                             catch (Exception e)
@@ -326,7 +301,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 {
                     var openApiDocument = variantInfoDocumentValuePair.Value;
 
-                    foreach (var documentFilter in _generatorConfig.DocumentFilters)
+                    foreach (var documentFilter in _documentFilters)
                     {
                         try
                         {
@@ -352,7 +327,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
                 if (documentConfigElement != null)
                 {
-                    foreach (var documentConfigFilter in _generatorConfig.DocumentConfigFilters)
+                    foreach (var documentConfigFilter in _documentConfigFilters)
                     {
                         try
                         {
@@ -565,7 +540,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     .SchemaReferenceRegistry.References.CopyInto(
                         specificationDocuments[documentVariantInfo].Components.Schemas);
 
-                foreach (var filter in _generatorConfig.PostProcessingDocumentFilters)
+                foreach (var filter in _postProcessingDocumentFilters)
                 {
                     filter.Apply(
                         specificationDocuments[documentVariantInfo],
