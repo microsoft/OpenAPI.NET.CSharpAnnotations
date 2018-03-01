@@ -19,13 +19,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     public class CSharpCommentOpenApiGeneratorFilterConfig
     {
-        public static readonly IReadOnlyList<IDocumentConfigFilter> _defaultDocumentConfigFilters =
+        public static readonly IReadOnlyList<IDocumentConfigFilter> DefaultDocumentConfigFilters =
             new List<IDocumentConfigFilter>
             {
                 new DocumentVariantAttributesFilter()
             };
 
-        public static readonly IReadOnlyList<IDocumentFilter> _defaultDocumentFilters =
+        public static readonly IReadOnlyList<IDocumentFilter> DefaultDocumentFilters =
             new List<IDocumentFilter>
             {
                 new AssemblyNameToInfoFilter(),
@@ -33,13 +33,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new MemberSummaryToSchemaDescriptionFilter()
             };
 
-        public static readonly IReadOnlyList<IOperationConfigFilter> _defaultOperationConfigFilters =
+        public static readonly IReadOnlyList<IOperationConfigFilter> DefaultOperationConfigFilters =
             new List<IOperationConfigFilter>
             {
                 new CommonAnnotationFilter()
             };
 
-        public static readonly IReadOnlyList<IOperationFilter> _defaultOperationFilters =
+        public static readonly IReadOnlyList<IOperationFilter> DefaultOperationFilters =
             new List<IOperationFilter>
             {
                 new GroupToTagFilter(),
@@ -50,7 +50,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new SummaryToSummaryFilter()
             };
 
-        public static readonly IReadOnlyList<IPreProcessingOperationFilter> _defaultPreProcessingOperationFilters =
+        public static readonly IReadOnlyList<IPreProcessingOperationFilter> DefaultPreProcessingOperationFilters =
             new List<IPreProcessingOperationFilter>
             {
                 new ConvertAlternativeParamTagsFilter(),
@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new BranchOptionalPathParametersFilter()
             };
 
-        public static readonly IReadOnlyList<IPostProcessingDocumentFilter> _defaultPostProcessingDocumentFilters =
+        public static readonly IReadOnlyList<IPostProcessingDocumentFilter> DefaultPostProcessingDocumentFilters =
             new List<IPostProcessingDocumentFilter>
             {
                 new RemoveFailedGenerationOperationFilter()
@@ -69,12 +69,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// </summary>
         public CSharpCommentOpenApiGeneratorFilterConfig()
             : this(
-                _defaultDocumentFilters.ToList(),
-                _defaultOperationFilters.ToList(),
-                _defaultOperationConfigFilters.ToList(),
-                _defaultDocumentConfigFilters.ToList(),
-                _defaultPostProcessingDocumentFilters.ToList(),
-                _defaultPreProcessingOperationFilters.ToList())
+                DefaultDocumentFilters.ToList(),
+                DefaultOperationFilters.ToList(),
+                DefaultOperationConfigFilters.ToList(),
+                DefaultDocumentConfigFilters.ToList(),
+                DefaultPostProcessingDocumentFilters.ToList(),
+                DefaultPreProcessingOperationFilters.ToList())
         {
         }
 
