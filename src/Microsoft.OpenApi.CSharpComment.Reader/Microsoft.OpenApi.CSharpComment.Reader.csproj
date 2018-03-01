@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="AppDomainCreator.cs" />
     <Compile Include="CSharpCommentOpenApiGeneratorConfig.cs" />
+    <Compile Include="CSharpCommentOpenApiGeneratorFilterConfig.cs" />
     <Compile Include="DocumentConfigFilters\DocumentVariantAttributesFilter.cs" />
     <Compile Include="DocumentFilters\MemberSummaryToSchemaDescriptionFilter.cs" />
     <Compile Include="DocumentFilters\DocumentFilterSettings.cs" />

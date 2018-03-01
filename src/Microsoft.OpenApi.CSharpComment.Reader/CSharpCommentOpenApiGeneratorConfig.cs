@@ -19,6 +19,45 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     public class CSharpCommentOpenApiGeneratorConfig
     {
+        private static readonly CSharpCommentOpenApiGeneratorFilterConfig _defaultFilterConfig =
+            new CSharpCommentOpenApiGeneratorFilterConfig(
+                new List<IDocumentFilter>
+                {
+                    new AssemblyNameToInfoFilter(),
+                    new UrlToServerFilter(),
+                    new MemberSummaryToSchemaDescriptionFilter()
+                },
+                new List<IOperationFilter>
+                {
+                    new GroupToTagFilter(),
+                    new ParamToParameterFilter(),
+                    new ParamToRequestBodyFilter(),
+                    new ResponseToResponseFilter(),
+                    new RemarksToDescriptionFilter(),
+                    new SummaryToSummaryFilter()
+                }
+             )
+            {
+                DocumentConfigFilters = new List<IDocumentConfigFilter>
+                    {
+                        new DocumentVariantAttributesFilter()
+                    },
+                OperationConfigFilters = new List<IOperationConfigFilter>
+                    {
+                        new CommonAnnotationFilter()
+                    },
+                PreProcessingOperationFilters = new List<IPreProcessingOperationFilter>
+                    {
+                        new ConvertAlternativeParamTagsFilter(),
+                        new PopulateInAttributeFilter(),
+                        new BranchOptionalPathParametersFilter()
+                    },
+                PostProcessingDocumentFilters = new List<IPostProcessingDocumentFilter>
+                    {
+                        new RemoveFailedGenerationOperationFilter()
+                    }
+            };
+
         /// <summary>
         /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorConfig"/>.
         /// </summary>
@@ -31,7 +70,31 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public CSharpCommentOpenApiGeneratorConfig(
             XDocument annotationXmlDocument,
             IList<string> assemblyPaths,
-            OpenApiSpecVersion openApiSpecificationVersion)
+            OpenApiSpecVersion openApiSpecificationVersion) 
+            : this(
+                  annotationXmlDocument,
+                  assemblyPaths,
+                  openApiSpecificationVersion,
+                  _defaultFilterConfig)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorConfig"/>.
+        /// </summary>
+        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
+        /// reflect into the types provided in the xml.
+        /// </param>
+        /// <param name="openApiSpecificationVersion">The specification version of the OpenAPI document to generate.
+        /// </param>
+        /// <param name="cSharpCommentOpenApiGeneratorFilterConfig">The configuration encapsulating all the filters
+        /// that will be applied while generating/processing OpenAPI document from C# comments.</param>
+        public CSharpCommentOpenApiGeneratorConfig(
+            XDocument annotationXmlDocument,
+            IList<string> assemblyPaths,
+            OpenApiSpecVersion openApiSpecificationVersion,
+            CSharpCommentOpenApiGeneratorFilterConfig cSharpCommentOpenApiGeneratorFilterConfig )
         {
             AnnotationXmlDocument = annotationXmlDocument
                 ?? throw new ArgumentNullException(nameof(annotationXmlDocument));
@@ -40,40 +103,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 ?? throw new ArgumentNullException(nameof(assemblyPaths));
 
             OpenApiSpecificationVersion = openApiSpecificationVersion;
-
-            DocumentConfigFilters = new List<IDocumentConfigFilter>
-                {
-                    new DocumentVariantAttributesFilter()
-                };
-            DocumentFilters = new List<IDocumentFilter>
-                {
-                    new AssemblyNameToInfoFilter(),
-                    new UrlToServerFilter(),
-                    new MemberSummaryToSchemaDescriptionFilter()
-                };
-            OperationConfigFilters = new List<IOperationConfigFilter>
-                {
-                    new CommonAnnotationFilter()
-                };
-            OperationFilters = new List<IOperationFilter>
-                {
-                    new GroupToTagFilter(),
-                    new ParamToParameterFilter(),
-                    new ParamToRequestBodyFilter(),
-                    new ResponseToResponseFilter(),
-                    new RemarksToDescriptionFilter(),
-                    new SummaryToSummaryFilter()
-                };
-            PreProcessingOperationFilters = new List<IPreProcessingOperationFilter>
-                {
-                    new ConvertAlternativeParamTagsFilter(),
-                    new PopulateInAttributeFilter(),
-                    new BranchOptionalPathParametersFilter()
-                };
-            PostProcessingDocumentFilters = new List<IPostProcessingDocumentFilter>
-                {
-                    new RemoveFailedGenerationOperationFilter()
-                };
+            CSharpCommentOpenApiGeneratorFilterConfig = cSharpCommentOpenApiGeneratorFilterConfig;
         }
 
         /// <summary>
@@ -93,14 +123,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public IList<string> AssemblyPaths { get; }
 
         /// <summary>
-        /// Gets the list of document config filters.
+        /// The configuration encapsulating all the filters that will be applied while generating/processing OpenAPI
+        /// document from C# comments.
         /// </summary>
-        public IList<IDocumentConfigFilter> DocumentConfigFilters { get; set; }
-
-        /// <summary>
-        /// Gets the list of document filters.
-        /// </summary>
-        public IList<IDocumentFilter> DocumentFilters { get; }
+        public CSharpCommentOpenApiGeneratorFilterConfig CSharpCommentOpenApiGeneratorFilterConfig { get; }
 
         /// <summary>
         /// The format (YAML or JSON) of the OpenAPI document to generate.
@@ -111,25 +137,5 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// The specification version of the OpenAPI document to generate.
         /// </summary>
         public OpenApiSpecVersion OpenApiSpecificationVersion { get; }
-
-        /// <summary>
-        /// Gets the list of operation config filters.
-        /// </summary>
-        public IList<IOperationConfigFilter> OperationConfigFilters { get; }
-
-        /// <summary>
-        /// Gets the list of operation filters.
-        /// </summary>
-        public IList<IOperationFilter> OperationFilters { get; }
-
-        /// <summary>
-        /// Gets the list of post processing document filters.
-        /// </summary>
-        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; }
-
-        /// <summary>
-        /// Gets the list of preprocessing operation filters.
-        /// </summary>
-        public IList<IPreProcessingOperationFilter> PreProcessingOperationFilters { get; }
     }
 }

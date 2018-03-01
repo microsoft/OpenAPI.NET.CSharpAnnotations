@@ -759,7 +759,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             var document = XDocument.Load(inputXmlFile);
 
             var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
-            input.DocumentFilters.Add(new UpdateSchemaWithNewtonsoftJsonPropertyAttributeFilter());
             GenerationDiagnostic result;
 
             var generator = new CSharpCommentOpenApiGenerator();
@@ -804,7 +803,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             var document = XDocument.Load(inputXmlFile);
 
             var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
-            input.DocumentFilters.Add(documentFilter);
+            input.CSharpCommentOpenApiGeneratorFilterConfig.DocumentFilters.Add(documentFilter);
 
             GenerationDiagnostic result;
 
