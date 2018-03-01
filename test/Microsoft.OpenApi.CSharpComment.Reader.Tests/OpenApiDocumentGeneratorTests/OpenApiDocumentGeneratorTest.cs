@@ -817,6 +817,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                     openApiDocuments.ToSerializedOpenApiDocuments(),
                     new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
+            _output.WriteLine(JsonConvert.SerializeObject(result));
+
             result.GenerationStatus.Should().Be(GenerationStatus.Success);
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
