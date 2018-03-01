@@ -4,12 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters;
-using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
-using Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters;
-using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
-using Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters;
-using Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader
 {
@@ -19,45 +13,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     public class CSharpCommentOpenApiGeneratorConfig
     {
-        private static readonly CSharpCommentOpenApiGeneratorFilterConfig _defaultFilterConfig =
-            new CSharpCommentOpenApiGeneratorFilterConfig(
-                new List<IDocumentFilter>
-                {
-                    new AssemblyNameToInfoFilter(),
-                    new UrlToServerFilter(),
-                    new MemberSummaryToSchemaDescriptionFilter()
-                },
-                new List<IOperationFilter>
-                {
-                    new GroupToTagFilter(),
-                    new ParamToParameterFilter(),
-                    new ParamToRequestBodyFilter(),
-                    new ResponseToResponseFilter(),
-                    new RemarksToDescriptionFilter(),
-                    new SummaryToSummaryFilter()
-                }
-             )
-            {
-                DocumentConfigFilters = new List<IDocumentConfigFilter>
-                    {
-                        new DocumentVariantAttributesFilter()
-                    },
-                OperationConfigFilters = new List<IOperationConfigFilter>
-                    {
-                        new CommonAnnotationFilter()
-                    },
-                PreProcessingOperationFilters = new List<IPreProcessingOperationFilter>
-                    {
-                        new ConvertAlternativeParamTagsFilter(),
-                        new PopulateInAttributeFilter(),
-                        new BranchOptionalPathParametersFilter()
-                    },
-                PostProcessingDocumentFilters = new List<IPostProcessingDocumentFilter>
-                    {
-                        new RemoveFailedGenerationOperationFilter()
-                    }
-            };
-
         /// <summary>
         /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorConfig"/>.
         /// </summary>
@@ -75,7 +30,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                   annotationXmlDocument,
                   assemblyPaths,
                   openApiSpecificationVersion,
-                  _defaultFilterConfig)
+                  new CSharpCommentOpenApiGeneratorFilterConfig())
         {
         }
 

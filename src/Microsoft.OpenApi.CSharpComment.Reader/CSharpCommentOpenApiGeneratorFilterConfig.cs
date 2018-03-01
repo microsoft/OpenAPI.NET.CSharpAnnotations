@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
+using System;
 using System.Collections.Generic;
 using Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
@@ -17,47 +18,121 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     public class CSharpCommentOpenApiGeneratorFilterConfig
     {
+        private static readonly IList<IDocumentConfigFilter> _defaultDocumentConfigFilters =
+            new List<IDocumentConfigFilter>
+            {
+                new DocumentVariantAttributesFilter()
+            };
+
+        private static readonly IList<IDocumentFilter> _defaultDocumentFilters =
+            new List<IDocumentFilter>
+            {
+                new AssemblyNameToInfoFilter(),
+                new UrlToServerFilter(),
+                new MemberSummaryToSchemaDescriptionFilter()
+            };
+
+        private static readonly IList<IOperationConfigFilter> _defaultOperationConfigFilters =
+            new List<IOperationConfigFilter>
+            {
+                new CommonAnnotationFilter()
+            };
+
+        private static readonly IList<IOperationFilter> _defaultOperationFilters =
+            new List<IOperationFilter>
+            {
+                new GroupToTagFilter(),
+                new ParamToParameterFilter(),
+                new ParamToRequestBodyFilter(),
+                new ResponseToResponseFilter(),
+                new RemarksToDescriptionFilter(),
+                new SummaryToSummaryFilter()
+            };
+
+        private static readonly IList<IPreProcessingOperationFilter> _defaultPreprocessingOperationFilters =
+            new List<IPreProcessingOperationFilter>
+            {
+                new ConvertAlternativeParamTagsFilter(),
+                new PopulateInAttributeFilter(),
+                new BranchOptionalPathParametersFilter()
+            };
+
+        private static readonly IList<IPostProcessingDocumentFilter> _defaultPostProcessingDocumentFilters =
+            new List<IPostProcessingDocumentFilter>
+            {
+                new RemoveFailedGenerationOperationFilter()
+            };
+
         /// <summary>
-        /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorFilterConfig"/>.
+        /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorFilterConfig"/> with default filters.
+        /// </summary>
+        public CSharpCommentOpenApiGeneratorFilterConfig()
+            : this(
+                  _defaultDocumentFilters,
+                  _defaultOperationFilters,
+                  _defaultOperationConfigFilters,
+                  _defaultDocumentConfigFilters,
+                  _defaultPostProcessingDocumentFilters,
+                  _defaultPreprocessingOperationFilters)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorFilterConfig"/> with provided filters.
         /// </summary>
         /// <param name="documentFilters">The list of document filters.</param>
         /// <param name="operationFilters">The list of operation filters.</param>
+        /// <param name="operationConfigFilters">The list of operation config filters.</param>
+        /// <param name="documentConfigFilters">The list of document config filters.</param>
+        /// <param name="postProcessingDocumentFilters">The list of post processing document filters.</param>
+        /// <param name="preProcessingOperationFilters">The list of pre processing operation filters.</param>
         public CSharpCommentOpenApiGeneratorFilterConfig(
             IList<IDocumentFilter> documentFilters,
-            IList<IOperationFilter> operationFilters)
+            IList<IOperationFilter> operationFilters,
+            IList<IOperationConfigFilter> operationConfigFilters,
+            IList<IDocumentConfigFilter> documentConfigFilters,
+            IList<IPostProcessingDocumentFilter> postProcessingDocumentFilters,
+            IList<IPreProcessingOperationFilter> preProcessingOperationFilters)
         {
-            this.DocumentFilters = documentFilters;
-            this.OperationFilters = operationFilters;
+            this.DocumentFilters = documentFilters ?? throw new ArgumentNullException(nameof(documentFilters));
+            this.OperationFilters = operationFilters ?? throw new ArgumentNullException(nameof(operationFilters));
+
+            this.OperationConfigFilters = operationConfigFilters;
+            this.DocumentConfigFilters = documentConfigFilters;
+            this.PostProcessingDocumentFilters = postProcessingDocumentFilters;
+            this.PreProcessingOperationFilters = preProcessingOperationFilters;
         }
 
         /// <summary>
         /// Gets the list of document config filters.
         /// </summary>
-        public IList<IDocumentConfigFilter> DocumentConfigFilters { get; set; }
+        public IList<IDocumentConfigFilter> DocumentConfigFilters { get; } = new List<IDocumentConfigFilter>();
 
         /// <summary>
         /// Gets the list of document filters.
         /// </summary>
-        public IList<IDocumentFilter> DocumentFilters { get; }
+        public IList<IDocumentFilter> DocumentFilters { get; } = new List<IDocumentFilter>();
 
         /// <summary>
         /// Gets the list of operation config filters.
         /// </summary>
-        public IList<IOperationConfigFilter> OperationConfigFilters { get; set; }
+        public IList<IOperationConfigFilter> OperationConfigFilters { get; } = new List<IOperationConfigFilter>();
 
         /// <summary>
         /// Gets the list of operation filters.
         /// </summary>
-        public IList<IOperationFilter> OperationFilters { get; }
+        public IList<IOperationFilter> OperationFilters { get; } = new List<IOperationFilter>();
 
         /// <summary>
         /// Gets the list of post processing document filters.
         /// </summary>
-        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; set; }
+        public IList<IPostProcessingDocumentFilter> PostProcessingDocumentFilters { get; }
+            = new List<IPostProcessingDocumentFilter>();
 
         /// <summary>
         /// Gets the list of preprocessing operation filters.
         /// </summary>
-        public IList<IPreProcessingOperationFilter> PreProcessingOperationFilters { get; set; }
+        public IList<IPreProcessingOperationFilter> PreProcessingOperationFilters { get; }
+            = new List<IPreProcessingOperationFilter>();
     }
 }
