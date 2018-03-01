@@ -6,9 +6,9 @@
 namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
 {
     /// <summary>
-    /// Settings for <see cref="IPreprocessingOperationFilter"/>.
+    /// Settings for <see cref="IPreProcessingOperationFilter"/>.
     /// </summary>
-    public class PreprocessingOperationFilterSettings
+    public class PreProcessingOperationFilterSettings
     {
     }
 }

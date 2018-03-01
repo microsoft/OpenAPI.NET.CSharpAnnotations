@@ -89,6 +89,7 @@
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
     <Compile Include="FilterTests\BranchOptionalPathParametersFilterTest.cs" />
     <Compile Include="DocumentVariantTests\DocumentVariantTestCases.cs" />
+    <Compile Include="OpenApiDocumentGeneratorTests\UpdateSchemaWithNewtonsoftJsonPropertyAttributeFilter.cs" />
     <Compile Include="OperationConfigTests\OperationConfigTest.cs" />
     <Compile Include="DefaultSettingsFixtureCollection.cs" />
     <Compile Include="DefaultSettingsFixture.cs" />
@@ -127,6 +128,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationNewFilter.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationSummaryWithTags.xml">
@@ -320,6 +324,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationV2.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationNewFilter.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">

@@ -13,7 +13,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
     /// <summary>
     /// Converts the alternative param tags (queryParam, pathParam, header) to standard param tags.
     /// </summary>
-    public class ConvertAlternativeParamTagsFilter : IPreprocessingOperationFilter
+    public class ConvertAlternativeParamTagsFilter : IPreProcessingOperationFilter
     {
         /// <summary>
         /// Converts the alternative param tags (queryParam, pathParam, header) to standard param tags.
@@ -21,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        public void Apply(OpenApiPaths paths, XElement element, PreprocessingOperationFilterSettings settings)
+        public void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
         {
             var pathParamElements = element.Elements()
                 .Where(p => p.Name == KnownXmlStrings.PathParam)

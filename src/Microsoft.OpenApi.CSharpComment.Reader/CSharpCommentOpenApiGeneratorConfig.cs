@@ -25,13 +25,40 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public CSharpCommentOpenApiGeneratorConfig(
             XDocument annotationXmlDocument,
             IList<string> assemblyPaths,
-            OpenApiSpecVersion openApiSpecificationVersion)
+            OpenApiSpecVersion openApiSpecificationVersion) 
+            : this(
+                  annotationXmlDocument,
+                  assemblyPaths,
+                  openApiSpecificationVersion,
+                  new CSharpCommentOpenApiGeneratorFilterConfig())
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorConfig"/>.
+        /// </summary>
+        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
+        /// reflect into the types provided in the xml.
+        /// </param>
+        /// <param name="openApiSpecificationVersion">The specification version of the OpenAPI document to generate.
+        /// </param>
+        /// <param name="cSharpCommentOpenApiGeneratorFilterConfig">The configuration encapsulating all the filters
+        /// that will be applied while generating/processing OpenAPI document from C# comments.</param>
+        public CSharpCommentOpenApiGeneratorConfig(
+            XDocument annotationXmlDocument,
+            IList<string> assemblyPaths,
+            OpenApiSpecVersion openApiSpecificationVersion,
+            CSharpCommentOpenApiGeneratorFilterConfig cSharpCommentOpenApiGeneratorFilterConfig )
         {
             AnnotationXmlDocument = annotationXmlDocument
                 ?? throw new ArgumentNullException(nameof(annotationXmlDocument));
+
             AssemblyPaths = assemblyPaths
                 ?? throw new ArgumentNullException(nameof(assemblyPaths));
+
             OpenApiSpecificationVersion = openApiSpecificationVersion;
+            CSharpCommentOpenApiGeneratorFilterConfig = cSharpCommentOpenApiGeneratorFilterConfig;
         }
 
         /// <summary>
@@ -49,6 +76,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// types provided in the xml.
         /// </summary>
         public IList<string> AssemblyPaths { get; }
+
+        /// <summary>
+        /// The configuration encapsulating all the filters that will be applied while generating/processing OpenAPI
+        /// document from C# comments.
+        /// </summary>
+        public CSharpCommentOpenApiGeneratorFilterConfig CSharpCommentOpenApiGeneratorFilterConfig { get; }
 
         /// <summary>
         /// The format (YAML or JSON) of the OpenAPI document to generate.

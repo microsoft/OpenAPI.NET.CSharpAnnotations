@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
