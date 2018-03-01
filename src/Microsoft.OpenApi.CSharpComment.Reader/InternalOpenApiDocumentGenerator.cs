@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters;
@@ -24,7 +23,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// <summary>
     /// Provides functionality to parse xml documentation and contract assemblies into OpenAPI documents.
     /// </summary>
-    internal class InternalOpenApiDocumentGenerator : MarshalByRefObject
+    internal class InternalOpenApiDocumentGenerator
     {
         private readonly CSharpCommentOpenApiGeneratorFilterConfig _cSharpCommentOpenApiGeneratorFilterConfig;
 
