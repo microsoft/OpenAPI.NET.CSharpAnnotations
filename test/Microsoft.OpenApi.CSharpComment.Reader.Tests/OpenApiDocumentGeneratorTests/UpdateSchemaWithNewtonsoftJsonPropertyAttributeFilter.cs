@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -25,14 +26,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         /// property, update the corresponding property schema with it.
         /// </summary>
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
-        /// <param name="xmlDocument">The document representing annotation xml.</param>
+        /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
+        public void Apply(OpenApiDocument specificationDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings)
         {
-            var propertyMembers = xmlDocument.XPathSelectElements("//doc/members/member")
-                .Where(
-                    m => m.Attribute(KnownXmlStrings.Name) != null &&
-                        m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:"));
+            var propertyMembers = new List<XElement>();
+
+            foreach (var xmlDocument in xmlDocuments)
+            {
+                propertyMembers.AddRange(xmlDocument.XPathSelectElements("//doc/members/member")
+                    .Where(
+                        m => m.Attribute(KnownXmlStrings.Name) != null &&
+                             m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:")));
+            }
 
             foreach (var propertyMember in propertyMembers)
             {

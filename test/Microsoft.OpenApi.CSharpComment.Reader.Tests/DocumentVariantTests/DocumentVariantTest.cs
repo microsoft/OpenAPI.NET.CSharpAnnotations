@@ -33,7 +33,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             MemberType = typeof(DocumentVariantTestCases))]
         public void GenerateDocumentMultipleVariantsShouldYieldWarning(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
@@ -44,18 +44,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             _output.WriteLine(testCaseName);
 
             // Arrange
-            var path = inputXmlFile;
-            var document = XDocument.Load(path);
+            var documents = new List<XDocument>();
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
             var configPath = configXmlFile;
             var configDocument = XDocument.Load(configPath);
 
             var generator = new CSharpCommentOpenApiGenerator();
 
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion)
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion)
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };
+
             GenerationDiagnostic result;
 
             // Act
@@ -122,7 +123,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             MemberType = typeof(DocumentVariantTestCases))]
         public void GenerateDocumentMultipleVariantsShouldSucceed(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
@@ -132,14 +133,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             _output.WriteLine(testCaseName);
 
             // Arrange
-            var path = inputXmlFile;
-            var document = XDocument.Load(path);
+            var documents = new List<XDocument>();
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
             var configPath = configXmlFile;
             var configDocument = XDocument.Load(configPath);
 
             var generator = new CSharpCommentOpenApiGenerator();
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion)
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion)
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };

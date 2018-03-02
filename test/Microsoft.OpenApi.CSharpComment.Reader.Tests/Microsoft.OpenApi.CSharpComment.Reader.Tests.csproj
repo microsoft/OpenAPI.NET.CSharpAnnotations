@@ -49,9 +49,8 @@
     <Reference Include="Microsoft.OpenApi.Readers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3f5743946376f042, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.OpenApi.Readers.1.0.0-beta013\lib\net46\Microsoft.OpenApi.Readers.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SharpYaml, Version=1.6.1.0, Culture=neutral, PublicKeyToken=1ced8108e942bc02, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SharpYaml.1.6.1\lib\net45\SharpYaml.dll</HintPath>
@@ -127,6 +126,12 @@
     <Content Include="DocumentVariantTests\Input\ConfigMultipleDocumentVariantTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -167,6 +172,12 @@
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationMultipleResponseTypes.xml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">
@@ -215,6 +226,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OperationConfigTests\Input\ConfigNoOperation.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OperationConfigTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OperationConfigTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll">

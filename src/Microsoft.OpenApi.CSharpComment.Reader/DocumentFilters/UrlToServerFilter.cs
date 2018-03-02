@@ -23,12 +23,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// Server object of Open Api V3 specification document.
         /// </summary>
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
-        /// <param name="xmlDocument">The document representing annotation xml.</param>
+        /// <param name="xmlDocuments">The documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
+        public void Apply(OpenApiDocument specificationDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings)
         {
             var basePaths = new List<string>();
-            var urlElements = xmlDocument.XPathSelectElements("//doc/members/member/url");
+            var urlElements = new List<XElement>();
+
+            foreach (var xmlDocument in xmlDocuments)
+            {
+                urlElements.AddRange(xmlDocument.XPathSelectElements("//doc/members/member/url"));
+            }
 
             foreach (var urlElement in urlElements)
             {

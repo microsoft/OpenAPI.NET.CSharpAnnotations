@@ -38,12 +38,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Invalid Verb",
-                Path.Combine(InputDirectory, "AnnotationInvalidVerb.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationInvalidVerb.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -73,12 +80,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Invalid Uri",
-                Path.Combine(InputDirectory, "AnnotationInvalidUri.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationInvalidUri.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -114,12 +128,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Parameters Without In Attribute And Not Present In URL",
-                Path.Combine(InputDirectory, "AnnotationParamWithoutInNotPresentInUrl.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationParamWithoutInNotPresentInUrl.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -151,12 +172,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Conflicting Path and Query Parameters",
-                Path.Combine(InputDirectory, "AnnotationConflictingPathAndQueryParameters.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationConflictingPathAndQueryParameters.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -189,12 +217,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Path Parameter Undocumented",
-                Path.Combine(InputDirectory, "AnnotationUndocumentedPathParam.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationUndocumentedPathParam.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -227,12 +262,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Undocumented Generics",
-                Path.Combine(InputDirectory, "AnnotationUndocumentedGeneric.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationUndocumentedGeneric.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -262,12 +304,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Incorrect Order for Generics",
-                Path.Combine(InputDirectory, "AnnotationIncorrectlyOrderedGeneric.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationIncorrectlyOrderedGeneric.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -300,12 +349,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Standard valid XML document",
-                Path.Combine(InputDirectory, "AnnotationNewFilter.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationNewFilter.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 new UpdateSchemaWithNewtonsoftJsonPropertyAttributeFilter(),
                 OpenApiSpecVersion.OpenApi3_0,
@@ -322,12 +378,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Standard valid XML document",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -340,12 +403,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Parameters Without In Attribute But Present In URL",
-                Path.Combine(InputDirectory, "AnnotationParamWithoutInButPresentInUrl.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationParamWithoutInButPresentInUrl.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -359,12 +429,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Unspecified Type Default to String",
-                Path.Combine(InputDirectory, "AnnotationParamNoTypeSpecified.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationParamNoTypeSpecified.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -377,12 +454,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Multiple Response Types Per Response Code",
-                Path.Combine(InputDirectory, "AnnotationMultipleResponseTypes.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationMultipleResponseTypes.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -395,12 +479,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Multiple Request Types",
-                Path.Combine(InputDirectory, "AnnotationMultipleRequestTypes.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationMultipleRequestTypes.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -413,12 +504,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Multiple Request Media Types",
-                Path.Combine(InputDirectory, "AnnotationMultipleRequestMediaTypes.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationMultipleRequestMediaTypes.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -431,12 +529,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Multiple Response Media Types Per Response Code",
-                Path.Combine(InputDirectory, "AnnotationMultipleResponseMediaTypes.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationMultipleResponseMediaTypes.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -449,12 +554,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Optional Path Parameters",
-                Path.Combine(InputDirectory, "AnnotationOptionalPathParametersBranching.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationOptionalPathParametersBranching.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -467,12 +579,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Alternative Param Tags (i.e. queryParam, pathParam, header)",
-                Path.Combine(InputDirectory, "AnnotationAlternativeParamTags.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationAlternativeParamTags.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -485,12 +604,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Array Type in Param Tags",
-                Path.Combine(InputDirectory, "AnnotationArrayInParamTags.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationArrayInParamTags.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -503,12 +629,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Summary With Tags (see cref or paramref)",
-                Path.Combine(InputDirectory, "AnnotationSummaryWithTags.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationSummaryWithTags.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 9,
@@ -528,12 +661,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Standard valid XML document (V3-JSON)",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 OpenApiFormat.Json,
@@ -547,12 +687,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Standard valid XML document (V3-YAML)",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi3_0,
                 OpenApiFormat.Yaml,
@@ -566,12 +713,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Standard valid XML document (V2-YAML)",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi2_0,
                 OpenApiFormat.Yaml,
@@ -585,12 +739,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             yield return new object[]
             {
                 "Standard valid XML document (V2-JSON)",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 OpenApiSpecVersion.OpenApi2_0,
                 OpenApiFormat.Json,
@@ -601,12 +762,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             };
         }
 
-
         [Theory]
         [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldYieldFailure))]
         public void InvalidDocumentationShouldYieldFailure(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
@@ -615,15 +775,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         {
             _output.WriteLine(testCaseName);
 
-            var document = XDocument.Load(inputXmlFile);
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
+            var documents = new List<XDocument>();
+
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
+
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion);
+
             GenerationDiagnostic result;
 
             var generator = new CSharpCommentOpenApiGenerator();
 
             var openApiDocuments = generator.GenerateDocuments(input, out result);
 
-            document.Should().NotBeNull();
+            openApiDocuments.Should().NotBeNull();
 
             _output.WriteLine(
                 JsonConvert.SerializeObject(
@@ -661,7 +825,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldRemoveFailedOperations))]
         public void InvalidDocumentationShouldRemoveFailedOperations(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
@@ -670,8 +834,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         {
             _output.WriteLine(testCaseName);
 
-            var document = XDocument.Load(inputXmlFile);
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
+            var documents = new List<XDocument>();
+
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
+
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion);
+
             GenerationDiagnostic result;
 
             var generator = new CSharpCommentOpenApiGenerator();
@@ -718,7 +886,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             var document = XDocument.Load(path);
 
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, new List<string>(), openApiSpecVersion);
+            var input = new CSharpCommentOpenApiGeneratorConfig(new List<XDocument>() {document}, new List<string>(),
+                openApiSpecVersion);
 
             GenerationDiagnostic result;
 
@@ -748,7 +917,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         [MemberData(nameof(GetTestCasesForValidDocumentationShouldReturnCorrectDocument))]
         public void ValidDocumentationShouldReturnCorrectDocument(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
@@ -756,9 +925,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         {
             _output.WriteLine(testCaseName);
 
-            var document = XDocument.Load(inputXmlFile);
+            var documents = new List<XDocument>();
 
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
+
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion);
+
             GenerationDiagnostic result;
 
             var generator = new CSharpCommentOpenApiGenerator();
@@ -791,7 +963,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         [MemberData(nameof(GetTestCasesForPassANewFilterAndShouldReturnCorrectDocument))]
         public void PassANewFilterAndShouldReturnCorrectDocument(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             IDocumentFilter documentFilter,
             OpenApiSpecVersion openApiSpecVersion,
@@ -800,9 +972,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         {
             _output.WriteLine(testCaseName);
 
-            var document = XDocument.Load(inputXmlFile);
+            var documents = new List<XDocument>();
 
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
+
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion);
             input.CSharpCommentOpenApiGeneratorFilterConfig.DocumentFilters.Add(documentFilter);
 
             GenerationDiagnostic result;
@@ -839,7 +1013,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         [MemberData(nameof(GetTestCasesForValidDocumentationShouldReturnCorrectSerializedDocument))]
         public void ValidDocumentationShouldReturnCorrectSerializedDocument(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             OpenApiSpecVersion openApiSpecVersion,
             OpenApiFormat openApiFormat,
@@ -848,14 +1022,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
         {
             _output.WriteLine(testCaseName);
 
-            var document = XDocument.Load(inputXmlFile);
+            var documents = new List<XDocument>();
 
-            var generator = new CSharpCommentOpenApiGenerator();
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion)
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion)
             {
                 OpenApiFormat = openApiFormat
             };
+
+            var generator = new CSharpCommentOpenApiGenerator();
 
             GenerationDiagnostic result;
 

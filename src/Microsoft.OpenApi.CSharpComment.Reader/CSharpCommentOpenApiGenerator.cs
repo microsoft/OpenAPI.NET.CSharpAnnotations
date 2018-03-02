@@ -97,7 +97,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 cSharpCommentOpenApiGeneratorConfig.CSharpCommentOpenApiGeneratorFilterConfig);
 
             return internalOpenApiDocumentGenerator.GenerateOpenApiDocuments(
-                cSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocument.ToString(),
+                cSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocuments,
                 cSharpCommentOpenApiGeneratorConfig.AssemblyPaths,
                 cSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument?.ToString(),
                 cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,

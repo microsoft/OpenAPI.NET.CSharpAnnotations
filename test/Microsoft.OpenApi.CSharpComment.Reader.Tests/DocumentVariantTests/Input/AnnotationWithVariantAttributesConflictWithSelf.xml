@@ -26,121 +26,6 @@
       </summary>
       <param name="config">HTTP Configuration</param>
     </member>
-    <member name="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleEnum1">
-      <summary>
-        Sample enum 1
-      </summary>
-    </member>
-    <member name="F:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleEnum1.SampleEnumValue1">
-      <summary>
-        Sample enum value 1
-      </summary>
-    </member>
-    <member name="F:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleEnum1.SampleEnumValue2">
-      <summary>
-        Sample enum value 2
-      </summary>
-    </member>
-    <member name="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1">
-      <summary>
-        Sample contract for object 1
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1.SamplePropertyBool">
-      <summary>
-        Gets or sets the sample property bool
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1.SamplePropertyInt">
-      <summary>
-        Gets or sets the sample property int
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1.SamplePropertyString1">
-      <summary>
-        Gets or sets the sample property string 1
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1.SamplePropertyString2">
-      <summary>
-        Gets or sets the sample property string 2
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1.SamplePropertyString3">
-      <summary>
-        Gets or sets the sample property string 3
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1.SamplePropertyString4">
-      <summary>
-        Gets or sets the sample property string 4
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1.SamplePropertyEnum">
-      <summary>
-        Gets or sets the sample property enum
-      </summary>
-    </member>
-    <member name="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3">
-      <summary>
-        Sample contract for object 3
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3.SamplePropertyObject">
-      <summary>
-        Gets or sets sample property object
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3.SamplePropertyObjectList">
-      <summary>
-        Gets the sample property object list
-      </summary>
-    </member>
-    <member name="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2">
-      <summary>
-        Sample contract for object 2
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2.SamplePropertyEnum">
-      <summary>
-        Gets or sets the sample property enum
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2.SamplePropertyInt">
-      <summary>
-        Gets or sets the sample property string 1
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2.SamplePropertyObjectDictionary">
-      <summary>
-        Gets the sample property object dictionary
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2.SamplePropertyObjectList">
-      <summary>
-        Gets the sample property object list
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2.SamplePropertyString1">
-      <summary>
-        Gets or sets the sample property string 1
-      </summary>
-    </member>
-    <member name="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4`2">
-      <summary>
-        Interface Sample Object 4
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4`2.SamplePropertyTypeT1">
-      <summary>
-        Sample Property of Type T1
-      </summary>
-    </member>
-    <member name="P:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4`2.SamplePropertyTypeT2">
-      <summary>
-        Sample Property of Type T2
-      </summary>
-    </member>
     <member name="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers.SampleControllerV1">
       <summary>
         Define V1 operations.
@@ -159,7 +44,7 @@
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>Sample object retrieved
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object retrieved
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -184,7 +69,7 @@
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"/>Paged Entity contract
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"/>Paged Entity contract
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -194,7 +79,7 @@
       <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
       <returns>The sample object 3</returns>
     </member>
-    <member name="M:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers.SampleControllerV1.SamplePost(Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3)">
+    <member name="M:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers.SampleControllerV1.SamplePost(Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3)">
       <summary>
         Sample Post
       </summary>
@@ -205,16 +90,16 @@
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="sampleObject" in="body">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"/>Sample object
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"/>Sample object
       </param>
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"/>Sample object posted
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"/>Sample object posted
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
     </member>
-    <member name="M:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers.SampleControllerV1.SamplePut(System.String,Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1)">
+    <member name="M:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers.SampleControllerV1.SamplePut(System.String,Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1)">
       <summary>
         Sample put
       </summary>
@@ -226,10 +111,10 @@
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="sampleObject" in="body">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>Sample object
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object
       </param>
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>The sample object updated
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>The sample object updated
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -253,9 +138,9 @@
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <response code="200">
         <see cref="T:System.Collections.Generic.List`1"/>
-        where T is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4`2"/>
-        where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>
-        where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"/>
+        where T is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>
+        where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>
+        where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -274,9 +159,9 @@
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4`2"/>
-        where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>
-        where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"/>
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>
+        where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>
+        where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -299,7 +184,7 @@
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"/>Sample object deleted
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object deleted
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -316,7 +201,7 @@
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <response code="200">
-        <see cref="T:System.Collections.Generic.List`1"/>where T is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"/>List of sample objects
+        <see cref="T:System.Collections.Generic.List`1"/>where T is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>List of sample objects
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -335,7 +220,7 @@
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"/>Sample object retrieved
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>Sample object retrieved
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request

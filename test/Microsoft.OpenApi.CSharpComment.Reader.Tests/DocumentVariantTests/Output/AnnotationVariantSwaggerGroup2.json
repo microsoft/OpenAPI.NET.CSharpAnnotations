@@ -68,7 +68,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
                 }
               }
             }
@@ -89,7 +89,7 @@
   },
   "components": {
     "schemas": {
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1": {
         "type": "object",
         "properties": {
           "SamplePropertyBool": {

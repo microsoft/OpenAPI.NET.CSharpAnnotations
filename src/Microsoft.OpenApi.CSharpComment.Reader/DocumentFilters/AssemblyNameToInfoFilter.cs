@@ -3,6 +3,8 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApi.Models;
@@ -19,10 +21,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// Info object of Open Api V3 specification document.
         /// </summary>
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
-        /// <param name="xmlDocument">The document representing annotation xml.</param>
+        /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings)
+        public void Apply(
+            OpenApiDocument specificationDocument,
+            IList<XDocument> xmlDocuments,
+            DocumentFilterSettings settings)
         {
+            // Find the xml document that contains member tag with url and verb,
+            // as that should be the service api documenation xml.
+            var xmlDocument = xmlDocuments
+                .FirstOrDefault(i => i.XPathSelectElement("//doc/members/member[url and verb]") != null);
+
+            if (xmlDocument == null)
+            {
+                return;
+            }
+
             specificationDocument.Info = new OpenApiInfo
             {
                 Title = xmlDocument.XPathSelectElement("//doc/assembly/name")?.Value,

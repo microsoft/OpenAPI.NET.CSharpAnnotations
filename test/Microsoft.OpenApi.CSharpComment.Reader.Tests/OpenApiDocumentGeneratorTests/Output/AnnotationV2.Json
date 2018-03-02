@@ -59,7 +59,7 @@
           "200": {
             "description": "Sample object retrieved",
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             }
           },
           "400": {
@@ -115,7 +115,7 @@
             "description": "Sample object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             }
           }
         ],
@@ -123,7 +123,7 @@
           "200": {
             "description": "The sample object updated",
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             }
           },
           "400": {
@@ -170,7 +170,7 @@
           "200": {
             "description": "Paged Entity contract",
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
             }
           },
           "400": {
@@ -219,7 +219,7 @@
             "description": "Sample object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
             }
           }
         ],
@@ -227,7 +227,7 @@
           "200": {
             "description": "Sample object posted",
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
             }
           },
           "400": {
@@ -276,7 +276,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2_"
+                "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2_"
               }
             }
           },
@@ -337,7 +337,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2_"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2_"
             }
           },
           "400": {
@@ -391,7 +391,7 @@
           "200": {
             "description": "Sample object deleted",
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             }
           },
           "400": {
@@ -449,7 +449,7 @@
           "200": {
             "description": "Sample object retrieved",
             "schema": {
-              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+              "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
             }
           },
           "400": {
@@ -498,7 +498,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+                "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
               }
             }
           },
@@ -513,7 +513,7 @@
     }
   },
   "definitions": {
-    "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1": {
+    "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1": {
       "type": "object",
       "properties": {
         "SamplePropertyBool": {
@@ -551,23 +551,23 @@
         }
       }
     },
-    "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3": {
+    "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3": {
       "type": "object",
       "properties": {
         "SamplePropertyObject": {
-          "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+          "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
         },
         "SamplePropertyObjectList": {
           "description": "Gets the sample property object list",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+            "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
           },
           "readOnly": true
         }
       }
     },
-    "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2": {
+    "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2": {
       "type": "object",
       "properties": {
         "SamplePropertyEnum": {
@@ -586,7 +586,7 @@
           "description": "Gets the sample property object dictionary",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+            "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
           },
           "readOnly": true
         },
@@ -594,7 +594,7 @@
           "description": "Gets the sample property object list",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+            "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
           },
           "readOnly": true
         },
@@ -604,14 +604,14 @@
         }
       }
     },
-    "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2_": {
+    "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2_": {
       "type": "object",
       "properties": {
         "SamplePropertyTypeT1": {
-          "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+          "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
         },
         "SamplePropertyTypeT2": {
-          "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+          "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
         }
       }
     }

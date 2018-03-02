@@ -16,18 +16,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <summary>
         /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorConfig"/>.
         /// </summary>
-        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="annotationXmlDocuments">The XDocuments representing the annotation xmls.</param>
         /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
         /// reflect into the types provided in the xml.
         /// </param>
         /// <param name="openApiSpecificationVersion">The specification version of the OpenAPI document to generate.
         /// </param>
         public CSharpCommentOpenApiGeneratorConfig(
-            XDocument annotationXmlDocument,
+            IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
             OpenApiSpecVersion openApiSpecificationVersion) 
             : this(
-                  annotationXmlDocument,
+                  annotationXmlDocuments,
                   assemblyPaths,
                   openApiSpecificationVersion,
                   new CSharpCommentOpenApiGeneratorFilterConfig())
@@ -37,7 +37,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <summary>
         /// Creates a new instance of <see cref="CSharpCommentOpenApiGeneratorConfig"/>.
         /// </summary>
-        /// <param name="annotationXmlDocument">The XDocument representing the annotation xml.</param>
+        /// <param name="annotationXmlDocuments">The XDocuments representing the annotation xmls.</param>
         /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
         /// reflect into the types provided in the xml.
         /// </param>
@@ -46,19 +46,21 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="cSharpCommentOpenApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# comments.</param>
         public CSharpCommentOpenApiGeneratorConfig(
-            XDocument annotationXmlDocument,
+            IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
             OpenApiSpecVersion openApiSpecificationVersion,
             CSharpCommentOpenApiGeneratorFilterConfig cSharpCommentOpenApiGeneratorFilterConfig )
         {
-            AnnotationXmlDocument = annotationXmlDocument
-                ?? throw new ArgumentNullException(nameof(annotationXmlDocument));
+            AnnotationXmlDocuments = annotationXmlDocuments
+                ?? throw new ArgumentNullException(nameof(annotationXmlDocuments));
 
             AssemblyPaths = assemblyPaths
                 ?? throw new ArgumentNullException(nameof(assemblyPaths));
 
+            CSharpCommentOpenApiGeneratorFilterConfig = cSharpCommentOpenApiGeneratorFilterConfig
+                ?? throw new ArgumentNullException(nameof(cSharpCommentOpenApiGeneratorFilterConfig));
+
             OpenApiSpecificationVersion = openApiSpecificationVersion;
-            CSharpCommentOpenApiGeneratorFilterConfig = cSharpCommentOpenApiGeneratorFilterConfig;
         }
 
         /// <summary>
@@ -67,9 +69,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public XDocument AdvancedConfigurationXmlDocument { get; set; }
 
         /// <summary>
-        /// The XDocument representing the annotation xml.
+        /// The XDocuments representing the annotation xmls.
         /// </summary>
-        public XDocument AnnotationXmlDocument { get; }
+        public IList<XDocument> AnnotationXmlDocuments { get; }
 
         /// <summary>
         /// The list of relative or absolute paths to the assemblies that will be used to reflect into the

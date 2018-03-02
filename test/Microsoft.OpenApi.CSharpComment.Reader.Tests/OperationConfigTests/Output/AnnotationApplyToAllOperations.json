@@ -13,7 +13,8 @@
     "/V1/samples/{id}": {
       "get": {
         "tags": [
-          "Sample V1"
+          "Sample V1",
+          "Added Group."
         ],
         "summary": "Sample Get 1",
         "operationId": "getV1SamplesById",
@@ -60,6 +61,22 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "SampleAddedHeaderParam",
+            "in": "header",
+            "description": "Added Header Param.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SampleAddedQueryParam",
+            "in": "query",
+            "description": "Added Query Param.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -68,7 +85,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
                 }
               }
             }
@@ -87,7 +104,8 @@
       },
       "put": {
         "tags": [
-          "Sample V1"
+          "Sample V1",
+          "Added Group."
         ],
         "summary": "Sample put",
         "operationId": "putV1SamplesById",
@@ -125,6 +143,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "SampleAddedHeaderParam",
+            "in": "header",
+            "description": "Added Header Param.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SampleAddedQueryParam",
+            "in": "query",
+            "description": "Added Query Param.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -132,7 +166,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
               }
             }
           },
@@ -144,7 +178,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
                 }
               }
             }
@@ -165,7 +199,8 @@
     "/V1/samples": {
       "get": {
         "tags": [
-          "Sample V1"
+          "Sample V1",
+          "Added Group."
         ],
         "summary": "Sample Get 2",
         "operationId": "getV1Samples",
@@ -194,6 +229,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "SampleAddedHeaderParam",
+            "in": "header",
+            "description": "Added Header Param.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SampleAddedQueryParam",
+            "in": "query",
+            "description": "Added Query Param.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -202,7 +253,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
                 }
               }
             }
@@ -221,7 +272,8 @@
       },
       "post": {
         "tags": [
-          "Sample V1"
+          "Sample V1",
+          "Added Group."
         ],
         "summary": "Sample Post",
         "operationId": "postV1Samples",
@@ -250,6 +302,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "SampleAddedHeaderParam",
+            "in": "header",
+            "description": "Added Header Param.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SampleAddedQueryParam",
+            "in": "query",
+            "description": "Added Query Param.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -257,7 +325,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+                "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
               }
             }
           },
@@ -269,7 +337,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
                 }
               }
             }
@@ -290,7 +358,8 @@
     "/V2/samples/{id}": {
       "delete": {
         "tags": [
-          "Sample V2"
+          "Sample V2",
+          "Added Group."
         ],
         "summary": "Sample delete",
         "operationId": "deleteV2SamplesById",
@@ -328,6 +397,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "SampleAddedHeaderParam",
+            "in": "header",
+            "description": "Added Header Param.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SampleAddedQueryParam",
+            "in": "query",
+            "description": "Added Query Param.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -336,7 +421,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
                 }
               }
             }
@@ -355,7 +440,8 @@
       },
       "get": {
         "tags": [
-          "Sample V2"
+          "Sample V2",
+          "Added Group."
         ],
         "summary": "Sample get 2",
         "operationId": "getV2SamplesById",
@@ -401,6 +487,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "SampleAddedHeaderParam",
+            "in": "header",
+            "description": "Added Header Param.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SampleAddedQueryParam",
+            "in": "query",
+            "description": "Added Query Param.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -409,7 +511,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
                 }
               }
             }
@@ -430,7 +532,8 @@
     "/V2/samples/": {
       "get": {
         "tags": [
-          "Sample V2"
+          "Sample V2",
+          "Added Group."
         ],
         "summary": "Sample get 1",
         "operationId": "getV2Samples",
@@ -459,6 +562,22 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "SampleAddedHeaderParam",
+            "in": "header",
+            "description": "Added Header Param.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SampleAddedQueryParam",
+            "in": "query",
+            "description": "Added Query Param.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -469,7 +588,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
                   }
                 }
               }
@@ -491,7 +610,7 @@
   },
   "components": {
     "schemas": {
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1": {
         "type": "object",
         "properties": {
           "SamplePropertyBool": {
@@ -529,23 +648,23 @@
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3": {
         "type": "object",
         "properties": {
           "SamplePropertyObject": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
           },
           "SamplePropertyObjectList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             },
             "description": "Gets the sample property object list",
             "readOnly": true
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2": {
         "type": "object",
         "properties": {
           "SamplePropertyEnum": {
@@ -563,7 +682,7 @@
           "SamplePropertyObjectDictionary": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             },
             "description": "Gets the sample property object dictionary",
             "readOnly": true
@@ -571,7 +690,7 @@
           "SamplePropertyObjectList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             },
             "description": "Gets the sample property object list",
             "readOnly": true

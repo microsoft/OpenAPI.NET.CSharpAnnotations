@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts;
+using Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers
 {

@@ -5,7 +5,7 @@
 
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts
+namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts
 {
     /// <summary>
     /// Sample contract for object 1

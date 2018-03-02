@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
@@ -30,7 +31,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
         [MemberData(nameof(GetTestCasesForGenerateDocumentWithOperationConfigShouldSucceed))]
         public void GenerateDocumentWithOperationConfigShouldSucceed(
             string testCaseName,
-            string inputXmlFile,
+            IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             string configXmlFile,
             OpenApiSpecVersion openApiSpecVersion,
@@ -39,11 +40,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
         {
             _output.WriteLine(testCaseName);
 
-            var document = XDocument.Load(inputXmlFile);
+            var documents = new List<XDocument>();
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
             var configDocument = XDocument.Load(configXmlFile);
 
             var generator = new CSharpCommentOpenApiGenerator();
-            var input = new CSharpCommentOpenApiGeneratorConfig(document, inputBinaryFiles, openApiSpecVersion);
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion)
+            {
+                AdvancedConfigurationXmlDocument = configDocument
+            };
+
             GenerationDiagnostic result;
 
             var openApiDocuments = generator.GenerateDocuments(
@@ -82,12 +88,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "No operation section in config file",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -103,12 +116,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Blank operation section in config file",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -124,12 +144,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Add annotations to all operations",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -145,12 +172,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Add annotations to some operations",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -166,12 +200,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
             yield return new object[]
             {
                 "Add annotations that should be partially overridden",
-                Path.Combine(InputDirectory, "AnnotationSomeMissingSummary.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationSomeMissingSummary.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
