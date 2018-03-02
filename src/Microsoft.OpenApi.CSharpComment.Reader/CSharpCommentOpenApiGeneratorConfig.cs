@@ -57,8 +57,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             AssemblyPaths = assemblyPaths
                 ?? throw new ArgumentNullException(nameof(assemblyPaths));
 
+            CSharpCommentOpenApiGeneratorFilterConfig = cSharpCommentOpenApiGeneratorFilterConfig
+                ?? throw new ArgumentNullException(nameof(cSharpCommentOpenApiGeneratorFilterConfig));
+
             OpenApiSpecificationVersion = openApiSpecificationVersion;
-            CSharpCommentOpenApiGeneratorFilterConfig = cSharpCommentOpenApiGeneratorFilterConfig;
         }
 
         /// <summary>
