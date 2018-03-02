@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.OpenApi.Models;
 
@@ -17,8 +18,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// Contains the required logic to populate certain parts of Open Api V3 specification document.
         /// </summary>
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
-        /// <param name="xmlDocument">The document representing annotation xml.</param>
+        /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        void Apply(OpenApiDocument specificationDocument, XDocument xmlDocument, DocumentFilterSettings settings);
+        void Apply(OpenApiDocument specificationDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings);
     }
 }

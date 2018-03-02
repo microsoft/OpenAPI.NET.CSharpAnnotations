@@ -52,7 +52,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject4_"
+                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject4_"
                   }
                 }
               }
@@ -74,7 +74,7 @@
   },
   "components": {
     "schemas": {
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject4_": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject4_": {
         "required": [
           "samplePropertyTypeT1",
           "samplePropertyTypeT2"
@@ -82,14 +82,14 @@
         "type": "object",
         "properties": {
           "samplePropertyTypeT1": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
           },
           "samplePropertyTypeT2": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject4"
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject4"
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1": {
         "required": [
           "samplePropertyString3",
           "samplePropertyString4",
@@ -132,7 +132,7 @@
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject4": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject4": {
         "required": [
           "samplePropertyObject",
           "SamplePropertyObjectList"
@@ -140,22 +140,22 @@
         "type": "object",
         "properties": {
           "samplePropertyObject": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
           },
           "Sample3PropertyObject": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3"
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
           },
           "SamplePropertyObjectList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             },
             "description": "Gets the sample property object list",
             "readOnly": true
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2": {
         "required": [
           "samplePropertyInt",
           "samplePropertyObjectDictionary",
@@ -178,7 +178,7 @@
           "samplePropertyObjectDictionary": {
             "type": "object",
             "additionalProperties": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             },
             "description": "Gets the sample property object dictionary",
             "readOnly": true
@@ -186,7 +186,7 @@
           "samplePropertyObjectList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             },
             "description": "Gets the sample property object list",
             "readOnly": true
@@ -197,19 +197,19 @@
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject3": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3": {
         "required": [
           "samplePropertyObject"
         ],
         "type": "object",
         "properties": {
           "samplePropertyObject": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject2"
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
           },
           "samplePropertyObjectList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Contracts.SampleObject1"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             },
             "description": "Gets the sample property object list",
             "readOnly": true

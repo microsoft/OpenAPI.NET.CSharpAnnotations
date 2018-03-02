@@ -194,7 +194,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// Takes in annotation xml document and returns the OpenAPI document generation result
         /// which contains OpenAPI specification document(s).
         /// </summary>
-        /// <param name="annotationXml">The serialized XDocument representing annotation.</param>
+        /// <param name="annotationXmlDocuments">The list of XDocuments representing annotation xmls.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
         /// <param name="openApiSpecVersion">Specification version of the OpenAPI documents to generate.</param>
@@ -210,7 +210,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// the input and output must be serializable to string or value type.
         /// </remarks>
         public IDictionary<DocumentVariantInfo, string> GenerateOpenApiDocuments(
-            string annotationXml,
+            IList<XDocument> annotationXmlDocuments,
             IList<string> contractAssemblyPaths,
             string configurationXml,
             OpenApiSpecVersion openApiSpecVersion,
@@ -219,9 +219,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         {
             IDictionary<DocumentVariantInfo, string> openApiDocuments = new Dictionary<DocumentVariantInfo, string>();
 
-            var annotationXmlDocument = XDocument.Parse(annotationXml);
-            var operationElements = annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]")
-                .ToList();
+            var operationElements = new List<XElement>();
+
+            foreach (var annotationXmlDocument in annotationXmlDocuments)
+            {
+                operationElements.AddRange(
+                    annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]"));
+            }
 
             XElement operationConfigElement = null;
 
@@ -292,7 +296,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         {
                             documentFilter.Apply(
                                 openApiDocument,
-                                annotationXmlDocument,
+                                annotationXmlDocuments,
                                 new DocumentFilterSettings
                                 {
                                     TypeFetcher = typeFetcher
@@ -320,7 +324,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             documentConfigFilter.Apply(
                                 documents,
                                 documentConfigElement,
-                                annotationXmlDocument,
+                                annotationXmlDocuments,
                                 new DocumentConfigFilterSettings());
                         }
                         catch (Exception e)

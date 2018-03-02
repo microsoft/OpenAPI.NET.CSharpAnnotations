@@ -21,12 +21,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
         /// </summary>
         /// <param name="documents">The documents to be updated.</param>
         /// <param name="documentConfigElement">The xml element containing document-level config in the config xml.</param>
-        /// <param name="xmlDocument">The entire XML documentation</param>
+        /// <param name="xmlDocuments">The list of XML documentations.</param>
         /// <param name="settings">The document config filter settings.</param>
         void Apply(
             IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement documentConfigElement,
-            XDocument xmlDocument,
+            IList<XDocument> xmlDocuments,
             DocumentConfigFilterSettings settings);
     }
 }

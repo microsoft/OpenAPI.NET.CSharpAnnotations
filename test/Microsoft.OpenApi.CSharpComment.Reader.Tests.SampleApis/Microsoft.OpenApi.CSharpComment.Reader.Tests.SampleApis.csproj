@@ -112,12 +112,6 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Contracts\SampleEnum1.cs" />
-    <Compile Include="Contracts\SampleObject1.cs" />
-    <Compile Include="Contracts\SampleObject3.cs" />
-    <Compile Include="Contracts\SampleObject2.cs" />
-    <Compile Include="Contracts\ISampleObject4.cs" />
-    <Compile Include="Contracts\SampleObject4.cs" />
     <Compile Include="Controllers\SampleControllerV1.cs" />
     <Compile Include="Controllers\SampleControllerV3.cs" />
     <Compile Include="Controllers\SampleControllerV2.cs" />
@@ -146,6 +140,12 @@
     <None Include="web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.csproj">
+      <Project>{62a36b02-a531-48ed-b4cf-3696a5c28b65}</Project>
+      <Name>Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

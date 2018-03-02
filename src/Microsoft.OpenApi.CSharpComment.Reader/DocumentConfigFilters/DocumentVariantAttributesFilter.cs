@@ -24,7 +24,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
         /// </summary>
         /// <param name="documents">The documents to be updated.</param>
         /// <param name="element">The xml element containing document-level config in the config xml.</param>
-        /// <param name="xmlDocument">The entire XML documentation</param>
+        /// <param name="xmlDocuments">The list of XDocuments representing the annotation xmls.</param>
         /// <param name="settings">The document config filter settings.</param>
         /// <exception cref="ConflictingDocumentVariantAttributesException">
         /// Thrown when there is a conflict
@@ -33,7 +33,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
         public void Apply(
             IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement element,
-            XDocument xmlDocument,
+            IList<XDocument> xmlDocuments,
             DocumentConfigFilterSettings settings)
         {
             var variantElements = element.Elements(KnownXmlStrings.Variant);
@@ -65,8 +65,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
                     }
                 }
 
-                // Second, populate the document variant info attributes using the information from the entire documentation.
-                var allCategorizerNodes = xmlDocument.Descendants(variantElement.Element(KnownXmlStrings.Name)?.Value);
+                // Second, populate the document variant info attributes using the information from the documents.
+                var allCategorizerNodes = new List<XElement>();
+
+                foreach (var xmlDocument in xmlDocuments)
+                {
+                    allCategorizerNodes.AddRange(
+                        xmlDocument.Descendants(variantElement.Element(KnownXmlStrings.Name)?.Value));
+                }
                 
                 foreach (var categorizerNode in allCategorizerNodes)
                 {

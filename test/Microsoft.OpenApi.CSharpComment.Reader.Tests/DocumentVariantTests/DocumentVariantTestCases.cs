@@ -23,12 +23,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation that self-conflicts",
-                Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithSelf.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithSelf.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -85,12 +92,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation that conflicts with the config",
-                Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithConfig.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithConfig.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -161,12 +175,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "One document variant tag name",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -208,12 +229,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "One document variant tag name with no option tags.",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -243,12 +271,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Multiple document variant tag names",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -299,12 +334,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Multiple document variant tag names with common annotations",
-                Path.Combine(InputDirectory, "Annotation.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -367,12 +409,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation with no options in the config",
-                Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
@@ -414,12 +463,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             yield return new object[]
             {
                 "Document variant info inside document annotation with redundant, non-conflicting information in the config",
-                Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll")
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
                 },
                 Path.Combine(
                     InputDirectory,
