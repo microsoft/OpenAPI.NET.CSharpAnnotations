@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
       <id>Microsoft.OpenApi.CSharpComment.Reader</id>
-      <version>1.0.0-beta017</version>
+      <version>1.0.0-beta018</version>
       <authors>Microsoft</authors>
       <description>Reader that translates Visual Studio C# comments into .NET objects representing OpenAPI specification.</description>
       <dependencies>
