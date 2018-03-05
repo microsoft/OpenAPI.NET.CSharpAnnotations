@@ -77,15 +77,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                     }
                 }
 
-                var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+                OpenApiSchema schema = null;
 
-                if (responseContractType == null)
+                if (allListedTypes.Any())
                 {
-                    throw new InvalidResponseException(responseElement.Value);
+                    var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+
+                    if (responseContractType == null)
+                    {
+                        throw new InvalidResponseException(responseElement.Value);
+                    }
+
+                    schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
+                        responseContractType);
                 }
-                
-                var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
-                    responseContractType);
 
                 if (operation.Responses.ContainsKey(code))
                 {
@@ -94,29 +99,32 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                         operation.Responses[code].Description = description.RemoveBlankLines();
                     }
 
-                    if (!operation.Responses[code].Content.ContainsKey(mediaType))
+                    if (schema != null)
                     {
-                        operation.Responses[code].Content[mediaType] = new OpenApiMediaType
+                        if (!operation.Responses[code].Content.ContainsKey(mediaType))
                         {
-                            Schema = schema
-                        };
-                    }
-                    else
-                    {
-                        // If the existing schema is just a single schema (not a list of AnyOf), then
-                        // we create a new schema and add that schema to AnyOf to allow us to add
-                        // more schemas to it later.
-                        if (!operation.Responses[code].Content[mediaType].Schema.AnyOf.Any())
-                        {
-                            var existingSchema = operation.Responses[code].Content[mediaType].Schema;
-                            var newSchema = new OpenApiSchema();
-
-                            newSchema.AnyOf.Add(existingSchema);
-
-                            operation.Responses[code].Content[mediaType].Schema = newSchema;
+                            operation.Responses[code].Content[mediaType] = new OpenApiMediaType
+                            {
+                                Schema = schema
+                            };
                         }
+                        else
+                        {
+                            // If the existing schema is just a single schema (not a list of AnyOf), then
+                            // we create a new schema and add that schema to AnyOf to allow us to add
+                            // more schemas to it later.
+                            if (!operation.Responses[code].Content[mediaType].Schema.AnyOf.Any())
+                            {
+                                var existingSchema = operation.Responses[code].Content[mediaType].Schema;
+                                var newSchema = new OpenApiSchema();
 
-                        operation.Responses[code].Content[mediaType].Schema.AnyOf.Add(schema);
+                                newSchema.AnyOf.Add(existingSchema);
+
+                                operation.Responses[code].Content[mediaType].Schema = newSchema;
+                            }
+
+                            operation.Responses[code].Content[mediaType].Schema.AnyOf.Add(schema);
+                        }
                     }
                 }
                 else
@@ -124,11 +132,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                     var response = new OpenApiResponse
                     {
                         Description = description.RemoveBlankLines(),
-                        Content =
-                        {
-                            [mediaType] = new OpenApiMediaType {Schema = schema}
-                        }
                     };
+
+                    if (schema != null)
+                    {
+                        response.Content[mediaType] = new OpenApiMediaType { Schema = schema };
+                    }
 
                     operation.Responses.Add(code, response);
                 }

@@ -168,6 +168,9 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationWithNoResponseBody.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -334,6 +337,9 @@
     <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationNewFilter.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="OpenApiDocumentGeneratorTests\Output\AnnotationWithNoResponseBody.Json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
