@@ -399,6 +399,31 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                     "Annotation.Json")
             };
 
+            // Standard, original XML document with no response body
+            yield return new object[]
+            {
+                "Standard valid XML document with no response body.",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithNoResponseBody.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0,
+                1,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationWithNoResponseBody.Json")
+            };
+
             // Valid XML document but with parameters that have no in attributes but are present in the URL.
             yield return new object[]
             {
