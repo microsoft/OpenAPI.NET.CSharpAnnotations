@@ -268,6 +268,17 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             try
             {
                 generationDiagnostic = new GenerationDiagnostic();
+                var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
+
+                if (documentVariantElementNames?.Count > 1)
+                {
+                    documentGenerationDiagnostic.Errors.Add(new GenerationError
+                    {
+                        Message = string.Format(
+                            SpecificationGenerationMessages.MoreThanOneVariantNameNotAllowed,
+                            documentVariantElementNames.First())
+                    });
+                }
 
                 var typeFetcher = new TypeFetcher(contractAssemblyPaths);
 
@@ -275,7 +286,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     typeFetcher,
                     operationElements,
                     operationConfigElement,
-                    documentVariantElementNames,
+                    documentVariantElementNames.FirstOrDefault(),
                     out var documents);
 
                 foreach (var operationGenerationDiagnostic in operationGenerationDiagnostics)
@@ -283,8 +294,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     generationDiagnostic.OperationGenerationDiagnostics.Add(
                         new OperationGenerationDiagnostic(operationGenerationDiagnostic));
                 }
-
-                var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
 
                 foreach (var variantInfoDocumentValuePair in documents)
                 {
@@ -383,7 +392,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             TypeFetcher typeFetcher,
             IList<XElement> operationElements,
             XElement operationConfigElement,
-            IList<string> documentVariantElementNames,
+            string documentVariantElementName,
             out IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments)
         {
             specificationDocuments = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
@@ -460,26 +469,23 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         operationConfigElement,
                         typeFetcher);
 
-                    foreach (var documentVariantElementName in documentVariantElementNames)
+                    var customElements = operationElement.Descendants(documentVariantElementName);
+                    foreach (var customElement in customElements)
                     {
-                        var customElements = operationElement.Descendants(documentVariantElementName);
-                        foreach (var customElement in customElements)
+                        var documentVariantInfo = new DocumentVariantInfo
                         {
-                            var documentVariantInfo = new DocumentVariantInfo
-                            {
-                                Categorizer = customElement.Name.LocalName.Trim(),
-                                Title = customElement.Value.Trim()
-                            };
+                            Categorizer = customElement.Name.LocalName.Trim(),
+                            Title = customElement.Value.Trim()
+                        };
 
-                            AddOperation(
-                                specificationDocuments,
-                                referenceRegistryManagerMap,
-                                operationGenerationErrors,
-                                documentVariantInfo,
-                                operationElement,
-                                operationConfigElement,
-                                typeFetcher);
-                        }
+                        AddOperation(
+                            specificationDocuments,
+                            referenceRegistryManagerMap,
+                            operationGenerationErrors,
+                            documentVariantInfo,
+                            operationElement,
+                            operationConfigElement,
+                            typeFetcher);
                     }
 
                     var operationGenerationResult = new OperationGenerationDiagnostic

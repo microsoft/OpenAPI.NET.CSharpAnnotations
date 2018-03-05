@@ -85,6 +85,64 @@
           }
         }
       }
+    },
+    "/V1/samples": {
+      "get": {
+        "tags": [
+          "Sample V1"
+        ],
+        "summary": "Sample Get 2",
+        "operationId": "getV1Samples",
+        "parameters": [
+          {
+            "name": "sampleHeaderParam1",
+            "in": "header",
+            "description": "Header param 1",
+            "schema": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          {
+            "name": "sampleHeaderParam2",
+            "in": "header",
+            "description": "Header param 2",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sampleHeaderParam3",
+            "in": "header",
+            "description": "Header param 3",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paged Entity contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -124,6 +182,59 @@
             ],
             "type": "string",
             "description": "Gets or sets the sample property enum"
+          }
+        }
+      },
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3": {
+        "type": "object",
+        "properties": {
+          "SamplePropertyObject": {
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
+          },
+          "SamplePropertyObjectList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
+            },
+            "description": "Gets the sample property object list",
+            "readOnly": true
+          }
+        }
+      },
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2": {
+        "type": "object",
+        "properties": {
+          "SamplePropertyEnum": {
+            "enum": [
+              "SampleEnumValue1",
+              "SampleEnumValue2"
+            ],
+            "type": "string",
+            "description": "Gets or sets the sample property enum"
+          },
+          "SamplePropertyInt": {
+            "type": "string",
+            "description": "Gets or sets the sample property string 1"
+          },
+          "SamplePropertyObjectDictionary": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
+            },
+            "description": "Gets the sample property object dictionary",
+            "readOnly": true
+          },
+          "SamplePropertyObjectList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
+            },
+            "description": "Gets the sample property object list",
+            "readOnly": true
+          },
+          "SamplePropertyString1": {
+            "type": "string",
+            "description": "Gets or sets the sample property string 1"
           }
         }
       }
