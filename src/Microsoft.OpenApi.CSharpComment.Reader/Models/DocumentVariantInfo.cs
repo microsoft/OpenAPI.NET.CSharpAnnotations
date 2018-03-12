@@ -89,6 +89,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// <summary>
         /// Gets the hash code.
         /// </summary>
-        public override int GetHashCode() => new {Title, Categorizer}.GetHashCode();
+        public override int GetHashCode() => new {Title}.GetHashCode();
     }
 }

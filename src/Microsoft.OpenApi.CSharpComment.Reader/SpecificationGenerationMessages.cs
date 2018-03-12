@@ -34,6 +34,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
         public const string MissingInAttribute = "In attribute is missing from parameter(s) {0}";
 
+        public const string MoreThanOneVariantNameNotAllowed =
+            "More than one document variant is not allowed. Variant used for categorization is: {0}";
+
         public const string NoOperationElementFoundToParse =
             "No valid operation elements have been found in the annotation xml.";
 

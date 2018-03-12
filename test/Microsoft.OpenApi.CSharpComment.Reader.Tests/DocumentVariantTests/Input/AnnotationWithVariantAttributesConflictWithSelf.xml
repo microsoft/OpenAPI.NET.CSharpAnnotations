@@ -49,12 +49,9 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <!-- The custom swagger tags for Group1 and Group 2 -->
-      <swagger>Group1</swagger>
-      <swagger>Group2</swagger>
       <!-- ////////////////////////////////////////////// -->
-      <!-- The custom swagger2 tags for Group1 with attributes conflicting with another swagger2 Group1 tag below -->
-      <swagger2 security="sg1" version="V2">Group1</swagger2>
+      <!-- The custom swagger tags for Group1 with attributes conflicting with another swagger Group1 tag below -->
+      <swagger security="sg1" version="V2">Group1</swagger>
       <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
       <returns>The sample object 1</returns>
     </member>
@@ -74,8 +71,8 @@
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>
-      <!-- The custom swagger2 tags for Group1 with attributes conflicting with another swagger2 Group1 tag above -->
-      <swagger2 security="sg1" version="VConflict">Group1</swagger2>
+      <!-- The custom swagger tags for Group1 with attributes conflicting with another swagger Group1 tag above -->
+      <swagger security="sg1" version="VConflict">Group1</swagger>
       <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
       <returns>The sample object 3</returns>
     </member>

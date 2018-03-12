@@ -114,16 +114,10 @@
     <Content Include="DocumentVariantTests\Input\ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\Input\ConfigOneDocumentVariantTagSwagger2NoOptions.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="DocumentVariantTests\Input\ConfigOneDocumentVariantTagSwaggerNoOptions.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\Input\ConfigOneDocumentVariantTag.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DocumentVariantTests\Input\ConfigMultipleDocumentVariantTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll">
@@ -298,16 +292,10 @@
     <Content Include="OperationConfigTests\Output\AnnotationOverridden.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DocumentVariantTests\Output\AnnotationVariantSwagger2Group1.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup2.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationDefaultVariant.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwagger2Group1.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup1.json">
