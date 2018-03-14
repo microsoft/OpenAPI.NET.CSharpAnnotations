@@ -129,6 +129,7 @@
         where T is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>
         where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>
         where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>
+        List of sample objects.
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -148,7 +149,7 @@
       <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
       <!-- The ISampleObject4 generic is not documented properly. -->
       <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>Sample object.
       </response>
       <!-- ////////////////////////////////////////////////////// -->
       <response code="400">

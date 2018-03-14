@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
@@ -60,6 +61,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
                     description = lastNode.ToString();
+                }
+
+                if (string.IsNullOrWhiteSpace(description))
+                {
+                    throw new MissingResponseDescriptionException(code);
                 }
 
                 var allListedTypes = new List<string>();

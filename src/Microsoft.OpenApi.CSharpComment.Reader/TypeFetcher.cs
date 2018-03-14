@@ -222,7 +222,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     }
                     catch (ReflectionTypeLoadException e)
                     {
-                        // HACK - Unable to load types from assembly due to missing dependencies.
+                        // Unable to load types from assembly due to missing dependencies.
                         // The types that are available, however, are included in the exception.
                         // Check to see if a potential type is specified
                         foreach (var loadedType in e.Types)
@@ -238,10 +238,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
                 if (potentialTypes.Count > 1)
                 {
-                    var errorMessage = FormattableString.Invariant($"Could not uniquely identify type: \"{typeName}\"") +
-                        ", please use fully qualified namespace. The following types exist: ";
-
-                    errorMessage += string.Join(" ", potentialTypes.Select(type => type.FullName));
+                    var errorMessage = string.Format(SpecificationGenerationMessages.CannotUniquelyIdentifyType,
+                        typeName, string.Join(" ", potentialTypes.Select(type => type.FullName)));
 
                     throw new TypeLoadException(errorMessage);
                 }
@@ -252,10 +250,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             // Could not find the type.
             if (contractType == null)
             {
-                var errorMessage = FormattableString.Invariant($"Type \"{typeName}\" could not be found. ") +
-                    "Ensure that it exists in one of the following assemblies: ";
-
-                errorMessage += string.Join(" ", _contractAssemblyPaths.Select(Path.GetFileName));
+                var errorMessage = string.Format(SpecificationGenerationMessages.TypeNotFound, typeName,
+                    string.Join(" ", _contractAssemblyPaths.Select(Path.GetFileName)));
 
                 throw new TypeLoadException(errorMessage);
             }

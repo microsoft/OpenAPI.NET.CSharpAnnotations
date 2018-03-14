@@ -42,9 +42,7 @@
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
-      <!-- Array type in param tag for a query param -->
-      <param name="queryBool" required="true" cref="T:System.String[]" in="query">Sample query boolean</param>
-      <!-- ///////////////////////////////////////// -->
+      <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
       <response code="200">
         <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object retrieved
       </response>
@@ -83,9 +81,7 @@
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <param name="sampleObject" in="body">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"/>Sample object
-      </param>
+      <param name="sampleObject" in="body"><see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"/>Sample object</param>
       <response code="200">
         <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3"/>Sample object posted
       </response>
@@ -104,9 +100,7 @@
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
-      <param name="sampleObject" in="body">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object
-      </param>
+      <param name="sampleObject" in="body"><see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object</param>
       <response code="200">
         <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>The sample object updated
       </response>
@@ -146,19 +140,18 @@
         Sample get 2
       </summary>
       <group>Sample V3</group>
-      <verb>GET</verb>
+      <verb>POST</verb>
       <url>http://localhost:9000/V3/samples/{id}?queryString={queryString}</url>
       <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
-      <response code="200">
-        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>
-        where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>
-        where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>
-        List of sample objects.
-      </response>
+      <!-- The type:TestNotFound doens't exists in provided contract assemblies. -->
+      <param name="sampleObject" in="body">
+        <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.TestNotFound"/>Sample object
+      </param>
+      <!-- ////////////////////////////////////////////////////// -->
       <response code="400">
         <see cref="T:System.String"/>Bad request
       </response>

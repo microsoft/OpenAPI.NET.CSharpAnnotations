@@ -10,6 +10,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     public static class SpecificationGenerationMessages
     {
+        public const string CannotUniquelyIdentifyType = "Could not uniquely identify type: \"{0}\", " +
+            "please use fully qualified namespace. The following types exist: {1}";
+
         public const string ConflictingDocumentVariantAttributes =
             "The document variant (Categorizer: {0}, Title: {1}) have conflicting attributes: " +
             "{2} | {3}";
@@ -35,6 +38,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public const string MissingSeeCrefTag = 
             "Tag \"<see cref=\"(RequestBodyType)\"\\>\" is missing from body parameter: \"{0}\". ";
 
+        public const string MissingResponseDescription =
+            "Description is missing for response code: \"{0}\". ";
+
         public const string MoreThanOneVariantNameNotAllowed =
             "More than one document variant is not allowed. Variant used for categorization is: {0}";
 
@@ -45,6 +51,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             "Operation method has not been parsed given that the url is invalid.";
 
         public const string SuccessfulPathGeneration = "The specification for path has been generated successfully.";
+
+        public const string TypeNotFound = "Type \"{0}\" could not be found. " +
+            "Ensure that it exists in one of the following assemblies: {1}";
 
         public const string UndocumentedGenericType =
             "The request or response type contains a generic type that is undocumented. " +

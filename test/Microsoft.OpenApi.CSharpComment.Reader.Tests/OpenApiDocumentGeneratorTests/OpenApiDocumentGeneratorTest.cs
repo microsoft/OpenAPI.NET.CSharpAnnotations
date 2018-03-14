@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -379,6 +380,99 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                 Message = string.Format(
                                     SpecificationGenerationMessages.MissingSeeCrefTag,
                                     "sampleObject"),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Failure
+                    }
+                }
+            };
+
+            // Type not found in provided contract assemblies
+            yield return new object[]
+            {
+                "Type not found",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationTypeNotFound.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationTypeNotFound.Json"),
+                new List<OperationGenerationDiagnostic>
+                {
+                    new OperationGenerationDiagnostic
+                    {
+                        OperationMethod = OperationType.Post.ToString(),
+                        Path = "/V3/samples/{id}",
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(TypeLoadException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.TypeNotFound,
+                                    "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.TestNotFound",
+                                string.Join(" ", new List<string>
+                                {
+                                    "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll",
+                                    "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll"
+                                }))
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Failure
+                    }
+                }
+            };
+
+            // The response is missing description
+            yield return new object[]
+            {
+                "Response missing description",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationResponseMissingDescription.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationResponseMissingDescription.Json"),
+                new List<OperationGenerationDiagnostic>
+                {
+                    new OperationGenerationDiagnostic
+                    {
+                        OperationMethod = OperationType.Get.ToString(),
+                        Path = "/V3/samples/{id}",
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(MissingResponseDescriptionException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.MissingResponseDescription,
+                                    "400")
                             }
                         },
                         GenerationStatus = GenerationStatus.Failure

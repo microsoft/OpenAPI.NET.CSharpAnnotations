@@ -64,6 +64,7 @@
     <Compile Include="Exceptions\AddingSchemaReferenceFailedException.cs" />
     <Compile Include="Exceptions\InvalidVerbException.cs" />
     <Compile Include="Exceptions\InvalidUrlException.cs" />
+    <Compile Include="Exceptions\MissingResponseDescriptionException.cs" />
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
