@@ -22,8 +22,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidRequestBodyException"/>.
         /// </summary>
-        public InvalidRequestBodyException(string requestBody)
-            : base(string.Format(SpecificationGenerationMessages.InvalidRequestBody, requestBody))
+        public InvalidRequestBodyException(string message)
+            : base(message)
         {
         }
 

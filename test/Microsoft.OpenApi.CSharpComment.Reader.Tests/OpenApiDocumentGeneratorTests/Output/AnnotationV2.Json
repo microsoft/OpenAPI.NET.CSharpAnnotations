@@ -24,9 +24,7 @@
           {
             "in": "header",
             "name": "sampleHeaderParam1",
-            "description": "Header param 1",
-            "type": "number",
-            "format": "float"
+            "description": "Header param 1"
           },
           {
             "in": "header",

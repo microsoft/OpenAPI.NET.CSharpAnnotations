@@ -42,6 +42,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
             foreach (var bodyElement in bodyElements)
             {
+                var name = bodyElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
                 var mediaType = bodyElement.Attribute(KnownXmlStrings.Type)?.Value ?? "application/json";
 
                 var childNodes = bodyElement.DescendantNodes().ToList();
@@ -68,13 +69,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                     }
                 }
 
-                var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-
-                if (type == null)
+                if (!allListedTypes.Any())
                 {
-                    throw new InvalidRequestBodyException(bodyElement.Value);
+                    throw new InvalidRequestBodyException(
+                        string.Format(SpecificationGenerationMessages.MissingSeeCrefTag, name));
                 }
 
+                var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
                 var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
 
                 if (operation.RequestBody == null)

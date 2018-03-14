@@ -341,6 +341,50 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                     }
                 }
             };
+
+            // Body parameter missing see tag
+            yield return new object[]
+            {
+                "Body parameter missing see tag",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationRequestMissingSeeTag.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0,
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationRequestMissingSeeTag.Json"),
+                new List<OperationGenerationDiagnostic>
+                {
+                    new OperationGenerationDiagnostic
+                    {
+                        OperationMethod = OperationType.Post.ToString(),
+                        Path = "/V3/samples/{id}",
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(InvalidRequestBodyException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.MissingSeeCrefTag,
+                                    "sampleObject"),
+                            }
+                        },
+                        GenerationStatus = GenerationStatus.Failure
+                    }
+                }
+            };
         }
 
         public static IEnumerable<object[]> GetTestCasesForPassANewFilterAndShouldReturnCorrectDocument()
@@ -622,7 +666,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 9,
                 Path.Combine(
                     OutputDirectory,
-                    "Annotation.Json")
+                    "AnnotationAlternativeParamTags.Json")
             };
 
             // Valid XML document with array type in param tags.

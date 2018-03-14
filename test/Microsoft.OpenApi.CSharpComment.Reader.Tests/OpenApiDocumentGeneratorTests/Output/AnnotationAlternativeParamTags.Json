@@ -23,7 +23,8 @@
             "in": "header",
             "description": "Header param 1",
             "schema": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
+              "type": "number",
+              "format": "float"
             }
           },
           {
