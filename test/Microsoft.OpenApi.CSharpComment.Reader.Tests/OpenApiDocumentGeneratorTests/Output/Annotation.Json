@@ -23,8 +23,7 @@
             "in": "header",
             "description": "Header param 1",
             "schema": {
-              "type": "number",
-              "format": "float"
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
             }
           },
           {
@@ -323,7 +322,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "List of sample objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -401,7 +400,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "List of sample objects.",
             "content": {
               "application/json": {
                 "schema": {

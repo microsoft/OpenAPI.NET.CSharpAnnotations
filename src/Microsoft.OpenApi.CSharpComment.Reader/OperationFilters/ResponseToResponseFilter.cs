@@ -63,6 +63,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                     description = lastNode.ToString();
                 }
 
+                if (string.IsNullOrWhiteSpace(description))
+                {
+                    throw new MissingResponseDescriptionException(code);
+                }
+
                 var allListedTypes = new List<string>();
 
                 var seeNodes = responseElement.Descendants(KnownXmlStrings.See);
@@ -82,12 +87,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                 if (allListedTypes.Any())
                 {
                     var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-
-                    if (responseContractType == null)
-                    {
-                        throw new InvalidResponseException(responseElement.Value);
-                    }
-
                     schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
                         responseContractType);
                 }

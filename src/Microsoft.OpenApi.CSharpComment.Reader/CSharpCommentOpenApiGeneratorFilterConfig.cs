@@ -19,12 +19,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// </summary>
     public class CSharpCommentOpenApiGeneratorFilterConfig
     {
+        /// <summary>
+        /// List of default document config filters.
+        /// </summary>
         public static readonly IReadOnlyList<IDocumentConfigFilter> DefaultDocumentConfigFilters =
             new List<IDocumentConfigFilter>
             {
                 new DocumentVariantAttributesFilter()
             };
 
+        /// <summary>
+        /// List of default document filters.
+        /// </summary>
         public static readonly IReadOnlyList<IDocumentFilter> DefaultDocumentFilters =
             new List<IDocumentFilter>
             {
@@ -33,12 +39,18 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new MemberSummaryToSchemaDescriptionFilter()
             };
 
+        /// <summary>
+        /// List of default operation config filters.
+        /// </summary>
         public static readonly IReadOnlyList<IOperationConfigFilter> DefaultOperationConfigFilters =
             new List<IOperationConfigFilter>
             {
                 new CommonAnnotationFilter()
             };
 
+        /// <summary>
+        /// List of default operation filters.
+        /// </summary>
         public static readonly IReadOnlyList<IOperationFilter> DefaultOperationFilters =
             new List<IOperationFilter>
             {
@@ -50,6 +62,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new SummaryToSummaryFilter()
             };
 
+        /// <summary>
+        /// List of default pre processing operation filters.
+        /// </summary>
         public static readonly IReadOnlyList<IPreProcessingOperationFilter> DefaultPreProcessingOperationFilters =
             new List<IPreProcessingOperationFilter>
             {
@@ -58,6 +73,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 new BranchOptionalPathParametersFilter()
             };
 
+        /// <summary>
+        /// List of default post processing document filters.
+        /// </summary>
         public static readonly IReadOnlyList<IPostProcessingDocumentFilter> DefaultPostProcessingDocumentFilters =
             new List<IPostProcessingDocumentFilter>
             {

@@ -249,7 +249,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "List of sample objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -327,7 +327,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "List of sample objects.",
             "content": {
               "application/json": {
                 "schema": {

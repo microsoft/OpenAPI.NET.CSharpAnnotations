@@ -38,7 +38,7 @@
       <group>Sample V1</group>
       <verb>GET</verb>
       <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
-      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam1" cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1" in="header">Header param 1</param>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
@@ -133,6 +133,7 @@
         where T is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>
         where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>
         where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>
+        List of sample objects.
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request
@@ -154,6 +155,7 @@
         <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4`2"/>
         where T1 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>
         where T2 is <see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"/>
+        List of sample objects.
       </response>
       <response code="400">
         <see cref="T:System.String"/>Bad request

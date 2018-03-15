@@ -14,8 +14,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
     /// </summary>
     public static class StringExtensions
     {
-        private static readonly Regex _allNonCompliantCharactersRegex = new Regex(@"[^a-zA-Z0-9\.\-_]");
-        private static readonly Regex _genericMarkersRegex = new Regex(@"`[0-9]+");
+        private static readonly Regex AllNonCompliantCharactersRegex = new Regex(@"[^a-zA-Z0-9\.\-_]");
+        private static readonly Regex GenericMarkersRegex = new Regex(@"`[0-9]+");
 
         /// <summary>
         /// Determines whether the string contains the given substring using the specified StringComparison.
@@ -77,13 +77,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Extensions
 
             // Remove `n from a generic type. It's clear that this is a generic type
             // since it will be followed by other types name(s).
-            value = _genericMarkersRegex.Replace(value, string.Empty);
+            value = GenericMarkersRegex.Replace(value, string.Empty);
 
             // Replace , (used to separate multiple types used in a generic) by - 
             value = value.Replace(oldChar: ',', newChar: '-');
 
             // Replace all other non-compliant strings, including [ ] used in generics by _
-            value = _allNonCompliantCharactersRegex.Replace(value, "_");
+            value = AllNonCompliantCharactersRegex.Replace(value, "_");
 
             return value;
         }

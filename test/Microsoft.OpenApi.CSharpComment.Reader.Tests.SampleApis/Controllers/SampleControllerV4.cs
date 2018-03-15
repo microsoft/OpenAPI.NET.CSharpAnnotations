@@ -30,6 +30,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers
         /// where T is <see cref="ISampleObject4{T1,T2}"/>
         /// where T1 is <see cref="SampleObject1"/>
         /// where T2 is <see cref="SampleObject4"/>
+        /// List of sample objects
         /// </response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]

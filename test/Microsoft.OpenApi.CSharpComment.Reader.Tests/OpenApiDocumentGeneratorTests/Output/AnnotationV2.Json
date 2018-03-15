@@ -24,9 +24,7 @@
           {
             "in": "header",
             "name": "sampleHeaderParam1",
-            "description": "Header param 1",
-            "type": "number",
-            "format": "float"
+            "description": "Header param 1"
           },
           {
             "in": "header",
@@ -272,7 +270,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "List of sample objects.",
             "schema": {
               "type": "array",
               "items": {
@@ -335,7 +333,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
+            "description": "List of sample objects.",
             "schema": {
               "$ref": "#/definitions/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2_"
             }

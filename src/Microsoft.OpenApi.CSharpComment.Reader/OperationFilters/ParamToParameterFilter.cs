@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
@@ -86,10 +87,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         {
             var type = typeof(string);
 
-            if (cref != null && cref.Contains(":") && cref.Split(':')[0].Trim() == KnownXmlStrings.T)
+            if (cref != null)
             {
-                var typeName = cref.Split(':')[1].Trim();
-                type = Type.GetType(typeName) ?? typeof(string);
+                type = settings.TypeFetcher.LoadTypeFromCrefValues(new List<string>() { cref });
             }
 
             return settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
