@@ -45,7 +45,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             "More than one document variant is not allowed. Variant used for categorization is: {0}";
 
         public const string NoOperationElementFoundToParse =
-            "No valid operation elements containing tag \"url\" and \"verb\" have been found in the annotation xml.";
+            "No valid operation elements containing tag \"<url>\" and \"<verb>\" have been found in the annotation xml.";
 
         public const string OperationMethodNotParsedGivenUrlIsInvalid =
             "Operation method has not been parsed given that the url is invalid.";
