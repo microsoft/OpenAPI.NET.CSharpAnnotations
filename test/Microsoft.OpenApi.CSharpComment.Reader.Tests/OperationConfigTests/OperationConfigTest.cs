@@ -76,7 +76,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
 
             var openApiStringReader = new OpenApiStringReader();
 
-
             var actualDeserializedDocument = openApiStringReader.Read(
                 actualDocument,
                 out OpenApiDiagnostic diagnostic);
