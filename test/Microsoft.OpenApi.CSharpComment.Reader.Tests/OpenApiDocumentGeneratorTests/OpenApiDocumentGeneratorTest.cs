@@ -979,7 +979,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             // Without serialization and deserialization, the actual document may have fields that should
             // not be present, such as empty list fields.
             var openApiStringReader = new OpenApiStringReader();
-            openApiStringReader.Read(actualDocument, out var _)
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic);
+
+            diagnostic.Errors.Count.Should().Be(0);
+
+            actualDeserializedDocument
                 .Should()
                 .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
@@ -1036,7 +1043,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             // Without serialization and deserialization, the actual document may have fields that should
             // not be present, such as empty list fields.
             var openApiStringReader = new OpenApiStringReader();
-            openApiStringReader.Read(actualDocument, out var _)
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic);
+
+            diagnostic.Errors.Count.Should().Be(0);
+
+            actualDeserializedDocument
                 .Should()
                 .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
@@ -1116,10 +1130,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             _output.WriteLine(actualDocument);
 
             var openApiStringReader = new OpenApiStringReader();
-            openApiStringReader.Read(actualDocument, out var _)
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic);
+
+            diagnostic.Errors.Count.Should().Be(0);
+
+            actualDeserializedDocument
                 .Should()
-                .BeEquivalentTo(
-                    openApiStringReader.Read(expectedDocument, out var _));
+                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
 
         [Theory]
@@ -1166,10 +1186,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             _output.WriteLine(actualDocument);
 
             var openApiStringReader = new OpenApiStringReader();
-            openApiStringReader.Read(actualDocument, out var _)
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic);
+
+            diagnostic.Errors.Count.Should().Be(0);
+
+            actualDeserializedDocument
                 .Should()
-                .BeEquivalentTo(
-                    openApiStringReader.Read(expectedDocument, out var _));
+                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
 
         [Theory]
@@ -1215,10 +1241,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             _output.WriteLine(actualDocument);
 
             var openApiStringReader = new OpenApiStringReader();
-            openApiStringReader.Read(actualDocument, out var _)
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic);
+
+            diagnostic.Errors.Count.Should().Be(0);
+
+            actualDeserializedDocument
                 .Should()
-                .BeEquivalentTo(
-                    openApiStringReader.Read(expectedDocument, out var _));
+                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
     }
 }

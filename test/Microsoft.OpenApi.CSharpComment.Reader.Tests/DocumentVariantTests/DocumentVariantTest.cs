@@ -100,10 +100,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
                 var openApiStringReader = new OpenApiStringReader();
 
-                var actualDocument = openApiStringReader.Read(actualDocumentAsString, out var _);
-                var expectedDocument = openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _);
+                var actualDeserializedDocument = openApiStringReader.Read(
+                    actualDocumentAsString,
+                    out OpenApiDiagnostic diagnostic);
 
-                actualDocument.Should().BeEquivalentTo(expectedDocument);
+                diagnostic.Errors.Count.Should().Be(0);
+
+                actualDeserializedDocument
+                    .Should()
+                    .BeEquivalentTo(openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
 
                 // Bug in fluent assertion method. Comparing the array of documents yields incorrect result.
                 // Root cause unknown. This should be enabled once that bug is resolved.
@@ -180,10 +185,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
                 var openApiStringReader = new OpenApiStringReader();
 
-                var actualDocument = openApiStringReader.Read(actualDocumentAsString, out var _);
-                var expectedDocument = openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _);
+                var actualDeserializedDocument = openApiStringReader.Read(
+                    actualDocumentAsString,
+                    out OpenApiDiagnostic diagnostic);
 
-                actualDocument.Should().BeEquivalentTo(expectedDocument);
+                diagnostic.Errors.Count.Should().Be(0);
+
+                actualDeserializedDocument
+                    .Should()
+                    .BeEquivalentTo(openApiStringReader.Read(File.ReadAllText(expectedJsonFile), out var _));
 
                 // Bug in fluent assertion method. Comparing the array of documents yields incorrect result.
                 // Root cause unknown. This should be enabled once that bug is resolved.
