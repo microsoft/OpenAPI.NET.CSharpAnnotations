@@ -8,7 +8,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
     /// <summary>
     /// Holds the specification generation messages.
     /// </summary>
-    public static class SpecificationGenerationMessages
+    internal static class SpecificationGenerationMessages
     {
         public const string CannotUniquelyIdentifyType = "Could not uniquely identify type: \"{0}\", " +
             "please use fully qualified namespace. The following types exist: {1}";
