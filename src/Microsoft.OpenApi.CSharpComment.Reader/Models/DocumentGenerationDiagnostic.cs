@@ -32,8 +32,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
                 return;
             }
 
-            GenerationStatus = other.GenerationStatus;
-
             if (other.Errors != null)
             {
                 foreach (var error in other.Errors)
@@ -47,10 +45,5 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// List of generation errors for this operation.
         /// </summary>
         public IList<GenerationError> Errors { get; } = new List<GenerationError>();
-
-        /// <summary>
-        /// The generation status for the operation.
-        /// </summary>
-        public GenerationStatus GenerationStatus { get; set; }
     }
 }

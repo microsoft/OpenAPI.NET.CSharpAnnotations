@@ -257,8 +257,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                             {
                                 Message = SpecificationGenerationMessages.NoOperationElementFoundToParse
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Warning
+                        }
                     }
                 };
 
@@ -348,17 +347,25 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                     }
                 }
 
-                if (documentGenerationDiagnostic.Errors.Any())
+                var failedOperations = generationDiagnostic.OperationGenerationDiagnostics
+                    .Where(i => i.Errors.Count > 0);
+
+                if (failedOperations.Any())
                 {
-                    documentGenerationDiagnostic.GenerationStatus = GenerationStatus.Warning;
-                    generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
-                }
-                else
-                {
-                    documentGenerationDiagnostic.GenerationStatus = GenerationStatus.Success;
-                    generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
+                    var totalOperationsCount = generationDiagnostic.OperationGenerationDiagnostics.Count();
+
+                    var exception = new UnableToGenerateAllOperationsException(
+                        totalOperationsCount - failedOperations.Count(), totalOperationsCount);
+
+                    documentGenerationDiagnostic.Errors.Add(
+                        new GenerationError
+                        {
+                            ExceptionType = exception.GetType().Name,
+                            Message = exception.Message
+                        });
                 }
 
+                generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
                 return documents.ToSerializedOpenApiDocuments(openApiSpecVersion, openApiFormat);
             }
             catch (Exception e)
@@ -375,8 +382,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     ExceptionType = e.GetType().Name,
                                     Message = string.Format(SpecificationGenerationMessages.UnexpectedError, e)
                                 }
-                            },
-                            GenerationStatus = GenerationStatus.Failure
+                            }
                         }
                 };
 
@@ -423,7 +429,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     Message = e.Message
                                 }
                             },
-                            GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
                             Path = e.Url
                         });
@@ -448,7 +453,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     Message = e.Message
                                 }
                             },
-                            GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = e.Verb,
                             Path = url
                         });
@@ -500,12 +504,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                         {
                             operationGenerationResult.Errors.Add(new GenerationError(error));
                         }
-
-                        operationGenerationResult.GenerationStatus = GenerationStatus.Failure;
-                    }
-                    else
-                    {
-                        operationGenerationResult.GenerationStatus = GenerationStatus.Success;
                     }
 
                     operationGenerationResults.Add(operationGenerationResult);
@@ -523,7 +521,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                     Message = e.Message
                                 }
                             },
-                            GenerationStatus = GenerationStatus.Failure,
                             OperationMethod = operationMethod.ToString(),
                             Path = url
                         });

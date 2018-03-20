@@ -58,6 +58,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationInvalidVerb.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -71,8 +85,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                 ExceptionType = typeof(InvalidVerbException).Name,
                                 Message = string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"),
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -100,6 +113,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationInvalidUri.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -116,8 +143,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
                                     SpecificationGenerationMessages.MalformattedUrl),
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -148,6 +174,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationParamWithoutInNotPresentInUrl.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -163,8 +203,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     SpecificationGenerationMessages.MissingInAttribute,
                                     string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -192,6 +231,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationConflictingPathAndQueryParameters.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -208,8 +261,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     "id",
                                     "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -237,6 +289,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationUndocumentedPathParam.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -253,8 +319,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     "id",
                                     "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}"),
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -282,6 +347,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationUndocumentedGeneric.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -295,8 +374,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                 ExceptionType = typeof(UndocumentedGenericTypeException).Name,
                                 Message = SpecificationGenerationMessages.UndocumentedGenericType,
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -324,6 +402,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationIncorrectlyOrderedGeneric.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -337,8 +429,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                 ExceptionType = typeof(UnorderedGenericTypeException).Name,
                                 Message = SpecificationGenerationMessages.UnorderedGenericType,
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -366,6 +457,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationRequestMissingSeeTag.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -381,8 +486,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     SpecificationGenerationMessages.MissingSeeCrefTag,
                                     "sampleObject"),
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -410,6 +514,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationTypeNotFound.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -430,8 +548,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll"
                                 }))
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -459,6 +576,20 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationResponseMissingDescription.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9),
+                        }
+                    }
+                },
                 new List<OperationGenerationDiagnostic>
                 {
                     new OperationGenerationDiagnostic
@@ -474,8 +605,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                                     SpecificationGenerationMessages.MissingResponseDescription,
                                     "400")
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Failure
+                        }
                     }
                 }
             };
@@ -934,6 +1064,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             string expectedJsonFile,
+            DocumentGenerationDiagnostic expectedDocumentGenerationResult,
             IList<OperationGenerationDiagnostic> expectedFailureOperationGenerationResults)
         {
             _output.WriteLine(testCaseName);
@@ -957,13 +1088,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                     openApiDocuments.ToSerializedOpenApiDocuments(),
                     new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
-            result.GenerationStatus.Should().Be(GenerationStatus.Failure);
+            result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
 
             var failurePaths = result.OperationGenerationDiagnostics.Where(
-                    p => p.GenerationStatus == GenerationStatus.Failure)
+                    p => p.Errors.Count > 0)
                 .ToList();
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
@@ -1000,6 +1131,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             string expectedJsonFile,
+            DocumentGenerationDiagnostic expectedDocumentGenerationResult,
             IList<OperationGenerationDiagnostic> expectedFailureOperationGenerationResults)
         {
             _output.WriteLine(testCaseName);
@@ -1023,12 +1155,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                      openApiDocuments.ToSerializedOpenApiDocuments(),
                      new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
-            result.GenerationStatus.Should().Be(GenerationStatus.Failure);
+            result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
+
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var failedPaths = result.OperationGenerationDiagnostics.Where(
-                    p => p.GenerationStatus == GenerationStatus.Failure)
+                    p => p.Errors.Count > 0)
                 .ToList();
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
@@ -1072,7 +1205,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
             var openApiDocument = generator.GenerateDocument(input, out result);
 
             result.Should().NotBeNull();
-            result.GenerationStatus.Should().Be(GenerationStatus.Warning);
             openApiDocument.Should().BeNull();
             result.DocumentGenerationDiagnostic.Should()
                 .BeEquivalentTo(
@@ -1084,8 +1216,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                             {
                                 Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
                             }
-                        },
-                        GenerationStatus = GenerationStatus.Warning
+                        }
                     }
                 );
         }
@@ -1120,8 +1251,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
                     openApiDocuments.ToSerializedOpenApiDocuments(),
                     new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
-            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
+
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+
+            result.OperationGenerationDiagnostics.Where(p => p.Errors.Count > 0).Count().Should().Be(0);
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
@@ -1176,8 +1310,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             _output.WriteLine(JsonConvert.SerializeObject(result));
 
-            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
+
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+
+            result.OperationGenerationDiagnostics.Where(p => p.Errors.Count > 0).Count().Should().Be(0);
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
@@ -1231,8 +1368,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             _output.WriteLine(JsonConvert.SerializeObject(serializedDocuments));
 
-            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
+
             serializedDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+
+            result.OperationGenerationDiagnostics.Where(p => p.Errors.Count > 0).Count().Should().Be(0);
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var actualDocument = serializedDocuments[DocumentVariantInfo.Default];

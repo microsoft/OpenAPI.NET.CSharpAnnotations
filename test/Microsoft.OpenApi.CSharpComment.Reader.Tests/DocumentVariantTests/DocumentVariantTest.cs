@@ -29,9 +29,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
         [Theory]
         [MemberData(
-            nameof(DocumentVariantTestCases.GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldWarning),
+            nameof(DocumentVariantTestCases.GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldFailure),
             MemberType = typeof(DocumentVariantTestCases))]
-        public void GenerateDocumentMultipleVariantsShouldYieldWarning(
+        public void GenerateDocumentMultipleVariantsShouldYieldFailure(
             string testCaseName,
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
@@ -69,14 +69,13 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
             result.Should().NotBeNull();
-            result.GenerationStatus.Should().Be(GenerationStatus.Warning);
 
             // All operation generations should succeed.
-            result.OperationGenerationDiagnostics.Count(r => r.GenerationStatus == GenerationStatus.Success)
+            result.OperationGenerationDiagnostics.Count(r => r.Errors.Count == 0)
                 .Should()
                 .Be(expectedOperationGenerationResultsCount);
 
-            // Document generation should yield warning as expected in the test cases.
+            // Document generation should yield failure as expected in the test cases.
             result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
 
             openApiDocuments.Keys.Should()
@@ -161,9 +160,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                     new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
             result.Should().NotBeNull();
-            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
+            result.OperationGenerationDiagnostics.Count(r => r.Errors.Count == 0)
+                .Should()
+                .Be(expectedOperationGenerationResultsCount);
 
-            result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
             openApiDocuments.Keys.Should()
                 .BeEquivalentTo(documentVariantInfoToExpectedJsonFileMap.Keys);
 

@@ -57,17 +57,9 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OperationConfigTests
                 out result);
 
             result.Should().NotBeNull();
-            result.GenerationStatus.Should().Be(GenerationStatus.Success);
+            result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
-
-            // Document-level generation should succeed.
-            result.DocumentGenerationDiagnostic.Should()
-                .BeEquivalentTo(
-                    new DocumentGenerationDiagnostic
-                    {
-                        GenerationStatus = GenerationStatus.Success
-                    });
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default].SerializeAsJson(openApiSpecVersion);
             var expectedDocument = File.ReadAllText(expectedJsonFile);
