@@ -25,7 +25,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiDocument specificationDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings)
+        public void Apply(
+            OpenApiDocument specificationDocument,
+            IList<XDocument> xmlDocuments,
+            DocumentFilterSettings settings)
         {
             var propertyMembers = new List<XElement>();
 

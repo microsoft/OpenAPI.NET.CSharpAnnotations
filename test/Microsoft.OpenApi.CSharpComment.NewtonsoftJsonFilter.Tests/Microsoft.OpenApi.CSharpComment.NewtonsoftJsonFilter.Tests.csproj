@@ -8,8 +8,8 @@
     <ProjectGuid>{D1348AA1-F9C9-45E3-A8BF-50B7754340FC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.OpenApi.CSharpComment.CustomFilter.Tests</RootNamespace>
-    <AssemblyName>Microsoft.OpenApi.CSharpComment.CustomFilter.Tests</AssemblyName>
+    <RootNamespace>Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.Tests</RootNamespace>
+    <AssemblyName>Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -93,7 +93,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Microsoft.OpenApi.CSharpComment.CustomFilters\Microsoft.OpenApi.CSharpComment.CustomFilters.csproj">
+    <ProjectReference Include="..\..\src\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.csproj">
       <Project>{EFD530F4-6D30-4346-BD65-50BD1FBFD67F}</Project>
       <Name>Microsoft.OpenApi.CSharpComment.CustomFilters</Name>
     </ProjectReference>

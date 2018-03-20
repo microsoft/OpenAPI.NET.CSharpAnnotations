@@ -3,18 +3,20 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.OpenApi.CSharpComment.CustomFilters.Tests")]
+[assembly: AssemblyTitle("Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Microsoft.OpenApi.CSharpComment.CustomFilters.Tests")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter")]
+[assembly: AssemblyCopyright("Copyright © Microsoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -24,7 +26,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d1348aa1-f9c9-45e3-a8bf-50b7754340fc")]
+[assembly: Guid("EFD530F4-6D30-4346-BD65-50BD1FBFD67F")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -38,3 +40,6 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: CLSCompliant(false)]
+
+[assembly: InternalsVisibleTo("Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.Tests")]

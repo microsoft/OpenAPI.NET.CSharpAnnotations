@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
-using Microsoft.OpenApi.CSharpComment.CustomFilters;
+using Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter;
 using Microsoft.OpenApi.CSharpComment.Reader;
 using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;

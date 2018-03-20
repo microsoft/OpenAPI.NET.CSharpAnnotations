@@ -13,7 +13,7 @@ using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApi.CSharpComment.CustomFilters
+namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter
 {
     /// <summary>
     /// Filter to grab newtonsoft json property attribute and if it contains name and required information for a
@@ -25,12 +25,19 @@ namespace Microsoft.OpenApi.CSharpComment.CustomFilters
         /// Fetches the newtonsoft json property attribute and if it contains name and required information for a
         /// property, update the corresponding property schema with it.
         /// </summary>
-        /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
+        /// <param name="openApiDocument">The Open API specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiDocument specificationDocument, IList<XDocument> xmlDocuments,
+        public void Apply(
+            OpenApiDocument openApiDocument,
+            IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings)
         {
+            if (openApiDocument == null || settings == null || xmlDocuments == null)
+            {
+                return;
+            }
+
             var propertyMembers = new List<XElement>();
 
             foreach (var xmlDocument in xmlDocuments)
@@ -59,7 +66,7 @@ namespace Microsoft.OpenApi.CSharpComment.CustomFilters
                 // should apply to those properties in schema A, A_B_, and A_B_C__ as well.
                 var sanitizedClassName = className.SanitizeClassName();
 
-                var schemas = specificationDocument.Components.Schemas.Where(
+                var schemas = openApiDocument.Components.Schemas.Where(
                         s => s.Key == sanitizedClassName ||
                              s.Key.StartsWith(sanitizedClassName + "_"))
                     .ToList();
@@ -69,8 +76,7 @@ namespace Microsoft.OpenApi.CSharpComment.CustomFilters
                     continue;
                 }
 
-                var propertyName =
-                    splitPropertyName[splitPropertyName.Length - 1];
+                var propertyName = splitPropertyName[splitPropertyName.Length - 1];
 
                 var propertyInfo = settings.TypeFetcher.LoadType(className)
                     ?.GetProperties()
