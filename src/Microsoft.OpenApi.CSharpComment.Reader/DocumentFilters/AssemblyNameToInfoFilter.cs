@@ -41,10 +41,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
             specificationDocument.Info = new OpenApiInfo
             {
                 Title = xmlDocument.XPathSelectElement("//doc/assembly/name")?.Value,
-
-                // Assign version as 1.0.0 for the time being.
-                // TODO: Customer should be able to input this in the Config file
-                Version = "1.0.0"
+                Version = settings.OpenApiDocumentVersion
             };
         }
     }

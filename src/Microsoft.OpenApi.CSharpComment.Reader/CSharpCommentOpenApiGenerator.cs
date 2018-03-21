@@ -45,46 +45,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
             out GenerationDiagnostic generationDiagnostic)
         {
-            var result = GenerateSerializedDocuments(
-                cSharpCommentOpenApiGeneratorConfig,
-                out generationDiagnostic);
-
-            return result.ToOpenApiDocuments();
-        }
-
-        /// <summary>
-        /// Generates a serialized OpenAPI document based on the provided configuration, but ignores any variant
-        /// configuration that may be present.
-        /// </summary>
-        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
-        /// the document.</param>
-        /// <param name="generationDiagnostic">The generation diagnostics.</param>
-        /// <returns>The generated serialized OpenAPI document.</returns>
-        public string GenerateSerializedDocument(
-            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
-            out GenerationDiagnostic generationDiagnostic)
-        {
-            var document = GenerateDocument(cSharpCommentOpenApiGeneratorConfig, out generationDiagnostic);
-
-            return document?.Serialize(
-                cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
-                cSharpCommentOpenApiGeneratorConfig.OpenApiFormat);
-        }
-
-        /// <summary>
-        /// Generates a serialized OpenAPI document per variant specified in configuration.
-        /// In addition, a serialized "default" variant document is generated, which contains no alterations based on
-        /// variant metadata.
-        /// </summary>
-        /// <param name="cSharpCommentOpenApiGeneratorConfig">The configuration that will be used to generate
-        /// the document.</param>
-        /// <param name="generationDiagnostic">The generation diagnostics.</param>
-        /// <returns>Dictionary mapping document variant metadata to their respective serialized OpenAPI document.
-        /// </returns>
-        public IDictionary<DocumentVariantInfo, string> GenerateSerializedDocuments(
-            CSharpCommentOpenApiGeneratorConfig cSharpCommentOpenApiGeneratorConfig,
-            out GenerationDiagnostic generationDiagnostic)
-        {
             foreach (var assemblyPath in cSharpCommentOpenApiGeneratorConfig.AssemblyPaths)
             {
                 if (!File.Exists(assemblyPath))
@@ -100,8 +60,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 cSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocuments,
                 cSharpCommentOpenApiGeneratorConfig.AssemblyPaths,
                 cSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument?.ToString(),
-                cSharpCommentOpenApiGeneratorConfig.OpenApiSpecificationVersion,
-                cSharpCommentOpenApiGeneratorConfig.OpenApiFormat,
+                cSharpCommentOpenApiGeneratorConfig.OpenApiDocumentVersion,
                 out generationDiagnostic);
         }
     }

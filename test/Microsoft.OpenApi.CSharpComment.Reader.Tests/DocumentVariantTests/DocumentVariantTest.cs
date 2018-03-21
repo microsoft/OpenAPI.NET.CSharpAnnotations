@@ -36,7 +36,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             string configXmlFile,
-            OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap,
             DocumentGenerationDiagnostic expectedDocumentGenerationResult)
@@ -52,7 +51,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
             var generator = new CSharpCommentOpenApiGenerator();
 
-            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion)
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0")
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };
@@ -130,7 +129,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
             string configXmlFile,
-            OpenApiSpecVersion openApiSpecVersion,
             int expectedOperationGenerationResultsCount,
             IDictionary<DocumentVariantInfo, string> documentVariantInfoToExpectedJsonFileMap)
         {
@@ -144,7 +142,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
             var configDocument = XDocument.Load(configPath);
 
             var generator = new CSharpCommentOpenApiGenerator();
-            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, openApiSpecVersion)
+            var input = new CSharpCommentOpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0")
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };
@@ -179,7 +177,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
 
                 openApiDocuments.TryGetValue(documentVariantInfo, out var specificationDocument);
 
-                var actualDocumentAsString = specificationDocument.SerializeAsJson(openApiSpecVersion);
+                var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
 
                 _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);
