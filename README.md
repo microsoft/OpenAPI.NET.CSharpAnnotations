@@ -15,10 +15,10 @@ This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](
 We've made an effort to develop an annotation model that maps very closely to the native .Net comment satructure for the C# language. In general, the below image describes the general concept of how this utility parse your C# comments and generate your OpenAPI.NET document.
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
-Consule our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wikihttps://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidence and examples on how to annotate your controllers.
+Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wikihttps://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidence and examples on how to annotate your controllers.
 
 ### Mechanics
-Two things are needed to use this utility.
+Two things are needed to use this reader.
 - The "XML documentation file" from your MSBuild.exe output
 - Any DLL's that contain the data types of your API's request/response contracts.
 
