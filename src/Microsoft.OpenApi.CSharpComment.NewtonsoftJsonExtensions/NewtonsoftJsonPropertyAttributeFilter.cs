@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -13,7 +14,7 @@ using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter
+namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions
 {
     /// <summary>
     /// Filter to grab newtonsoft json property attribute and if it contains name and required information for a
@@ -33,9 +34,19 @@ namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings)
         {
-            if (openApiDocument == null || settings == null || xmlDocuments == null)
+            if (openApiDocument == null)
             {
-                return;
+                throw new ArgumentNullException(nameof(openApiDocument));
+            }
+
+            if(settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
+            if(xmlDocuments== null)
+            {
+                throw new ArgumentNullException(nameof(xmlDocuments));
             }
 
             var propertyMembers = new List<XElement>();

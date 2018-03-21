@@ -15,9 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.OpenApi.CSharpCom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts", "test\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts\Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.csproj", "{62A36B02-A531-48ED-B4CF-3696A5C28B65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter", "src\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.csproj", "{EFD530F4-6D30-4346-BD65-50BD1FBFD67F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions", "src\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions.csproj", "{EFD530F4-6D30-4346-BD65-50BD1FBFD67F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.Tests", "test\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.Tests\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.Tests.csproj", "{D1348AA1-F9C9-45E3-A8BF-50B7754340FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions.Tests", "test\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions.Tests\Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions.Tests.csproj", "{D1348AA1-F9C9-45E3-A8BF-50B7754340FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

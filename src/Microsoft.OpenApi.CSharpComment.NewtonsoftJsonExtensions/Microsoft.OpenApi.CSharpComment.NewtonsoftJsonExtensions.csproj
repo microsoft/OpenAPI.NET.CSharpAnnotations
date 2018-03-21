@@ -7,8 +7,8 @@
     <ProjectGuid>{EFD530F4-6D30-4346-BD65-50BD1FBFD67F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter</RootNamespace>
-    <AssemblyName>Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter</AssemblyName>
+    <RootNamespace>Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions</RootNamespace>
+    <AssemblyName>Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -58,7 +58,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Microsoft.OpenApi.CSharpComment.NewtonsoftJsonFilter.nuspec" />
+    <None Include="Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

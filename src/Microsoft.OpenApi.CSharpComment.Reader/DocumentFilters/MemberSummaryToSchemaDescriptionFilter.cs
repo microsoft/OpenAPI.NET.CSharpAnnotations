@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -22,14 +23,29 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
         /// <summary>
         /// Parses the values from the summary for all the properties to populate descriptions in the schema.
         /// </summary>
-        /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
+        /// <param name="openApiDocument">The Open API specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
         public void Apply(
-            OpenApiDocument specificationDocument,
+            OpenApiDocument openApiDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings)
         {
+            if (openApiDocument == null)
+            {
+                throw new ArgumentNullException(nameof(openApiDocument));
+            }
+
+            if (settings == null)
+            {
+                throw new ArgumentNullException(nameof(settings));
+            }
+
+            if (xmlDocuments == null)
+            {
+                throw new ArgumentNullException(nameof(xmlDocuments));
+            }
+
             var propertyMembers = new List<XElement>();
 
             foreach (var xmlDocument in xmlDocuments)
@@ -58,7 +74,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
                 // should apply to those properties in schema A, A_B_, and A_B_C__ as well.
                 var sanitizedClassName = className.SanitizeClassName();
 
-                var schemas = specificationDocument.Components.Schemas.Where(
+                var schemas = openApiDocument.Components.Schemas.Where(
                         s => s.Key == sanitizedClassName ||
                             s.Key.StartsWith(sanitizedClassName + "_"))
                     .ToList();
