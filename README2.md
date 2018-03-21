@@ -1,32 +1,30 @@
 
 
+[![Build status](https://ci.appveyor.com/api/projects/status/capxc7p5cvyrq21w/branch/master?svg=true)](https://ci.appveyor.com/project/MicrosoftOpenAPINETAdmin/openapi-net-csharpcomment/branch/master)
 
 ![C# Comment Reader Banner](docs/images/banner.png "Convert /// C# Comments --> OpenAPI.NET")
 
-# OpenAPI.NET [Preview]
-[Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for early 2018. Feedback is welcome!]
+# C# Comment Reader [Preview]
+[Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for mid 2018. Feedback is welcome!]
 
 
-### Welcome to MS Swagger FD
-Welcome to the MS Swagger FrontDoor API document. This Open API tooling continues to evolve and we are workling hard to convert the existing http://swagger site to a generic platform where engineers can build automation against a common Front Door.
+### Welcome to the OpenAPI.NET C# Comment Reader
+This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a V3 OpenAPI document. All you need to do is follow a simple annotation schema for your comments, and you automatically get all the benefits of the OpenAPI and it's related Swagger tooling.
 
-### WIKI
-More details about calling our Front Door can be found in our [WIKI](https://aka.ms/swaggerwiki). This information includes:
-- Onboarding Your Service to MS Swagger
-- API Consent Instructions
-- AAD BearerToken Minting: You'll see that most of our API's require an "Authorization" header for access which is an AAD Bearer token.
+### Annotations (C# Comments)
+We've made an effort to developer an annotation model that maps as closely to the native .Net comment satructure for the C# language. In general, the below image describes the general concept of how we parse your comments and generate your OpenAPI document.
+![How We COnvert](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
-Please reach out to swaggerhelp@microsoft.com before you start consuming our API so we can make sure your sxcenario is supported.
-### Help
-Please reach out on the MS Swagger [Stack Overflow](https://aka.ms/swaggerhelp) for help. We typically respond very quickly.
+# Contributing
 
-### MS Swagger SDK Libraries
-- C#
-- Java
-- Node.JS
-- Python
-- Go
-- Ruby
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-Want to jump start the consumption of our API? We  offer client SDK's (generated via [AutoRest](https://github.com/Azure/AutoRest) ) that you can download and integrate into your app, calling our service with just a few lines of code. Look for the "Client Libraries" dropdown on this page.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
