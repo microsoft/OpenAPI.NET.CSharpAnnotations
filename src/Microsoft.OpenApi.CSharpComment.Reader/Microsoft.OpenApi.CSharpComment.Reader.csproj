@@ -65,6 +65,7 @@
     <Compile Include="Exceptions\InvalidVerbException.cs" />
     <Compile Include="Exceptions\InvalidUrlException.cs" />
     <Compile Include="Exceptions\MissingResponseDescriptionException.cs" />
+    <Compile Include="Exceptions\UnableToGenerateAllOperationsException.cs" />
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />
     <Compile Include="DocumentConfigFilters\DocumentConfigFilterSettings.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="Exceptions\MissingInAttributeException.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="InternalOpenApiDocumentGenerator.cs" />
-    <Compile Include="Models\GenerationStatus.cs" />
     <Compile Include="Models\GenerationDiagnostic.cs" />
     <Compile Include="Models\OperationGenerationDiagnostic.cs" />
     <Compile Include="ReferenceRegistries\ParameterReferenceRegistry.cs" />

@@ -5,7 +5,6 @@
 
 using System;
 using System.Linq;
-using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
@@ -31,7 +30,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
 
             foreach (var operationDiagnostic in
                 settings.OperationGenerationDiagnostics.Where(
-                    operationDiagnostic => operationDiagnostic.GenerationStatus == GenerationStatus.Failure))
+                    operationDiagnostic => operationDiagnostic.Errors.Any()))
             {
                 if (!Enum.TryParse(operationDiagnostic.OperationMethod, true, out OperationType operationMethod) ||
                     !openApiDocument.Paths.ContainsKey(operationDiagnostic.Path))
