@@ -16,7 +16,7 @@ We've made an effort to develop an annotation model that maps very closely to th
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
 ### Mechanics
-After you've corrrectly annotated your C# code, you'll need to build your solution and then retrieve the output XML file where MSBuild.exe aggegates the projects comments.
+After you've corrrectly annotated your C# code, you'll need to build your solution and then retrieve the output XML file where MSBuild.exe aggegates the projects comments. This file is what this utility will use to convert your comments into an OpenAPI.NET object.
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
 
 
