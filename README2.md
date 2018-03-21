@@ -8,15 +8,19 @@
 [Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for mid 2018. Feedback is welcome!]
 
 
-### Welcome to the OpenAPI.NET C# Comment Reader
-This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a V3 OpenAPI document. All you need to do is follow a simple annotation schema for your comments, and you automatically get all the benefits of the OpenAPI and it's related Swagger tooling.
+### Welcome!
+This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a V3 OpenAPI document. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and it's related Swagger tooling.
 
 ### Annotations (C# Comments)
-We've made an effort to developer an annotation model that maps as closely to the native .Net comment satructure for the C# language. In general, the below image describes the general concept of how we parse your comments and generate your OpenAPI document.
-![How We COnvert](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
+We've made an effort to develop an annotation model that maps very closely to the native .Net comment satructure for the C# language. In general, the below image describes the general concept of how this utility parse your C# comments and generate your OpenAPI.NET document.
+![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
+
+### Mechanics
+After you've corrrectly annotated your C# code, you'll need to build your solution and then retrieve the output XML file where MSBuild.exe aggegates the projects comments.
+![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
+
 
 # Contributing
-
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.microsoft.com.
