@@ -17,7 +17,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
         private const string CommonAnnotationsDirectory =
             "AnnotationsWithCommonAnnotations";
 
-        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldWarning()
+        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldFailure()
         {
             // Document variant info inside document annotation that self-conflicts.
             yield return new object[]
@@ -83,8 +83,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                                         ["version"] = "VConflict"
                                     })),
                         }
-                    },
-                    GenerationStatus = GenerationStatus.Warning
+                    }
                 }
             };
 
@@ -163,8 +162,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                                         ["version"] = "VConflict"
                                     })),
                         }
-                    },
-                    GenerationStatus = GenerationStatus.Warning
+                    }
                 }
             };
 
@@ -236,8 +234,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.DocumentVariantTests
                                 SpecificationGenerationMessages.MoreThanOneVariantNameNotAllowed,
                                 "swagger")
                         }
-                    },
-                    GenerationStatus = GenerationStatus.Warning
+                    }
                 }
             };
         }

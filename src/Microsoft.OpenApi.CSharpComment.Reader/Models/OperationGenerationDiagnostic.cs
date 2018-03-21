@@ -34,7 +34,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
 
             OperationMethod = other.OperationMethod;
             Path = other.Path;
-            GenerationStatus = other.GenerationStatus;
 
             if (other.Errors != null)
             {
@@ -49,11 +48,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         /// List of generation errors for this operation.
         /// </summary>
         public IList<GenerationError> Errors { get; } = new List<GenerationError>();
-
-        /// <summary>
-        /// The generation status for the operation.
-        /// </summary>
-        public GenerationStatus GenerationStatus { get; set; }
 
         /// <summary>
         /// The operation method.

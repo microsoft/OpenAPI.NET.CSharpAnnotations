@@ -62,6 +62,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
 
         public const string UndocumentedPathParameter = "Path paramater: {0} is undocumented in {1}";
 
+        public const string UnableToGenerateAllOperations = "Generated {0}/{1} documented operations successfully. "
+            + "Please refer to the GenerationDiagnostic.OperationGenerationDiagnostics for details on the errors "
+            + "causing generation to fail for some operations.";
+
         public const string UnexpectedError = "Unexpected error occurred during generation: {0}";
 
         public const string UnorderedGenericType =

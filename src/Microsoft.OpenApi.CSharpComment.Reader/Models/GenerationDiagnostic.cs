@@ -18,29 +18,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Models
         public DocumentGenerationDiagnostic DocumentGenerationDiagnostic { get; set; }
 
         /// <summary>
-        /// The generation status.
-        /// </summary>
-        public GenerationStatus GenerationStatus
-        {
-            get
-            {
-                if (OperationGenerationDiagnostics.Any(i => i.GenerationStatus == GenerationStatus.Failure) ||
-                    DocumentGenerationDiagnostic.GenerationStatus == GenerationStatus.Failure)
-                {
-                    return GenerationStatus.Failure;
-                }
-
-                if (OperationGenerationDiagnostics.Any(i => i.GenerationStatus == GenerationStatus.Warning) ||
-                    DocumentGenerationDiagnostic.GenerationStatus == GenerationStatus.Warning)
-                {
-                    return GenerationStatus.Warning;
-                }
-
-                return GenerationStatus.Success;
-            }
-        }
-
-        /// <summary>
         /// List of operation-level generation diagnostics.
         /// </summary>
         public IList<OperationGenerationDiagnostic> OperationGenerationDiagnostics { get; internal set; } =
