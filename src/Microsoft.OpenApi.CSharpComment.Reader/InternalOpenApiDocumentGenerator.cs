@@ -197,27 +197,22 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="annotationXmlDocuments">The list of XDocuments representing annotation xmls.</param>
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
-        /// <param name="openApiSpecVersion">Specification version of the OpenAPI documents to generate.</param>
-        /// <param name="openApiFormat">Format (YAML or JSON) of the OpenAPI document to generate.</param>
+        /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
         /// <param name="generationDiagnostic">A string representing serialized version of
         /// <see cref="GenerationDiagnostic"/>>
         /// </param>
         /// <returns>
-        /// A string representing serialized version of <see cref="IDictionary{DocumentVariantInfo, OpenApiDocument}"/>>
+        /// Dictionary mapping document variant metadata to their respective OpenAPI document.
         /// </returns>
-        /// <remarks>
-        /// Given that this function is expected to be called from an isolated domain,
-        /// the input and output must be serializable to string or value type.
-        /// </remarks>
-        public IDictionary<DocumentVariantInfo, string> GenerateOpenApiDocuments(
+        public IDictionary<DocumentVariantInfo, OpenApiDocument> GenerateOpenApiDocuments(
             IList<XDocument> annotationXmlDocuments,
             IList<string> contractAssemblyPaths,
             string configurationXml,
-            OpenApiSpecVersion openApiSpecVersion,
-            OpenApiFormat openApiFormat,
+            string openApiDocumentVersion,
             out GenerationDiagnostic generationDiagnostic)
         {
-            IDictionary<DocumentVariantInfo, string> openApiDocuments = new Dictionary<DocumentVariantInfo, string>();
+            IDictionary<DocumentVariantInfo, OpenApiDocument> openApiDocuments
+                = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
             var operationElements = new List<XElement>();
 
@@ -307,7 +302,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                 annotationXmlDocuments,
                                 new DocumentFilterSettings
                                 {
-                                    TypeFetcher = typeFetcher
+                                    TypeFetcher = typeFetcher,
+                                    OpenApiDocumentVersion = openApiDocumentVersion
                                 });
                         }
                         catch (Exception e)
@@ -366,7 +362,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 }
 
                 generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
-                return documents.ToSerializedOpenApiDocuments(openApiSpecVersion, openApiFormat);
+                return documents;
             }
             catch (Exception e)
             {

@@ -20,16 +20,15 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
         /// reflect into the types provided in the xml.
         /// </param>
-        /// <param name="openApiSpecificationVersion">The specification version of the OpenAPI document to generate.
-        /// </param>
+        /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
         public CSharpCommentOpenApiGeneratorConfig(
             IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
-            OpenApiSpecVersion openApiSpecificationVersion) 
+            string openApiDocumentVersion) 
             : this(
                   annotationXmlDocuments,
                   assemblyPaths,
-                  openApiSpecificationVersion,
+                  openApiDocumentVersion,
                   new CSharpCommentOpenApiGeneratorFilterConfig())
         {
         }
@@ -41,15 +40,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
         /// reflect into the types provided in the xml.
         /// </param>
-        /// <param name="openApiSpecificationVersion">The specification version of the OpenAPI document to generate.
-        /// </param>
+        /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
         /// <param name="cSharpCommentOpenApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# comments.</param>
         public CSharpCommentOpenApiGeneratorConfig(
             IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
-            OpenApiSpecVersion openApiSpecificationVersion,
-            CSharpCommentOpenApiGeneratorFilterConfig cSharpCommentOpenApiGeneratorFilterConfig )
+            string openApiDocumentVersion,
+            CSharpCommentOpenApiGeneratorFilterConfig cSharpCommentOpenApiGeneratorFilterConfig)
         {
             AnnotationXmlDocuments = annotationXmlDocuments
                 ?? throw new ArgumentNullException(nameof(annotationXmlDocuments));
@@ -60,7 +58,12 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
             CSharpCommentOpenApiGeneratorFilterConfig = cSharpCommentOpenApiGeneratorFilterConfig
                 ?? throw new ArgumentNullException(nameof(cSharpCommentOpenApiGeneratorFilterConfig));
 
-            OpenApiSpecificationVersion = openApiSpecificationVersion;
+            if (string.IsNullOrWhiteSpace(openApiDocumentVersion))
+            {
+                throw new ArgumentNullException(nameof(openApiDocumentVersion));
+            }
+
+            OpenApiDocumentVersion = openApiDocumentVersion;
         }
 
         /// <summary>
@@ -86,13 +89,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         public CSharpCommentOpenApiGeneratorFilterConfig CSharpCommentOpenApiGeneratorFilterConfig { get; }
 
         /// <summary>
-        /// The format (YAML or JSON) of the OpenAPI document to generate.
+        /// The version of the OpenAPI document.
         /// </summary>
-        public OpenApiFormat OpenApiFormat { get; set; } = OpenApiFormat.Json;
-
-        /// <summary>
-        /// The specification version of the OpenAPI document to generate.
-        /// </summary>
-        public OpenApiSpecVersion OpenApiSpecificationVersion { get; }
+        public string OpenApiDocumentVersion { get; }
     }
 }
