@@ -204,10 +204,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <returns>
         /// Dictionary mapping document variant metadata to their respective OpenAPI document.
         /// </returns>
-        /// <remarks>
-        /// Given that this function is expected to be called from an isolated domain,
-        /// the input and output must be serializable to string or value type.
-        /// </remarks>
         public IDictionary<DocumentVariantInfo, OpenApiDocument> GenerateOpenApiDocuments(
             IList<XDocument> annotationXmlDocuments,
             IList<string> contractAssemblyPaths,

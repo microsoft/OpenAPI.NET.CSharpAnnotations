@@ -20,8 +20,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
         /// reflect into the types provided in the xml.
         /// </param>
-        /// <param name="openApiDocumentVersion">The version of the OpenAPI document.
-        /// </param>
+        /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
         public CSharpCommentOpenApiGeneratorConfig(
             IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
@@ -41,8 +40,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
         /// <param name="assemblyPaths">The list of relative or absolute paths to the assemblies that will be used to
         /// reflect into the types provided in the xml.
         /// </param>
-        /// <param name="openApiDocumentVersion">The version of the OpenAPI document.
-        /// </param>
+        /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
         /// <param name="cSharpCommentOpenApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# comments.</param>
         public CSharpCommentOpenApiGeneratorConfig(

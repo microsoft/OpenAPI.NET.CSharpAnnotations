@@ -87,6 +87,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="DictionaryJsonConverter.cs" />
     <Compile Include="DocumentVariantTests\DocumentVariantTest.cs" />
     <Compile Include="FilterTests\BranchOptionalPathParametersFilterTest.cs" />
