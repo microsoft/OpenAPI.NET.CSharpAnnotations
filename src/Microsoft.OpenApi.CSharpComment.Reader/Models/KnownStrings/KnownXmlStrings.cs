@@ -5,7 +5,10 @@
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings
 {
-    internal class KnownXmlStrings
+    /// <summary>
+    /// Class to store known xml tags that will be processed by the generation engine.
+    /// </summary>
+    public class KnownXmlStrings
     {
         public const string Annotation = "annotation";
         public const string Body = "body";
