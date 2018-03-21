@@ -39,12 +39,12 @@ namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions
                 throw new ArgumentNullException(nameof(openApiDocument));
             }
 
-            if(settings == null)
+            if (settings == null)
             {
                 throw new ArgumentNullException(nameof(settings));
             }
 
-            if(xmlDocuments== null)
+            if (xmlDocuments == null)
             {
                 throw new ArgumentNullException(nameof(xmlDocuments));
             }
@@ -99,7 +99,7 @@ namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions
                 if (propertyInfo != null)
                 {
                     var jsonPropertyAttributes =
-                        (JsonPropertyAttribute[]) propertyInfo.GetCustomAttributes(
+                        (JsonPropertyAttribute[])propertyInfo.GetCustomAttributes(
                             typeof(JsonPropertyAttribute),
                             false);
                     if (jsonPropertyAttributes.Any())
