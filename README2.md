@@ -1,4 +1,4 @@
-<div style="background-image: url('https://redir.blob.core.windows.net/assets/logo-large.png');  background-position: right 15px; background-repeat:no-repeat">
+
 
 
 ![C# Comment Reader Banner](docs/images/banner.png "Convert /// C# Comments --> OpenAPI.NET")
@@ -8,8 +8,6 @@
 
 
 ### Welcome to MS Swagger FD
-<img src="https://redir.blob.core.windows.net/assets/robot.png" alt="Robot" style="width: 60px; float:left; margin-right:20pt"/>
-
 Welcome to the MS Swagger FrontDoor API document. This Open API tooling continues to evolve and we are workling hard to convert the existing http://swagger site to a generic platform where engineers can build automation against a common Front Door.
 
 ### WIKI
@@ -31,4 +29,4 @@ Please reach out on the MS Swagger [Stack Overflow](https://aka.ms/swaggerhelp) 
 - Ruby
 
 Want to jump start the consumption of our API? We  offer client SDK's (generated via [AutoRest](https://github.com/Azure/AutoRest) ) that you can download and integrate into your app, calling our service with just a few lines of code. Look for the "Client Libraries" dropdown on this page.
-</div>
+
