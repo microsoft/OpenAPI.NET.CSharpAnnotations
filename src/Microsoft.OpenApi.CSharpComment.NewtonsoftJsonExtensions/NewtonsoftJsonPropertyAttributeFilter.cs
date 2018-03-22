@@ -17,8 +17,9 @@ using Newtonsoft.Json;
 namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions
 {
     /// <summary>
-    /// Filter to grab newtonsoft json property attribute and if it contains name and required information for a
-    /// property, update the corresponding property schema with it.
+    /// 1. Grabs newtonsoft json property attribute and if it contains name and required information for a
+    /// property, updates the corresponding property schema with it.
+    /// 2. Removes properties with JsonIgnore attribute from schema.
     /// </summary>
     public class NewtonsoftJsonPropertyAttributeFilter : IDocumentFilter
     {
@@ -95,6 +96,7 @@ namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions
 
                 string jsonPropertyName = null;
                 var isPropertyRequired = false;
+                var isPropertyIgnored = false;
 
                 if (propertyInfo != null)
                 {
@@ -116,12 +118,25 @@ namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions
                             isPropertyRequired = true;
                         }
                     }
+
+                    // Check if property is ignored.
+                    if (propertyInfo.GetCustomAttributes(typeof(JsonIgnoreAttribute), false).Any())
+                    {
+                        isPropertyIgnored = true;
+                    }
                 }
 
                 foreach (var schema in schemas)
                 {
                     if (schema.Value.Properties.ContainsKey(propertyName))
                     {
+                        // Remove ignored properties from the schema.
+                        if (isPropertyIgnored)
+                        {
+                            schema.Value.Properties.Remove(propertyName);
+                            continue;
+                        }
+
                         if (isPropertyRequired)
                         {
                             schema.Value.Required.Add(string.IsNullOrWhiteSpace(jsonPropertyName)
@@ -129,16 +144,18 @@ namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions
                                 : jsonPropertyName);
                         }
 
-                        if (!string.IsNullOrWhiteSpace(jsonPropertyName) && propertyName != jsonPropertyName)
+                        if (string.IsNullOrWhiteSpace(jsonPropertyName) || propertyName == jsonPropertyName)
                         {
-                            var propertySchema = schema.Value.Properties[propertyName];
-
-                            //Remove old key.
-                            schema.Value.Properties.Remove(propertyName);
-
-                            //Add with new json property name.
-                            schema.Value.Properties.Add(jsonPropertyName, propertySchema);
+                            continue;
                         }
+
+                        var propertySchema = schema.Value.Properties[propertyName];
+
+                        //Remove old key.
+                        schema.Value.Properties.Remove(propertyName);
+
+                        //Add with new json property name.
+                        schema.Value.Properties.Add(jsonPropertyName, propertySchema);
                     }
                 }
             }

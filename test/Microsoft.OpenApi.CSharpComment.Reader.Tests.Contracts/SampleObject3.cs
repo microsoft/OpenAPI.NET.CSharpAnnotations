@@ -24,5 +24,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts
         /// </summary>
         [JsonProperty(PropertyName = "samplePropertyObjectList", Required = Required.Default)]
         public IList<SampleObject1> SamplePropertyObjectList { get; } = new List<SampleObject1>();
+
+        /// <summary>
+        /// Gets the sample property object list
+        /// </summary>
+        [JsonIgnore]
+        public IList<SampleObject2> SamplePropertyObject2List { get; } = new List<SampleObject2>();
     }
 }

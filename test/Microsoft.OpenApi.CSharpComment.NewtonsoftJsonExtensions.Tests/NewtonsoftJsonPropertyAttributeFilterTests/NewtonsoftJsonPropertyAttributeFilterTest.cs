@@ -6,18 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
-using Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions;
 using Microsoft.OpenApi.CSharpComment.Reader;
 using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
-using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Extensions;
-using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
-using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Microsoft.OpenApi.CSharpComment.CustomFilter.Tests.NewtonsoftJsonPropertyAttributeFilterTests
+namespace Microsoft.OpenApi.CSharpComment.NewtonsoftJsonExtensions.Tests.NewtonsoftJsonPropertyAttributeFilterTests
 {
     [Collection("DefaultSettings")]
     public class NewtonsoftJsonPropertyAttributeFilterTest

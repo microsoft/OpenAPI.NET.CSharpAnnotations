@@ -677,6 +677,14 @@
             },
             "description": "Gets the sample property object list",
             "readOnly": true
+          },
+          "SamplePropertyObject2List": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
+            },
+            "description": "Gets the sample property object list",
+            "readOnly": true
           }
         }
       },
