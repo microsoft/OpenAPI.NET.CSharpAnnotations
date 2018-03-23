@@ -9,7 +9,6 @@ using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
-using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
@@ -1133,7 +1132,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
 
-            result.OperationGenerationDiagnostics.Where(p => p.Errors.Count > 0).Count().Should().Be(0);
+            result.OperationGenerationDiagnostics.Count(p => p.Errors.Count > 0).Should().Be(0);
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default]
@@ -1192,7 +1191,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.Tests.OpenApiDocumentGeneratorT
 
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
 
-            result.OperationGenerationDiagnostics.Where(p => p.Errors.Count > 0).Count().Should().Be(0);
+            result.OperationGenerationDiagnostics.Count(p => p.Errors.Count > 0).Should().Be(0);
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
             var actualDocument = openApiDocuments[DocumentVariantInfo.Default]

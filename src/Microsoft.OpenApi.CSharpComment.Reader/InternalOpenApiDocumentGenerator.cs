@@ -316,6 +316,16 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                                 });
                         }
                     }
+
+                    foreach (var filter in _cSharpCommentOpenApiGeneratorFilterConfig.PostProcessingDocumentFilters)
+                    {
+                        filter.Apply(
+                            openApiDocument,
+                            new PostProcessingDocumentFilterSettings()
+                            {
+                                OperationGenerationDiagnostics = operationGenerationDiagnostics
+                            });
+                    }
                 }
 
                 if (documentConfigElement != null)
@@ -528,16 +538,6 @@ namespace Microsoft.OpenApi.CSharpComment.Reader
                 referenceRegistryManagerMap[documentVariantInfo]
                     .SchemaReferenceRegistry.References.CopyInto(
                         specificationDocuments[documentVariantInfo].Components.Schemas);
-
-                foreach (var filter in _cSharpCommentOpenApiGeneratorFilterConfig.PostProcessingDocumentFilters)
-                {
-                    filter.Apply(
-                        specificationDocuments[documentVariantInfo],
-                        new PostProcessingDocumentFilterSettings()
-                        {
-                            OperationGenerationDiagnostics = operationGenerationResults
-                        });
-                }
             }
 
             return operationGenerationResults;

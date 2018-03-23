@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
@@ -59,9 +60,31 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 
                 var isRequired = paramElement.Attribute(KnownXmlStrings.Required)?.Value.Trim();
                 var cref = paramElement.Attribute(KnownXmlStrings.Cref)?.Value.Trim();
-                var description = paramElement.Value.RemoveBlankLines();
 
-                var schema = GenerateSchemaFromCref(cref, settings);
+                var childNodes = paramElement.DescendantNodes().ToList();
+                var description = string.Empty;
+
+                var lastNode = childNodes.LastOrDefault();
+
+                if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
+                {
+                    description = lastNode.ToString();
+                }
+
+                // Fetch if any see tags are present, if present populate listed types with it.
+                var seeNodes = paramElement.Descendants(KnownXmlStrings.See);
+
+                var allListedTypes = seeNodes
+                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
+                    .Where(crefValue => crefValue != null).ToList();
+
+                // If no see tags are present, add the value from cref tag.
+                if (!allListedTypes.Any() && !string.IsNullOrWhiteSpace(cref))
+                {
+                    allListedTypes.Add(cref);
+                }
+
+                var schema = GenerateSchemaFromCref(allListedTypes, settings);
                 var parameterLocation = GetParameterKind(inValue);
 
                 operation.Parameters.Add(
@@ -77,19 +100,19 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
         }
 
         /// <summary>
-        /// Generates schema from type name in cref.
+        /// Generates schema from type names in cref.
         /// </summary>
         /// <returns>
         /// Schema from type in cref if the type is resolvable.
         /// Otherwise, default to schema for string type.
         /// </returns>
-        private static OpenApiSchema GenerateSchemaFromCref(string cref, OperationFilterSettings settings)
+        private static OpenApiSchema GenerateSchemaFromCref(IList<string> crefValues, OperationFilterSettings settings)
         {
             var type = typeof(string);
 
-            if (cref != null)
+            if (crefValues.Any())
             {
-                type = settings.TypeFetcher.LoadTypeFromCrefValues(new List<string>() { cref });
+                type = settings.TypeFetcher.LoadTypeFromCrefValues(crefValues);
             }
 
             return settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);

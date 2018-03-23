@@ -9,7 +9,8 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
 {
     /// <summary>
-    /// The class representing the contract of a Operation filter.
+    /// The class representing the contract of a filter to process the <see cref="OpenApiOperation"/>
+    /// objects in <see cref="OpenApiPaths"/> based on the information provided in the operation xml element.
     /// </summary>
     public interface IOperationFilter
     {

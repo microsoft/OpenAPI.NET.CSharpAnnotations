@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Microsoft.OpenApi.CSharpComment.Reader.Exceptions;
 using Microsoft.OpenApi.CSharpComment.Reader.Extensions;
 using Microsoft.OpenApi.CSharpComment.Reader.Models.KnownStrings;
 using Microsoft.OpenApi.Models;

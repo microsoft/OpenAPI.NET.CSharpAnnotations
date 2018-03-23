@@ -31,7 +31,10 @@
             "in": "header",
             "description": "Header param 2",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2_"
+              }
             }
           },
           {
@@ -664,19 +667,14 @@
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2_": {
         "type": "object",
         "properties": {
-          "SamplePropertyObject": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
+          "SamplePropertyTypeT1": {
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
           },
-          "SamplePropertyObjectList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
-            },
-            "description": "Gets the sample property object list",
-            "readOnly": true
+          "SamplePropertyTypeT2": {
+            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
           }
         }
       },
@@ -717,14 +715,19 @@
           }
         }
       },
-      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.ISampleObject4_Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1-Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2_": {
+      "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject3": {
         "type": "object",
         "properties": {
-          "SamplePropertyTypeT1": {
-            "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
-          },
-          "SamplePropertyTypeT2": {
+          "SamplePropertyObject": {
             "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject2"
+          },
+          "SamplePropertyObjectList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"
+            },
+            "description": "Gets the sample property object list",
+            "readOnly": true
           }
         }
       }

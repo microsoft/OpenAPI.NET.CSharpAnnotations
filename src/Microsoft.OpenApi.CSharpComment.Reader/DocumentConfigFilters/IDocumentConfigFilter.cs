@@ -11,7 +11,9 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
 {
     /// <summary>
-    /// The class representing the contract of a document config filter.
+    /// The class representing the contract of a filter to process the <see cref="Dictionary{TKey,TValue}"/>
+    /// where TKey is <see cref="DocumentVariantInfo"/> and TValue is <see cref="OpenApiDocument"/>
+    /// based on the information in the document config element.
     /// </summary>
     public interface IDocumentConfigFilter
     {
