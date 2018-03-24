@@ -5,13 +5,14 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
 {
     /// <summary>
     /// The class representing the contract of a filter to process the <see cref="OpenApiDocument"/> based on the
-    /// information provided in annotation xml(s).
+    /// information provided in annotation xml(s), after its processed by the <see cref="IOperationFilter"/>.
     /// </summary>
     public interface IDocumentFilter
     {

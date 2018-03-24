@@ -4,12 +4,15 @@
 // ------------------------------------------------------------
 
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.OperationFilters;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
 {
     /// <summary>
-    /// The class representing the contract of an operation config filter.
+    /// The class representing the contract of a filter to process the <see cref="OpenApiOperation"/>
+    /// based on the information in the operation config element, after its processed by the
+    /// <see cref="IOperationFilter"/>.
     /// </summary>
     public interface IOperationConfigFilter
     {

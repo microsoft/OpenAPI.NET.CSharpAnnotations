@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters;
 using Microsoft.OpenApi.CSharpComment.Reader.Models;
 using Microsoft.OpenApi.Models;
 
@@ -13,7 +14,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
     /// <summary>
     /// The class representing the contract of a filter to process the <see cref="Dictionary{TKey,TValue}"/>
     /// where TKey is <see cref="DocumentVariantInfo"/> and TValue is <see cref="OpenApiDocument"/>
-    /// based on the information in the document config element.
+    /// based on the information in the document config element, after its processed by the
+    /// <see cref="IDocumentFilter"/>.
     /// </summary>
     public interface IDocumentConfigFilter
     {
