@@ -22,8 +22,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PreprocessingOperationFilters
         /// <see cref="IOperationFilter"/>.
         /// </summary>
         /// <param name="paths">The paths to be upated.</param>
-        /// <param name="element">The xml element representing an operation in the annotation xml.</param>
-        /// <param name="settings">The operation filter settings.</param>
+        /// <param name="element">The xml element representing an operation in the annotation xmls provided in
+        /// <see cref="CSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocuments"/>.
+        /// </param>
+        /// <param name="settings"><see cref="PreProcessingOperationFilterSettings"/></param>
         void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings);
     }
 }

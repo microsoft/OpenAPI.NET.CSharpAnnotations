@@ -14,7 +14,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
     /// <summary>
     /// The class representing the contract of a filter to process the <see cref="Dictionary{TKey,TValue}"/>
     /// where TKey is <see cref="DocumentVariantInfo"/> and TValue is <see cref="OpenApiDocument"/>
-    /// based on the information in the document config element, after its processed by the
+    /// based on the information in the document config element of
+    /// <see cref="CSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>, after its processed by the
     /// <see cref="IDocumentFilter"/>.
     /// </summary>
     public interface IDocumentConfigFilter
@@ -24,9 +25,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentConfigFilters
         /// based on information in the document config element.
         /// </summary>
         /// <param name="documents">The documents to be updated.</param>
-        /// <param name="documentConfigElement">The xml element containing document-level config in the config xml.</param>
-        /// <param name="xmlDocuments">The list of XML documentations.</param>
-        /// <param name="settings">The document config filter settings.</param>
+        /// <param name="documentConfigElement">The xml element containing document-level config in the config xml,
+        /// <see cref="CSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>.</param>
+        /// <param name="xmlDocuments">The list of XML documentations provided in
+        /// <see cref="CSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
+        /// <param name="settings"><see cref="DocumentConfigFilterSettings"/></param>
         void Apply(
             IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement documentConfigElement,

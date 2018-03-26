@@ -17,13 +17,14 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.DocumentFilters
     public interface IDocumentFilter
     {
         /// <summary>
-        /// Contains the required logic to populate certain parts of Open Api V3 specification document.
+        /// Contains the required logic to populate certain parts of OpenAPI document.
         /// </summary>
-        /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
-        /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
-        /// <param name="settings">Settings for document filters.</param>
+        /// <param name="openApiDocument">The OpenAPI document to be updated.</param>
+        /// <param name="xmlDocuments">The list of documents representing the annotation xmls,
+        /// <see cref="CSharpCommentOpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
+        /// <param name="settings"><see cref="DocumentFilterSettings"/></param>
         void Apply(
-            OpenApiDocument specificationDocument,
+            OpenApiDocument openApiDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings);
     }

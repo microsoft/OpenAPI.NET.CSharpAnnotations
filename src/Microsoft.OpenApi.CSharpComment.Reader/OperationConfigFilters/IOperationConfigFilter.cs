@@ -11,7 +11,8 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
 {
     /// <summary>
     /// The class representing the contract of a filter to process the <see cref="OpenApiOperation"/>
-    /// based on the information in the operation config element, after its processed by the
+    /// based on the information in the operation config element in
+    /// <see cref="CSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>, after its processed by the
     /// <see cref="IOperationFilter"/>.
     /// </summary>
     public interface IOperationConfigFilter
@@ -21,8 +22,10 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationConfigFilters
         /// in the operation config element.
         /// </summary>
         /// <param name="operation">The operation to be updated.</param>
-        /// <param name="element">The xml element containing operation-level config in the config xml.</param>
-        /// <param name="settings">The operation config filter settings.</param>
+        /// <param name="element">The xml element containing operation-level config in the config xml,
+        /// <see cref="CSharpCommentOpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>.
+        /// </param>
+        /// <param name="settings"><see cref="OperationConfigFilterSettings"/></param>
         void Apply(OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings);
     }
 }
