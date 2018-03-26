@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -68,19 +67,11 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.OperationFilters
                     throw new MissingResponseDescriptionException(code);
                 }
 
-                var allListedTypes = new List<string>();
-
                 var seeNodes = responseElement.Descendants(KnownXmlStrings.See);
 
-                foreach (var node in seeNodes)
-                {
-                    var crefValue = node.Attribute(KnownXmlStrings.Cref)?.Value;
-
-                    if (crefValue != null)
-                    {
-                        allListedTypes.Add(crefValue);
-                    }
-                }
+                var allListedTypes = seeNodes
+                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
+                    .Where(crefValue => crefValue != null).ToList();
 
                 OpenApiSchema schema = null;
 

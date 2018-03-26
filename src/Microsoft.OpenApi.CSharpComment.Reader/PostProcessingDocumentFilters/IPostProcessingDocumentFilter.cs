@@ -19,7 +19,7 @@ namespace Microsoft.OpenApi.CSharpComment.Reader.PostProcessingDocumentFilters
         /// Applies the filter to post process the <see cref="OpenApiDocument"/>.
         /// </summary>
         /// <param name="openApiDocument">The OpenAPI document to process.</param>
-        /// <param name="settings">The filter settings.</param>
+        /// <param name="settings"><see cref="PostProcessingDocumentFilterSettings"/></param>
         void Apply(
             OpenApiDocument openApiDocument,
             PostProcessingDocumentFilterSettings settings);
