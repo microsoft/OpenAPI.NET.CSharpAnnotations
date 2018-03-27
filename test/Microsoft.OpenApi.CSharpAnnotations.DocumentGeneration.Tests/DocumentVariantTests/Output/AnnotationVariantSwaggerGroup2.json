@@ -60,14 +60,6 @@
             "schema": {
               "type": "boolean"
             }
-          },
-          {
-            "name": "SampleAddedHeaderParam",
-            "in": "header",
-            "description": "Added Header Param.",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -123,14 +115,6 @@
             "name": "sampleHeaderParam3",
             "in": "header",
             "description": "Header param 3",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "SampleAddedHeaderParam",
-            "in": "header",
-            "description": "Added Header Param.",
             "schema": {
               "type": "string"
             }
