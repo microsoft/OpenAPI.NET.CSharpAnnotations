@@ -1,0 +1,76 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig">
+      <summary>
+        Responsible for route configuration
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+      <summary>
+        Registers routes
+      </summary>
+      <param name="routes">Route collection</param>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig">
+      <summary>
+        Web config.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+      <summary>
+        Register the configuration, services, and routes.
+      </summary>
+      <param name="config">HTTP Configuration</param>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV1">
+      <summary>
+        Define V1 operations.
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV2">
+      <summary>
+        Defines V2 operations.
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV4">
+      <summary>
+        Defines V4 operations.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV4.SampleGet1">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V4</group>
+      <verb>GET</verb>
+      <url>http://localhost:9000/V4/samples/</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <response code="200">
+        <see cref="T:System.Collections.Generic.List`1"/>
+        where T is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2"/>
+        where T1 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>
+        where T2 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4"/>
+        List of sample objects.
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication">
+      <summary>
+        Web API Application.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication.Application_Start">
+      <summary>
+        Start application.
+      </summary>
+    </member>
+  </members>
+</doc>
