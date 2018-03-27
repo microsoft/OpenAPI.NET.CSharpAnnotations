@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2">
+      <summary>
+        Interface Sample Object 4
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2.SamplePropertyTypeT1">
+      <summary>
+        Sample Property of Type T1
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2.SamplePropertyTypeT2">
+      <summary>
+        Sample Property of Type T2
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleEnum1">
+      <summary>
+        Sample enum 1
+      </summary>
+    </member>
+    <member name="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleEnum1.SampleEnumValue1">
+      <summary>
+        Sample enum value 1
+      </summary>
+    </member>
+    <member name="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleEnum1.SampleEnumValue2">
+      <summary>
+        Sample enum value 2
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1">
+      <summary>
+        Sample contract for object 1
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1.SamplePropertyBool">
+      <summary>
+        Gets or sets the sample property bool
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1.SamplePropertyInt">
+      <summary>
+        Gets or sets the sample property int
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1.SamplePropertyString1">
+      <summary>
+        Gets or sets the sample property string 1
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1.SamplePropertyString2">
+      <summary>
+        Gets or sets the sample property string 2
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1.SamplePropertyString3">
+      <summary>
+        Gets or sets the sample property string 3
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1.SamplePropertyString4">
+      <summary>
+        Gets or sets the sample property string 4
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1.SamplePropertyEnum">
+      <summary>
+        Gets or sets the sample property enum
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2">
+      <summary>
+        Sample contract for object 2
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2.SamplePropertyEnum">
+      <summary>
+        Gets or sets the sample property enum
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2.SamplePropertyInt">
+      <summary>
+        Gets or sets the sample property string 1
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2.SamplePropertyObjectDictionary">
+      <summary>
+        Gets the sample property object dictionary
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2.SamplePropertyObjectList">
+      <summary>
+        Gets the sample property object list
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2.SamplePropertyString1">
+      <summary>
+        Gets or sets the sample property string 1
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3">
+      <summary>
+        Sample contract for object 3
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3.SamplePropertyObject">
+      <summary>
+        Gets or sets sample property object
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3.SamplePropertyObjectList">
+      <summary>
+        Gets the sample property object list
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3.SamplePropertyObject2List">
+      <summary>
+        Gets the sample property object list
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4">
+      <summary>
+        Sample contract for object 4
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4.SamplePropertyObject">
+      <summary>
+        Gets or sets sample property object
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4.Sample3PropertyObject">
+      <summary>
+        Gets or sets sample property object
+      </summary>
+    </member>
+    <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4.SamplePropertyObjectList">
+      <summary>
+        Gets the sample property object list
+      </summary>
+    </member>
+  </members>
+</doc>
