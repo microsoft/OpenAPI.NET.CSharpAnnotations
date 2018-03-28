@@ -57,7 +57,7 @@ Generating your OAI document should look something like this:
                     OutputDirectory,
                     "OAIOutput.Json")
 ```
-In this example the outputted OAIOutput.json should contain a valid V3 OID document for your API based on the C# comments and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L671).
+In this example the generated OAIOutput.json should contain a valid V3 OID document for your API based on the C# comments and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L671).
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
