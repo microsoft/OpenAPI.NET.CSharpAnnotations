@@ -25,12 +25,38 @@ Two things are needed to use this reader.
 After you've corrrectly annotated your C# code, you'll need to build your solution and then retrieve the output XML file where MSBuild.exe aggegates the projects comments. This file is what this utility will use to convert your comments into an OpenAPI.NET object.
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
 
-### Example
-Here's a simple exampled of how you'd use this reader.
-<pre>
-<!--this is a test-->
-var s = "sdfsdff"
-</pre>
+### Simple Example Code
+Here's a simple exampled of how you'd use this reader. The utility takes in two lists. The first shown below is the paths to your post-MSbuild.exe xml documentation files. The second being the paths to any DLL's that have classes that you reference in those XML comments.
+
+For example, if you have an annotation for a response type as follows:
+```
+/// <response code="200"><see cref="SampleObject1"/>Sample object retrieved</response>
+```
+You'd need to include the path to the .dll that contains the SampleObject1 class. 
+
+Generating your OAI document should look something like this:
+```
+                "Standard valid XML document",
+                // pass in XML annotation files
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                },
+                // pass in paths to DLL's where data contracts live
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
+                },
+                OpenApiSpecVersion.OpenApi3_0, 9, Path.Combine(
+                    OutputDirectory,
+                    "Annotation.Json")
+```
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
