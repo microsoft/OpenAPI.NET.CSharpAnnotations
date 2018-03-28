@@ -9,7 +9,7 @@
 
 
 ### Welcome!
-This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a OpenAPI document (V2 or V3). All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
+This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a OpenAPI document object. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
 
 ### Annotations (C# Comments)
 We've made an effort to develop an annotation model that maps very closely to the native .Net comment structure for the C# language. In general, the below image describes the general concept of how this utility parse your C# comments and generate your OpenAPI.NET document.
@@ -37,27 +37,27 @@ You'd need to include the path to the .dll that contains the SampleObject1 class
 Generating your OAI document should look something like this:
 ```
                 "Standard valid XML document",
-                // pass in XML annotation files
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "Annotation.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
-                // pass in paths to DLL's where data contracts live
                 new List<string>
                 {
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.dll"),
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
                     Path.Combine(
                         InputDirectory,
-                        "Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.dll")
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
                 },
-                OpenApiSpecVersion.OpenApi3_0, 9, Path.Combine(
+                "1.0.0",
+                9,
+                Path.Combine(
                     OutputDirectory,
-                    "OAIOutput.Json")
+                    "Annotation.Json")
 ```
-In this example the generated OAIOutput.json should contain a valid V3 OID document for your API based on the C# comments and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L671).
+In this example the generated OAIOutput.json should contain a valid V3 OID document for your API based on the C# comments and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L634).
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
