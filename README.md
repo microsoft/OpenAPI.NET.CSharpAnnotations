@@ -9,20 +9,20 @@
 
 
 ### Welcome!
-This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a OpenAPI document (V2 or V3). All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and it's related Swagger tooling.
+This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a OpenAPI document (V2 or V3). All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
 
 ### Annotations (C# Comments)
 We've made an effort to develop an annotation model that maps very closely to the native .Net comment structure for the C# language. In general, the below image describes the general concept of how this utility parse your C# comments and generate your OpenAPI.NET document.
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
-Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wikihttps://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidence and examples on how to annotate your controllers.
+Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wikihttps://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
 
 ### Mechanics
 Two things are needed to use this reader.
 - The "XML documentation file" from your MSBuild.exe output
 - Any DLL's that contain the data types of your API's request/response contracts.
 
-After you've corrrectly annotated your C# code, you'll need to build your solution and then retrieve the output XML file where MSBuild.exe aggegates the projects comments. This file is what this utility will use to convert your comments into an OpenAPI.NET object.
+After you've correctly annotated your C# code, you'll need to build your solution and then retrieve the output XML file where MSBuild.exe aggregates the projects comments. This file is what this utility will use to convert your comments into an OpenAPI.NET object.
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
 
 ### Simple Example Code
