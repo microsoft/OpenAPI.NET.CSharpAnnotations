@@ -41,13 +41,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         {
             var openApiGeneratorFilterConfig1 = openApiGeneratorFilterConfig;
 
-            _documentFilters = FetchType<DocumentFilter>(openApiGeneratorFilterConfig1.Filters);
-            _documentConfigFilters = FetchType<DocumentConfigFilter>(openApiGeneratorFilterConfig1.Filters);
-            _operationFilters = FetchType<OperationFilter>(openApiGeneratorFilterConfig1.Filters);
-            _operationConfigFilters = FetchType<OperationConfigFilter>(openApiGeneratorFilterConfig1.Filters);
-            _preProcessingOperationFilters = FetchType<PreProcessingOperationFilter>(
+            _documentFilters = TypeCastFilters<DocumentFilter>(openApiGeneratorFilterConfig1.Filters);
+            _documentConfigFilters = TypeCastFilters<DocumentConfigFilter>(openApiGeneratorFilterConfig1.Filters);
+            _operationFilters = TypeCastFilters<OperationFilter>(openApiGeneratorFilterConfig1.Filters);
+            _operationConfigFilters = TypeCastFilters<OperationConfigFilter>(openApiGeneratorFilterConfig1.Filters);
+            _preProcessingOperationFilters = TypeCastFilters<PreProcessingOperationFilter>(
                 openApiGeneratorFilterConfig1.Filters);
-            _postProcessingDocumentFilters = FetchType<PostProcessingDocumentFilter>(
+            _postProcessingDocumentFilters = TypeCastFilters<PostProcessingDocumentFilter>(
                 openApiGeneratorFilterConfig1.Filters);
         }
 
@@ -554,20 +554,20 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             return operationGenerationResults;
         }
 
-        private List<T> FetchType<T>(FilterSet filters) where T : IFilter
+        private List<T> TypeCastFilters<T>(FilterSet filtersToTypeCase) where T : IFilter
         {
-            var typedFilers = filters.Where(i => i.FilterType == typeof(T));
-            var test = new List<T>();
+            var filters = filtersToTypeCase.Where(i => i.FilterType == typeof(T));
+            var typeCastedFilters = new List<T>();
 
-            foreach (var filter in typedFilers)
+            foreach (var filter in filters)
             {
-                if (filter is T filter1)
+                if (filter is T typeCastedFilter)
                 {
-                    test.Add(filter1);
+                    typeCastedFilters.Add(typeCastedFilter);
                 }
             }
 
-            return test;
+            return typeCastedFilters;
         }
     }
 }
