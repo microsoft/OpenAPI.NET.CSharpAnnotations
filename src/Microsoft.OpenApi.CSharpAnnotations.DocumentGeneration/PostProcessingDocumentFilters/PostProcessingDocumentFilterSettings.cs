@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingDocumentFilters
 {
     /// <summary>
-    /// Settings for <see cref="IPostProcessingDocumentFilter"/>.
+    /// Settings for <see cref="PostProcessingDocumentFilter"/>.
     /// </summary>
     public class PostProcessingDocumentFilterSettings
     {

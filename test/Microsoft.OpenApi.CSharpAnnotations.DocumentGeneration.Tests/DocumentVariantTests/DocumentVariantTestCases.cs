@@ -294,7 +294,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
             // should not be populated.
             yield return new object[]
             {
-                "One document variant tag name with no option tags.",
+                "One document variant tag name with no option tags",
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "Annotation.xml"),

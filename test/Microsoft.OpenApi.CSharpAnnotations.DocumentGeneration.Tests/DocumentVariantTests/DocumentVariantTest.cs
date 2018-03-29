@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
-using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;

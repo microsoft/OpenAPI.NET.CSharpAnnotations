@@ -6,7 +6,7 @@
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigFilters
 {
     /// <summary>
-    /// Settings for <see cref="IDocumentConfigFilter"/>.
+    /// Settings for <see cref="DocumentConfigFilter"/>.
     /// </summary>
     public class DocumentConfigFilterSettings
     {

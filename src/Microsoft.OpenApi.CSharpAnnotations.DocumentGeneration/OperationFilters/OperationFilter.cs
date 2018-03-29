@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Xml.Linq;
 using Microsoft.OpenApi.Models;
 
@@ -12,7 +13,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
     /// The class representing the contract of a filter to process the <see cref="OpenApiOperation"/>
     /// objects in <see cref="OpenApiPaths"/> based on the information provided in the operation xml element.
     /// </summary>
-    public interface IOperationFilter
+    public abstract class OperationFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to populate certain parts of Operation object in <see cref="OpenApiOperation"/>.
@@ -27,6 +28,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings);
+        public abstract void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings);
+
+        /// <summary>
+        /// The type of filter.
+        /// </summary>
+        public Type FilterType => typeof(OperationFilter);
     }
 }

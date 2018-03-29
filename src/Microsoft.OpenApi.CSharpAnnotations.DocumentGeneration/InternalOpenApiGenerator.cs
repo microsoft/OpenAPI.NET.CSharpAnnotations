@@ -25,17 +25,30 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     internal class InternalOpenApiGenerator
     {
-        private readonly OpenApiGeneratorFilterConfig _openApiGeneratorFilterConfig;
+        private readonly IList<DocumentFilter> _documentFilters;
+        private readonly IList<DocumentConfigFilter> _documentConfigFilters;
+        private readonly IList<OperationFilter> _operationFilters;
+        private readonly IList<OperationConfigFilter> _operationConfigFilters;
+        private readonly IList<PreProcessingOperationFilter> _preProcessingOperationFilters;
+        private readonly IList<PostProcessingDocumentFilter> _postProcessingDocumentFilters;
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
         /// </summary>
         /// <param name="openApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# annotations.</param>
-        public InternalOpenApiGenerator(
-            OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
+        public InternalOpenApiGenerator(OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
         {
-            _openApiGeneratorFilterConfig = openApiGeneratorFilterConfig;
+            var openApiGeneratorFilterConfig1 = openApiGeneratorFilterConfig;
+
+            _documentFilters = FetchType<DocumentFilter>(openApiGeneratorFilterConfig1.Filters);
+            _documentConfigFilters = FetchType<DocumentConfigFilter>(openApiGeneratorFilterConfig1.Filters);
+            _operationFilters = FetchType<OperationFilter>(openApiGeneratorFilterConfig1.Filters);
+            _operationConfigFilters = FetchType<OperationConfigFilter>(openApiGeneratorFilterConfig1.Filters);
+            _preProcessingOperationFilters = FetchType<PreProcessingOperationFilter>(
+                openApiGeneratorFilterConfig1.Filters);
+            _postProcessingDocumentFilters = FetchType<PostProcessingDocumentFilter>(
+                openApiGeneratorFilterConfig1.Filters);
         }
 
         /// <summary>
@@ -52,8 +65,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         {
             var paths = new OpenApiPaths();
 
-            foreach (var preprocessingOperationFilter in
-                _openApiGeneratorFilterConfig.PreProcessingOperationFilters)
+            foreach (var preprocessingOperationFilter in _preProcessingOperationFilters)
             {
                 try
                 {
@@ -100,7 +112,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     // Apply all the operation-related filters to extract information related to the operation.
                     // It is important that these are applied before the config filters below
                     // since the config filters may rely on information generated from operation filters.
-                    foreach (var operationFilter in _openApiGeneratorFilterConfig.OperationFilters)
+                    foreach (var operationFilter in _operationFilters)
                     {
                         try
                         {
@@ -125,7 +137,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     {
                         // Apply the config-related filters to extract information from the config xml
                         // that can be applied to the operations.
-                        foreach (var configFilter in _openApiGeneratorFilterConfig.OperationConfigFilters)
+                        foreach (var configFilter in _operationConfigFilters)
                         {
                             try
                             {
@@ -135,7 +147,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     new OperationConfigFilterSettings
                                     {
                                         OperationFilterSettings = operationFilterSettings,
-                                        OperationFilters = _openApiGeneratorFilterConfig.OperationFilters
+                                        OperationFilters = _operationFilters
                                     });
                             }
                             catch (Exception e)
@@ -293,7 +305,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 {
                     var openApiDocument = variantInfoDocumentValuePair.Value;
 
-                    foreach (var documentFilter in _openApiGeneratorFilterConfig.DocumentFilters)
+                    foreach (var documentFilter in _documentFilters)
                     {
                         try
                         {
@@ -317,7 +329,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         }
                     }
 
-                    foreach (var filter in _openApiGeneratorFilterConfig.PostProcessingDocumentFilters)
+                    foreach (var filter in _postProcessingDocumentFilters)
                     {
                         filter.Apply(
                             openApiDocument,
@@ -330,8 +342,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
                 if (documentConfigElement != null)
                 {
-                    foreach (var documentConfigFilter in
-                        _openApiGeneratorFilterConfig.DocumentConfigFilters)
+                    foreach (var documentConfigFilter in _documentConfigFilters)
                     {
                         try
                         {
@@ -541,6 +552,22 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             }
 
             return operationGenerationResults;
+        }
+
+        private List<T> FetchType<T>(FilterSet filters) where T : IFilter
+        {
+            var typedFilers = filters.Where(i => i.FilterType == typeof(T));
+            var test = new List<T>();
+
+            foreach (var filter in typedFilers)
+            {
+                if (filter is T filter1)
+                {
+                    test.Add(filter1);
+                }
+            }
+
+            return test;
         }
     }
 }

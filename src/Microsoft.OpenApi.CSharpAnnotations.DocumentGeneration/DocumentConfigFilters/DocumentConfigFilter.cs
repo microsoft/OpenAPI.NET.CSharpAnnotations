@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters;
@@ -16,9 +17,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
     /// where TKey is <see cref="DocumentVariantInfo"/> and TValue is <see cref="OpenApiDocument"/>
     /// based on the information in the document config element of
     /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>, after its processed by the
-    /// <see cref="IDocumentFilter"/>.
+    /// <see cref="DocumentFilter"/>.
     /// </summary>
-    public interface IDocumentConfigFilter
+    public abstract class DocumentConfigFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to manipulate the documents and their document variant info
@@ -30,10 +31,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
         /// <param name="xmlDocuments">The list of XML documentations provided in
         /// <see cref="OpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
         /// <param name="settings"><see cref="DocumentConfigFilterSettings"/></param>
-        void Apply(
+        public abstract void Apply(
             IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement documentConfigElement,
             IList<XDocument> xmlDocuments,
             DocumentConfigFilterSettings settings);
+
+        /// <summary>
+        /// The type of filter.
+        /// </summary>
+        public Type FilterType { get; } = typeof(DocumentConfigFilter);
     }
 }

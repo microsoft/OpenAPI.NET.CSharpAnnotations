@@ -16,7 +16,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
     /// <summary>
     /// Populate the <see cref="DocumentVariantInfo.Attributes"/>.
     /// </summary>
-    public class DocumentVariantAttributesFilter : IDocumentConfigFilter
+    public class DocumentVariantAttributesFilter : DocumentConfigFilter
     {
         /// <summary>
         /// Fetches the attributes in document variant option as well as the entire documentation itself
@@ -30,7 +30,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
         /// Thrown when there is a conflict
         /// between the attributes in the existing document variant info and the new one.
         /// </exception>
-        public void Apply(
+        public override void Apply(
             IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement element,
             IList<XDocument> xmlDocuments,
