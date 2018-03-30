@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
     /// <summary>
     /// Parses the value of remarks tag in xml documentation and apply that as description of the operation.
     /// </summary>
-    public class RemarksToDescriptionFilter : OperationFilter
+    public class RemarksToDescriptionFilter : IOperationFilter
     {
         /// <summary>
         /// Fetches the value of "remarks" tag from xml documentation and populates operation's description.
@@ -28,7 +28,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public override void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             string description = null;
             var remarksElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Remarks);

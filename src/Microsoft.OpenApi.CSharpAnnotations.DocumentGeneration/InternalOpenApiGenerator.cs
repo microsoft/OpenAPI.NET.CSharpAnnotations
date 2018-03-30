@@ -25,12 +25,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     internal class InternalOpenApiGenerator
     {
-        private readonly IList<DocumentFilter> _documentFilters;
-        private readonly IList<DocumentConfigFilter> _documentConfigFilters;
-        private readonly IList<OperationFilter> _operationFilters;
-        private readonly IList<OperationConfigFilter> _operationConfigFilters;
-        private readonly IList<PreProcessingOperationFilter> _preProcessingOperationFilters;
-        private readonly IList<PostProcessingDocumentFilter> _postProcessingDocumentFilters;
+        private readonly IList<IDocumentFilter> _documentFilters;
+        private readonly IList<IDocumentConfigFilter> _documentConfigFilters;
+        private readonly IList<IOperationFilter> _operationFilters;
+        private readonly IList<IOperationConfigFilter> _operationConfigFilters;
+        private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
+        private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
@@ -39,16 +39,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// that will be applied while generating/processing OpenAPI document from C# annotations.</param>
         public InternalOpenApiGenerator(OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
         {
-            var openApiGeneratorFilterConfig1 = openApiGeneratorFilterConfig;
+            if(openApiGeneratorFilterConfig== null)
+            {
+                throw new ArgumentNullException(nameof(openApiGeneratorFilterConfig));
+            }
 
-            _documentFilters = TypeCastFilters<DocumentFilter>(openApiGeneratorFilterConfig1.Filters);
-            _documentConfigFilters = TypeCastFilters<DocumentConfigFilter>(openApiGeneratorFilterConfig1.Filters);
-            _operationFilters = TypeCastFilters<OperationFilter>(openApiGeneratorFilterConfig1.Filters);
-            _operationConfigFilters = TypeCastFilters<OperationConfigFilter>(openApiGeneratorFilterConfig1.Filters);
-            _preProcessingOperationFilters = TypeCastFilters<PreProcessingOperationFilter>(
-                openApiGeneratorFilterConfig1.Filters);
-            _postProcessingDocumentFilters = TypeCastFilters<PostProcessingDocumentFilter>(
-                openApiGeneratorFilterConfig1.Filters);
+            _documentFilters = TypeCastFilters<IDocumentFilter>(openApiGeneratorFilterConfig.Filters);
+            _documentConfigFilters = TypeCastFilters<IDocumentConfigFilter>(openApiGeneratorFilterConfig.Filters);
+            _operationFilters = TypeCastFilters<IOperationFilter>(openApiGeneratorFilterConfig.Filters);
+            _operationConfigFilters = TypeCastFilters<IOperationConfigFilter>(openApiGeneratorFilterConfig.Filters);
+            _preProcessingOperationFilters = TypeCastFilters<IPreProcessingOperationFilter>(
+                openApiGeneratorFilterConfig.Filters);
+            _postProcessingDocumentFilters = TypeCastFilters<IPostProcessingDocumentFilter>(
+                openApiGeneratorFilterConfig.Filters);
         }
 
         /// <summary>
@@ -554,20 +557,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             return operationGenerationResults;
         }
 
-        private List<T> TypeCastFilters<T>(FilterSet filtersToTypeCase) where T : IFilter
+        private List<T> TypeCastFilters<T>(FilterSet filtersToTypeCast) where T : IFilter
         {
-            var filters = filtersToTypeCase.Where(i => i.FilterType == typeof(T));
-            var typeCastedFilters = new List<T>();
-
-            foreach (var filter in filters)
-            {
-                if (filter is T typeCastedFilter)
-                {
-                    typeCastedFilters.Add(typeCastedFilter);
-                }
-            }
-
-            return typeCastedFilters;
+            return filtersToTypeCast.Where(filter => filter is T).Select(filter => (T)filter).ToList();
         }
     }
 }

@@ -12,14 +12,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingD
     /// <summary>
     /// Removes the operations from the OpenAPI document for which generation failed.
     /// </summary>
-    public class RemoveFailedGenerationOperationFilter : PostProcessingDocumentFilter
+    public class RemoveFailedGenerationOperationFilter : IPostProcessingDocumentFilter
     {
         /// <summary>
         /// Removes the operations from the OpenAPI document for which generation failed.
         /// </summary>
         /// <param name="openApiDocument">The OpenAPI document to process.</param>
         /// <param name="settings">The filter settings.</param>
-        public override void Apply(
+        public void Apply(
             OpenApiDocument openApiDocument,
             PostProcessingDocumentFilterSettings settings)
         {

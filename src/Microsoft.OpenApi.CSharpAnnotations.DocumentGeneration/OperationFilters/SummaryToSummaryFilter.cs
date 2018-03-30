@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
     /// <summary>
     /// Parses the value of summary tag in xml documentation and apply that as summary of the operation.
     /// </summary>
-    public class SummaryToSummaryFilter : OperationFilter
+    public class SummaryToSummaryFilter : IOperationFilter
     {
         /// <summary>
         /// Fetches the value of "summary" tag from xml documentation and populates operation's summary.
@@ -28,7 +28,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public override void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var summaryElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Summary);
 

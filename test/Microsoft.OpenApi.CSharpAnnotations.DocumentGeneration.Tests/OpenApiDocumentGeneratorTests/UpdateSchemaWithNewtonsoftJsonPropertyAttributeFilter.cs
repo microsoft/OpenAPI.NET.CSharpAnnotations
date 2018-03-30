@@ -19,7 +19,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
     /// Filter to grab newtonsoft json property attribute and if it contains name and required information for a
     /// property, update the corresponding property schema with it.
     /// </summary>
-    public class UpdateSchemaWithNewtonsoftJsonPropertyAttributeFilter : DocumentFilter
+    public class UpdateSchemaWithNewtonsoftJsonPropertyAttributeFilter : IDocumentFilter
     {
         /// <summary>
         /// Fetches the newtonsoft json property attribute and if it contains name and required information for a
@@ -28,7 +28,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public override void Apply(
+        public void Apply(
             OpenApiDocument specificationDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings)

@@ -21,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions
     /// property, updates the corresponding property schema with it.
     /// 2. Removes properties with JsonIgnore attribute from schema.
     /// </summary>
-    public class NewtonsoftJsonPropertyAttributeFilter : DocumentFilter
+    public class NewtonsoftJsonPropertyAttributeFilter : IDocumentFilter
     {
         /// <summary>
         /// Fetches the newtonsoft json property attribute and if it contains name and required information for a
@@ -30,9 +30,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions
         /// <param name="openApiDocument">The Open API specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public override void Apply(
+        public void Apply(
             OpenApiDocument openApiDocument,
-            IList<XDocument> xmlDocuments,
+            IList<XDocument> xmlDocuments, 
             DocumentFilterSettings settings)
         {
             if (openApiDocument == null)

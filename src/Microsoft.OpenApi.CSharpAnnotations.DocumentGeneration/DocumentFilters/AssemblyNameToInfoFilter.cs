@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
     /// <summary>
     /// Parses the value of assembly tag in xml documentation and apply that as info in Open Api V3 specification document.
     /// </summary>
-    public class AssemblyNameToInfoFilter : DocumentFilter
+    public class AssemblyNameToInfoFilter : IDocumentFilter
     {
         /// <summary>
         /// Fetches the value of "assembly" tag from xml documentation and use it to populate
@@ -23,7 +23,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public override void Apply(
+        public void Apply(
             OpenApiDocument specificationDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings)

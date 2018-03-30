@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
     /// <summary>
     /// Parses the value of the annotation nodes in operation-level config and applies them to the specified operations.
     /// </summary>
-    public class CommonAnnotationFilter : OperationConfigFilter
+    public class CommonAnnotationFilter : IOperationConfigFilter
     {
         /// <summary>
         /// Fetches the annotations specified in the operation-level config and applies them to the specified operations.
@@ -22,7 +22,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element containing operation-level config in the config xml.</param>
         /// <param name="settings">The operation config filter settings.</param>
-        public override void Apply(OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings)
         {
             var annotationElements = element.Descendants().Where(i => i.Name == KnownXmlStrings.Annotation);
 

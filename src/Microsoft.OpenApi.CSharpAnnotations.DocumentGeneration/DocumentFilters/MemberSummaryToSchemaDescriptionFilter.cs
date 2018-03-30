@@ -18,7 +18,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
     /// Filter to parse the values from the summary tags for all the properties
     /// to populate descriptions in the schema.
     /// </summary>
-    public class MemberSummaryToSchemaDescriptionFilter : DocumentFilter
+    public class MemberSummaryToSchemaDescriptionFilter : IDocumentFilter
     {
         /// <summary>
         /// Parses the values from the summary for all the properties to populate descriptions in the schema.
@@ -26,7 +26,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="openApiDocument">The Open API specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public override void Apply(
+        public void Apply(
             OpenApiDocument openApiDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings)

@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <summary>
         /// Creates a new instance of <see cref="OpenApiGeneratorFilterConfig"/> with default filters.
         /// </summary>
-        public OpenApiGeneratorFilterConfig(FilterSetVersion filterSetVersion = FilterSetVersion.V1)
+        public OpenApiGeneratorFilterConfig(FilterSetVersion filterSetVersion)
         {
             Filters = FilterSet.GetDefaultFilterSet(filterSetVersion);
         }

@@ -6,7 +6,7 @@
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOperationFilters
 {
     /// <summary>
-    /// Settings for <see cref="PreProcessingOperationFilter"/>.
+    /// Settings for <see cref="IPreProcessingOperationFilter"/>.
     /// </summary>
     public class PreProcessingOperationFilterSettings
     {

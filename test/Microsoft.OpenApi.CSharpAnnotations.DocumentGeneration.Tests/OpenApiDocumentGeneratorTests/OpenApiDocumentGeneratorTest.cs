@@ -949,7 +949,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0");
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
 
             GenerationDiagnostic result;
 
@@ -1016,7 +1016,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0");
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
 
             GenerationDiagnostic result;
 
@@ -1073,8 +1073,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             var document = XDocument.Load(path);
 
-            var input = new OpenApiGeneratorConfig(new List<XDocument>() {document}, new List<string>(),
-                openApiDocumentVersion);
+            var input = new OpenApiGeneratorConfig(
+                new List<XDocument>() {document},
+                new List<string>(),
+                openApiDocumentVersion,
+                FilterSetVersion.V1);
 
             GenerationDiagnostic result;
 
@@ -1114,7 +1117,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, openApiDocumentVersion);
+            var input = new OpenApiGeneratorConfig(
+                documents,
+                inputBinaryFiles,
+                openApiDocumentVersion,
+                FilterSetVersion.V1);
 
             GenerationDiagnostic result;
 
@@ -1160,7 +1167,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             string testCaseName,
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
-            DocumentFilter documentFilter,
+            IDocumentFilter documentFilter,
             int expectedOperationGenerationResultsCount,
             string expectedJsonFile)
         {
@@ -1170,7 +1177,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0");
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
             input.OpenApiGeneratorFilterConfig.Filters.Add(documentFilter);
 
             GenerationDiagnostic result;

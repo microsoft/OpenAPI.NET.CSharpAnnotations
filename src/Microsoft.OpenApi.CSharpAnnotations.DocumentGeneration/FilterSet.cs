@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingDocumentFilters;
@@ -18,7 +18,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     public sealed class FilterSet : IEnumerable<IFilter>
     {
-        private IDictionary<Type, IList<IFilter>> _filters = new Dictionary<Type, IList<IFilter>>();
+        private IList<IFilter> _filters = new List<IFilter>();
         private static FilterSet _defaultFilterSet;
 
         /// <summary>
@@ -53,12 +53,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="filter">The filter.</param>
         public void Add(IFilter filter)
         {
-            if (!_filters.ContainsKey(filter.FilterType))
-            {
-                _filters[filter.FilterType] = new List<IFilter>();
-            }
-
-            _filters[filter.FilterType].Add(filter);
+            _filters.Add(filter);
         }
 
         /// <summary>
@@ -70,37 +65,41 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             {
                 _defaultFilterSet = new FilterSet();
 
-                if (version == FilterSetVersion.V1)
+                switch(version)
                 {
-                    //Document config filters
-                    _defaultFilterSet.Add(new DocumentVariantAttributesFilter());
+                    case FilterSetVersion.V1:
+                        //Document config filters
+                        _defaultFilterSet.Add(new DocumentVariantAttributesFilter());
 
-                    //Document filters
-                    _defaultFilterSet.Add(new AssemblyNameToInfoFilter());
-                    _defaultFilterSet.Add(new UrlToServerFilter());
-                    _defaultFilterSet.Add(new MemberSummaryToSchemaDescriptionFilter());
+                        //Document filters
+                        _defaultFilterSet.Add(new AssemblyNameToInfoFilter());
+                        _defaultFilterSet.Add(new UrlToServerFilter());
+                        _defaultFilterSet.Add(new MemberSummaryToSchemaDescriptionFilter());
 
-                    //Operation config filters
-                    _defaultFilterSet.Add(new CommonAnnotationFilter());
+                        //Operation config filters
+                        _defaultFilterSet.Add(new CommonAnnotationFilter());
 
-                    //Operation filters
-                    _defaultFilterSet.Add(new GroupToTagFilter());
-                    _defaultFilterSet.Add(new ParamToParameterFilter());
-                    _defaultFilterSet.Add(new ParamToRequestBodyFilter());
-                    _defaultFilterSet.Add(new RemarksToDescriptionFilter());
-                    _defaultFilterSet.Add(new ResponseToResponseFilter());
-                    _defaultFilterSet.Add(new SummaryToSummaryFilter());
+                        //Operation filters
+                        _defaultFilterSet.Add(new GroupToTagFilter());
+                        _defaultFilterSet.Add(new ParamToParameterFilter());
+                        _defaultFilterSet.Add(new ParamToRequestBodyFilter());
+                        _defaultFilterSet.Add(new RemarksToDescriptionFilter());
+                        _defaultFilterSet.Add(new ResponseToResponseFilter());
+                        _defaultFilterSet.Add(new SummaryToSummaryFilter());
 
-                    //Pre processing operation filters
-                    _defaultFilterSet.Add(new ConvertAlternativeParamTagsFilter());
-                    _defaultFilterSet.Add(new PopulateInAttributeFilter());
-                    _defaultFilterSet.Add(new BranchOptionalPathParametersFilter());
+                        //Pre processing operation filters
+                        _defaultFilterSet.Add(new ConvertAlternativeParamTagsFilter());
+                        _defaultFilterSet.Add(new PopulateInAttributeFilter());
+                        _defaultFilterSet.Add(new BranchOptionalPathParametersFilter());
 
-                    //Post processing document filters
-                    _defaultFilterSet.Add(new RemoveFailedGenerationOperationFilter());
+                        //Post processing document filters
+                        _defaultFilterSet.Add(new RemoveFailedGenerationOperationFilter());
+
+                        return _defaultFilterSet;
+
+                    default:
+                        throw new FilterSetVersionNotSupportedException(version.ToString());
                 }
-
-                return _defaultFilterSet;
             }
 
             return new FilterSet(_defaultFilterSet);
@@ -112,12 +111,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <returns>The enumerator.</returns>
         public IEnumerator<IFilter> GetEnumerator()
         {
-            foreach (var filterList in _filters.Values)
+            foreach (var filter in _filters)
             {
-                foreach (var filter in filterList)
-                {
-                    yield return filter;
-                }
+                yield return filter;
             }
         }
 

@@ -16,7 +16,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
     /// <summary>
     /// Parses the value of url tag in xml documentation and apply that as server in Open Api V3 specification document.
     /// </summary>
-    public class UrlToServerFilter : DocumentFilter
+    public class UrlToServerFilter : IDocumentFilter
     {
         /// <summary>
         /// Fetches the value of "url" tag from xml documentation and use it to populate
@@ -25,7 +25,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocuments">The documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public override void Apply(
+        public void Apply(
             OpenApiDocument specificationDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings)

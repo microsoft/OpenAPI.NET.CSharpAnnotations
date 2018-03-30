@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
-using System;
-
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 {
     /// <summary>
@@ -10,9 +8,5 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     public interface IFilter
     {
-        /// <summary>
-        /// The filter type.
-        /// </summary>
-        Type FilterType { get; }
     }
 }

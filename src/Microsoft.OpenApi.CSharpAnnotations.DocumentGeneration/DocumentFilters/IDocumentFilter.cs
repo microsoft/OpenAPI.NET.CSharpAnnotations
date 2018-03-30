@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
@@ -13,9 +12,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
 {
     /// <summary>
     /// The class representing the contract of a filter to process the <see cref="OpenApiDocument"/> based on the
-    /// information provided in annotation xml(s), after its processed by the <see cref="OperationFilter"/>.
+    /// information provided in annotation xml(s), after its processed by the <see cref="IOperationFilter"/>.
     /// </summary>
-    public abstract class DocumentFilter : IFilter
+    public interface IDocumentFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to populate certain parts of OpenAPI document.
@@ -24,14 +23,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls,
         /// <see cref="OpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
         /// <param name="settings"><see cref="DocumentFilterSettings"/></param>
-        public abstract void Apply(
-            OpenApiDocument openApiDocument,
-            IList<XDocument> xmlDocuments,
-            DocumentFilterSettings settings);
-
-        /// <summary>
-        /// The type of filter.
-        /// </summary>
-        public Type FilterType { get; } = typeof(DocumentFilter);
+        void Apply(OpenApiDocument openApiDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings);
     }
 }

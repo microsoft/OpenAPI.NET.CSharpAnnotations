@@ -8,7 +8,7 @@ using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
 {
     /// <summary>
-    /// Settings for <see cref="OperationFilter"/>.
+    /// Settings for <see cref="IOperationFilter"/>.
     /// </summary>
     public class OperationFilterSettings
     {

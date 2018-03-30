@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
@@ -14,7 +13,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
     /// <summary>
     /// Parses the value of group tag in xml documentation and apply that as tag in operation.
     /// </summary>
-    public class GroupToTagFilter : OperationFilter
+    public class GroupToTagFilter : IOperationFilter
     {
         /// <summary>
         /// Fetches the value of "group" tag from xml documentation and populates operation's tag.
@@ -28,7 +27,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public override void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var groupElement = element.Descendants().FirstOrDefault(i => i.Name == KnownXmlStrings.Group);
 

@@ -44,7 +44,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Operation
             var configDocument = XDocument.Load(configXmlFile);
 
             var generator = new OpenApiGenerator();
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0")
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1)
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };

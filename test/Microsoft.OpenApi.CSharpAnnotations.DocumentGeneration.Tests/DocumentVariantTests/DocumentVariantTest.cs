@@ -50,7 +50,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
 
             var generator = new OpenApiGenerator();
 
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0")
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1)
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };
@@ -141,7 +141,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
             var configDocument = XDocument.Load(configPath);
 
             var generator = new OpenApiGenerator();
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0")
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1)
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };

@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
 using Microsoft.OpenApi.Models;
@@ -14,9 +13,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
     /// The class representing the contract of a filter to process the <see cref="OpenApiOperation"/>
     /// based on the information in the operation config element in
     /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>, after its processed by the
-    /// <see cref="OperationFilter"/>.
+    /// <see cref="IOperationFilter"/>.
     /// </summary>
-    public abstract class OperationConfigFilter : IFilter
+    public interface IOperationConfigFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to manipulate the Operation object based on information
@@ -27,14 +26,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
         /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>.
         /// </param>
         /// <param name="settings"><see cref="OperationConfigFilterSettings"/></param>
-        public abstract void Apply(
-            OpenApiOperation operation,
-            XElement element,
-            OperationConfigFilterSettings settings);
-
-        /// <summary>
-        /// The type of filter.
-        /// </summary>
-        public Type FilterType { get; } = typeof(OperationConfigFilter);
+        void Apply( OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings);
     }
 }

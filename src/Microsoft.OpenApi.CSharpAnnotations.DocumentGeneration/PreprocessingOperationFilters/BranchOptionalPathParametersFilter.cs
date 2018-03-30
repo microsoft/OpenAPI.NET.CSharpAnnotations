@@ -18,7 +18,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
     /// Parses the value of the URL and creates multiple operations in the Paths object when
     /// there are optional path parameters.
     /// </summary>
-    public class BranchOptionalPathParametersFilter : PreProcessingOperationFilter
+    public class BranchOptionalPathParametersFilter : IPreProcessingOperationFilter
     {
         /// <summary>
         /// Fetches the URL value and creates multiple operations based on optional parameters.
@@ -26,7 +26,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        public override void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
+        public void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
         {
             var paramElements = element.Elements()
                 .Where(
