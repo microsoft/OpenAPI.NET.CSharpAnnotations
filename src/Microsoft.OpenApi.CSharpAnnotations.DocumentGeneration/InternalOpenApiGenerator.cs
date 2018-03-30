@@ -39,7 +39,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// that will be applied while generating/processing OpenAPI document from C# annotations.</param>
         public InternalOpenApiGenerator(OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
         {
-            if(openApiGeneratorFilterConfig== null)
+            if (openApiGeneratorFilterConfig == null)
             {
                 throw new ArgumentNullException(nameof(openApiGeneratorFilterConfig));
             }
