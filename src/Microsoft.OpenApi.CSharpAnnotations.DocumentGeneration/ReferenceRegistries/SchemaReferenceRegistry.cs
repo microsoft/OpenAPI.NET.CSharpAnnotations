@@ -75,8 +75,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     else if (input == typeof(Guid))
                     {
                         schema.Example = new OpenApiString(Guid.Empty.ToString());
-                        schema.MinLength = 36;
-                        schema.MaxLength = 36;
                     }
 
                     return schema;
