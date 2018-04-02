@@ -133,7 +133,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 // If another generic is encountered, recurse. Otherwise, load the type.
                 genericTypeArray[j] = IsGenericType(currentGenericTypeName)
                     ? ExtractGenericTypeRecurse(allTypeNames, ref index)
-                    : LoadType(currentGenericTypeName);
+                    : currentGenericTypeName.Contains("[]")
+                        ? CreateListType(currentGenericTypeName.Split('[')[0])
+                        : LoadType(currentGenericTypeName);
             }
 
             var type = LoadType(currentTypeName);
