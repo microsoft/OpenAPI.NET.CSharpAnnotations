@@ -26,6 +26,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
         /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>.
         /// </param>
         /// <param name="settings"><see cref="OperationConfigFilterSettings"/></param>
-        void Apply( OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings);
+        void Apply(OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings);
     }
 }
