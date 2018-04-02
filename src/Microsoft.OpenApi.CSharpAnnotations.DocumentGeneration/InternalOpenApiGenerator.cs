@@ -25,17 +25,33 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     internal class InternalOpenApiGenerator
     {
-        private readonly OpenApiGeneratorFilterConfig _openApiGeneratorFilterConfig;
+        private readonly IList<IDocumentFilter> _documentFilters;
+        private readonly IList<IDocumentConfigFilter> _documentConfigFilters;
+        private readonly IList<IOperationFilter> _operationFilters;
+        private readonly IList<IOperationConfigFilter> _operationConfigFilters;
+        private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
+        private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
         /// </summary>
         /// <param name="openApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# annotations.</param>
-        public InternalOpenApiGenerator(
-            OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
+        public InternalOpenApiGenerator(OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
         {
-            _openApiGeneratorFilterConfig = openApiGeneratorFilterConfig;
+            if (openApiGeneratorFilterConfig == null)
+            {
+                throw new ArgumentNullException(nameof(openApiGeneratorFilterConfig));
+            }
+
+            _documentFilters = TypeCastFilters<IDocumentFilter>(openApiGeneratorFilterConfig.Filters);
+            _documentConfigFilters = TypeCastFilters<IDocumentConfigFilter>(openApiGeneratorFilterConfig.Filters);
+            _operationFilters = TypeCastFilters<IOperationFilter>(openApiGeneratorFilterConfig.Filters);
+            _operationConfigFilters = TypeCastFilters<IOperationConfigFilter>(openApiGeneratorFilterConfig.Filters);
+            _preProcessingOperationFilters = TypeCastFilters<IPreProcessingOperationFilter>(
+                openApiGeneratorFilterConfig.Filters);
+            _postProcessingDocumentFilters = TypeCastFilters<IPostProcessingDocumentFilter>(
+                openApiGeneratorFilterConfig.Filters);
         }
 
         /// <summary>
@@ -52,8 +68,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         {
             var paths = new OpenApiPaths();
 
-            foreach (var preprocessingOperationFilter in
-                _openApiGeneratorFilterConfig.PreProcessingOperationFilters)
+            foreach (var preprocessingOperationFilter in _preProcessingOperationFilters)
             {
                 try
                 {
@@ -100,7 +115,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     // Apply all the operation-related filters to extract information related to the operation.
                     // It is important that these are applied before the config filters below
                     // since the config filters may rely on information generated from operation filters.
-                    foreach (var operationFilter in _openApiGeneratorFilterConfig.OperationFilters)
+                    foreach (var operationFilter in _operationFilters)
                     {
                         try
                         {
@@ -125,7 +140,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     {
                         // Apply the config-related filters to extract information from the config xml
                         // that can be applied to the operations.
-                        foreach (var configFilter in _openApiGeneratorFilterConfig.OperationConfigFilters)
+                        foreach (var configFilter in _operationConfigFilters)
                         {
                             try
                             {
@@ -135,7 +150,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     new OperationConfigFilterSettings
                                     {
                                         OperationFilterSettings = operationFilterSettings,
-                                        OperationFilters = _openApiGeneratorFilterConfig.OperationFilters
+                                        OperationFilters = _operationFilters
                                     });
                             }
                             catch (Exception e)
@@ -293,7 +308,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 {
                     var openApiDocument = variantInfoDocumentValuePair.Value;
 
-                    foreach (var documentFilter in _openApiGeneratorFilterConfig.DocumentFilters)
+                    foreach (var documentFilter in _documentFilters)
                     {
                         try
                         {
@@ -317,7 +332,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         }
                     }
 
-                    foreach (var filter in _openApiGeneratorFilterConfig.PostProcessingDocumentFilters)
+                    foreach (var filter in _postProcessingDocumentFilters)
                     {
                         filter.Apply(
                             openApiDocument,
@@ -330,8 +345,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
                 if (documentConfigElement != null)
                 {
-                    foreach (var documentConfigFilter in
-                        _openApiGeneratorFilterConfig.DocumentConfigFilters)
+                    foreach (var documentConfigFilter in _documentConfigFilters)
                     {
                         try
                         {
@@ -541,6 +555,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             }
 
             return operationGenerationResults;
+        }
+
+        private List<T> TypeCastFilters<T>(FilterSet filtersToTypeCast) where T : IFilter
+        {
+            return filtersToTypeCast.Where(filter => filter is T).Select(filter => (T)filter).ToList();
         }
     }
 }

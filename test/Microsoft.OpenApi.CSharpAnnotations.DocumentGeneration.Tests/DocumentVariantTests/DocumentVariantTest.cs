@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
-using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
@@ -51,7 +50,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
 
             var generator = new OpenApiGenerator();
 
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0")
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1)
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };
@@ -142,7 +141,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
             var configDocument = XDocument.Load(configPath);
 
             var generator = new OpenApiGenerator();
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0")
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1)
             {
                 AdvancedConfigurationXmlDocument = configDocument
             };

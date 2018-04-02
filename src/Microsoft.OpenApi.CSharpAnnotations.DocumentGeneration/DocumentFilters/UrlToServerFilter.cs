@@ -25,7 +25,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocuments">The documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
-        public void Apply(OpenApiDocument specificationDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings)
+        public void Apply(
+            OpenApiDocument specificationDocument,
+            IList<XDocument> xmlDocuments,
+            DocumentFilterSettings settings)
         {
             var basePaths = new List<string>();
             var urlElements = new List<XElement>();
