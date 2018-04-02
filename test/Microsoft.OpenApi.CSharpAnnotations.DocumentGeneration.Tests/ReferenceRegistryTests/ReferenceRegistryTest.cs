@@ -118,8 +118,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 {
                     Type = "string",
                     Format = "uuid",
-                    MinLength = 36,
-                    MaxLength = 36,
                     Example = new OpenApiString("00000000-0000-0000-0000-000000000000")
                 },
                 new Dictionary<string, OpenApiSchema>()
