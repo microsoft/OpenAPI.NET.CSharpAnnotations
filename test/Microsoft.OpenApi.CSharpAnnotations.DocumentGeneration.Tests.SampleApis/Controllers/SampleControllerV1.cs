@@ -67,7 +67,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
         /// <param name="sampleObject" in="body"><see cref="SampleObject3"/>Sample object</param>
-        /// <response code="200"><see cref="SampleObject3"/>Sample object posted</response>
+        /// <response code="200"><see cref="SampleObject1"/>Sample object posted</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpPost]
         [Route("/V1/samples")]
