@@ -18,9 +18,11 @@ We've made an effort to develop an annotation model that maps very closely to th
 Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
 
 ### Mechanics
-Two things are needed to use this component.
-- The "XML documentation file" from your MSBuild.exe output
-- Any DLL's that contain the data types of your API's request/response contracts.
+The items needed to use this component as shown in the sample below.
+- The "XML documentation file(s)" from your MSBuild.exe output. (List<string>)
+- Any DLL's that contain the data types of your API's request/response contracts. (List<string>)
+- OpenAPI Document Version (string)
+- Filterset Version (enum)
 
 After you've correctly annotated your C# code, you'll need to build your solution and then retrieve the output XML file where MSBuild.exe aggregates the projects comments. This file is what this utility will use to convert your comments into an OpenAPI.NET object.
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
