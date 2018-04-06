@@ -12,7 +12,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
     /// The class representing the contract of a filter to process the <see cref="OpenApiOperation"/>
     /// objects in <see cref="OpenApiPaths"/> based on the information provided in the operation xml element.
     /// </summary>
-    public interface IOperationFilter
+    public interface IOperationFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to populate certain parts of Operation object in <see cref="OpenApiOperation"/>.

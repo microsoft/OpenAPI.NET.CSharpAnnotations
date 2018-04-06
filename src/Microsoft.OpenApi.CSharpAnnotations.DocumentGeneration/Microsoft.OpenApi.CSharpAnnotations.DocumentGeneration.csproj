@@ -53,6 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\FilterSetVersionNotSupportedException.cs" />
+    <Compile Include="FilterSet.cs" />
+    <Compile Include="FilterSetVersion.cs" />
+    <Compile Include="IFilter.cs" />
     <Compile Include="OpenApiGeneratorConfig.cs" />
     <Compile Include="OpenApiGeneratorFilterConfig.cs" />
     <Compile Include="DocumentConfigFilters\DocumentVariantAttributesFilter.cs" />

@@ -18,7 +18,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
     /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>, after its processed by the
     /// <see cref="IDocumentFilter"/>.
     /// </summary>
-    public interface IDocumentConfigFilter
+    public interface IDocumentConfigFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to manipulate the documents and their document variant info

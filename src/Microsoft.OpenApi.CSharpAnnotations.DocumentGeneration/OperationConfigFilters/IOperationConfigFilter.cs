@@ -15,7 +15,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
     /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>, after its processed by the
     /// <see cref="IOperationFilter"/>.
     /// </summary>
-    public interface IOperationConfigFilter
+    public interface IOperationConfigFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to manipulate the Operation object based on information

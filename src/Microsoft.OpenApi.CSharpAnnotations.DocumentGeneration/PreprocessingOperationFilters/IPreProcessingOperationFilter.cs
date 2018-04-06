@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
     /// objects in <see cref="OpenApiPaths"/> before each <see cref="OpenApiOperation"/> is processed by the
     /// <see cref="IOperationFilter"/>.
     /// </summary>
-    public interface IPreProcessingOperationFilter
+    public interface IPreProcessingOperationFilter : IFilter
     {
         /// <summary>
         /// Applies the filter to preprocess the the <see cref="OpenApiOperation"/> objects in

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
       <id>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</id>
-      <version>1.0.0-beta020</version>
+      <version>1.0.0-beta022</version>
       <authors>Microsoft</authors>
       <description>Library that translates Visual Studio C# Annotations into .NET objects representing OpenAPI specification.</description>
       <dependencies>

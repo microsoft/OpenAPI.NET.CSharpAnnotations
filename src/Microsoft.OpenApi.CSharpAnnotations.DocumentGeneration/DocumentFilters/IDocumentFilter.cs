@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
     /// The class representing the contract of a filter to process the <see cref="OpenApiDocument"/> based on the
     /// information provided in annotation xml(s), after its processed by the <see cref="IOperationFilter"/>.
     /// </summary>
-    public interface IDocumentFilter
+    public interface IDocumentFilter : IFilter
     {
         /// <summary>
         /// Contains the required logic to populate certain parts of OpenAPI document.
@@ -23,9 +23,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls,
         /// <see cref="OpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
         /// <param name="settings"><see cref="DocumentFilterSettings"/></param>
-        void Apply(
-            OpenApiDocument openApiDocument,
-            IList<XDocument> xmlDocuments,
-            DocumentFilterSettings settings);
+        void Apply(OpenApiDocument openApiDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings);
     }
 }

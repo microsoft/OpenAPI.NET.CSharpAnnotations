@@ -13,15 +13,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingD
     /// The class representing the contract of a filter to post process the <see cref="OpenApiDocument"/>
     /// after its processed by <see cref="IOperationFilter"/> and <see cref="IDocumentFilter"/>.
     /// </summary>
-    public interface IPostProcessingDocumentFilter
+    public interface IPostProcessingDocumentFilter : IFilter
     {
         /// <summary>
         /// Applies the filter to post process the <see cref="OpenApiDocument"/>.
         /// </summary>
         /// <param name="openApiDocument">The OpenAPI document to process.</param>
         /// <param name="settings"><see cref="PostProcessingDocumentFilterSettings"/></param>
-        void Apply(
-            OpenApiDocument openApiDocument,
-            PostProcessingDocumentFilterSettings settings);
+        void Apply(OpenApiDocument openApiDocument, PostProcessingDocumentFilterSettings settings);
     }
 }

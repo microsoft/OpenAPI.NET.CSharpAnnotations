@@ -32,7 +32,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions
         /// <param name="settings">Settings for document filters.</param>
         public void Apply(
             OpenApiDocument openApiDocument,
-            IList<XDocument> xmlDocuments,
+            IList<XDocument> xmlDocuments, 
             DocumentFilterSettings settings)
         {
             if (openApiDocument == null)

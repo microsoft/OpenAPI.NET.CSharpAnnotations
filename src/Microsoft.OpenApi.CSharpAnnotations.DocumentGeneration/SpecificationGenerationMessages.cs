@@ -10,6 +10,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     internal static class SpecificationGenerationMessages
     {
+        public const string AddingSchemaReferenceFailed =
+            "Adding schema \"{0}\" to the schema reference registry failed with the error: {1}.";
+
         public const string CannotUniquelyIdentifyType = "Could not uniquely identify type: \"{0}\", " +
             "please use fully qualified namespace. The following types exist: {1}";
 
@@ -22,12 +25,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string DuplicateOperation = "There are duplicates for the operation: \"{0}\" \"{1}\"";
 
+        public const string FilterSetVersionNotSupported = "Provided filter set version: \"{0}\" is not supported.";
+
         public const string InvalidHttpMethod = "The documented verb \"{0}\" is not a valid http Method.";
 
         public const string InvalidUrl = "The documented url \"{0}\" is not a valid uri due to the error: {1}.";
-
-        public const string AddingSchemaReferenceFailed =
-            "Adding schema \"{0}\" to the schema reference registry failed with the error: {1}.";
 
         public const string NullUrl = "Url is null";
 
