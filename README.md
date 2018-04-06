@@ -55,7 +55,7 @@ GenerationDiagnostic result;
 OpenApiGenerator generator = new OpenApiGenerator();
 IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments = generator.GenerateDocuments(input, out result);
 ```
-In this example the generated OAIOutput.json should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L634).
+In this example the generated OAIOutput.json should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll's you included.
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
