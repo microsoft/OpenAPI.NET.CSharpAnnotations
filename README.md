@@ -2,17 +2,17 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/capxc7p5cvyrq21w/branch/master?svg=true)](https://ci.appveyor.com/project/MicrosoftOpenAPINETAdmin/openapi-net-csharpcomment/branch/master)
 
-![C# Comment Reader Banner](docs/images/banner.png "Convert /// C# Comments --> OpenAPI.NET")
+![C# Annotation Document Generator](docs/images/banner.png "Convert /// C# Comments --> OpenAPI.NET")
 
 # C# Comment Reader [Preview]
 [Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for mid 2018. Feedback is welcome!]
 
 
 ### Welcome!
-This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native C# comments from your API code into a OpenAPI document object. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
+This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native annotation XML from your API code into a OpenAPI document object. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
 
 ### Annotations (C# Comments)
-We've made an effort to develop an annotation model that maps very closely to the native .Net comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your C# comments and generate your OpenAPI.NET document.
+We've made an effort to develop an annotation model that maps very closely to the native .Net comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your annotation XML and generate your OpenAPI.NET document.
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
 Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wikihttps://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
@@ -57,7 +57,7 @@ Generating your OAI document should look something like this:
                     OutputDirectory,
                     "Annotation.Json")
 ```
-In this example the generated OAIOutput.json should contain a valid V3 OID document for your API based on the C# comments and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L634).
+In this example the generated OAIOutput.json should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L634).
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
