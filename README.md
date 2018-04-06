@@ -4,12 +4,12 @@
 
 ![C# Annotation Document Generator](docs/images/banner.png "Convert /// C# Comments --> OpenAPI.NET")
 
-# C# Comment Reader [Preview]
+# C# Annotation Component for OpenAPI.NET [Preview]
 [Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for mid 2018. Feedback is welcome!]
 
 
 ### Welcome!
-This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. This reader is designed to convert your native annotation XML from your API code into a OpenAPI document object. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
+This component is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. The module is designed to convert your native annotation XML from your API code into a OpenAPI document object. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
 
 ### Annotations (C# Comments)
 We've made an effort to develop an annotation model that maps very closely to the native .Net comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your annotation XML and generate your OpenAPI.NET document.
@@ -18,7 +18,7 @@ We've made an effort to develop an annotation model that maps very closely to th
 Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
 
 ### Mechanics
-Two things are needed to use this reader.
+Two things are needed to use this component.
 - The "XML documentation file" from your MSBuild.exe output
 - Any DLL's that contain the data types of your API's request/response contracts.
 
@@ -26,7 +26,7 @@ After you've correctly annotated your C# code, you'll need to build your solutio
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
 
 ### Simple Example Code
-Here's a simple exampled of how you'd use this reader. The utility takes in two lists. The first shown below is the paths to your post-MSbuild.exe xml documentation files. The second being the paths to any DLL's that have classes that you reference in those XML comments.
+Here's a simple exampled of how you'd use this component. The utility takes in two lists. The first shown below is the paths to your post-MSbuild.exe xml documentation files. The second being the paths to any DLL's that have classes that you reference in those XML comments.
 
 For example, if you have an annotation for a response type as follows:
 ```
@@ -36,26 +36,31 @@ You'd need to include the path to the .dll that contains the SampleObject1 class
 
 Generating your OAI document should look something like this:
 ```
-OpenApiGeneratorConfig input = new OpenApiGeneratorConfig(
-    new List<XDocument>()
+var input = new OpenApiGeneratorConfig(
+    annotationXmlDocuments: new List<XDocument>()
     {
         XDocument.Load(@"C:\TestData\Annotation.xml"),
         XDocument.Load(@"C:\TestData\Contracts.xml"),
     },
-    new List<string>()
+    assemblyPaths: new List<string>()
     {
         @"C:\TestData\Service.dll",
         @"C:\TestData\Contract.dll"
     },
-    "V1",
-    FilterSetVersion.V1);
+    openApiDocumentVersion: "V1",
+    filterSetVersion: FilterSetVersion.V1
+);
 
 GenerationDiagnostic result;
 
-OpenApiGenerator generator = new OpenApiGenerator();
-IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments = generator.GenerateDocuments(input, out result);
+var generator = new OpenApiGenerator();
+
+IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments =   generator.GenerateDocuments(
+    openApiGeneratorConfig: input,
+    generationDiagnostic: out result
+);
 ```
-In this example the generated OAIOutput.json should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll's you included.
+In this example the generated should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll's you included.
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
