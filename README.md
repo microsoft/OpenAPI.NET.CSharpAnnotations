@@ -15,7 +15,7 @@ This reader is the first by-product of Microsoft's supported base [OpenAPI.NET](
 We've made an effort to develop an annotation model that maps very closely to the native .Net comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your annotation XML and generate your OpenAPI.NET document.
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
-Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wikihttps://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
+Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
 
 ### Mechanics
 Two things are needed to use this reader.
@@ -36,26 +36,24 @@ You'd need to include the path to the .dll that contains the SampleObject1 class
 
 Generating your OAI document should look something like this:
 ```
-                "Standard valid XML document",
-                new List<string>
-                {
-                    Path.Combine(InputDirectory, "Annotation.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
-                },
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
-                },
-                "1.0.0",
-                9,
-                Path.Combine(
-                    OutputDirectory,
-                    "Annotation.Json")
+OpenApiGeneratorConfig input = new OpenApiGeneratorConfig(
+    new List<XDocument>()
+    {
+        XDocument.Load(@"C:\TestData\Annotation.xml"),
+        XDocument.Load(@"C:\TestData\Contracts.xml"),
+    },
+    new List<string>()
+    {
+        @"C:\TestData\Service.dll",
+        @"C:\TestData\Contract.dll"
+    },
+    "V1",
+    FilterSetVersion.V1);
+
+GenerationDiagnostic result;
+
+OpenApiGenerator generator = new OpenApiGenerator();
+IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments = generator.GenerateDocuments(input, out result);
 ```
 In this example the generated OAIOutput.json should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll you included. This example and many others can be run in the test suite included in this repo [here](test/Microsoft.OpenApi.CSharpComment.Reader.Tests/OpenApiDocumentGeneratorTests/OpenApiDocumentGeneratorTest.cs#L634).
 
