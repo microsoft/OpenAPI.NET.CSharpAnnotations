@@ -6,7 +6,6 @@
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
@@ -60,11 +59,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                 if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
                     description = lastNode.ToString();
-                }
-
-                if (string.IsNullOrWhiteSpace(description))
-                {
-                    throw new MissingResponseDescriptionException(code);
                 }
 
                 var seeNodes = responseElement.Descendants(KnownXmlStrings.See);

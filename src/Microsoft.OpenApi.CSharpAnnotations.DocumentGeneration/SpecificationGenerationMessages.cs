@@ -40,9 +40,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         public const string MissingSeeCrefTag = 
             "Tag \"<see cref=\"(RequestBodyType)\"\\>\" is missing from body parameter: \"{0}\". ";
 
-        public const string MissingResponseDescription =
-            "Description is missing for response code: \"{0}\". ";
-
         public const string MoreThanOneVariantNameNotAllowed =
             "More than one document variant is not allowed. Variant used for categorization is: {0}";
 

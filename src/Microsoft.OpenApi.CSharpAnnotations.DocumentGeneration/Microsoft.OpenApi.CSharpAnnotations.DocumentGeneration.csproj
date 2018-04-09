@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\FilterSetVersionNotSupportedException.cs" />
+    <Compile Include="FilePreparer.cs" />
     <Compile Include="FilterSet.cs" />
     <Compile Include="FilterSetVersion.cs" />
     <Compile Include="IFilter.cs" />
@@ -68,7 +69,6 @@
     <Compile Include="Exceptions\AddingSchemaReferenceFailedException.cs" />
     <Compile Include="Exceptions\InvalidVerbException.cs" />
     <Compile Include="Exceptions\InvalidUrlException.cs" />
-    <Compile Include="Exceptions\MissingResponseDescriptionException.cs" />
     <Compile Include="Exceptions\UnableToGenerateAllOperationsException.cs" />
     <Compile Include="Exceptions\UndocumentedPathParameterException.cs" />
     <Compile Include="DocumentConfigFilters\IDocumentConfigFilter.cs" />

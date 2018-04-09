@@ -542,62 +542,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                     }
                 }
             };
-
-            // The response is missing description
-            yield return new object[]
-            {
-                "Response missing description",
-                new List<string>
-                {
-                    Path.Combine(InputDirectory, "AnnotationResponseMissingDescription.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
-                },
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
-                },
-                9,
-                Path.Combine(
-                    OutputDirectory,
-                    "AnnotationResponseMissingDescription.Json"),
-                new DocumentGenerationDiagnostic
-                {
-                    Errors =
-                    {
-                        new GenerationError
-                        {
-                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
-                            Message = string.Format(
-                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
-                                8,
-                                9),
-                        }
-                    }
-                },
-                new List<OperationGenerationDiagnostic>
-                {
-                    new OperationGenerationDiagnostic
-                    {
-                        OperationMethod = OperationType.Get.ToString(),
-                        Path = "/V3/samples/{id}",
-                        Errors =
-                        {
-                            new GenerationError
-                            {
-                                ExceptionType = typeof(MissingResponseDescriptionException).Name,
-                                Message = string.Format(
-                                    SpecificationGenerationMessages.MissingResponseDescription,
-                                    "400")
-                            }
-                        }
-                    }
-                }
-            };
         }
 
         public static IEnumerable<object[]> GetTestCasesForPassANewFilterAndShouldReturnCorrectDocument()
