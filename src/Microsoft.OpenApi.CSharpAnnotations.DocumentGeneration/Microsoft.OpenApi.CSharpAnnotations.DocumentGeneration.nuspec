@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
       <id>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</id>
-      <version>1.0.0-beta022</version>
+      <version>1.0.0-beta023</version>
       <authors>Microsoft</authors>
       <description>Library that translates Visual Studio C# Annotations into .NET objects representing OpenAPI specification.</description>
       <dependencies>
-        <dependency id="Microsoft.OpenApi" version="1.0.0-beta015"/>
-        <dependency id="Microsoft.OpenApi.Readers" version="1.0.0-beta015"/>
+        <dependency id="Microsoft.OpenApi" version="1.0.0-beta016"/>
+        <dependency id="Microsoft.OpenApi.Readers" version="1.0.0-beta016"/>
       </dependencies>
     </metadata>
 </package>
