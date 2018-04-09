@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.OpenApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3f5743946376f042, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta014\lib\net46\Microsoft.OpenApi.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta016\lib\net46\Microsoft.OpenApi.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
