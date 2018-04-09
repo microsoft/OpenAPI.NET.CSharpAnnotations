@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
       <id>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</id>
-      <version>1.0.0-beta01</version>
+      <version>1.0.0-beta02</version>
       <authors>Microsoft</authors>
       <description>Extension that provides the newtonsoft json filter that fetches newtonsoft json property attribute and updates OpenAPI specification.</description>
       <dependencies>
-        <dependency id="Microsoft.OpenApi" version="1.0.0-beta015"/>
+        <dependency id="Microsoft.OpenApi" version="1.0.0-beta016"/>
         <dependency id="Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration" version="1.0.0-beta020"/>
         <dependency id="Newtonsoft.json" version="4.0.8"/>
       </dependencies>
