@@ -19,26 +19,29 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// </summary>
         /// <param name="filePaths">The file paths to copy locally.</param>
         /// <returns>The new file path.</returns>
-        public List<string> CopyFileToPrivateBin(IList<string> filePaths)
+        public IList<string> CopyFileToPrivateBin(IList<string> filePaths)
         {
-            List<string> newFilePaths = new List<string>();
+            if(filePaths == null)
+            {
+                throw new ArgumentNullException(nameof(filePaths));
+            }
+
+            var newFilePaths = new List<string>();
+            var domain = AppDomain.CurrentDomain;
+
+            // The privateBinPath is a ; seperated list of paths located in the base path of the 
+            // application where the CLR will attempt to locate assemblies during the load process.
+            // Here we add the location where we will copy dlls to.
+            var privateBinPath = string.IsNullOrWhiteSpace(domain.SetupInformation.PrivateBinPath)
+                ? "DefaultGenerationBin"
+                : domain.SetupInformation.PrivateBinPath + ";DefaultGenerationBin";
+
+            directoryToCopyTo = Path.Combine(domain.BaseDirectory, privateBinPath);
+            Directory.CreateDirectory(directoryToCopyTo);
 
             foreach (string filePath in filePaths)
             {
-                var domain = AppDomain.CurrentDomain;
-
                 var fullPath = Path.GetFullPath(filePath.Trim());
-
-                // The privateBinPath is a ; seperated list of paths located in the base path of the 
-                // application where the CLR will attempt to locate assemblies during the load process.
-                // Here we add the location where we will copy dlls to.
-                var privateBinPath = string.IsNullOrWhiteSpace(domain.SetupInformation.PrivateBinPath)
-                    ? "DefaultGenerationBin"
-                    : domain.SetupInformation.PrivateBinPath + ";DefaultGenerationBin";
-
-                directoryToCopyTo = Path.Combine(domain.BaseDirectory, privateBinPath);
-                Directory.CreateDirectory(directoryToCopyTo);
-
                 var newFilePath = Path.Combine(directoryToCopyTo, Path.GetFileName(filePath));
 
                 // Manually copy file to location where CLR will be able to locate it.
@@ -54,6 +57,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// </summary>
         public void Dispose()
         {
+            if (directoryToCopyTo == null)
+            {
+                return;
+            }
+
             // Empty private bin of assemblies
             var files = new DirectoryInfo(directoryToCopyTo).GetFiles();
 

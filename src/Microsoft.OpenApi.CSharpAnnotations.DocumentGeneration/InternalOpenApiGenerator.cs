@@ -85,7 +85,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             ExceptionType = e.GetType().Name,
                             Message = e.Message
                         }
-                    );
+                   );
                 }
             }
 
@@ -132,7 +132,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     ExceptionType = e.GetType().Name,
                                     Message = e.Message
                                 }
-                            );
+                           );
                         }
                     }
 
@@ -161,7 +161,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                         ExceptionType = e.GetType().Name,
                                         Message = e.Message
                                     }
-                                );
+                               );
                             }
                         }
                     }
@@ -281,14 +281,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     generationDiagnostic = new GenerationDiagnostic();
                     var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
 
-                    if ( documentVariantElementNames?.Count > 1 )
+                    if (documentVariantElementNames?.Count > 1)
                     {
-                        documentGenerationDiagnostic.Errors.Add( new GenerationError
+                        documentGenerationDiagnostic.Errors.Add(new GenerationError
                         {
                             Message = string.Format(
                                 SpecificationGenerationMessages.MoreThanOneVariantNameNotAllowed,
                                 documentVariantElementNames.First())
-                        } );
+                        });
                     }
 
                     var typeFetcher = new TypeFetcher(filePreparer.CopyFileToPrivateBin(contractAssemblyPaths));
@@ -298,9 +298,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         operationElements,
                         operationConfigElement,
                         documentVariantElementNames.FirstOrDefault(),
-                        out var documents );
+                        out var documents);
 
-                    foreach ( var operationGenerationDiagnostic in operationGenerationDiagnostics)
+                    foreach (var operationGenerationDiagnostic in operationGenerationDiagnostics)
                     {
                         generationDiagnostic.OperationGenerationDiagnostics.Add(
                             new OperationGenerationDiagnostic(operationGenerationDiagnostic));
@@ -321,7 +321,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     {
                                         TypeFetcher = typeFetcher,
                                         OpenApiDocumentVersion = openApiDocumentVersion
-                                    } );
+                                    });
                             }
                             catch (Exception e)
                             {
@@ -330,7 +330,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     {
                                         ExceptionType = e.GetType().Name,
                                         Message = e.Message
-                                    } );
+                                    });
                             }
                         }
 
@@ -341,7 +341,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                 new PostProcessingDocumentFilterSettings()
                                 {
                                     OperationGenerationDiagnostics = operationGenerationDiagnostics
-                                } );
+                                });
                         }
                     }
 
@@ -364,13 +364,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     {
                                         ExceptionType = e.GetType().Name,
                                         Message = e.Message
-                                    } );
+                                    });
                             }
                         }
                     }
 
                     var failedOperations = generationDiagnostic.OperationGenerationDiagnostics
-                        .Where( i => i.Errors.Count > 0 );
+                        .Where(i => i.Errors.Count > 0);
 
                     if (failedOperations.Any())
                     {
