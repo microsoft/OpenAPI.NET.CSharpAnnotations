@@ -19,54 +19,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     public class TypeFetcher
     {
-        private readonly List<string> _contractAssemblyPaths = new List<string>();
+        private readonly IList<string> _contractAssemblyPaths = new List<string>();
 
         /// <summary>
         /// Creates new instance of <see cref="TypeFetcher"/>.
         /// </summary>
         /// <param name="contractAssemblyPaths">The list of contract assembly paths.</param>
-        public TypeFetcher(IEnumerable<string> contractAssemblyPaths)
+        public TypeFetcher(IList<string> contractAssemblyPaths)
         {
-            foreach (var contractAssemblyPath in contractAssemblyPaths)
-            {
-                if (string.IsNullOrEmpty(contractAssemblyPath) || !File.Exists(contractAssemblyPath.Trim()))
-                {
-                    throw new ArgumentException(
-                        FormattableString.Invariant($"Path \"{contractAssemblyPath}\" does not exist"));
-                }
-
-                var newFileName = CopyFileToPrivateBin(contractAssemblyPath.Trim());
-                _contractAssemblyPaths.Add(newFileName);
-            }
-        }
-
-        /// <summary>
-        /// Copies the given assembly to the private bin directory.
-        /// </summary>
-        /// <param name="assemblyPath">The assembly to copy.</param>
-        /// <returns>The new assembly path.</returns>
-        private static string CopyFileToPrivateBin(string assemblyPath)
-        {
-            var domain = AppDomain.CurrentDomain;
-
-            assemblyPath = assemblyPath.Trim();
-            var fullPath = Path.GetFullPath(assemblyPath);
-
-            // The privateBinPath is a ; seperated list of paths located in the base path of the 
-            // application where the CLR will attempt to locate assemblies during the load process.
-            // Here we add the location where we will copy dlls to.
-            var privateBinPath = string.IsNullOrWhiteSpace(domain.SetupInformation.PrivateBinPath) ? "DefaultGenerationBin"
-                : domain.SetupInformation.PrivateBinPath + ";DefaultGenerationBin";
-
-            var binPath = Path.Combine(domain.BaseDirectory, privateBinPath);
-            Directory.CreateDirectory(binPath);
-
-            var newFilePath = Path.Combine(binPath, Path.GetFileName(assemblyPath));
-
-            // Manually copy file to location where CLR will be able to locate it.
-            File.Copy(fullPath, newFilePath, overwrite: true);
-            
-            return newFilePath;
+            _contractAssemblyPaths = contractAssemblyPaths;
         }
 
         private Type CreateListType(string typeName)

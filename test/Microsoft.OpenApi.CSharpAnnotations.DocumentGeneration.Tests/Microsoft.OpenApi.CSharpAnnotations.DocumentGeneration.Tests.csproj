@@ -140,9 +140,6 @@
     <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationRequestMissingSeeTag.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationResponseMissingDescription.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="OpenApiDocumentGeneratorTests\Input\AnnotationSummaryWithTags.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -366,9 +363,6 @@
     <Content Include="OpenApiDocumentGeneratorTests\Output\AnnotationTypeNotFound.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="OpenApiDocumentGeneratorTests\Output\AnnotationResponseMissingDescription.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="OpenApiDocumentGeneratorTests\Output\AnnotationWithNoResponseBody.Json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

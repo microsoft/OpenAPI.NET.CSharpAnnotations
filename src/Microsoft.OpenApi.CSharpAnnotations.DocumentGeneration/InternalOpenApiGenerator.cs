@@ -85,7 +85,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             ExceptionType = e.GetType().Name,
                             Message = e.Message
                         }
-                    );
+                   );
                 }
             }
 
@@ -132,7 +132,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     ExceptionType = e.GetType().Name,
                                     Message = e.Message
                                 }
-                            );
+                           );
                         }
                     }
 
@@ -161,7 +161,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                         ExceptionType = e.GetType().Name,
                                         Message = e.Message
                                     }
-                                );
+                               );
                             }
                         }
                     }
@@ -276,117 +276,120 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             try
             {
-                generationDiagnostic = new GenerationDiagnostic();
-                var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
-
-                if (documentVariantElementNames?.Count > 1)
+                using (var filePreparer = new FilePreparer())
                 {
-                    documentGenerationDiagnostic.Errors.Add(new GenerationError
+                    generationDiagnostic = new GenerationDiagnostic();
+                    var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
+
+                    if (documentVariantElementNames?.Count > 1)
                     {
-                        Message = string.Format(
-                            SpecificationGenerationMessages.MoreThanOneVariantNameNotAllowed,
-                            documentVariantElementNames.First())
-                    });
-                }
-
-                var typeFetcher = new TypeFetcher(contractAssemblyPaths);
-
-                var operationGenerationDiagnostics = GenerateSpecificationDocuments(
-                    typeFetcher,
-                    operationElements,
-                    operationConfigElement,
-                    documentVariantElementNames.FirstOrDefault(),
-                    out var documents);
-
-                foreach (var operationGenerationDiagnostic in operationGenerationDiagnostics)
-                {
-                    generationDiagnostic.OperationGenerationDiagnostics.Add(
-                        new OperationGenerationDiagnostic(operationGenerationDiagnostic));
-                }
-
-                foreach (var variantInfoDocumentValuePair in documents)
-                {
-                    var openApiDocument = variantInfoDocumentValuePair.Value;
-
-                    foreach (var documentFilter in _documentFilters)
-                    {
-                        try
+                        documentGenerationDiagnostic.Errors.Add(new GenerationError
                         {
-                            documentFilter.Apply(
-                                openApiDocument,
-                                annotationXmlDocuments,
-                                new DocumentFilterSettings
-                                {
-                                    TypeFetcher = typeFetcher,
-                                    OpenApiDocumentVersion = openApiDocumentVersion
-                                });
+                            Message = string.Format(
+                                SpecificationGenerationMessages.MoreThanOneVariantNameNotAllowed,
+                                documentVariantElementNames.First())
+                        });
+                    }
+
+                    var typeFetcher = new TypeFetcher(filePreparer.CopyFileToPrivateBin(contractAssemblyPaths));
+
+                    var operationGenerationDiagnostics = GenerateSpecificationDocuments(
+                        typeFetcher,
+                        operationElements,
+                        operationConfigElement,
+                        documentVariantElementNames.FirstOrDefault(),
+                        out var documents);
+
+                    foreach (var operationGenerationDiagnostic in operationGenerationDiagnostics)
+                    {
+                        generationDiagnostic.OperationGenerationDiagnostics.Add(
+                            new OperationGenerationDiagnostic(operationGenerationDiagnostic));
+                    }
+
+                    foreach (var variantInfoDocumentValuePair in documents)
+                    {
+                        var openApiDocument = variantInfoDocumentValuePair.Value;
+
+                        foreach (var documentFilter in _documentFilters)
+                        {
+                            try
+                            {
+                                documentFilter.Apply(
+                                    openApiDocument,
+                                    annotationXmlDocuments,
+                                    new DocumentFilterSettings
+                                    {
+                                        TypeFetcher = typeFetcher,
+                                        OpenApiDocumentVersion = openApiDocumentVersion
+                                    });
+                            }
+                            catch (Exception e)
+                            {
+                                documentGenerationDiagnostic.Errors.Add(
+                                    new GenerationError
+                                    {
+                                        ExceptionType = e.GetType().Name,
+                                        Message = e.Message
+                                    });
+                            }
                         }
-                        catch (Exception e)
+
+                        foreach (var filter in _postProcessingDocumentFilters)
                         {
-                            documentGenerationDiagnostic.Errors.Add(
-                                new GenerationError
+                            filter.Apply(
+                                openApiDocument,
+                                new PostProcessingDocumentFilterSettings()
                                 {
-                                    ExceptionType = e.GetType().Name,
-                                    Message = e.Message
+                                    OperationGenerationDiagnostics = operationGenerationDiagnostics
                                 });
                         }
                     }
 
-                    foreach (var filter in _postProcessingDocumentFilters)
+                    if (documentConfigElement != null)
                     {
-                        filter.Apply(
-                            openApiDocument,
-                            new PostProcessingDocumentFilterSettings()
+                        foreach (var documentConfigFilter in _documentConfigFilters)
+                        {
+                            try
                             {
-                                OperationGenerationDiagnostics = operationGenerationDiagnostics
+                                documentConfigFilter.Apply(
+                                    documents,
+                                    documentConfigElement,
+                                    annotationXmlDocuments,
+                                    new DocumentConfigFilterSettings());
+                            }
+                            catch (Exception e)
+                            {
+                                documentGenerationDiagnostic.Errors.Add(
+                                    new GenerationError
+                                    {
+                                        ExceptionType = e.GetType().Name,
+                                        Message = e.Message
+                                    });
+                            }
+                        }
+                    }
+
+                    var failedOperations = generationDiagnostic.OperationGenerationDiagnostics
+                        .Where(i => i.Errors.Count > 0);
+
+                    if (failedOperations.Any())
+                    {
+                        var totalOperationsCount = generationDiagnostic.OperationGenerationDiagnostics.Count();
+
+                        var exception = new UnableToGenerateAllOperationsException(
+                            totalOperationsCount - failedOperations.Count(), totalOperationsCount);
+
+                        documentGenerationDiagnostic.Errors.Add(
+                            new GenerationError
+                            {
+                                ExceptionType = exception.GetType().Name,
+                                Message = exception.Message
                             });
                     }
+
+                    generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
+                    return documents;
                 }
-
-                if (documentConfigElement != null)
-                {
-                    foreach (var documentConfigFilter in _documentConfigFilters)
-                    {
-                        try
-                        {
-                            documentConfigFilter.Apply(
-                                documents,
-                                documentConfigElement,
-                                annotationXmlDocuments,
-                                new DocumentConfigFilterSettings());
-                        }
-                        catch (Exception e)
-                        {
-                            documentGenerationDiagnostic.Errors.Add(
-                                new GenerationError
-                                {
-                                    ExceptionType = e.GetType().Name,
-                                    Message = e.Message
-                                });
-                        }
-                    }
-                }
-
-                var failedOperations = generationDiagnostic.OperationGenerationDiagnostics
-                    .Where(i => i.Errors.Count > 0);
-
-                if (failedOperations.Any())
-                {
-                    var totalOperationsCount = generationDiagnostic.OperationGenerationDiagnostics.Count();
-
-                    var exception = new UnableToGenerateAllOperationsException(
-                        totalOperationsCount - failedOperations.Count(), totalOperationsCount);
-
-                    documentGenerationDiagnostic.Errors.Add(
-                        new GenerationError
-                        {
-                            ExceptionType = exception.GetType().Name,
-                            Message = exception.Message
-                        });
-                }
-
-                generationDiagnostic.DocumentGenerationDiagnostic = documentGenerationDiagnostic;
-                return documents;
             }
             catch (Exception e)
             {
