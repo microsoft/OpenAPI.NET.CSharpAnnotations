@@ -8,7 +8,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// <summary>
     /// Holds the specification generation messages.
     /// </summary>
-    internal static class SpecificationGenerationMessages
+    public static class SpecificationGenerationMessages
     {
         public const string AddingSchemaReferenceFailed =
             "Adding schema \"{0}\" to the schema reference registry failed with the error: {1}.";
@@ -61,9 +61,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string UndocumentedPathParameter = "Path paramater: {0} is undocumented in {1}";
 
-        public const string UnableToGenerateAllOperations = "Generated {0}/{1} documented operations successfully. "
-            + "Please refer to the GenerationDiagnostic.OperationGenerationDiagnostics for details on the errors "
-            + "causing generation to fail for some operations.";
+        public const string UnableToGenerateAllOperations = "Generated {0}/{1} documented operations successfully. ";
 
         public const string UnexpectedError = "Unexpected error occurred during generation: {0}";
 
