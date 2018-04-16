@@ -29,14 +29,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             var newFilePaths = new List<string>();
             var domain = AppDomain.CurrentDomain;
 
-            // The privateBinPath is a ; seperated list of paths located in the base path of the 
-            // application where the CLR will attempt to locate assemblies during the load process.
-            // Here we add the location where we will copy dlls to.
-            var privateBinPath = string.IsNullOrWhiteSpace(domain.SetupInformation.PrivateBinPath)
-                ? "DefaultGenerationBin"
-                : domain.SetupInformation.PrivateBinPath + ";DefaultGenerationBin";
-
-            directoryToCopyTo = Path.Combine(domain.BaseDirectory, privateBinPath);
+            directoryToCopyTo = Path.Combine(domain.BaseDirectory, "DefaultGenerationBin");
             Directory.CreateDirectory(directoryToCopyTo);
 
             foreach (string filePath in filePaths)

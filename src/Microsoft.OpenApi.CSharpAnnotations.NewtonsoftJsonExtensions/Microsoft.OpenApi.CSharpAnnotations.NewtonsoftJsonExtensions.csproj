@@ -52,14 +52,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.csproj">
       <Project>{14d2c330-aaa0-4813-960f-bd3d46d6ce1d}</Project>
       <Name>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.nuspec" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
