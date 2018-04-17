@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net46;net461</TargetFrameworks>
-        <Authors></Authors>
+        <Authors>Microsoft</Authors>
         <Company>Microsoft</Company>
         <Product>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests</Product>
         <PackageId>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests</PackageId>
         <Description>Tests for Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</Description>
         <AssemblyName>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests</AssemblyName>
         <RootNamespace>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests</RootNamespace>
+		<Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
         <SignAssembly>false</SignAssembly>
         <OutputType>Library</OutputType>
     </PropertyGroup>

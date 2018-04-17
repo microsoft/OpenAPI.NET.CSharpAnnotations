@@ -1,65 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EFD530F4-6D30-4346-BD65-50BD1FBFD67F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</RootNamespace>
-    <AssemblyName>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.OpenApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3f5743946376f042, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.OpenApi.1.0.0-beta016\lib\net46\Microsoft.OpenApi.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="NewtonsoftJsonPropertyAttributeFilter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.nuspec" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.csproj">
-      <Project>{14d2c330-aaa0-4813-960f-bd3d46d6ce1d}</Project>
-      <Name>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFrameworks>net46; netstandard2.0</TargetFrameworks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageProjectUrl>https://github.com/Microsoft/OpenAPI.NET.CSharpComment</PackageProjectUrl>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/Microsoft/OpenAPI.NET.CSharpComment/master/LICENSE</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Authors>Microsoft</Authors>
+        <Company>Microsoft</Company>
+        <Title>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</Title>
+        <PackageId>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</PackageId>
+        <Version>1.0.0-beta03</Version>
+        <Description>Extension that provides the newtonsoft json filter that fetches newtonsoft json property attribute and updates OpenAPI specification.</Description>
+        <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+        <PackageTags>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</PackageTags>
+        
+        <AssemblyName>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</AssemblyName>
+        <RootNamespace>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</RootNamespace>
+        <SignAssembly>false</SignAssembly>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.csproj" />
+    </ItemGroup>
 </Project>

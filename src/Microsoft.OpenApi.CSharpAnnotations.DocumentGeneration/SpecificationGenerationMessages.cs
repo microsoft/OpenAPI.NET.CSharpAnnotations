@@ -61,7 +61,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string UndocumentedPathParameter = "Path paramater: {0} is undocumented in {1}";
 
-        public const string UnableToGenerateAllOperations = "Generated {0}/{1} documented operations successfully. ";
+        public const string UnableToGenerateAllOperations = "Generated {0}/{1} documented operations successfully.";
 
         public const string UnexpectedError = "Unexpected error occurred during generation: {0}";
 
