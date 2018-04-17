@@ -12,7 +12,7 @@
 This component is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. The module is designed to convert your native annotation XML from your API code into a OpenAPI document object. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
 
 ### Annotations (C# Comments)
-We've made an effort to develop an annotation model that maps very closely to the native .Net comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your annotation XML and generate your OpenAPI.NET document.
+We've made an effort to develop an annotation model that maps very closely to the native .NET comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your annotation XML and generate your OpenAPI.NET document.
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
 Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
@@ -31,13 +31,13 @@ After you've correctly annotated your C# code, you'll need to build your solutio
 Here's a simple exampled of how you'd use this component. The utility takes in two lists. The first shown below is the paths to your post-MSbuild.exe xml documentation files. The second being the paths to any DLL's that have classes that you reference in those XML comments.
 
 For example, if you have an annotation for a response type as follows:
-```
+```csharp
 /// <response code="200"><see cref="SampleObject1"/>Sample object retrieved</response>
 ```
 You'd need to include the path to the .dll that contains the SampleObject1 class. 
 
 Generating your OAI document should look something like this:
-```
+```csharp
 var input = new OpenApiGeneratorConfig(
     annotationXmlDocuments: new List<XDocument>()
     {
