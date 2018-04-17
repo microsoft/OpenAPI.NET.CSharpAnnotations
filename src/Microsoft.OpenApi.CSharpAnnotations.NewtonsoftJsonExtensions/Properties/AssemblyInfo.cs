@@ -5,4 +5,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo( "Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.Tests")]
