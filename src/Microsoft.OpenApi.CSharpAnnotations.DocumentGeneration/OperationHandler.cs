@@ -5,9 +5,9 @@
 
 using System;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -103,7 +103,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             try
             {
-                url = HttpUtility.UrlDecode(new Uri(url).AbsolutePath);
+                url = WebUtility.UrlDecode(new Uri(url).AbsolutePath);
             }
             catch (UriFormatException)
             {
