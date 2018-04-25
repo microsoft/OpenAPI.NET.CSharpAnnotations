@@ -27,8 +27,4 @@
       <PackageReference Include="Microsoft.OpenApi" Version="1.0.0-beta016" />
       <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.0.0-beta016" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="System.Web" />
-    </ItemGroup>
 </Project>

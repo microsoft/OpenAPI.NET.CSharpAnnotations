@@ -4,8 +4,8 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Net;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 {
@@ -117,7 +117,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// <returns>The absolute path inside the URL.</returns>
         public static string UrlStringToAbsolutePath(this string value)
         {
-            return HttpUtility.UrlDecode(new Uri(value).AbsolutePath);
+            return WebUtility.UrlDecode(new Uri(value).AbsolutePath);
         }
     }
 }
