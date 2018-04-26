@@ -10,22 +10,23 @@
         <Company>Microsoft</Company>
         <Title>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</Title>
         <PackageId>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</PackageId>
-        <Version>1.0.0-beta03</Version>
+        <Version>1.0.0-beta04</Version>
         <Description>Extension that provides the newtonsoft json filter that fetches newtonsoft json property attribute and updates OpenAPI specification.</Description>
         <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
         <PackageTags>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</PackageTags>
         
         <AssemblyName>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</AssemblyName>
         <RootNamespace>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</RootNamespace>
-        <SignAssembly>false</SignAssembly>
+        <SignAssembly>true</SignAssembly>
     </PropertyGroup>
 
     <PropertyGroup>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.xml</DocumentationFile>
+        <AssemblyOriginatorKeyFile>..\Microsoft.OpenApi.CSharpAnnotations.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="4.0.8" />
+      <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
     </ItemGroup>
 
     <ItemGroup>

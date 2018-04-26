@@ -10,18 +10,19 @@
         <Company>Microsoft</Company>
         <Title>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</Title>
         <PackageId>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</PackageId>
-        <Version>1.0.0-beta026</Version>
+        <Version>1.0.0-beta027</Version>
         <Description>Library that translates Visual Studio C# Annotations into .NET objects representing OpenAPI specification.</Description>
         <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
         <PackageTags>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</PackageTags>
         
         <AssemblyName>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</AssemblyName>
         <RootNamespace>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</RootNamespace>
-        <SignAssembly>false</SignAssembly>
+        <SignAssembly>true</SignAssembly>
     </PropertyGroup>
 
     <PropertyGroup>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.xml</DocumentationFile>
+        <AssemblyOriginatorKeyFile>..\Microsoft.OpenApi.CSharpAnnotations.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
