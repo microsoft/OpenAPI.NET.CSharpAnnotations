@@ -9,8 +9,9 @@
         <AssemblyName>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.Tests</AssemblyName>
         <RootNamespace>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions.Tests</RootNamespace>
 		<Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
-        <SignAssembly>false</SignAssembly>
+        <SignAssembly>true</SignAssembly>
         <OutputType>Library</OutputType>
+        <AssemblyOriginatorKeyFile>..\..\src\Microsoft.OpenApi.CSharpAnnotations.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>

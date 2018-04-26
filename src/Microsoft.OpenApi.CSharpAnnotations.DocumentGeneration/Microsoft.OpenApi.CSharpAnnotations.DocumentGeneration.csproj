@@ -16,11 +16,12 @@
         
         <AssemblyName>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</AssemblyName>
         <RootNamespace>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</RootNamespace>
-        <SignAssembly>false</SignAssembly>
+        <SignAssembly>true</SignAssembly>
     </PropertyGroup>
 
     <PropertyGroup>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.xml</DocumentationFile>
+        <AssemblyOriginatorKeyFile>..\Microsoft.OpenApi.CSharpAnnotations.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>
 
     <ItemGroup>
