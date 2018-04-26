@@ -64,6 +64,13 @@ IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments =   generator.
 ```
 In this example the generated should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll's you included.
 
+### Optional Advance Configuration
+
+Document generator also allows you to provide an optional advance configuration as input in "OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"
+which enables you to specify annotations that logically apply to either the entire document or to certain set of operations. The configuration XML is handcrafted (NOT generated from Visual Studio build).
+
+Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki/configuration-XML-annotation-guide) for specific guidance and examples on how to draft this XML.
+
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
