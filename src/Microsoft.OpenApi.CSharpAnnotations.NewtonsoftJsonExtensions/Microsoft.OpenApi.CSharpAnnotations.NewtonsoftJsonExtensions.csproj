@@ -9,7 +9,7 @@
         <Company>Microsoft</Company>
         <Title>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</Title>
         <PackageId>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</PackageId>
-        <Version>1.0.0-beta03</Version>
+        <Version>1.0.0-beta04</Version>
         <Description>Extension that provides the newtonsoft json filter that fetches newtonsoft json property attribute and updates OpenAPI specification.</Description>
         <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
         <PackageTags>Microsoft.OpenApi.CSharpAnnotations.NewtonsoftJsonExtensions</PackageTags>
