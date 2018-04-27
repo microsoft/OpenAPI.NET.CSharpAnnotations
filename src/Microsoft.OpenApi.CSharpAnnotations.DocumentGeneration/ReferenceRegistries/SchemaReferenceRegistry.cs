@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -115,13 +116,48 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                 // We can also assume that the schema is an object type at this point.
                 References[key] = schema;
 
-                foreach (var propertyInfo in input.GetProperties())
+                foreach ( var propertyInfo in input.GetProperties() )
                 {
                     var propertyName = propertyInfo.Name;
-                    var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
+                    var innerSchema = FindOrAddReference( propertyInfo.PropertyType );
 
                     // Check if the property is read-only.
                     innerSchema.ReadOnly = !propertyInfo.CanWrite;
+
+                    var attributes = propertyInfo.GetCustomAttributes( false );
+
+                    foreach (var attribute in attributes)
+                    {
+                        if (attribute.GetType().FullName == "Newtonsoft.Json.JsonPropertyAttribute")
+                        {
+                            Type type = attribute.GetType();
+                            PropertyInfo propertyNameInfo = type.GetProperty("PropertyName");
+
+                            if (propertyNameInfo != null)
+                            {
+                                var jsonPropertyName = (string)propertyNameInfo.GetValue(attribute, null);
+
+                                if(!string.IsNullOrWhiteSpace(jsonPropertyName))
+                                {
+                                    propertyName = jsonPropertyName;
+                                }
+                            }
+
+                            PropertyInfo requiredPropertInfo = type.GetProperty("Required");
+
+                            if (requiredPropertInfo != null)
+                            {
+                                var requiredValue = Enum.GetName(
+                                    requiredPropertInfo.PropertyType,
+                                    requiredPropertInfo.GetValue(attribute, null));
+
+                                if (requiredValue == "Always" )
+                                {
+                                    schema.Required.Add(propertyName);
+                                }
+                            }
+                        }
+                    }
 
                     schema.Properties[propertyName] = innerSchema;
                 }

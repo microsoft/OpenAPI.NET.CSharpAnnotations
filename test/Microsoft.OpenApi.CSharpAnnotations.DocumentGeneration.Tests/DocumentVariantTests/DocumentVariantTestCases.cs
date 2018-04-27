@@ -4,8 +4,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentVariantTests
 {
@@ -69,18 +69,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                                 SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
                                 "swagger",
                                 "Group1",
-                                JsonConvert.SerializeObject(
-                                    new Dictionary<string, string>
+                                new Dictionary<string, string>
                                     {
                                         ["security"] = "sg1",
                                         ["version"] = "V2"
-                                    }),
-                                JsonConvert.SerializeObject(
-                                    new Dictionary<string, string>
+                                    }.ToSerializedString(),
+                                new Dictionary<string, string>
                                     {
                                         ["security"] = "sg1",
                                         ["version"] = "VConflict"
-                                    })),
+                                    }.ToSerializedString()),
                         }
                     }
                 }
@@ -147,18 +145,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                                 SpecificationGenerationMessages.ConflictingDocumentVariantAttributes,
                                 "swagger",
                                 "Group1",
-                                JsonConvert.SerializeObject(
-                                    new Dictionary<string, string>
-                                    {
-                                        ["security"] = "sg1",
-                                        ["version"] = "V2"
-                                    }),
-                                JsonConvert.SerializeObject(
-                                    new Dictionary<string, string>
-                                    {
-                                        ["security"] = "sg1",
-                                        ["version"] = "VConflict"
-                                    })),
+                                new Dictionary<string, string>
+                                {
+                                    ["security"] = "sg1",
+                                    ["version"] = "V2"
+                                }.ToSerializedString(),
+                               new Dictionary<string, string>
+                               {
+                                    ["security"] = "sg1",
+                                    ["version"] = "VConflict"
+                               }.ToSerializedString()),
                         }
                     }
                 }

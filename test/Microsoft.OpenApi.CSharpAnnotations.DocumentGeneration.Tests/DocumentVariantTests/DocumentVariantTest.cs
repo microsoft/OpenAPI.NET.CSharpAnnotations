@@ -10,7 +10,6 @@ using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
-using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -60,12 +59,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
             // Act
             var openApiDocuments = generator.GenerateDocuments(input, out result);
 
-            // Assert
-            _output.WriteLine(
-                JsonConvert.SerializeObject(
-                    openApiDocuments.ToSerializedOpenApiDocuments(),
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
-
             result.Should().NotBeNull();
 
             // All operation generations should succeed.
@@ -92,7 +85,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
 
                 var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
 
-                _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);
 
                 var openApiStringReader = new OpenApiStringReader();
@@ -150,12 +142,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
             // Act
             var openApiDocuments = generator.GenerateDocuments(input, out result);
 
-            // Assert
-            _output.WriteLine(
-                JsonConvert.SerializeObject(
-                    openApiDocuments.ToSerializedOpenApiDocuments(),
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
-
             result.Should().NotBeNull();
             result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
             result.OperationGenerationDiagnostics.Count(r => r.Errors.Count == 0)
@@ -178,7 +164,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
 
                 var actualDocumentAsString = specificationDocument.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
 
-                _output.WriteLine(JsonConvert.SerializeObject(documentVariantInfo));
                 _output.WriteLine(actualDocumentAsString);
 
                 var openApiStringReader = new OpenApiStringReader();

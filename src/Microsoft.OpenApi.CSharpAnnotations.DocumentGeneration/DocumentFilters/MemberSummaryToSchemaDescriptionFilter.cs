@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -86,6 +87,34 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
 
                 var propertyName =
                     splitPropertyName[splitPropertyName.Length - 1];
+
+                var propertyInfo = settings.TypeFetcher.LoadType( className )
+                        ?.GetProperties()
+                        .FirstOrDefault( p => p.Name == propertyName );
+
+                if (propertyInfo != null)
+                {
+                    var attributes = propertyInfo.GetCustomAttributes(false);
+
+                    foreach (var attribute in attributes)
+                    {
+                        if (attribute.GetType().FullName == "Newtonsoft.Json.JsonPropertyAttribute")
+                        {
+                            Type type = attribute.GetType();
+                            PropertyInfo propertyNameInfo = type.GetProperty( "PropertyName" );
+
+                            if (propertyNameInfo != null)
+                            {
+                                var jsonPropertyName = (string)propertyNameInfo.GetValue(attribute, null);
+
+                                if(!string.IsNullOrWhiteSpace(jsonPropertyName))
+                                {
+                                    propertyName = jsonPropertyName;
+                                }
+                            }
+                        }
+                    }
+                }
 
                 foreach (var schema in schemas)
                 {
