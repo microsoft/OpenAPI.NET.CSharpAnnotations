@@ -16,6 +16,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
         public static readonly OpenApiSchema schema = new OpenApiSchema
         {
             Type = "object",
+            Required = new List<string>()
+            {
+                "samplePropertyReadonlyObject",
+                "samplePropertyStringRequired"
+            },
             Properties = new Dictionary<string, OpenApiSchema>
             {
                 ["SamplePropertyDictionaryStringObject"] = new OpenApiSchema
@@ -135,7 +140,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                         Id = typeof(SampleInnerType).ToString().SanitizeClassName()
                     }
                 },
-                ["SamplePropertyReadonlyObject"] = new OpenApiSchema()
+                ["samplePropertyReadonlyObject"] = new OpenApiSchema()
                 {
                     Reference = new OpenApiReference()
                     {
@@ -144,11 +149,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     },
                     ReadOnly = true
                 },
-                ["SamplePropertyStringNotRequired"] = new OpenApiSchema()
+                ["samplePropertyStringNotRequired"] = new OpenApiSchema()
                 {
                     Type = "string"
                 },
-                ["SamplePropertyStringRequired"] = new OpenApiSchema()
+                ["samplePropertyStringRequired"] = new OpenApiSchema()
                 {
                     Type = "string"
                 }
