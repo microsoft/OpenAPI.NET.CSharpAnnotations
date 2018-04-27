@@ -67,7 +67,7 @@ In this example the generated should contain a valid OpenAPI.NET document for yo
 ### Optional Advance Configuration
 
 Document generator also allows you to provide an optional advance configuration as input in "OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"
-which enables
+which enables:
 
 - Specifying annotations that logically apply to either the entire document or to certain set of operations.
 - Generate multiple documents based on the variant information provided.
