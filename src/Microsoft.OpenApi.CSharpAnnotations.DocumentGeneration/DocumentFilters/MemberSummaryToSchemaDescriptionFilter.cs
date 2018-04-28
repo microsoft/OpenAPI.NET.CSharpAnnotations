@@ -88,9 +88,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
                 var propertyName =
                     splitPropertyName[splitPropertyName.Length - 1];
 
-                var propertyInfo = settings.TypeFetcher.LoadType( className )
+                var propertyInfo = settings.TypeFetcher.LoadType(className)
                         ?.GetProperties()
-                        .FirstOrDefault( p => p.Name == propertyName );
+                        .FirstOrDefault(p => p.Name == propertyName);
 
                 if (propertyInfo != null)
                 {
@@ -101,7 +101,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
                         if (attribute.GetType().FullName == "Newtonsoft.Json.JsonPropertyAttribute")
                         {
                             Type type = attribute.GetType();
-                            PropertyInfo propertyNameInfo = type.GetProperty( "PropertyName" );
+                            PropertyInfo propertyNameInfo = type.GetProperty("PropertyName");
 
                             if (propertyNameInfo != null)
                             {

@@ -116,15 +116,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                 // We can also assume that the schema is an object type at this point.
                 References[key] = schema;
 
-                foreach ( var propertyInfo in input.GetProperties() )
+                foreach (var propertyInfo in input.GetProperties())
                 {
                     var propertyName = propertyInfo.Name;
-                    var innerSchema = FindOrAddReference( propertyInfo.PropertyType );
+                    var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
 
                     // Check if the property is read-only.
                     innerSchema.ReadOnly = !propertyInfo.CanWrite;
 
-                    var attributes = propertyInfo.GetCustomAttributes( false );
+                    var attributes = propertyInfo.GetCustomAttributes(false);
 
                     foreach (var attribute in attributes)
                     {
@@ -143,15 +143,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                                 }
                             }
 
-                            PropertyInfo requiredPropertInfo = type.GetProperty("Required");
+                            PropertyInfo requiredPropertyInfo = type.GetProperty("Required");
 
-                            if (requiredPropertInfo != null)
+                            if (requiredPropertyInfo != null)
                             {
                                 var requiredValue = Enum.GetName(
-                                    requiredPropertInfo.PropertyType,
-                                    requiredPropertInfo.GetValue(attribute, null));
+                                    requiredPropertyInfo.PropertyType,
+                                    requiredPropertyInfo.GetValue(attribute, null));
 
-                                if (requiredValue == "Always" )
+                                if (requiredValue == "Always")
                                 {
                                     schema.Required.Add(propertyName);
                                 }
