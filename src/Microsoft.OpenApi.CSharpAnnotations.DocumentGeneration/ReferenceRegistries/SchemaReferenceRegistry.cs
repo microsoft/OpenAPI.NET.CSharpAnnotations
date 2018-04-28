@@ -175,6 +175,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
             }
             catch (Exception e)
             {
+                // Something went wrong while fetching schema, so remove the key if exists from references.
+                if(References.ContainsKey(key))
+                {
+                    References.Remove(key);
+                }
+
                 throw new AddingSchemaReferenceFailedException(key, e.Message);
             }
         }
