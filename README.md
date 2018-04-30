@@ -102,6 +102,8 @@ IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments =   generator.
 ```
 In this example the generated should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll's you included.
 
+_Remarks: C# Document Generator supports fetching Newtonsoft.Json "JsonProperty" Attribute, so if service contracts use Newtonsoft please include Newtonsoft.Json assembly in assembly paths._
+
 ### Optional Advance Configuration
 
 Document generator also allows you to provide an optional advance configuration as input in "OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"
