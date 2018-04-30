@@ -1,0 +1,107 @@
+﻿// ------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All rights reserved.
+//  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
+// ------------------------------------------------------------
+
+using System.Linq;
+using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
+using Microsoft.OpenApi.Models;
+
+namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOperationFilters
+{
+    /// <summary>
+    /// Converts the alternative param tags (queryParam, pathParam, header) to standard param tags.
+    /// </summary>
+    public class ConvertAlternativeParamTagsFilter : IPreProcessingOperationFilter
+    {
+        /// <summary>
+        /// Converts the alternative param tags (queryParam, pathParam, header) to standard param tags.
+        /// </summary>
+        /// <param name="paths">The paths to be updated.</param>
+        /// <param name="element">The xml element representing an operation in the annotation xml.</param>
+        /// <param name="settings">The operation filter settings.</param>
+        public void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
+        {
+            var pathParamElements = element.Elements()
+                .Where(p => p.Name == KnownXmlStrings.PathParam)
+                .ToList();
+
+            var queryParamElements = element.Elements()
+                .Where(p => p.Name == KnownXmlStrings.QueryParam)
+                .ToList();
+
+            var headerParamElements = element.Elements()
+                .Where(p => p.Name == KnownXmlStrings.Header)
+                .ToList();
+
+            var requestTypeElements = element.Elements()
+                .Where(p => p.Name == KnownXmlStrings.RequestType)
+                .ToList();
+
+            var paramElements = element.Elements().Where(i => i.Name == KnownXmlStrings.Param);
+
+            if (pathParamElements.Any())
+            {
+                foreach (var pathParamElement in pathParamElements)
+                {
+                    var conflictingPathParam = paramElements.Where(
+                        i => i.Attribute("name")?.Value == pathParamElement.Attribute("name")?.Value);
+
+                    // Remove param tag that have same name as pathParam tag
+                    // e.g. if service is documented like below, it will remove the param tag
+                    //
+                    // <param name="samplePathParam">Sample path param</param>
+                    // <pathParam name="samplePathParam" in="path">Sample path param</pathParam>
+                    conflictingPathParam?.Remove();
+
+                    pathParamElement.Name = KnownXmlStrings.Param;
+                    pathParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Path));
+                }
+            }
+
+            if (queryParamElements.Any())
+            {
+                foreach (var queryParamElement in queryParamElements)
+                {
+                    var conflictingQueryParam = paramElements.Where(
+                        i => i.Attribute("name")?.Value == queryParamElement.Attribute("name")?.Value);
+
+                    // Remove param tag that have same name as queryParam tag
+                    // e.g. if service is documented like below, it will remove the param tag
+                    //
+                    // <param name="sampleQueryParam">Sample query param</param>
+                    // <queryParam name="sampleQueryParam" in="path">Sample query param</queryParam>
+                    conflictingQueryParam?.Remove();
+
+                    queryParamElement.Name = KnownXmlStrings.Param;
+                    queryParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Query));
+                }
+            }
+
+            if (requestTypeElements.Any())
+            {
+                var paramTagToRemove = element.Elements()
+                    .Where(i => i.Name == KnownXmlStrings.Param
+                    && string.IsNullOrWhiteSpace(i.Attribute("in")?.Value));
+
+                // If there are still conflicting param tag remaining, then its safe to assume that its neither a path
+                // nor a query param and it could be documented request param which is not intended to be used with C#
+                // document generator so remove the tag.
+                paramTagToRemove?.Remove();
+
+                foreach (var requestTypeElement in requestTypeElements)
+                {
+                    requestTypeElement.Name = KnownXmlStrings.Param;
+                    requestTypeElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Body));
+                }
+            }
+
+            foreach (var headerParamElement in headerParamElements)
+            {
+                headerParamElement.Name = KnownXmlStrings.Param;
+                headerParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Header));
+            }
+        }
+    }
+}
