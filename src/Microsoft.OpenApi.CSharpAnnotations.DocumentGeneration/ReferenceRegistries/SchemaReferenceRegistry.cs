@@ -149,7 +149,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                             {
                                 var requiredValue = Enum.GetName(
                                     requiredPropertyInfo.PropertyType,
-                                    requiredPropertyInfo.GetValue(obj:attribute, index:null));
+                                    requiredPropertyInfo.GetValue(attribute, index: null));
 
                                 if (requiredValue == "Always")
                                 {

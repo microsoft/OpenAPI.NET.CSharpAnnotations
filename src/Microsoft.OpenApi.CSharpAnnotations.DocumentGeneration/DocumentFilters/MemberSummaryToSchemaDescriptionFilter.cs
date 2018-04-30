@@ -107,7 +107,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
                             {
                                 var jsonPropertyName = (string)propertyNameInfo.GetValue(attribute, null);
 
-                                if(!string.IsNullOrWhiteSpace(jsonPropertyName))
+                                if (!string.IsNullOrWhiteSpace(jsonPropertyName))
                                 {
                                     propertyName = jsonPropertyName;
                                 }

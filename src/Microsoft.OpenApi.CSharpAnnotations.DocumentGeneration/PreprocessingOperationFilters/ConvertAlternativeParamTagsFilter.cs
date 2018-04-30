@@ -39,7 +39,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                 .Where(p => p.Name == KnownXmlStrings.RequestType)
                 .ToList();
 
-            // When alternate parameter tag are used for Path, Reqest body and Query paramter, assumption is made that
+            // When alternate parameter tag are used for Path, Request body and Query parameter, assumption is made that
             // user might have also used "Param" tag just to document the parameter and not use it for C# Document
             // generator, so remove param tags in that case.
             if (pathParamElements.Any() || requestTypeElements.Any() || queryParamElements.Any())
