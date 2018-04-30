@@ -137,7 +137,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                             {
                                 var jsonPropertyName = (string)propertyNameInfo.GetValue(attribute, null);
 
-                                if(!string.IsNullOrWhiteSpace(jsonPropertyName))
+                                if (!string.IsNullOrWhiteSpace(jsonPropertyName))
                                 {
                                     propertyName = jsonPropertyName;
                                 }
@@ -149,7 +149,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                             {
                                 var requiredValue = Enum.GetName(
                                     requiredPropertyInfo.PropertyType,
-                                    requiredPropertyInfo.GetValue(attribute, null));
+                                    requiredPropertyInfo.GetValue(obj:attribute, index:null));
 
                                 if (requiredValue == "Always")
                                 {
@@ -175,8 +175,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
             }
             catch (Exception e)
             {
-                // Something went wrong while fetching schema, so remove the key if exists from references.
-                if(References.ContainsKey(key))
+                // Something went wrong while fetching schema, so remove the key if exists from the references.
+                if (References.ContainsKey(key))
                 {
                     References.Remove(key);
                 }
