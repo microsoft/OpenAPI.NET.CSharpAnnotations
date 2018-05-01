@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -21,7 +20,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         /// <summary>
         /// The dictionary containing all references of the given type.
         /// </summary>
-        public override IDictionary<string, OpenApiSchema> References { get; } = new Dictionary<string, OpenApiSchema>();
+        public override IDictionary<string, OpenApiSchema> References { get; } =
+            new Dictionary<string, OpenApiSchema>();
 
         /// <summary>
         /// Finds the existing reference object based on the key from the input or creates a new one.
@@ -44,14 +44,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
             {
                 return new OpenApiSchema
                 {
-                    Reference = new OpenApiReference()
+                    Reference = new OpenApiReference
                     {
                         Id = key,
                         Type = ReferenceType.Schema
                     }
                 };
             }
-            
+
             try
             {
                 // There are multiple cases for input types that should be handled differently to match the OpenAPI spec.
@@ -110,7 +110,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                 }
 
                 schema.Type = "object";
-                
+
                 // Note this assignment is necessary to allow self-referencing type to finish
                 // without causing stack overflow.
                 // We can also assume that the schema is an object type at this point.
@@ -132,12 +132,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     {
                         if (attribute.GetType().FullName == "Newtonsoft.Json.JsonPropertyAttribute")
                         {
-                            Type type = attribute.GetType();
-                            PropertyInfo propertyNameInfo = type.GetProperty("PropertyName");
+                            var type = attribute.GetType();
+                            var propertyNameInfo = type.GetProperty("PropertyName");
 
                             if (propertyNameInfo != null)
                             {
-                                var jsonPropertyName = (string)propertyNameInfo.GetValue(attribute, null);
+                                var jsonPropertyName = (string) propertyNameInfo.GetValue(attribute, null);
 
                                 if (!string.IsNullOrWhiteSpace(jsonPropertyName))
                                 {
@@ -145,13 +145,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                                 }
                             }
 
-                            PropertyInfo requiredPropertyInfo = type.GetProperty("Required");
+                            var requiredPropertyInfo = type.GetProperty("Required");
 
                             if (requiredPropertyInfo != null)
                             {
                                 var requiredValue = Enum.GetName(
                                     requiredPropertyInfo.PropertyType,
-                                    requiredPropertyInfo.GetValue(attribute, index: null));
+                                    requiredPropertyInfo.GetValue(attribute, null));
 
                                 if (requiredValue == "Always")
                                 {
@@ -176,7 +176,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
 
                 return new OpenApiSchema
                 {
-                    Reference = new OpenApiReference()
+                    Reference = new OpenApiReference
                     {
                         Id = key,
                         Type = ReferenceType.Schema

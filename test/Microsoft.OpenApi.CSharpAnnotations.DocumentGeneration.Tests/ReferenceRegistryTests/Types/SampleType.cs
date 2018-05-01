@@ -16,7 +16,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
         public static readonly OpenApiSchema schema = new OpenApiSchema
         {
             Type = "object",
-            Required = new List<string>()
+            Required = new List<string>
             {
                 "samplePropertyReadonlyObject",
                 "samplePropertyStringRequired"
@@ -27,7 +27,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 {
                     Type = "object",
                     ReadOnly = true,
-                    AdditionalProperties = new OpenApiSchema()
+                    AdditionalProperties = new OpenApiSchema
                     {
                         Reference = new OpenApiReference
                         {
@@ -99,7 +99,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 ["SamplePropertyListEnum"] = new OpenApiSchema
                 {
                     Type = "array",
-                    Items = new OpenApiSchema()
+                    Items = new OpenApiSchema
                     {
                         Type = "string",
                         Enum = new List<IOpenApiAny>
@@ -110,12 +110,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     },
                     ReadOnly = true
                 },
-                ["SamplePropertyListObject"] = new OpenApiSchema()
+                ["SamplePropertyListObject"] = new OpenApiSchema
                 {
                     Type = "array",
-                    Items = new OpenApiSchema()
+                    Items = new OpenApiSchema
                     {
-                        Reference = new OpenApiReference()
+                        Reference = new OpenApiReference
                         {
                             Type = ReferenceType.Schema,
                             Id = typeof(SampleInnerType).ToString().SanitizeClassName()
@@ -123,37 +123,37 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     },
                     ReadOnly = true
                 },
-                ["SamplePropertyListString"] = new OpenApiSchema()
+                ["SamplePropertyListString"] = new OpenApiSchema
                 {
                     Type = "array",
-                    Items = new OpenApiSchema()
+                    Items = new OpenApiSchema
                     {
                         Type = "string"
                     },
                     ReadOnly = true
                 },
-                ["SamplePropertyObject"] = new OpenApiSchema()
+                ["SamplePropertyObject"] = new OpenApiSchema
                 {
-                    Reference = new OpenApiReference()
+                    Reference = new OpenApiReference
                     {
                         Type = ReferenceType.Schema,
                         Id = typeof(SampleInnerType).ToString().SanitizeClassName()
                     }
                 },
-                ["samplePropertyReadonlyObject"] = new OpenApiSchema()
+                ["samplePropertyReadonlyObject"] = new OpenApiSchema
                 {
-                    Reference = new OpenApiReference()
+                    Reference = new OpenApiReference
                     {
                         Type = ReferenceType.Schema,
                         Id = typeof(SampleInnerType).ToString().SanitizeClassName()
                     },
                     ReadOnly = true
                 },
-                ["samplePropertyStringNotRequired"] = new OpenApiSchema()
+                ["samplePropertyStringNotRequired"] = new OpenApiSchema
                 {
                     Type = "string"
                 },
-                ["samplePropertyStringRequired"] = new OpenApiSchema()
+                ["samplePropertyStringRequired"] = new OpenApiSchema
                 {
                     Type = "string"
                 }
@@ -173,6 +173,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
 
         public IDictionary<string, string> SamplePropertyIDictionaryStringString { get; } =
             new Dictionary<string, string>();
+
+        [JsonIgnore]
+        public SampleInnerType SamplePropertyIgnoreObject { get; } = new SampleInnerType();
 
         public IList<SampleInnerType> SamplePropertyIListObject { get; } = new List<SampleInnerType>();
 
