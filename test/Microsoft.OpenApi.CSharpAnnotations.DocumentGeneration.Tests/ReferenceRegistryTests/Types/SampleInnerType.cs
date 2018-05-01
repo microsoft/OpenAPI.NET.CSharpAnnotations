@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.ReferenceRegistryTests.Types
 {
@@ -43,6 +44,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 }
             }
         };
+
+        [JsonIgnore]
+        public string SampleIgnoredPropertyInnerString { get; set; }
 
         public SampleEnum SamplePropertyInnerEnum { get; set; }
 

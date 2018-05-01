@@ -4,9 +4,9 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.ReferenceRegistryTests.Types
 {
@@ -20,9 +20,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 ["SampleSelfReferencingListProperty"] = new OpenApiSchema
                 {
                     Type = "array",
-                    Items = new OpenApiSchema()
+                    Items = new OpenApiSchema
                     {
-                        Reference =  new OpenApiReference()
+                        Reference = new OpenApiReference
                         {
                             Type = ReferenceType.Schema,
                             Id = typeof(SampleSelfReferencingType).ToString().SanitizeClassName()
@@ -31,7 +31,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 },
                 ["SampleSelfReferencingProperty"] = new OpenApiSchema
                 {
-                    Reference = new OpenApiReference()
+                    Reference = new OpenApiReference
                     {
                         Type = ReferenceType.Schema,
                         Id = typeof(SampleSelfReferencingType).ToString().SanitizeClassName()
@@ -39,6 +39,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 }
             }
         };
+
+        [JsonIgnore]
+        public SampleSelfReferencingType SampleSelfReferencingIgnoredProperty { get; set; }
+
         public IList<SampleSelfReferencingType> SampleSelfReferencingListProperty { get; set; }
 
         public SampleSelfReferencingType SampleSelfReferencingProperty { get; set; }
