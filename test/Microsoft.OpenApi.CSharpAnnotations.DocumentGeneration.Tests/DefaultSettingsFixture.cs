@@ -4,7 +4,6 @@
 // ------------------------------------------------------------
 
 using FluentAssertions;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests
 {
@@ -18,11 +17,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests
         /// </summary>
         public DefaultSettingsFixture()
         {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
-            };
-
             AssertionOptions.AssertEquivalencyUsing(o => o.AllowingInfiniteRecursion());
         }
     }
