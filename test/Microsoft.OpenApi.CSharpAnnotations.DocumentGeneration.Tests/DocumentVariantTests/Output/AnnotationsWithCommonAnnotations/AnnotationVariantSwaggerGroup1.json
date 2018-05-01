@@ -222,13 +222,6 @@
             },
             "description": "Gets the sample property object list",
             "readOnly": true
-          },
-          "SamplePropertyObject2List": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2"
-            },
-            "readOnly": true
           }
         }
       },
