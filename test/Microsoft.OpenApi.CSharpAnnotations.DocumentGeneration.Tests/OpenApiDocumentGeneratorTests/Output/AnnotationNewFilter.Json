@@ -2,6 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis",
+    "description": "Updated Description",
     "version": "1.0.0"
   },
   "servers": [

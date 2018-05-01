@@ -148,34 +148,39 @@
   "components": {
     "schemas": {
       "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1": {
+        "required": [
+          "samplePropertyString3",
+          "samplePropertyString4",
+          "samplePropertyEnum"
+        ],
         "type": "object",
         "properties": {
-          "SamplePropertyBool": {
+          "samplePropertyBool": {
             "type": "boolean",
             "description": "Gets or sets the sample property bool"
           },
-          "SamplePropertyInt": {
+          "samplePropertyStringInt": {
             "type": "integer",
             "description": "Gets or sets the sample property int",
             "format": "int32"
           },
-          "SamplePropertyString1": {
+          "samplePropertyString1": {
             "type": "string",
             "description": "Gets or sets the sample property string 1"
           },
-          "SamplePropertyString2": {
+          "samplePropertyString2": {
             "type": "string",
             "description": "Gets or sets the sample property string 2"
           },
-          "SamplePropertyString3": {
+          "samplePropertyString3": {
             "type": "string",
             "description": "Gets or sets the sample property string 3"
           },
-          "SamplePropertyString4": {
+          "samplePropertyString4": {
             "type": "string",
             "description": "Gets or sets the sample property string 4"
           },
-          "SamplePropertyEnum": {
+          "samplePropertyEnum": {
             "enum": [
               "SampleEnumValue1",
               "SampleEnumValue2"
@@ -186,12 +191,15 @@
         }
       },
       "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3": {
+        "required": [
+          "samplePropertyObject"
+        ],
         "type": "object",
         "properties": {
-          "SamplePropertyObject": {
+          "samplePropertyObject": {
             "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2"
           },
-          "SamplePropertyObjectList": {
+          "samplePropertyObjectList": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"
@@ -209,9 +217,14 @@
         }
       },
       "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2": {
+        "required": [
+          "samplePropertyInt",
+          "samplePropertyObjectDictionary",
+          "samplePropertyObjectList"
+        ],
         "type": "object",
         "properties": {
-          "SamplePropertyEnum": {
+          "samplePropertyEnum": {
             "enum": [
               "SampleEnumValue1",
               "SampleEnumValue2"
@@ -219,11 +232,11 @@
             "type": "string",
             "description": "Gets or sets the sample property enum"
           },
-          "SamplePropertyInt": {
+          "samplePropertyInt": {
             "type": "string",
             "description": "Gets or sets the sample property string 1"
           },
-          "SamplePropertyObjectDictionary": {
+          "samplePropertyObjectDictionary": {
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"
@@ -231,7 +244,7 @@
             "description": "Gets the sample property object dictionary",
             "readOnly": true
           },
-          "SamplePropertyObjectList": {
+          "samplePropertyObjectList": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"
@@ -239,7 +252,7 @@
             "description": "Gets the sample property object list",
             "readOnly": true
           },
-          "SamplePropertyString1": {
+          "samplePropertyString1": {
             "type": "string",
             "description": "Gets or sets the sample property string 1"
           }

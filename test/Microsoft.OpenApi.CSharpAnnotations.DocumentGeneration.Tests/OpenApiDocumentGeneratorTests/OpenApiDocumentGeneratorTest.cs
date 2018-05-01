@@ -7,13 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
-using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
-using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -564,7 +562,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                         InputDirectory,
                         "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
                 },
-                new UpdateSchemaWithNewtonsoftJsonPropertyAttributeFilter(),
+                new UpdateDescriptionFilter(),
                 1,
                 Path.Combine(
                     OutputDirectory,
@@ -903,11 +901,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             openApiDocuments.Should().NotBeNull();
 
-            _output.WriteLine(
-                JsonConvert.SerializeObject(
-                    openApiDocuments.ToSerializedOpenApiDocuments(),
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
-
             result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
             result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
 
@@ -969,11 +962,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             var openApiDocuments = generator.GenerateDocuments(input, out result);
 
             result.Should().NotBeNull();
-
-            _output.WriteLine(
-                 JsonConvert.SerializeObject(
-                     openApiDocuments.ToSerializedOpenApiDocuments(),
-                     new DictionaryJsonConverter<DocumentVariantInfo, string>()));
 
             result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
 
@@ -1074,11 +1062,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             result.Should().NotBeNull();
 
-            _output.WriteLine(
-                JsonConvert.SerializeObject(
-                    openApiDocuments.ToSerializedOpenApiDocuments(),
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
-
             result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
 
             openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
@@ -1111,7 +1094,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             string testCaseName,
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
-            IDocumentFilter documentFilter,
+            IFilter filter,
             int expectedOperationGenerationResultsCount,
             string expectedJsonFile)
         {
@@ -1122,7 +1105,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
             var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
-            input.OpenApiGeneratorFilterConfig.Filters.Add(documentFilter);
+            input.OpenApiGeneratorFilterConfig.Filters.Add(filter);
 
             GenerationDiagnostic result;
 
@@ -1130,13 +1113,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             var openApiDocuments = generator.GenerateDocuments(input, out result);
 
             result.Should().NotBeNull();
-
-            _output.WriteLine(
-                JsonConvert.SerializeObject(
-                    openApiDocuments.ToSerializedOpenApiDocuments(),
-                    new DictionaryJsonConverter<DocumentVariantInfo, string>()));
-
-            _output.WriteLine(JsonConvert.SerializeObject(result));
 
             result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
 

@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -123,6 +124,41 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     // Check if the property is read-only.
                     innerSchema.ReadOnly = !propertyInfo.CanWrite;
 
+                    var attributes = propertyInfo.GetCustomAttributes(false);
+
+                    foreach (var attribute in attributes)
+                    {
+                        if (attribute.GetType().FullName == "Newtonsoft.Json.JsonPropertyAttribute")
+                        {
+                            Type type = attribute.GetType();
+                            PropertyInfo propertyNameInfo = type.GetProperty("PropertyName");
+
+                            if (propertyNameInfo != null)
+                            {
+                                var jsonPropertyName = (string)propertyNameInfo.GetValue(attribute, null);
+
+                                if (!string.IsNullOrWhiteSpace(jsonPropertyName))
+                                {
+                                    propertyName = jsonPropertyName;
+                                }
+                            }
+
+                            PropertyInfo requiredPropertyInfo = type.GetProperty("Required");
+
+                            if (requiredPropertyInfo != null)
+                            {
+                                var requiredValue = Enum.GetName(
+                                    requiredPropertyInfo.PropertyType,
+                                    requiredPropertyInfo.GetValue(attribute, index: null));
+
+                                if (requiredValue == "Always")
+                                {
+                                    schema.Required.Add(propertyName);
+                                }
+                            }
+                        }
+                    }
+
                     schema.Properties[propertyName] = innerSchema;
                 }
 
@@ -139,6 +175,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
             }
             catch (Exception e)
             {
+                // Something went wrong while fetching schema, so remove the key if exists from the references.
+                if (References.ContainsKey(key))
+                {
+                    References.Remove(key);
+                }
+
                 throw new AddingSchemaReferenceFailedException(key, e.Message);
             }
         }
