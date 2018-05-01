@@ -48,7 +48,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                     var conflictingPathParam = paramElements.Where(
                         i => i.Attribute("name")?.Value == pathParamElement.Attribute("name")?.Value);
 
-                    // Remove param tag that have same name as pathParam tag
+                    // Remove param tags that have same name as pathParam tags
                     // e.g. if service is documented like below, it will remove the param tag
                     //
                     // <param name="samplePathParam">Sample path param</param>
@@ -67,7 +67,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                     var conflictingQueryParam = paramElements.Where(
                         i => i.Attribute("name")?.Value == queryParamElement.Attribute("name")?.Value);
 
-                    // Remove param tag that have same name as queryParam tag
+                    // Remove param tags that have same name as queryParam tags
                     // e.g. if service is documented like below, it will remove the param tag
                     //
                     // <param name="sampleQueryParam">Sample query param</param>
@@ -85,9 +85,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                     .Where(i => i.Name == KnownXmlStrings.Param
                     && string.IsNullOrWhiteSpace(i.Attribute("in")?.Value));
 
-                // If there are still conflicting param tag remaining, then its safe to assume that its neither a path
-                // nor a query param and it could be documented request param which is not intended to be used with C#
-                // document generator so remove the tag.
+                // If there are still conflicting param tags remaining, then it's safe to assume that these are neither
+                // path nor query params and could be documented request params which is not intended to be used with
+                // C# document generator so remove the tags.
                 paramTagToRemove?.Remove();
 
                 foreach (var requestTypeElement in requestTypeElements)

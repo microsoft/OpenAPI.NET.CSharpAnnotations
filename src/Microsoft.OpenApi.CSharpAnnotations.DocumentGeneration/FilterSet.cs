@@ -88,7 +88,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         _defaultFilterSet.Add(new SummaryToSummaryFilter());
 
                         //Pre processing operation filters
-                        _defaultFilterSet.Add( new ConvertAlternativeParamTagsFilter() );
+                        _defaultFilterSet.Add(new ConvertAlternativeParamTagsFilter());
                         _defaultFilterSet.Add(new PopulateInAttributeFilter());
                         _defaultFilterSet.Add(new BranchOptionalPathParametersFilter());
 
