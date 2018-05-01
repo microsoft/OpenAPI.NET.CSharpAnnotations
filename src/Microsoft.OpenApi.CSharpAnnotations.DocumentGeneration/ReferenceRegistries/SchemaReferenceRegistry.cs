@@ -118,6 +118,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
 
                 foreach (var propertyInfo in input.GetProperties())
                 {
+                    var ignoreProperty = false;
+
                     var propertyName = propertyInfo.Name;
                     var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
 
@@ -157,9 +159,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                                 }
                             }
                         }
+
+                        if (attribute.GetType().FullName == "Newtonsoft.Json.JsonIgnoreAttribute")
+                        {
+                            ignoreProperty = true;
+                        }
                     }
 
-                    schema.Properties[propertyName] = innerSchema;
+                    if (!ignoreProperty)
+                    {
+                        schema.Properties[propertyName] = innerSchema;
+                    }
                 }
 
                 References[key] = schema;
