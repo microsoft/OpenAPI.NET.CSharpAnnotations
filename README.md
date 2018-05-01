@@ -4,18 +4,58 @@
 
 ![C# Annotation Document Generator](docs/images/banner.png "Convert /// C# Comments --> OpenAPI.NET")
 
-# C# Annotation Component for OpenAPI.NET [Preview]
-[Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for mid 2018. Feedback is welcome!]
+# C# Annotation Document Generator for OpenAPI.NET [Preview]
+[Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for late summer 2018. Feedback is welcome!]
 
 
 ### Welcome!
 This component is the first by-product of Microsoft's supported base [OpenAPI.NET](http://aka.ms/openapi) object model. The module is designed to convert your native annotation XML from your API code into a OpenAPI document object. All you need to do is follow a simple annotation schema for your API controller comments, and you automatically get all the benefits of the OpenAPI and its related Swagger tooling.
 
+_Remarks: While reading through the readme and wiki please know that_
+
+_C# Comments refers to the /// csharp comments in code_
+
+e.g.
+```csharp
+        /// <summary>
+        /// Sample Get 1
+        /// </summary>
+        /// <group>Sample V1</group>
+        /// <verb>GET</verb>
+        /// <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
+        /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
+        /// <param name="id" cref="string" in="path">The object id</param>
+        /// <param name="queryBool" required="true" cref="bool" in="query">Sample query boolean</param>
+        /// <response code="200"><see cref="SampleObject1"/>Sample object retrieved</response>
+        /// <returns>The sample object 1</returns>
+```
+
+_Annotation refers to the compiler built version of the above /// csharp comments_
+
+e.g.
+```xml
+        <member name="M:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers.SampleControllerV1.SampleGet1(System.String,System.Boolean)">
+            <summary>
+            Sample Get 1
+            </summary>
+            <group>Sample V1</group>
+            <verb>GET</verb>
+            <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
+            <param name="sampleHeaderParam1" cref="T:System.Object" in="header">Header param 1</param>
+            <param name="id" cref="T:System.String" in="path">The object id</param>
+            <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
+            <response code="200"><see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object retrieved</response>
+            <returns>The sample object 1</returns>
+        </member>
+```
+
+_This Document Generator consumes the above annotations (outputted from MSBuild.exe) to create OpenAPI.NET objects._
+
 ### Annotations (C# Comments)
 We've made an effort to develop an annotation model that maps very closely to the native .NET comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your annotation XML and generate your OpenAPI.NET document.
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
-Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
+Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
 
 ### Mechanics
 The items needed to use this component as shown in the sample below.
@@ -64,9 +104,12 @@ IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments =   generator.
 ```
 In this example the generated should contain a valid OpenAPI.NET document for your API based on the annotation XML and contract dll's you included.
 
-### Optional Advance Configuration
+### Newtonsoft (JSON.Net)
+C# Document Generator supports fetching Newtonsoft.Json "JsonProperty" Attribute, so if your service contracts use Newtonsoft please include the same version of Newtonsoft.Json.dll as used by service contracts in the assembly paths.
 
-Document generator also allows you to provide an optional advance configuration as input in "OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"
+### Optional Advanced Configuration
+
+Document generator also allows you to provide an optional advanced configuration as input in "OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"
 which enables:
 
 - Specifying annotations that logically apply to either the entire document or to certain set of operations.
@@ -74,7 +117,7 @@ which enables:
 
 The configuration XML is handcrafted (NOT generated from Visual Studio build).
 
-Consult our [WIKI](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki/configuration-XML-annotation-guide) for specific guidance and examples on how to draft this XML.
+Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki/Advanced-Configuration-XML) for specific guidance and examples on how to draft this XML.
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
