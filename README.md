@@ -68,15 +68,15 @@ After you've correctly annotated your C# code, you'll need to build your solutio
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
 
 ### Simple Example Code
-Here's a simple example of how you'd use this component. The utility takes in two lists. The first shown below is the paths to your post-MSbuild.exe XML documentation files. The second is the paths to any DLLs that have classes that you reference in the C# XML comments.
+Here's a simple example. The `OpenApiGeneratorConfig` class is instantited with two lists, the document version, and the filter set version. The first list contains the paths to your Annotation XML documentation files. The second list contains the paths to the assemblies where classes referenced in the C# XML comments can be found.
 
-For example, if you have an annotation for a response type as follows:
+For example, if you have a C# comment for a response type as follows:
 ```csharp
 /// <response code="200"><see cref="SampleObject1"/>Sample object retrieved</response>
 ```
-You will need to include the path to the DLL file that contains the `SampleObject1` class. 
+You will need to include the path to the assembly file that contains the `SampleObject1` class. 
 
-Generating your OAI document should look something like this:
+Generating your OpenAPI.NET document should look something like this:
 ```csharp
 var input = new OpenApiGeneratorConfig(
     annotationXmlDocuments: new List<XDocument>()
@@ -102,7 +102,7 @@ IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments = generator.Ge
     generationDiagnostic: out result
 );
 ```
-In this example, the generated `openApiDocuments` should contain valid OpenAPI.NET document(s) for your API based on the annotation XMLs and contract DLLs you included.
+In this example, the generated `openApiDocuments` should contain valid OpenAPI.NET document(s) for your API based on the provided annotation XMLs and contract assemblies.
 
 ### Newtonsoft (JSON.NET)
 C# Document Generator supports fetching Newtonsoft.Json `JsonProperty` and `JsonIgnore` attributes. If your service contracts use Newtonsoft, you will have to include the same version of `Newtonsoft.Json.dll` as used by service contracts in the assembly paths.
