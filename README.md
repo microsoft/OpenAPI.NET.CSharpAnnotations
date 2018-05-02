@@ -59,10 +59,10 @@ _This Document Generator consumes the above annotations (outputted from MSBuild.
 ### Mechanics
 The following items are needed as input to the Document Generator:
 
-- The path(s) to annotation XML documentation file(s) from your MSBuild.exe output. (`List<string>`)
-- The path(s) to DLL(s) that contain(s) the data types of your API's request/response contracts. (`List<string>`)
-- The version of the OpenAPI document. (`string`) _Note this is not the OpenAPI specification version. This corresponds to the version field of the Info object in an OpenAPI document._
-- The version of the filter set (`FilterSetVersion enum`)
+- The path(s) to Annotation XML documentation file(s) from your MSBuild.exe output. (`List<string>`)
+- The path(s) to DLL(s) that contain(s) the data types referenced in the comments. (`List<string>`)
+- The version of the OpenAPI document. (`string`) _Note this is not the OpenAPI specification version. This corresponds to the version field of the [Info object](https://github.com/Microsoft/OpenAPI.NET/blob/master/src/Microsoft.OpenApi/Models/OpenApiInfo.cs) in an OpenAPI document._
+- The version of the filter set ([`FilterSetVersion` enum](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/blob/26dd7cc6efc2bb79338b605ed46fa51a83676f2e/src/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration/FilterSet.cs))
 
 After you've correctly annotated your C# code, you'll need to build your solution and then retrieve the output annotation XML file where MSBuild.exe aggregates the projects comments. This file is what this utility will use to convert your comments into an OpenAPI.NET object.
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
@@ -102,10 +102,10 @@ IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments = generator.Ge
     generationDiagnostic: out result
 );
 ```
-In this example, the generated `openApiDocuments` should contain valid OpenAPI.NET document(s) for your API based on the annotation XML and contract DLLs you included.
+In this example, the generated `openApiDocuments` should contain valid OpenAPI.NET document(s) for your API based on the annotation XMLs and contract DLLs you included.
 
 ### Newtonsoft (JSON.NET)
-C# Document Generator supports fetching Newtonsoft.Json "JsonProperty" Attribute, so if your service contracts use Newtonsoft please include the same version of `Newtonsoft.Json.dll` as used by service contracts in the assembly paths.
+C# Document Generator supports fetching Newtonsoft.Json `JsonProperty` and `JsonIgnore` Attribute, so if your service contracts use Newtonsoft please include the same version of `Newtonsoft.Json.dll` as used by service contracts in the assembly paths.
 
 ### Optional Advanced Configuration
 Document generator also allows you to provide an optional advanced configuration as input in `OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument`
