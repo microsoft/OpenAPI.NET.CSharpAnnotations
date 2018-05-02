@@ -57,9 +57,10 @@ _**Annotation** or **Annotation XML** refers to the compiler built version of th
 _This Document Generator consumes the above annotations (outputted from MSBuild.exe) to create OpenAPI.NET objects._
 
 ### Mechanics
-The items needed to use this component as shown in the sample below.
-- The annotation XML documentation file(s) from your MSBuild.exe output. (`List<string>`)
-- Any DLLs that contain the data types of your API's request/response contracts. (`List<string>`)
+The following items are needed as input to the Document Generator:
+
+- The path(s) to annotation XML documentation file(s) from your MSBuild.exe output. (`List<string>`)
+- The path(s) to DLL(s) that contain(s) the data types of your API's request/response contracts. (`List<string>`)
 - The version of the OpenAPI document. (`string`) _Note this is not the OpenAPI specification version. This corresponds to the version field of the Info object in an OpenAPI document._
 - The version of the filter set (`FilterSetVersion enum`)
 
@@ -67,7 +68,7 @@ After you've correctly annotated your C# code, you'll need to build your solutio
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
 
 ### Simple Example Code
-Here's a simple example of how you'd use this component. The utility takes in two lists. The first shown below is the paths to your post-MSbuild.exe XML documentation files. The second being the paths to any DLL's that have classes that you reference in those XML comments.
+Here's a simple example of how you'd use this component. The utility takes in two lists. The first shown below is the paths to your post-MSbuild.exe XML documentation files. The second is the paths to any DLLs that have classes that you reference in the C# XML comments.
 
 For example, if you have an annotation for a response type as follows:
 ```csharp
