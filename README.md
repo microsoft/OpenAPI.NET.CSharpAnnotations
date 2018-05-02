@@ -112,8 +112,8 @@ C# Document Generator supports fetching Newtonsoft.Json `JsonProperty` and `Json
 Document generator also allows you to provide an optional advanced configuration as input in `OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument`
 which enables:
 
-- Specifying annotations that logically apply to either the entire document or to certain set of operations.
-- Generate multiple documents based on the variant information provided.
+- Specifying annotations that logically apply to either the entire document or certain sets of operations.
+- Generating multiple documents based on the provided variant information.
 
 The configuration XML is handcrafted (NOT generated from Visual Studio build).
 
