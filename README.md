@@ -55,7 +55,7 @@ _This Document Generator consumes the above annotations (outputted from MSBuild.
 We've made an effort to develop an annotation model that maps very closely to the native .NET comment structure for the C# language. In general, the below image describes the general concept of how this utility can parse your annotation XML and generate your OpenAPI.NET document.
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
-Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki) for specific guidance and examples on how to annotate your controllers.
+Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/wiki) for specific guidance and examples on how to annotate your controllers.
 
 ### Mechanics
 The items needed to use this component as shown in the sample below.
@@ -117,7 +117,7 @@ which enables:
 
 The configuration XML is handcrafted (NOT generated from Visual Studio build).
 
-Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpComment/wiki/Advanced-Configuration-XML) for specific guidance and examples on how to draft this XML.
+Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/wiki/Advanced-Configuration-XML) for specific guidance and examples on how to draft this XML.
 
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
