@@ -13,7 +13,7 @@ This component is the first by-product of Microsoft's supported base [OpenAPI.NE
 
 ### Overview
 
-We've made an effort to develop an annotation model that maps very closely to the native .NET comment structure for the C# language. In general, the below image describes the general concept of how this utility can translate your annotation XML to an OpenAPI.NET document.
+We've made an effort to develop an annotation model that maps very closely to the native .NET comment structure for the C# language. In general, the below image describes the general concept of how this utility can translate your annotation XML to an [OpenAPI.NET document](https://github.com/Microsoft/OpenAPI.NET/blob/master/src/Microsoft.OpenApi/Models/OpenApiDocument.cs).
 ![Convert Comments to OpenAPI](docs/images/comment-oai-map.png "Map /// C# Comments --> OpenAPI.NET")
 
 Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/wiki) for specific guidance and examples on how to annotate your controllers.
@@ -40,17 +40,17 @@ _**Annotation** or **Annotation XML** refers to the compiler built version of th
 
 ```xml
 <member name="M:Microsoft.OpenApi.CSharpComment.Reader.Tests.SampleApis.Controllers.SampleControllerV1.SampleGet1(System.String,System.Boolean)">
-        <summary>
-	Sample Get 1
-	</summary>
-	<group>Sample V1</group>
-	<verb>GET</verb>
-	<url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
-	<param name="sampleHeaderParam1" cref="T:System.Object" in="header">Header param 1</param>
-	<param name="id" cref="T:System.String" in="path">The object id</param>
-	<param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
-	<response code="200"><see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object retrieved</response>
-	<returns>The sample object 1</returns>
+  <summary>
+  Sample Get 1
+  </summary>
+  <group>Sample V1</group>
+  <verb>GET</verb>
+  <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
+  <param name="sampleHeaderParam1" cref="T:System.Object" in="header">Header param 1</param>
+  <param name="id" cref="T:System.String" in="path">The object id</param>
+  <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
+  <response code="200"><see cref="T:Microsoft.OpenApi.CSharpComment.Reader.Tests.Contracts.SampleObject1"/>Sample object retrieved</response>
+  <returns>The sample object 1</returns>
 </member>
 ```
 
@@ -59,10 +59,10 @@ _This Document Generator consumes the above annotations (outputted from MSBuild.
 ### Mechanics
 The following items are needed as input to the Document Generator:
 
-- The path(s) to Annotation XML documentation file(s) from your MSBuild.exe output. (`List<string>`)
-- The path(s) to DLL(s) that contain(s) the data types referenced in the comments. (`List<string>`)
-- The version of the OpenAPI document. (`string`) _Note this is not the OpenAPI specification version. This corresponds to the version field of the [Info object](https://github.com/Microsoft/OpenAPI.NET/blob/master/src/Microsoft.OpenApi/Models/OpenApiInfo.cs) in an OpenAPI document._
-- The version of the filter set ([`FilterSetVersion` enum](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/blob/26dd7cc6efc2bb79338b605ed46fa51a83676f2e/src/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration/FilterSet.cs))
+- Paths to the Annotation XML documentation files from your MSBuild.exe output. (`List<string>`)
+- Paths to the Assemblies (DLLs or EXEs) that contain the data types referenced in the comments. (`List<string>`)
+- Version of the OpenAPI document. (`string`) _Note this is not the OpenAPI specification version. This corresponds to the version field of the [Info object](https://github.com/Microsoft/OpenAPI.NET/blob/master/src/Microsoft.OpenApi/Models/OpenApiInfo.cs) in an OpenAPI document._
+- Version of the filter set ([`FilterSetVersion` enum](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/blob/26dd7cc6efc2bb79338b605ed46fa51a83676f2e/src/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration/FilterSet.cs))
 
 After you've correctly annotated your C# code, you'll need to build your solution and then retrieve the output annotation XML file where MSBuild.exe aggregates the projects comments. This file is what this utility will use to convert your comments into an OpenAPI.NET object.
 ![Enable Comment Output](docs/images/vs-enable.png "Output comments from MSBuild.exe")
@@ -105,7 +105,7 @@ IDictionary<DocumentVariantInfo,OpenApiDocument> openApiDocuments = generator.Ge
 In this example, the generated `openApiDocuments` should contain valid OpenAPI.NET document(s) for your API based on the annotation XMLs and contract DLLs you included.
 
 ### Newtonsoft (JSON.NET)
-C# Document Generator supports fetching Newtonsoft.Json `JsonProperty` and `JsonIgnore` Attribute, so if your service contracts use Newtonsoft please include the same version of `Newtonsoft.Json.dll` as used by service contracts in the assembly paths.
+C# Document Generator supports fetching Newtonsoft.Json `JsonProperty` and `JsonIgnore` attributes. If your service contracts use Newtonsoft, you will have to include the same version of `Newtonsoft.Json.dll` as used by service contracts in the assembly paths.
 
 ### Optional Advanced Configuration
 Document generator also allows you to provide an optional advanced configuration as input in `OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument`
