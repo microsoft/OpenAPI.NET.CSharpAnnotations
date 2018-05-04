@@ -33,9 +33,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                 .ToList();
 
             var paramElementsWithoutIn = paramElements.Where(
-                    p => !KnownXmlStrings.AllowedInValues.Contains(p.Attribute(KnownXmlStrings.In)?.Value))
+                    p => p.Attribute(KnownXmlStrings.In)?.Value == null)
                 .ToList();
-            
+
             var url = element.Elements()
                 .FirstOrDefault(p => p.Name == KnownXmlStrings.Url)
                 ?.Value;
@@ -89,16 +89,27 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                 }
             }
 
-            paramElementsWithoutIn = paramElements.Where(
-                    p => !KnownXmlStrings.AllowedInValues.Contains(p.Attribute(KnownXmlStrings.In)?.Value))
+            paramElementsWithoutIn = paramElements.Where(p => p.Attribute(KnownXmlStrings.In)?.Value == null)
                 .ToList();
-            
+
+            var paramElementsWithoutAllowedValues = paramElements.Where(
+                p => !KnownXmlStrings.AllowedInValues.Contains(p.Attribute(KnownXmlStrings.In)?.Value)).ToList();
+
             if (paramElementsWithoutIn.Any())
             {
                 throw new MissingInAttributeException(
                     paramElementsWithoutIn.Select(
-                            p => p.Attribute(KnownXmlStrings.Name)?.Value)
-                        .ToList());
+                        p => p.Attribute(KnownXmlStrings.Name)?.Value));
+            }
+
+            if (paramElementsWithoutAllowedValues.Any())
+            {
+                throw new NotSupportedInAttributeValueException(
+                    paramElementsWithoutAllowedValues.Select(
+                        p => p.Attribute(KnownXmlStrings.Name)?.Value),
+                    paramElementsWithoutAllowedValues.Select(
+                        p => p.Attribute(KnownXmlStrings.In)?.Value)
+                );
             }
         }
     }

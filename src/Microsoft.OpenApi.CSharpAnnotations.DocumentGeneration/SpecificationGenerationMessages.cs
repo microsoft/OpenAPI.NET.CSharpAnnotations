@@ -46,6 +46,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         public const string NoOperationElementFoundToParse =
             "No valid operation elements containing tag \"<url>\" and \"<verb>\" have been found in the annotation xml.";
 
+        public const string NotSupportedInAttributeValue =
+            "Provided \"in\" attribute values: {0} for corresponding parameters: {1} is not supported. "
+            + "Supported values are: {2}.";
+
         public const string OperationMethodNotParsedGivenUrlIsInvalid =
             "Operation method has not been parsed given that the url is invalid.";
 
@@ -56,8 +60,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string UndocumentedGenericType =
             "The request or response type contains a generic type that is undocumented. " +
-            "The correct way to document a generic type is as follows: <responseType>" +
-            "<see cref=\"Response{T}\"/> where T is <see cref=\"GenericType\"/></responseType>";
+            "The correct way to document a generic type is as follows: " +
+            "<see cref=\"Response{T}\"/> where T is <see cref=\"GenericType\"/>";
 
         public const string UndocumentedPathParameter = "Path paramater: {0} is undocumented in {1}";
 
@@ -67,7 +71,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string UnorderedGenericType =
             "The request or response type contains a generic type that is unordered. " +
-            "The correct way to document a generic type is as follows: <![CDATA[ <responseType>" +
-            "<see cref=\"Response{T}\"/> where T is <see cref=\"GenericType\"/></responseType> ]]>";
+            "The correct way to document a generic type is as follows: " +
+            "<see cref=\"Response{T}\"/> where T is <see cref=\"GenericType\"/>";
     }
 }
