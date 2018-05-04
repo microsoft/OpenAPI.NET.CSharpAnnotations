@@ -86,6 +86,12 @@
       <None Update="DocumentVariantTests\Output\AnnotationVariantSwaggerGroup2.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="FilterTests\Input\ParamMissingInAttribute.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="FilterTests\Input\ParamWithNotSupportedInValue.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="OpenApiDocumentGeneratorTests\Input\Annotation.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

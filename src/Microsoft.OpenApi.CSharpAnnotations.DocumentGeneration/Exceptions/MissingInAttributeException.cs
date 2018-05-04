@@ -18,7 +18,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions
         /// Initializes a new instance of the <see cref="MissingInAttributeException"/> class.
         /// </summary>
         /// <param name="parameters">The parameters that miss in attributes.</param>
-        public MissingInAttributeException(IList<string> parameters)
+        public MissingInAttributeException(IEnumerable<string> parameters)
             : base(string.Format(SpecificationGenerationMessages.MissingInAttribute, string.Join(", ", parameters)))
         {
         }
