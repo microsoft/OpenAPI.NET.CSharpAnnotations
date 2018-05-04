@@ -22,8 +22,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions
         public NotSupportedInAttributeValueException(IEnumerable<string> parameters, IEnumerable<string> inValues)
             : base(string.Format(
                 SpecificationGenerationMessages.NotSupportedInAttributeValue,
-                string.Join(", ", inValues),
                 string.Join(", ", parameters),
+                string.Join(", ", inValues),
                 string.Join(", ", KnownXmlStrings.AllowedInValues)))
         {
         }

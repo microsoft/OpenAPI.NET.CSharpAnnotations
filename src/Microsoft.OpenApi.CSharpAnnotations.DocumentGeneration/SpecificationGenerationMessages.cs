@@ -47,8 +47,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             "No valid operation elements containing tag \"<url>\" and \"<verb>\" have been found in the annotation xml.";
 
         public const string NotSupportedInAttributeValue =
-            "Provided \"in\" attribute values: {0} for corresponding parameters: {1} is not supported. "
-            + "Supported values are: {2}.";
+            "Parameter(s): \"{0}\" contain unsupported \"in\" attribute value(s): \"{1}\". Supported values are: {2}.";
 
         public const string OperationMethodNotParsedGivenUrlIsInvalid =
             "Operation method has not been parsed given that the url is invalid.";
