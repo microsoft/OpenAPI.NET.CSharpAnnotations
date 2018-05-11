@@ -46,7 +46,9 @@
         where T1 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>
         where T2 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2"/>Header param 2</param>
       <!-- ////////////////////////// -->
-      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">
+        Header param 3
+      </param>
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
       <response code="200">

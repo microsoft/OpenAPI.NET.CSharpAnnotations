@@ -68,7 +68,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                 if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
-                    description = lastNode.ToString();
+                    description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
                 // Fetch if any see tags are present, if present populate listed types with it.

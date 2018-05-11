@@ -25,35 +25,42 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             var description = new StringBuilder();
 
             var children = element.Nodes();
+
             foreach (var child in children)
             {
-                if (child.NodeType == XmlNodeType.Text)
+                switch (child.NodeType)
                 {
-                    description.Append(child);
-                }
-                else if (child.NodeType == XmlNodeType.Element)
-                {
-                    var childElement = (XElement)child;
-                    if (childElement.Name == KnownXmlStrings.Para)
-                    {
-                        description.Append(GetDescriptionText(childElement));
-                    }
-                    else if (childElement.Name == KnownXmlStrings.See)
-                    {
-                        description.Append(childElement.Attribute(KnownXmlStrings.Cref)?.Value);
-                    }
-                    else if (childElement.Name == KnownXmlStrings.Seealso)
-                    {
-                        description.Append(childElement.Attribute(KnownXmlStrings.Cref)?.Value);
-                    }
-                    else if (childElement.Name == KnownXmlStrings.Paramref)
-                    {
-                        description.Append(childElement.Attribute(KnownXmlStrings.Name)?.Value);
-                    }
-                    else if (childElement.Name == KnownXmlStrings.Typeparamref)
-                    {
-                        description.Append(childElement.Attribute(KnownXmlStrings.Name)?.Value);
-                    }
+                    case XmlNodeType.Text:
+                        description.Append(child);
+                        break;
+
+                    case XmlNodeType.CDATA:
+                        description.Append(child.ToString().Replace("<![CDATA[","").Replace("]]>",""));
+                        break;
+
+                    case XmlNodeType.Element:
+                        var childElement = (XElement)child;
+                        if (childElement.Name == KnownXmlStrings.Para)
+                        {
+                            description.Append(GetDescriptionText(childElement));
+                        }
+                        else if (childElement.Name == KnownXmlStrings.See)
+                        {
+                            description.Append(childElement.Attribute(KnownXmlStrings.Cref)?.Value);
+                        }
+                        else if (childElement.Name == KnownXmlStrings.Seealso)
+                        {
+                            description.Append(childElement.Attribute(KnownXmlStrings.Cref)?.Value);
+                        }
+                        else if (childElement.Name == KnownXmlStrings.Paramref)
+                        {
+                            description.Append(childElement.Attribute(KnownXmlStrings.Name)?.Value);
+                        }
+                        else if (childElement.Name == KnownXmlStrings.Typeparamref)
+                        {
+                            description.Append(childElement.Attribute(KnownXmlStrings.Name)?.Value);
+                        }
+                        break;
                 }
             }
 
