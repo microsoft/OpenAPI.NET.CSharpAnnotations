@@ -16,7 +16,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
         public static readonly OpenApiSchema schema = new OpenApiSchema
         {
             Type = "object",
-            Required = new List<string>
+            Required = new HashSet<string>
             {
                 "samplePropertyReadonlyObject",
                 "samplePropertyStringRequired"
