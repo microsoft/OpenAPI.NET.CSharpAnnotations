@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------
+﻿ // ------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All rights reserved.
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
@@ -20,7 +20,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </summary>
         /// <group>Sample V1</group>
         /// <verb>GET</verb>
-        /// <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
+        /// <url>https://myapi.sample.com/V1/samples/{id}?queryBool={queryBool}</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
@@ -43,7 +43,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </summary>
         /// <group>Sample V1</group>
         /// <verb>GET</verb>
-        /// <url>http://localhost:9000/V1/samples</url>
+        /// <url>https://myapi.sample.com/V1/samples</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
@@ -62,7 +62,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </summary>
         /// <group>Sample V1</group>
         /// <verb>POST</verb>
-        /// <url>http://localhost:9000/V1/samples</url>
+        /// <url>https://myapi.sample.com/V1/samples</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
@@ -81,7 +81,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </summary>
         /// <group>Sample V1</group>
         /// <verb>PUT</verb>
-        /// <url>http://localhost:9000/V1/samples/{id}</url>
+        /// <url>https://myapi.sample.com/V1/samples/{id}</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
