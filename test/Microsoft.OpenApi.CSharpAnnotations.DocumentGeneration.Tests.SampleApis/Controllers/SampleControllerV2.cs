@@ -21,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </summary>
         /// <group>Sample V2</group>
         /// <verb>DELETE</verb>
-        /// <url>http://localhost:9000/V2/samples/{id}</url>
+        /// <url>https://myapi.sample.com/V2/samples/{id}</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
@@ -40,7 +40,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </summary>
         /// <group>Sample V2</group>
         /// <verb>GET</verb>
-        /// <url>http://localhost:9000/V2/samples/</url>
+        /// <url>https://myapi.sample.com/V2/samples/</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </summary>
         /// <group>Sample V2</group>
         /// <verb>GET</verb>
-        /// <url>http://localhost:9000/V2/samples/{id}?queryString={queryString}</url>
+        /// <url>https://myapi.sample.com/V2/samples/{id}?queryString={queryString}</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
