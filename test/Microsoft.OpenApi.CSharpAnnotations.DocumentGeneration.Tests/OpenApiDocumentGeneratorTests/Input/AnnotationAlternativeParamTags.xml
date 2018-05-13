@@ -39,13 +39,13 @@
       <verb>GET</verb>
       <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
       <!-- Use alternative param tags -->
-      <header name="sampleHeaderParam1" cref="T:System.Single">Header param 1</header>
-      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <header name="sampleHeaderParam1 " cref="T:System.Single">Header param 1</header>
+      <param name=" sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id">The object id</param>
-      <param name="queryBool">Sample query boolean</param>
+      <param name="queryBool ">Sample query boolean</param>
       <pathParam name="id" cref="T:System.String">The object id</pathParam>
-      <queryParam name="queryBool" required="true" cref="T:System.Boolean">Sample query boolean</queryParam>
+      <queryParam name="queryBool " required="true" cref="T:System.Boolean">Sample query boolean</queryParam>
       <!-- ////////////////////////// -->
       <response code="200">
         <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Sample object retrieved

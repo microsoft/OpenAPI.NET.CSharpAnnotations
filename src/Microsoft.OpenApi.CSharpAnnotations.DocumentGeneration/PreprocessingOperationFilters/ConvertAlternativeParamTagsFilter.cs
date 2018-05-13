@@ -55,6 +55,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                     // <pathParam name="samplePathParam" in="path">Sample path param</pathParam>
                     conflictingPathParam?.Remove();
 
+                    var nameAttribute = pathParamElement.Attribute(KnownXmlStrings.Name);
+                    var name = nameAttribute?.Value.Trim();
+
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        nameAttribute.Value = name;
+                    }
+
                     pathParamElement.Name = KnownXmlStrings.Param;
                     pathParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Path));
                 }
@@ -74,6 +82,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                     // <queryParam name="sampleQueryParam" in="path">Sample query param</queryParam>
                     conflictingQueryParam?.Remove();
 
+                    var nameAttribute = queryParamElement.Attribute(KnownXmlStrings.Name);
+                    var name = nameAttribute?.Value.Trim();
+
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        nameAttribute.Value = name;
+                    }
+
                     queryParamElement.Name = KnownXmlStrings.Param;
                     queryParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Query));
                 }
@@ -83,7 +99,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
             {
                 var paramTagToRemove = element.Elements()
                     .Where(i => i.Name == KnownXmlStrings.Param
-                    && string.IsNullOrWhiteSpace(i.Attribute("in")?.Value));
+                                && string.IsNullOrWhiteSpace(i.Attribute("in")?.Value));
 
                 // If there are still conflicting param tags remaining, then it's safe to assume that these are neither
                 // path nor query params and could be documented request params which is not intended to be used with
@@ -99,6 +115,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
 
             foreach (var headerParamElement in headerParamElements)
             {
+                var nameAttribute = headerParamElement.Attribute(KnownXmlStrings.Name);
+                var name = nameAttribute?.Value.Trim();
+
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    nameAttribute.Value = name;
+                }
+
                 headerParamElement.Name = KnownXmlStrings.Param;
                 headerParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Header));
             }
