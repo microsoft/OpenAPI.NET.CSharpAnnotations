@@ -119,6 +119,10 @@ The configuration XML is handcrafted (NOT generated from Visual Studio build).
 
 Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/wiki/Advanced-Configuration-XML) for specific guidance and examples on how to draft this XML.
 
+# Nuget Packages
+
+- [Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration](https://www.nuget.org/packages/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration)
+
 # Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
