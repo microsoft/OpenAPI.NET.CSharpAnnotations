@@ -44,6 +44,8 @@
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
       <param name="id">The object id</param>
       <param name="queryBool ">Sample query boolean</param>
+      <!-- Param tag for which no error is thrown when 'in' attribute is not specified-->
+      <param name="requestBody ">Request Body</param>
       <pathParam name="id" cref="T:System.String">The object id</pathParam>
       <queryParam name="queryBool " required="true" cref="T:System.Boolean">Sample query boolean</queryParam>
       <!-- ////////////////////////// -->

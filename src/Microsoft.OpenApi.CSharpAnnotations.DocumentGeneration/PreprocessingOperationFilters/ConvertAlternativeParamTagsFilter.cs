@@ -40,6 +40,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                 .ToList();
 
             var paramElements = element.Elements().Where(i => i.Name == KnownXmlStrings.Param);
+            var paramElementsWithInAttributeNotSpecified = paramElements.Where(i => i.Attribute("in") == null);
 
             if (pathParamElements.Any())
             {
@@ -99,7 +100,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
             {
                 var paramTagToRemove = element.Elements()
                     .Where(i => i.Name == KnownXmlStrings.Param
-                                && string.IsNullOrWhiteSpace(i.Attribute("in")?.Value));
+                        && string.IsNullOrWhiteSpace(i.Attribute("in")?.Value));
 
                 // If there are still conflicting param tags remaining, then it's safe to assume that these are neither
                 // path nor query params and could be documented request params which is not intended to be used with
@@ -125,6 +126,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
 
                 headerParamElement.Name = KnownXmlStrings.Param;
                 headerParamElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Header));
+            }
+
+            // If any of the alternative tags are present then remove any param tag element that have "in" attribute
+            // not specified b/c assumption is made that those params are not supposed to be processed by
+            // CSharp Annotation Document Generator.
+            if (pathParamElements.Any()
+                || queryParamElements.Any()
+                || requestTypeElements.Any()
+                || headerParamElements.Any())
+            {
+                paramElementsWithInAttributeNotSpecified?.Remove();
             }
         }
     }
