@@ -18,17 +18,17 @@ using Xunit.Abstractions;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTests
 {
     [Collection("DefaultSettings")]
-    public class PopulateInAttributeFilterTest
+    public class ValidateInAttributeFilterTest
     {
         private const string InputDirectory = "FilterTests/Input";
         private readonly ITestOutputHelper _output;
 
-        public PopulateInAttributeFilterTest(ITestOutputHelper output)
+        public ValidateInAttributeFilterTest(ITestOutputHelper output)
         {
             _output = output;
         }
 
-        public static IEnumerable<object[]> GetTestCasesForPopulateInAttributeShouldFail()
+        public static IEnumerable<object[]> GetTestCasesForValidateInAttributeShouldFail()
         {
             // Param missing In attribute
             yield return new object[]
@@ -54,13 +54,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTes
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForPopulateInAttributeShouldFail))]
-        public void PopulateInAttributeShouldSucceed(
+        [MemberData(nameof(GetTestCasesForValidateInAttributeShouldFail))]
+        public void ValidateInAttributeShouldFail(
             string testName,
             XElement xElement,
             string expectedExceptionMessage)
         {
-            var filter = new PopulateInAttributeFilter();
+            var filter = new ValidateInAttributeFilter();
             var settings = new PreProcessingOperationFilterSettings();
 
             var openApiPaths = new OpenApiPaths();
