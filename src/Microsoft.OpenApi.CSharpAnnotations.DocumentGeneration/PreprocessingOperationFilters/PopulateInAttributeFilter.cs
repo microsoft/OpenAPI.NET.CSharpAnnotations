@@ -5,7 +5,6 @@
 
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -28,12 +27,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         /// <param name="settings">The operation filter settings.</param>
         public void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
         {
-            var paramElements = element.Elements()
-                .Where(p => p.Name == KnownXmlStrings.Param)
-                .ToList();
-
-            var paramElementsWithoutIn = paramElements.Where(
-                    p => p.Attribute(KnownXmlStrings.In)?.Value == null)
+            var paramElementsWithoutIn = element.Elements().Where(
+                    p => p.Name == KnownXmlStrings.Param
+                    && p.Attribute(KnownXmlStrings.In)?.Value == null)
                 .ToList();
 
             var url = element.Elements()
@@ -68,23 +64,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                         StringComparison.InvariantCultureIgnoreCase))
                     {
                         paramElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Query));
-                    }
-                }
-
-                var pathParamElements = paramElements
-                    .Where(p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path)
-                    .ToList();
-
-                var matches = new Regex(@"\{(.*?)\}").Matches(url.Split('?')[0]);
-
-                foreach (Match match in matches)
-                {
-                    var pathParamNameFromUrl = match.Groups[1].Value;
-
-                    // All path params in the URL must be documented.
-                    if (!pathParamElements.Any(p => p.Attribute(KnownXmlStrings.Name)?.Value == pathParamNameFromUrl))
-                    {
-                        throw new UndocumentedPathParameterException(pathParamNameFromUrl, url);
                     }
                 }
             }
