@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
@@ -48,6 +49,27 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                         p => p.Attribute(KnownXmlStrings.Name)?.Value),
                     paramElementsWithoutAllowedValues.Select(
                         p => p.Attribute(KnownXmlStrings.In)?.Value));
+            }
+
+            var url = element.Elements()
+                .FirstOrDefault(p => p.Name == KnownXmlStrings.Url)
+                ?.Value;
+
+            var pathParamElements = paramElements
+                .Where(p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path)
+                .ToList();
+
+            var matches = new Regex(@"\{(.*?)\}").Matches(url.Split('?')[0]);
+
+            foreach (Match match in matches)
+            {
+                var pathParamNameFromUrl = match.Groups[1].Value;
+
+                // All path params in the URL must be documented.
+                if (!pathParamElements.Any(p => p.Attribute(KnownXmlStrings.Name)?.Value == pathParamNameFromUrl))
+                {
+                    throw new UndocumentedPathParameterException(pathParamNameFromUrl, url);
+                }
             }
         }
     }
