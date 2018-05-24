@@ -84,14 +84,16 @@
       <group>Sample V1</group>
       <verb>POST</verb>
       <url>http://localhost:9000/V1/samples/{id}</url>
-      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <!-- Use alternative param tags inconjuction with param tags, in value of param id should be filled from url. -->
+      <header name="sampleHeaderParam1" cref="T:System.Single">Header param 1</header>
       <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
       <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
-      <param name="id" cref="T:System.String" in="path">The object id</param>
+      <param name="id" cref="T:System.String">The object id</param>
       <param name="requestBody">The request body</param>
       <requestType>
         <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3"/>Sample object
       </requestType>
+      <!-- ////////////////////////// -->
       <response code="200">
         <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3"/>Sample object posted
       </response>

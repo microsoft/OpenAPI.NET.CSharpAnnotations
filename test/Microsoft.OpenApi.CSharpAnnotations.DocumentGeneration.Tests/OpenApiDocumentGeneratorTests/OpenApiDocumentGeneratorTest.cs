@@ -253,6 +253,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                                     SpecificationGenerationMessages.ConflictingPathAndQueryParameters,
                                     "id",
                                     "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
+                            },
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(MissingInAttributeException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.MissingInAttribute,
+                                    "id")
                             }
                         }
                     }
