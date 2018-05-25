@@ -31,7 +31,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <swagger>Group1</swagger>
         /// <swagger>Group2</swagger>
         /// <returns>The sample object 1</returns>
-        [HttpPost]
+        [HttpGet]
         [Route("/V1/samples/{id}?queryBool={queryBool}")]
         public Task<SampleObject1> SampleGet1(string id, bool queryBool)
         {
@@ -50,7 +50,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="200"><see cref="SampleObject3"/>Paged Entity contract</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         /// <returns>The sample object 3</returns>
-        [HttpPost]
+        [HttpGet]
         [Route("/V1/samples")]
         public Task<SampleObject3> SampleGet2()
         {
