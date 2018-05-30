@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.ReferenceRegistryTests.Types;
@@ -56,6 +57,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
 
             actualSchema.Should().BeEquivalentTo(expectedSchema);
             actualReferences.Should().BeEquivalentTo(expectedReferences);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldFail))]
+        public void GenerateSchemaFromTypeShouldFail(
+            Type type,
+            string expectedExceptionMessage)
+        {
+            var referenceRegistryManager = new ReferenceRegistryManager();
+
+            Action action = () => referenceRegistryManager.FindOrAddSchemaReference(type);
+            action.Should().Throw<DocumentationException>(expectedExceptionMessage);
         }
 
         public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
@@ -358,6 +371,43 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     [typeof(SampleInnerType).ToString().SanitizeClassName()]
                     = SampleInnerType.schema
                 }
+            };
+
+            //Child and Base class types
+            yield return new object[]
+            {
+                typeof(SampleChildType1),
+                new OpenApiSchema
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.Schema,
+                        Id = typeof(SampleChildType1).ToString().SanitizeClassName()
+                    }
+                },
+                new Dictionary<string, OpenApiSchema>
+                {
+                    [typeof(SampleChildType1).ToString().SanitizeClassName()]
+                    = SampleChildType1.schema,
+                    [typeof(SampleChildType2).ToString().SanitizeClassName()]
+                    = SampleChildType2.schema,
+                    [typeof(SampleBaseType2).ToString().SanitizeClassName()]
+                    = SampleBaseType2.schema
+                }
+            };
+        }
+
+        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldFail()
+        {
+            yield return new object[]
+            {
+                typeof(SampleTypeWithDuplicateProperty),
+                string.Format(SpecificationGenerationMessages.AddingSchemaReferenceFailed,
+                    typeof(SampleTypeWithDuplicateProperty).ToString().SanitizeClassName(),
+                    string.Format(
+                        SpecificationGenerationMessages.DuplicateProperty,
+                        "sampleList",
+                        typeof(SampleTypeWithDuplicateProperty).ToString()))
             };
         }
     }

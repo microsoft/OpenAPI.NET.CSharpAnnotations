@@ -116,6 +116,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                 // We can also assume that the schema is an object type at this point.
                 References[key] = schema;
 
+                var propertyNameDeclaringTypeMap = new Dictionary<string, Type>();
+
                 foreach (var propertyInfo in input.GetProperties())
                 {
                     var ignoreProperty = false;
@@ -166,10 +168,51 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                         }
                     }
 
-                    if (!ignoreProperty)
+                    if (ignoreProperty)
                     {
-                        schema.Properties[propertyName] = innerSchema;
+                        continue;
                     }
+
+                    var propertyDeclaringType = propertyInfo.DeclaringType;
+
+                    if (propertyNameDeclaringTypeMap.ContainsKey(propertyName))
+                    {
+                        var existingPropertyDeclaringType = propertyNameDeclaringTypeMap[propertyName];
+                        bool duplicateProperty = true;
+
+                        if (existingPropertyDeclaringType != null && propertyDeclaringType != null)
+                        {
+                            if (propertyDeclaringType.IsSubclassOf(existingPropertyDeclaringType)
+                                || (existingPropertyDeclaringType.IsInterface
+                                && propertyDeclaringType.ImplementInterface(existingPropertyDeclaringType)))
+                            {
+                                // Current property is on a derived class and hides the existing
+                                schema.Properties[propertyName] = innerSchema;
+                                duplicateProperty = false;
+                            }
+
+                            if (existingPropertyDeclaringType.IsSubclassOf(propertyDeclaringType)
+                                || (propertyDeclaringType.IsInterface
+                                && existingPropertyDeclaringType.ImplementInterface(propertyDeclaringType)))
+                            {
+                                // current property is hidden by the existing so don't add it
+                                continue;
+                            }
+                        }
+
+                        if (duplicateProperty)
+                        {
+                            throw new AddingSchemaReferenceFailedException(
+                                key,
+                                string.Format(
+                                    SpecificationGenerationMessages.DuplicateProperty,
+                                    propertyName,
+                                    input));
+                        }
+                    }
+
+                    schema.Properties[propertyName] = innerSchema;
+                    propertyNameDeclaringTypeMap.Add(propertyName, propertyDeclaringType);
                 }
 
                 References[key] = schema;
