@@ -77,6 +77,26 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         }
 
         /// <summary>
+        /// Determines whether the given type implements the given interface type.
+        /// </summary>
+        public static bool ImplementInterface(this Type type, Type interfaceType)
+        {
+            for (Type currentType = type; currentType != null; currentType = currentType.BaseType)
+            {
+                IEnumerable<Type> interfaces = currentType.GetInterfaces();
+                foreach (Type i in interfaces)
+                {
+                    if (i == interfaceType || (i != null && i.ImplementInterface(interfaceType)))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Determines whether the given type is a dictionary.
         /// </summary>
         public static bool IsDictionary(this Type type)
