@@ -116,7 +116,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                 // We can also assume that the schema is an object type at this point.
                 References[key] = schema;
 
-                var PropertyNameDeclaringTypeMap = new Dictionary<string, Type>();
+                var propertyNameDeclaringTypeMap = new Dictionary<string, Type>();
 
                 foreach (var propertyInfo in input.GetProperties())
                 {
@@ -175,9 +175,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
 
                     var propertyDeclaringType = propertyInfo.DeclaringType;
 
-                    if (PropertyNameDeclaringTypeMap.ContainsKey(propertyName))
+                    if (propertyNameDeclaringTypeMap.ContainsKey(propertyName))
                     {
-                        var existingPropertyDeclaringType = PropertyNameDeclaringTypeMap[propertyName];
+                        var existingPropertyDeclaringType = propertyNameDeclaringTypeMap[propertyName];
                         bool duplicateProperty = true;
 
                         if (existingPropertyDeclaringType != null && propertyDeclaringType != null)
@@ -212,7 +212,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     }
 
                     schema.Properties[propertyName] = innerSchema;
-                    PropertyNameDeclaringTypeMap.Add(propertyName, propertyDeclaringType);
+                    propertyNameDeclaringTypeMap.Add(propertyName, propertyDeclaringType);
                 }
 
                 References[key] = schema;
