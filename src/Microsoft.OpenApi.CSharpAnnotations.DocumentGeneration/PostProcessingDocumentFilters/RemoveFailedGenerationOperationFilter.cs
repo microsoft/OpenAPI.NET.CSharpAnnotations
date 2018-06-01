@@ -5,6 +5,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingDocumentFilters
@@ -23,14 +24,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingD
             OpenApiDocument openApiDocument,
             PostProcessingDocumentFilterSettings settings)
         {
-            if(openApiDocument == null || settings == null)
+            if (openApiDocument == null || settings == null)
             {
                 return;
             }
 
+            // Remove all operations with generation errors except for with DuplicateOperationException as only the
+            // first occurrence of the duplicate paths added to the document and rest all are never added to the document.
             foreach (var operationDiagnostic in
                 settings.OperationGenerationDiagnostics.Where(
-                    operationDiagnostic => operationDiagnostic.Errors.Any()))
+                    operationDiagnostic => operationDiagnostic.Errors.Any()
+                    && operationDiagnostic.Errors.Any(i => i.ExceptionType
+                    != typeof(DuplicateOperationException).Name)))
             {
                 if (!Enum.TryParse(operationDiagnostic.OperationMethod, true, out OperationType operationMethod) ||
                     !openApiDocument.Paths.ContainsKey(operationDiagnostic.Path))

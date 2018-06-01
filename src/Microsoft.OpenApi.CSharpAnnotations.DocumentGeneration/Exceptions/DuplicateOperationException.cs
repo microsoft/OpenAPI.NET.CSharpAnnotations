@@ -22,8 +22,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="DuplicateOperationException"/>.
         /// </summary>
-        public DuplicateOperationException(string path, string operationMethod)
-            : base(string.Format(SpecificationGenerationMessages.DuplicateOperation, operationMethod, path))
+        public DuplicateOperationException(string path, string operationMethod, string documentVariantTitle = null)
+            : base(string.IsNullOrWhiteSpace(documentVariantTitle)
+                ? string.Format(SpecificationGenerationMessages.DuplicateOperation, operationMethod, path)
+                : string.Format(SpecificationGenerationMessages.DuplicateOperationWithVariantInfo, operationMethod,
+                    path, documentVariantTitle))
         {
         }
 
