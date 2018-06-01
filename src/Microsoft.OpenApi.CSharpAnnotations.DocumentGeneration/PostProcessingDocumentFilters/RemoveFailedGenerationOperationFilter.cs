@@ -29,8 +29,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingD
                 return;
             }
 
-            // Remove all operations with generation errors except for with DuplicateOperationException as duplicate for
-            // those operations are never added to the document.
+            // Remove all operations with generation errors except for with DuplicateOperationException as only the
+            // first occurrence of the duplicate paths added to the document and rest all are never added to the document.
             foreach (var operationDiagnostic in
                 settings.OperationGenerationDiagnostics.Where(
                     operationDiagnostic => operationDiagnostic.Errors.Any()
