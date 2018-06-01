@@ -25,12 +25,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     internal class InternalOpenApiGenerator
     {
-        private readonly IList<IDocumentFilter> _documentFilters;
         private readonly IList<IDocumentConfigFilter> _documentConfigFilters;
-        private readonly IList<IOperationFilter> _operationFilters;
+        private readonly IList<IDocumentFilter> _documentFilters;
         private readonly IList<IOperationConfigFilter> _operationConfigFilters;
-        private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
+        private readonly IList<IOperationFilter> _operationFilters;
         private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
+        private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
@@ -85,7 +85,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             ExceptionType = e.GetType().Name,
                             Message = e.Message
                         }
-                  );
+                    );
                 }
             }
 
@@ -132,7 +132,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     ExceptionType = e.GetType().Name,
                                     Message = e.Message
                                 }
-                          );
+                            );
                         }
                     }
 
@@ -161,7 +161,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                         ExceptionType = e.GetType().Name,
                                         Message = e.Message
                                     }
-                              );
+                                );
                             }
                         }
                     }
@@ -196,7 +196,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     {
                         if (documentPaths[path].Operations.ContainsKey(operationMethod))
                         {
-                            throw new DuplicateOperationException(path, operationMethod.ToString());
+                            throw new DuplicateOperationException(
+                                path,
+                                operationMethod.ToString(),
+                                documentVariantInfo.Title);
                         }
 
                         documentPaths[path].Operations.Add(operationMethod, operation);
@@ -257,7 +260,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             if (!operationElements.Any())
             {
-                generationDiagnostic = new GenerationDiagnostic()
+                generationDiagnostic = new GenerationDiagnostic
                 {
                     DocumentGenerationDiagnostic = new DocumentGenerationDiagnostic
                     {
@@ -336,7 +339,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     {
                         filter.Apply(
                             openApiDocument,
-                            new PostProcessingDocumentFilterSettings()
+                            new PostProcessingDocumentFilterSettings
                             {
                                 OperationGenerationDiagnostics = operationGenerationDiagnostics
                             });
@@ -480,10 +483,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     continue;
                 }
 
+                var operationGenerationErrors = new List<GenerationError>();
+
                 try
                 {
-                    var operationGenerationErrors = new List<GenerationError>();
-
                     AddOperation(
                         specificationDocuments,
                         referenceRegistryManagerMap,
@@ -492,9 +495,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         operationElement,
                         operationConfigElement,
                         typeFetcher);
+                }
+                catch (Exception e)
+                {
+                    operationGenerationErrors.Add(
+                        new GenerationError
+                        {
+                            ExceptionType = e.GetType().Name,
+                            Message = e.Message
+                        });
+                }
 
-                    var customElements = operationElement.Descendants(documentVariantElementName);
-                    foreach (var customElement in customElements)
+                var customElements = operationElement.Descendants(documentVariantElementName);
+                foreach (var customElement in customElements)
+                {
+                    try
                     {
                         var documentVariantInfo = new DocumentVariantInfo
                         {
@@ -511,40 +526,32 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             operationConfigElement,
                             typeFetcher);
                     }
-
-                    var operationGenerationResult = new OperationGenerationDiagnostic
+                    catch (Exception e)
                     {
-                        OperationMethod = operationMethod.ToString(),
-                        Path = url
-                    };
-
-                    if (operationGenerationErrors.Any())
-                    {
-                        foreach (var error in operationGenerationErrors)
-                        {
-                            operationGenerationResult.Errors.Add(new GenerationError(error));
-                        }
-                    }
-
-                    operationGenerationResults.Add(operationGenerationResult);
-                }
-                catch (Exception e)
-                {
-                    operationGenerationResults.Add(
-                        new OperationGenerationDiagnostic
-                        {
-                            Errors =
+                        operationGenerationErrors.Add(
+                            new GenerationError
                             {
-                                new GenerationError
-                                {
-                                    ExceptionType = e.GetType().Name,
-                                    Message = e.Message
-                                }
-                            },
-                            OperationMethod = operationMethod.ToString(),
-                            Path = url
-                        });
+                                ExceptionType = e.GetType().Name,
+                                Message = e.Message
+                            });
+                    }
                 }
+
+                var operationGenerationResult = new OperationGenerationDiagnostic
+                {
+                    OperationMethod = operationMethod.ToString(),
+                    Path = url
+                };
+
+                if (operationGenerationErrors.Any())
+                {
+                    foreach (var error in operationGenerationErrors)
+                    {
+                        operationGenerationResult.Errors.Add(new GenerationError(error));
+                    }
+                }
+
+                operationGenerationResults.Add(operationGenerationResult);
             }
 
             foreach (var documentVariantInfo in specificationDocuments.Keys)
@@ -559,7 +566,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         private List<T> TypeCastFilters<T>(FilterSet filtersToTypeCast) where T : IFilter
         {
-            return filtersToTypeCast.Where(filter => filter is T).Select(filter => (T)filter).ToList();
+            return filtersToTypeCast.OfType<T>().ToList();
         }
     }
 }

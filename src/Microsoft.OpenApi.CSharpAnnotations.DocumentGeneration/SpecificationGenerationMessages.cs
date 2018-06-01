@@ -25,6 +25,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string DuplicateOperation = "There are duplicates for the operation: \"{0}\" \"{1}\"";
 
+        public const string DuplicateOperationWithVariantInfo = "There are duplicates for the operation: \"{0}\" "+
+            "\"{1}\" for variant: \"{2}\"";
+
         public const string DuplicateProperty = "A property with the name \"{0}\" already exists on \"{1}\"";
 
         public const string FilterSetVersionNotSupported = "Provided filter set version: \"{0}\" is not supported.";

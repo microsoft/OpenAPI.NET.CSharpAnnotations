@@ -41,6 +41,9 @@
       <None Update="DocumentVariantTests\Input\Annotation.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="DocumentVariantTests\Input\AnnotationWithDuplicatePaths.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="DocumentVariantTests\Input\AnnotationWithVariantAttributes.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -78,6 +81,15 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="DocumentVariantTests\Output\AnnotationsWithCommonAnnotations\AnnotationVariantSwaggerGroup2.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="DocumentVariantTests\Output\AnnotationsWithDuplicatePaths\AnnotationDefaultVariant.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="DocumentVariantTests\Output\AnnotationsWithDuplicatePaths\AnnotationVariantSwaggerGroup1.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="DocumentVariantTests\Output\AnnotationsWithDuplicatePaths\AnnotationVariantSwaggerGroup2.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="DocumentVariantTests\Output\AnnotationVariantSwaggerGroup1.json">
@@ -293,5 +305,9 @@
       <None Update="TypeFetcherTests\Input\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DocumentVariantTests\Output\AnnotationsWithDuplicatePaths\" />
     </ItemGroup>
 </Project>

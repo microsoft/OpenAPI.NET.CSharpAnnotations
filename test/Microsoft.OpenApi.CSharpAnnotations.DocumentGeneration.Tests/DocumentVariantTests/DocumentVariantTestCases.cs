@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
+using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentVariantTests
 {
@@ -17,6 +18,220 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
         private const string CommonAnnotationsDirectory =
             "AnnotationsWithCommonAnnotations";
 
+        private const string AnnotationsDuplicatePathDirectory =
+            "AnnotationsWithDuplicatePaths";
+
+        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldSucceed()
+        {
+            // One document variant tag name
+            yield return new object[]
+            {
+                "One document variant tag name",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                Path.Combine(
+                    InputDirectory,
+                    "ConfigOneDocumentVariantTag.xml"),
+                9,
+                new Dictionary<DocumentVariantInfo, string>
+                {
+                    [DocumentVariantInfo.Default] =
+                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group1",
+                        Attributes =
+                        {
+                            ["security"] = "sg1",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2",
+                        Attributes =
+                        {
+                            ["security"] = "sgnotexist",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json")
+                }
+            };
+
+            // One document variant tag name with no option tags.
+            // Everything should still be as if the option tags were present, except that the attributes
+            // should not be populated.
+            yield return new object[]
+            {
+                "One document variant tag name with no option tags",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                Path.Combine(
+                    InputDirectory,
+                    "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
+                9,
+                new Dictionary<DocumentVariantInfo, string>
+                {
+                    [DocumentVariantInfo.Default] =
+                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group1"
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2"
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json")
+                }
+            };
+
+            // Document variant info inside document annotation with no options in the config
+            // The result should succeed and be populated with the information from the annotation.
+            yield return new object[]
+            {
+                "Document variant info inside document annotation with no options in the config",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                Path.Combine(
+                    InputDirectory,
+                    "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
+                9,
+                new Dictionary<DocumentVariantInfo, string>
+                {
+                    [DocumentVariantInfo.Default] = Path.Combine(
+                        OutputDirectory,
+                        "AnnotationDefaultVariant.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group1",
+                        Attributes =
+                        {
+                            ["security"] = "sg1",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(
+                        OutputDirectory,
+                        "AnnotationVariantSwaggerGroup1.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2"
+                    }] = Path.Combine(
+                        OutputDirectory,
+                        "AnnotationVariantSwaggerGroup2.json")
+                }
+            };
+
+            // Document variant info inside document annotation with redundant, non-conflicting information in the config
+            // The result should succeed and be populated with the information from the config, which
+            // is identical to the information in the annotation.
+            yield return new object[]
+            {
+                "Document variant info inside document annotation with redundant, non-conflicting information in the config",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                Path.Combine(
+                    InputDirectory,
+                    "ConfigOneDocumentVariantTag.xml"),
+                9,
+                new Dictionary<DocumentVariantInfo, string>
+                {
+                    [DocumentVariantInfo.Default] = Path.Combine(
+                        OutputDirectory,
+                        "AnnotationDefaultVariant.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group1",
+                        Attributes =
+                        {
+                            ["security"] = "sg1",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(
+                        OutputDirectory,
+                        "AnnotationVariantSwaggerGroup1.json"),
+                    [new DocumentVariantInfo
+                    {
+                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
+                        Categorizer = "swagger",
+                        Title = "Group2",
+                        Attributes =
+                        {
+                            ["security"] = "sgnotexist",
+                            ["version"] = "V2"
+                        }
+                    }] = Path.Combine(
+                        OutputDirectory,
+                        "AnnotationVariantSwaggerGroup2.json")
+                }
+            };
+        }
+
         public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldYieldFailure()
         {
             // Document variant info inside document annotation that self-conflicts.
@@ -26,7 +241,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithSelf.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -56,7 +272,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                             ["security"] = "sg1",
                             ["version"] = "V2"
                         }
-                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json")
                 },
                 new DocumentGenerationDiagnostic
                 {
@@ -70,18 +286,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                                 "swagger",
                                 "Group1",
                                 new Dictionary<string, string>
-                                    {
-                                        ["security"] = "sg1",
-                                        ["version"] = "V2"
-                                    }.ToSerializedString(),
+                                {
+                                    ["security"] = "sg1",
+                                    ["version"] = "V2"
+                                }.ToSerializedString(),
                                 new Dictionary<string, string>
-                                    {
-                                        ["security"] = "sg1",
-                                        ["version"] = "VConflict"
-                                    }.ToSerializedString()),
+                                {
+                                    ["security"] = "sg1",
+                                    ["version"] = "VConflict"
+                                }.ToSerializedString())
                         }
                     }
-                }
+                },
+                new List<OperationGenerationDiagnostic>()
             };
 
             // Document variant info inside document annotation that conflicts with the config.
@@ -91,7 +308,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationWithVariantAttributesConflictWithConfig.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -132,7 +350,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                             ["security"] = "sgnotexist",
                             ["version"] = "V2"
                         }
-                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
+                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json")
                 },
                 new DocumentGenerationDiagnostic
                 {
@@ -150,14 +368,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                                     ["security"] = "sg1",
                                     ["version"] = "V2"
                                 }.ToSerializedString(),
-                               new Dictionary<string, string>
-                               {
+                                new Dictionary<string, string>
+                                {
                                     ["security"] = "sg1",
                                     ["version"] = "VConflict"
-                               }.ToSerializedString()),
+                                }.ToSerializedString())
                         }
                     }
-                }
+                },
+                new List<OperationGenerationDiagnostic>()
             };
 
             // Multiple document variant tag names with common annotations
@@ -167,7 +386,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "Annotation.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -215,7 +435,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                     }] = Path.Combine(
                         OutputDirectory,
                         CommonAnnotationsDirectory,
-                        "AnnotationVariantSwaggerGroup2.json"),
+                        "AnnotationVariantSwaggerGroup2.json")
                 },
                 new DocumentGenerationDiagnostic
                 {
@@ -228,73 +448,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                                 "swagger")
                         }
                     }
-                }
-            };
-        }
-
-        public static IEnumerable<object[]> GetTestCasesForGenerateDocumentMultipleVariantsShouldSucceed()
-        {
-            // One document variant tag name
-            yield return new object[]
-            {
-                "One document variant tag name",
-                new List<string>
-                {
-                    Path.Combine(InputDirectory, "Annotation.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
-                },
-                Path.Combine(
-                    InputDirectory,
-                    "ConfigOneDocumentVariantTag.xml"),
-                9,
-                new Dictionary<DocumentVariantInfo, string>
-                {
-                    [DocumentVariantInfo.Default] =
-                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
-                    [new DocumentVariantInfo
-                    {
-                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
-                        Categorizer = "swagger",
-                        Title = "Group1",
-                        Attributes =
-                        {
-                            ["security"] = "sg1",
-                            ["version"] = "V2"
-                        }
-                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
-                    [new DocumentVariantInfo
-                    {
-                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
-                        Categorizer = "swagger",
-                        Title = "Group2",
-                        Attributes =
-                        {
-                            ["security"] = "sgnotexist",
-                            ["version"] = "V2"
-                        }
-                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
-                },
+                new List<OperationGenerationDiagnostic>()
             };
 
-            // One document variant tag name with no option tags.
-            // Everything should still be as if the option tags were present, except that the attributes
-            // should not be populated.
+            // Document variant info with duplicate paths for a variant.
             yield return new object[]
             {
-                "One document variant tag name with no option tags",
+                "Document variant info with duplicate paths for a variant",
                 new List<string>
                 {
-                    Path.Combine(InputDirectory, "Annotation.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory, "AnnotationWithDuplicatePaths.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -308,133 +474,65 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DocumentV
                 Path.Combine(
                     InputDirectory,
                     "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
-                9,
+                3,
                 new Dictionary<DocumentVariantInfo, string>
                 {
                     [DocumentVariantInfo.Default] =
-                    Path.Combine(OutputDirectory, "AnnotationDefaultVariant.json"),
+                    Path.Combine(OutputDirectory, AnnotationsDuplicatePathDirectory, "AnnotationDefaultVariant.json"),
                     [new DocumentVariantInfo
                     {
-                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
                         Categorizer = "swagger",
                         Title = "Group1"
-                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup1.json"),
-                    [new DocumentVariantInfo
-                    {
-                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
-                        Categorizer = "swagger",
-                        Title = "Group2",
-                    }] = Path.Combine(OutputDirectory, "AnnotationVariantSwaggerGroup2.json"),
-                },
-            };
-
-            // Document variant info inside document annotation with no options in the config
-            // The result should succeed and be populated with the information from the annotation.
-            yield return new object[]
-            {
-                "Document variant info inside document annotation with no options in the config",
-                new List<string>
-                {
-                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
-                },
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
-                },
-                Path.Combine(
-                    InputDirectory,
-                    "ConfigOneDocumentVariantTagSwaggerNoOptions.xml"),
-                9,
-                new Dictionary<DocumentVariantInfo, string>
-                {
-                    [DocumentVariantInfo.Default] = Path.Combine(
-                        OutputDirectory,
-                        "AnnotationDefaultVariant.json"),
-                    [new DocumentVariantInfo
-                    {
-                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
-                        Categorizer = "swagger",
-                        Title = "Group1",
-                        Attributes =
-                        {
-                            ["security"] = "sg1",
-                            ["version"] = "V2"
-                        }
-                    }] = Path.Combine(
-                        OutputDirectory,
+                    }] = Path.Combine(OutputDirectory, AnnotationsDuplicatePathDirectory,
                         "AnnotationVariantSwaggerGroup1.json"),
                     [new DocumentVariantInfo
                     {
-                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
                         Categorizer = "swagger",
-                        Title = "Group2",
-                    }] = Path.Combine(
-                        OutputDirectory,
-                        "AnnotationVariantSwaggerGroup2.json"),
-                }
-            };
-
-            // Document variant info inside document annotation with redundant, non-conflicting information in the config
-            // The result should succeed and be populated with the information from the config, which
-            // is identical to the information in the annotation.
-            yield return new object[]
-            {
-                "Document variant info inside document annotation with redundant, non-conflicting information in the config",
-                new List<string>
-                {
-                    Path.Combine(InputDirectory, "AnnotationWithVariantAttributes.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                        Title = "Group2"
+                    }] = Path.Combine(OutputDirectory, AnnotationsDuplicatePathDirectory,
+                        "AnnotationVariantSwaggerGroup2.json")
                 },
-                new List<string>
+                new DocumentGenerationDiagnostic
                 {
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                3,
+                                4)
+                        }
+                    }
                 },
-                Path.Combine(
-                    InputDirectory,
-                    "ConfigOneDocumentVariantTag.xml"),
-                9,
-                new Dictionary<DocumentVariantInfo, string>
+                new List<OperationGenerationDiagnostic>
                 {
-                    [DocumentVariantInfo.Default] = Path.Combine(
-                        OutputDirectory,
-                        "AnnotationDefaultVariant.json"),
-                    [new DocumentVariantInfo
+                    new OperationGenerationDiagnostic
                     {
-                        // Only contains info from operations with swagger tags with title "Group1" in Annotation.xml 
-                        Categorizer = "swagger",
-                        Title = "Group1",
-                        Attributes =
+                        OperationMethod = OperationType.Get.ToString(),
+                        Path = "/V1/samples/{id}",
+                        Errors =
                         {
-                            ["security"] = "sg1",
-                            ["version"] = "V2"
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(DuplicateOperationException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.DuplicateOperation,
+                                    OperationType.Get,
+                                    "/V1/samples/{id}")
+                            },
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(DuplicateOperationException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.DuplicateOperationWithVariantInfo,
+                                    OperationType.Get,
+                                    "/V1/samples/{id}",
+                                    "Group1")
+                            }
                         }
-                    }] = Path.Combine(
-                        OutputDirectory,
-                        "AnnotationVariantSwaggerGroup1.json"),
-                    [new DocumentVariantInfo
-                    {
-                        // Only contains info from operations with swagger tags with title "Group2" in Annotation.xml 
-                        Categorizer = "swagger",
-                        Title = "Group2",
-                        Attributes =
-                        {
-                            ["security"] = "sgnotexist",
-                            ["version"] = "V2"
-                        }
-                    }] = Path.Combine(
-                        OutputDirectory,
-                        "AnnotationVariantSwaggerGroup2.json"),
+                    }
                 }
             };
         }
