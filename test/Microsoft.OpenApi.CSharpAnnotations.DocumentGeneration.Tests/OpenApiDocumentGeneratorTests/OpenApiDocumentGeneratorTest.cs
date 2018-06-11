@@ -577,6 +577,35 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             };
         }
 
+        public static IEnumerable<object[]> GetTestCasesForCustomSchemaGenerationSettingsShouldReturnCorrectDocument()
+        {
+            // Standard, original valid XML document
+            yield return new object[]
+            {
+                "Standard valid XML document",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                "1.0.0",
+                new SchemaGenerationSettings(new CamelCasePropertyNameResolver()),
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationCamelCase.Json"),
+            };
+        }
+
         public static IEnumerable<object[]> GetTestCasesForValidDocumentationShouldReturnCorrectDocument()
         {
             // Standard, original valid XML document
@@ -1093,6 +1122,63 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             actualDeserializedDocument
                 .Should()
                 .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
+        }
+
+        [Theory]
+        [MemberData( nameof( GetTestCasesForCustomSchemaGenerationSettingsShouldReturnCorrectDocument ) )]
+        public void CustomSchemaGenerationSettingsShouldReturnCorrectDocument(
+            string testCaseName,
+            IList<string> inputXmlFiles,
+            IList<string> inputBinaryFiles,
+            string openApiDocumentVersion,
+            SchemaGenerationSettings generationSettings,
+            int expectedOperationGenerationResultsCount,
+            string expectedJsonFile )
+        {
+            _output.WriteLine( testCaseName );
+
+            var documents = new List<XDocument>();
+
+            documents.AddRange( inputXmlFiles.Select( XDocument.Load ) );
+
+            var input = new OpenApiGeneratorConfig(
+                documents,
+                inputBinaryFiles,
+                openApiDocumentVersion,
+                new OpenApiGeneratorFilterConfig(FilterSetVersion.V1),
+                generationSettings );
+
+            GenerationDiagnostic result;
+
+            var generator = new OpenApiGenerator();
+            var openApiDocuments = generator.GenerateDocuments( input, out result );
+
+            result.Should().NotBeNull();
+
+            result.DocumentGenerationDiagnostic.Errors.Count.Should().Be( 0 );
+
+            openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+
+            result.OperationGenerationDiagnostics.Count( p => p.Errors.Count > 0 ).Should().Be( 0 );
+            result.OperationGenerationDiagnostics.Count.Should().Be( expectedOperationGenerationResultsCount );
+
+            var actualDocument = openApiDocuments[DocumentVariantInfo.Default]
+                .SerializeAsJson( OpenApiSpecVersion.OpenApi3_0 );
+            var expectedDocument = File.ReadAllText( expectedJsonFile );
+
+            _output.WriteLine( actualDocument );
+
+            var openApiStringReader = new OpenApiStringReader();
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic );
+
+            diagnostic.Errors.Count.Should().Be( 0 );
+
+            actualDeserializedDocument
+                .Should()
+                .BeEquivalentTo( openApiStringReader.Read( expectedDocument, out var _ ) );
         }
 
         [Theory]

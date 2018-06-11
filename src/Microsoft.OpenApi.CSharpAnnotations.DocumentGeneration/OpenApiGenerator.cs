@@ -52,7 +52,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             }
 
             var internalOpenApiGenerator = new InternalOpenApiGenerator(
-                openApiGeneratorConfig.OpenApiGeneratorFilterConfig);
+                openApiGeneratorConfig.OpenApiGeneratorFilterConfig,
+                openApiGeneratorConfig.SchemaGenerationSettings);
 
             return internalOpenApiGenerator.GenerateOpenApiDocuments(
                 openApiGeneratorConfig.AnnotationXmlDocuments,

@@ -31,13 +31,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         private readonly IList<IOperationFilter> _operationFilters;
         private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
         private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
+        private readonly SchemaGenerationSettings _schemaGenerationSettings;
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
         /// </summary>
         /// <param name="openApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# annotations.</param>
-        public InternalOpenApiGenerator(OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
+        /// <param name="schemaGenerationSettings">The settings to use for schema generation.</param>
+        public InternalOpenApiGenerator(
+            OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig,
+            SchemaGenerationSettings schemaGenerationSettings)
         {
             if (openApiGeneratorFilterConfig == null)
             {
@@ -52,6 +56,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 openApiGeneratorFilterConfig.Filters);
             _postProcessingDocumentFilters = TypeCastFilters<IPostProcessingDocumentFilter>(
                 openApiGeneratorFilterConfig.Filters);
+            _schemaGenerationSettings = schemaGenerationSettings;
         }
 
         /// <summary>
@@ -91,7 +96,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             if (!referenceRegistryManagerMap.ContainsKey(documentVariantInfo))
             {
-                referenceRegistryManagerMap[documentVariantInfo] = new ReferenceRegistryManager();
+                referenceRegistryManagerMap[documentVariantInfo] =
+                    new ReferenceRegistryManager(_schemaGenerationSettings);
             }
 
             foreach (var pathToPathItem in paths)
@@ -321,7 +327,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                 new DocumentFilterSettings
                                 {
                                     TypeFetcher = typeFetcher,
-                                    OpenApiDocumentVersion = openApiDocumentVersion
+                                    OpenApiDocumentVersion = openApiDocumentVersion,
+                                    PropertyNameResolver = _schemaGenerationSettings.PropertyNameResolver
                                 });
                         }
                         catch (Exception e)

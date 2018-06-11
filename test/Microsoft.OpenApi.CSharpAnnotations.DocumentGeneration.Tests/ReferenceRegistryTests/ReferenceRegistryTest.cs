@@ -29,6 +29,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
         }
 
         [Theory]
+        [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldFail))]
+        public void GenerateSchemaFromTypeShouldFail(
+            Type type,
+            string expectedExceptionMessage)
+        {
+            var referenceRegistryManager =
+                new ReferenceRegistryManager(new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
+
+            Action action = () => referenceRegistryManager.FindOrAddSchemaReference(type);
+            action.Should().Throw<DocumentationException>(expectedExceptionMessage);
+        }
+
+        [Theory]
         [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldSucceed))]
         public void GenerateSchemaFromTypeShouldSucceed(
             Type type,
@@ -38,7 +51,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
             _output.WriteLine(type.ToString());
 
             // Arrange
-            var referenceRegistryManager = new ReferenceRegistryManager();
+            var referenceRegistryManager =
+                new ReferenceRegistryManager(new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
 
             // Act
             var returnedSchema =
@@ -59,16 +73,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
             actualReferences.Should().BeEquivalentTo(expectedReferences);
         }
 
-        [Theory]
-        [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldFail))]
-        public void GenerateSchemaFromTypeShouldFail(
-            Type type,
-            string expectedExceptionMessage)
+        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldFail()
         {
-            var referenceRegistryManager = new ReferenceRegistryManager();
-
-            Action action = () => referenceRegistryManager.FindOrAddSchemaReference(type);
-            action.Should().Throw<DocumentationException>(expectedExceptionMessage);
+            yield return new object[]
+            {
+                typeof(SampleTypeWithDuplicateProperty),
+                string.Format(SpecificationGenerationMessages.AddingSchemaReferenceFailed,
+                    typeof(SampleTypeWithDuplicateProperty).ToString().SanitizeClassName(),
+                    string.Format(
+                        SpecificationGenerationMessages.DuplicateProperty,
+                        "sampleList",
+                        typeof(SampleTypeWithDuplicateProperty)))
+            };
         }
 
         public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
@@ -240,7 +256,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     = SampleInnerType.schema,
                     [typeof(SampleType).ToString().SanitizeClassName()]
                     = SampleType.schema
-                },
+                }
             };
             yield return new object[]
             {
@@ -263,7 +279,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     = SampleInnerType.schema,
                     [typeof(SampleType).ToString().SanitizeClassName()]
                     = SampleType.schema
-                },
+                }
             };
 
             // Generic types
@@ -282,7 +298,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 {
                     [typeof(SampleGenericType<string>).ToString().SanitizeClassName()]
                     = SampleGenericType<string>.schemaString
-                },
+                }
             };
             yield return new object[]
             {
@@ -394,20 +410,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     [typeof(SampleBaseType2).ToString().SanitizeClassName()]
                     = SampleBaseType2.schema
                 }
-            };
-        }
-
-        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldFail()
-        {
-            yield return new object[]
-            {
-                typeof(SampleTypeWithDuplicateProperty),
-                string.Format(SpecificationGenerationMessages.AddingSchemaReferenceFailed,
-                    typeof(SampleTypeWithDuplicateProperty).ToString().SanitizeClassName(),
-                    string.Format(
-                        SpecificationGenerationMessages.DuplicateProperty,
-                        "sampleList",
-                        typeof(SampleTypeWithDuplicateProperty).ToString()))
             };
         }
     }

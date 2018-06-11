@@ -16,10 +16,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
     {
         /// <summary>
         /// Creates an instance of <see cref="ReferenceRegistryManager"/> class.
+        /// <param name="schemaGenerationSettings">The schema generation settings.</param>
         /// </summary>
-        public ReferenceRegistryManager()
+        public ReferenceRegistryManager(SchemaGenerationSettings schemaGenerationSettings)
         {
-            SchemaReferenceRegistry = new SchemaReferenceRegistry();
+            SchemaReferenceRegistry = new SchemaReferenceRegistry(schemaGenerationSettings);
             ExampleReferenceRegistry = new ExampleReferenceRegistry();
             ParameterReferenceRegistry = new ParameterReferenceRegistry(
                 SchemaReferenceRegistry,

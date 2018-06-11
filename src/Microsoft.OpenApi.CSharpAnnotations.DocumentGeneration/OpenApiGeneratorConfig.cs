@@ -13,6 +13,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     public class OpenApiGeneratorConfig
     {
+        private static readonly SchemaGenerationSettings DefaultSchemaGenerationSettings
+            = new SchemaGenerationSettings(new DefaultPropertyNameResolver());
+
         /// <summary>
         /// Creates a new instance of <see cref="OpenApiGeneratorConfig"/>.
         /// </summary>
@@ -27,12 +30,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
             string openApiDocumentVersion,
-            FilterSetVersion filterSetVersion) 
+            FilterSetVersion filterSetVersion)
             : this(
-                  annotationXmlDocuments,
-                  assemblyPaths,
-                  openApiDocumentVersion,
-                  new OpenApiGeneratorFilterConfig(filterSetVersion))
+                annotationXmlDocuments,
+                assemblyPaths,
+                openApiDocumentVersion,
+                new OpenApiGeneratorFilterConfig(filterSetVersion),
+                DefaultSchemaGenerationSettings)
         {
         }
 
@@ -46,11 +50,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
         /// <param name="openApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# annotations.</param>
+        /// <param name="schemaGenerationSettings">The settings that will be used while generating schema.</param>
         public OpenApiGeneratorConfig(
             IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
             string openApiDocumentVersion,
-            OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
+            OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig,
+            SchemaGenerationSettings schemaGenerationSettings)
         {
             AnnotationXmlDocuments = annotationXmlDocuments
                 ?? throw new ArgumentNullException(nameof(annotationXmlDocuments));
@@ -67,6 +73,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             }
 
             OpenApiDocumentVersion = openApiDocumentVersion;
+            SchemaGenerationSettings = schemaGenerationSettings;
         }
 
         /// <summary>
@@ -86,11 +93,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         public IList<string> AssemblyPaths { get; }
 
         /// <summary>
-        /// The version of the filter set to use to generate an OpenAPI document.
-        /// </summary>
-        public FilterSetVersion FilterSetVersion { get; }
-
-        /// <summary>
         /// The version of the OpenAPI document.
         /// </summary>
         public string OpenApiDocumentVersion { get; }
@@ -100,5 +102,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// document from C# annotations.
         /// </summary>
         public OpenApiGeneratorFilterConfig OpenApiGeneratorFilterConfig { get; }
+
+        /// <summary>
+        /// The settings to use while generating schema.
+        /// </summary>
+        public SchemaGenerationSettings SchemaGenerationSettings { get; }
     }
 }

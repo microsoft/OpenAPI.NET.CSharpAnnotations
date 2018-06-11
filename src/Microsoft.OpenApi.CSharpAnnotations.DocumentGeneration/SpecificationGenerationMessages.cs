@@ -23,7 +23,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         public const string ConflictingPathAndQueryParameters =
             "The parameter \"{0}\" is present in both path and query of the url \"{1}\".";
 
-        public const string DuplicateOperation = "There are duplicates for the operation: \"{0}\" \"{1}\"" +
+        public const string DuplicateOperation = "There are duplicates for the operation: \"{0}\" \"{1}\". " +
             "Only the first occurrence of it added to the generated document, " +
             "rest all are omitted from the generated document.";
 

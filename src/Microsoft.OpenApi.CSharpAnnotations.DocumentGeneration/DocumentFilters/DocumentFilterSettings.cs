@@ -11,13 +11,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
     public class DocumentFilterSettings
     {
         /// <summary>
-        /// Gets or sets the type fetcher.
-        /// </summary>
-        public TypeFetcher TypeFetcher { get; set; }
-
-        /// <summary>
         /// Gets or sets the OpenAPI document version.
         /// </summary>
         public string OpenApiDocumentVersion { get; set; }
+
+        /// <summary>
+        /// The property name resolver.
+        /// </summary>
+        public IPropertyNameResolver PropertyNameResolver { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type fetcher.
+        /// </summary>
+        public TypeFetcher TypeFetcher { get; set; }
     }
 }
