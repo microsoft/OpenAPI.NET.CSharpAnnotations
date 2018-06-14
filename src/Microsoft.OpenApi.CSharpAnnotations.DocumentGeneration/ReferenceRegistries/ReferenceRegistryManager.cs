@@ -20,7 +20,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         /// </summary>
         public ReferenceRegistryManager(OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings)
         {
-            if(openApiDocumentGenerationSettings == null)
+            if (openApiDocumentGenerationSettings == null)
             {
                 throw new ArgumentNullException(nameof(openApiDocumentGenerationSettings));
             }

@@ -59,8 +59,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 openApiGeneratorFilterConfig.Filters);
             _postProcessingDocumentFilters = TypeCastFilters<IPostProcessingDocumentFilter>(
                 openApiGeneratorFilterConfig.Filters);
-
-            
         }
 
         /// <summary>

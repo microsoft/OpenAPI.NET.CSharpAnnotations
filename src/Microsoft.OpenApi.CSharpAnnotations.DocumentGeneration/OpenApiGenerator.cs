@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 }
             }
 
-            if(openApiDocumentGenerationSettings == null)
+            if (openApiDocumentGenerationSettings == null)
             {
                 openApiDocumentGenerationSettings = new OpenApiDocumentGenerationSettings(
                     new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
