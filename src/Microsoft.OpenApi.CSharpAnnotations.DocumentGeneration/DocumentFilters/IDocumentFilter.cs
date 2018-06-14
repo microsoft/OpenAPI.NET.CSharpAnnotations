@@ -23,6 +23,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls,
         /// <see cref="OpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
         /// <param name="settings"><see cref="DocumentFilterSettings"/></param>
-        void Apply(OpenApiDocument openApiDocument, IList<XDocument> xmlDocuments, DocumentFilterSettings settings);
+        /// <param name="openApiDocumentGenerationSettings"><see cref="OpenApiDocumentGenerationSettings"/></param>
+        void Apply(
+            OpenApiDocument openApiDocument,
+            IList<XDocument> xmlDocuments,
+            DocumentFilterSettings settings,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings);
     }
 }

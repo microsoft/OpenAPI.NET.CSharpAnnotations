@@ -89,6 +89,28 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         }
 
         /// <summary>
+        /// Converts the first letter of the string to lowercase.
+        /// </summary>
+        /// <param name="value">The original string.</param>
+        /// <returns>The updated string.</returns>
+        public static string ToCamelCase(this string value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            value = value.Trim();
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                return value;
+            }
+
+            return value.Substring(startIndex: 0, length: 1).ToLowerInvariant() + value.Substring(1);
+        }
+
+        /// <summary>
         /// Converts the first letter of the string to uppercase.
         /// </summary>
         /// <param name="value">The original string.</param>
@@ -97,7 +119,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         {
             if (value == null)
             {
-                return value;
+                return null;
             }
 
             value = value.Trim();

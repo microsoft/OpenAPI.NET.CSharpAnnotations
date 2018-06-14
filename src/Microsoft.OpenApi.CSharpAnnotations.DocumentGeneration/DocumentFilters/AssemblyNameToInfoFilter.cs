@@ -23,10 +23,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="specificationDocument">The Open Api V3 specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
+        /// <param name="openApiDocumentGenerationSettings"><see cref="OpenApiDocumentGenerationSettings"/></param>
         public void Apply(
             OpenApiDocument specificationDocument,
             IList<XDocument> xmlDocuments,
-            DocumentFilterSettings settings)
+            DocumentFilterSettings settings,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings)
         {
             // Find the xml document that contains member tag with url and verb,
             // as that should be the service api documenation xml.

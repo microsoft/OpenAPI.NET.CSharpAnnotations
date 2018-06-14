@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -27,10 +26,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="openApiDocument">The Open API specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
+        /// <param name="openApiDocumentGenerationSettings"><see cref="OpenApiDocumentGenerationSettings"/></param>
         public void Apply(
             OpenApiDocument openApiDocument,
             IList<XDocument> xmlDocuments,
-            DocumentFilterSettings settings)
+            DocumentFilterSettings settings,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings)
         {
             if (openApiDocument == null)
             {
@@ -77,7 +78,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
 
                 var schemas = openApiDocument.Components.Schemas.Where(
                         s => s.Key == sanitizedClassName ||
-                            s.Key.StartsWith(sanitizedClassName + "_"))
+                             s.Key.StartsWith(sanitizedClassName + "_"))
                     .ToList();
 
                 if (!schemas.Any())
@@ -89,31 +90,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
                     splitPropertyName[splitPropertyName.Length - 1];
 
                 var propertyInfo = settings.TypeFetcher.LoadType(className)
-                        ?.GetProperties()
-                        .FirstOrDefault(p => p.Name == propertyName);
+                    ?.GetProperties()
+                    .FirstOrDefault(p => p.Name == propertyName);
 
                 if (propertyInfo != null)
                 {
-                    var attributes = propertyInfo.GetCustomAttributes(false);
-
-                    foreach (var attribute in attributes)
-                    {
-                        if (attribute.GetType().FullName == "Newtonsoft.Json.JsonPropertyAttribute")
-                        {
-                            Type type = attribute.GetType();
-                            PropertyInfo propertyNameInfo = type.GetProperty("PropertyName");
-
-                            if (propertyNameInfo != null)
-                            {
-                                var jsonPropertyName = (string)propertyNameInfo.GetValue(attribute, null);
-
-                                if (!string.IsNullOrWhiteSpace(jsonPropertyName))
-                                {
-                                    propertyName = jsonPropertyName;
-                                }
-                            }
-                        }
-                    }
+                    propertyName = openApiDocumentGenerationSettings
+                        .SchemaGenerationSettings
+                        .PropertyNameResolver
+                        .ResolvePropertyName(propertyInfo);
                 }
 
                 foreach (var schema in schemas)

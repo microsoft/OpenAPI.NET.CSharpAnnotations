@@ -30,70 +30,73 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             _output = output;
         }
 
-        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldYieldFailure()
+        [Theory]
+        [MemberData(nameof(GetTestCasesForCustomSchemaGenerationSettingsShouldReturnCorrectDocument))]
+        public void CustomSchemaGenerationSettingsShouldReturnCorrectDocument(
+            string testCaseName,
+            IList<string> inputXmlFiles,
+            IList<string> inputBinaryFiles,
+            string openApiDocumentVersion,
+            OpenApiDocumentGenerationSettings generationSettings,
+            int expectedOperationGenerationResultsCount,
+            string expectedJsonFile)
         {
-            // Invalid Verb
-            yield return new object[]
-            {
-                "Invalid Verb",
-                new List<string>
-                {
-                    Path.Combine(InputDirectory, "AnnotationInvalidVerb.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
-                },
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
-                },
-                9,
-                Path.Combine(
-                    OutputDirectory,
-                    "AnnotationInvalidVerb.Json"),
-                new DocumentGenerationDiagnostic
-                {
-                    Errors =
-                    {
-                        new GenerationError
-                        {
-                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
-                            Message = string.Format(
-                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
-                                8,
-                                9),
-                        }
-                    }
-                },
-                new List<OperationGenerationDiagnostic>
-                {
-                    new OperationGenerationDiagnostic
-                    {
-                        OperationMethod = "Invalid",
-                        Path = "/V1/samples/{id}",
-                        Errors =
-                        {
-                            new GenerationError
-                            {
-                                ExceptionType = typeof(InvalidVerbException).Name,
-                                Message = string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid"),
-                            }
-                        }
-                    }
-                }
-            };
+            _output.WriteLine(testCaseName);
 
-            // Invalid Uri
+            var documents = new List<XDocument>();
+
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
+
+            var input = new OpenApiGeneratorConfig(
+                documents,
+                inputBinaryFiles,
+                openApiDocumentVersion,
+                new OpenApiGeneratorFilterConfig(FilterSetVersion.V1));
+
+            GenerationDiagnostic result;
+
+            var generator = new OpenApiGenerator();
+            var openApiDocuments = generator.GenerateDocuments(input, out result, generationSettings);
+
+            result.Should().NotBeNull();
+
+            result.DocumentGenerationDiagnostic.Errors.Count.Should().Be(0);
+
+            openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+
+            result.OperationGenerationDiagnostics.Count(p => p.Errors.Count > 0).Should().Be(0);
+            result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
+
+            var actualDocument = openApiDocuments[DocumentVariantInfo.Default]
+                .SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
+            var expectedDocument = File.ReadAllText(expectedJsonFile);
+
+            _output.WriteLine(actualDocument);
+
+            var openApiStringReader = new OpenApiStringReader();
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic);
+
+            diagnostic.Errors.Count.Should().Be(0);
+
+            actualDeserializedDocument
+                .Should()
+                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
+        }
+
+        public static IEnumerable<object[]> GetTestCasesForCustomSchemaGenerationSettingsShouldReturnCorrectDocument()
+        {
+            // Standard, original valid XML document
             yield return new object[]
             {
-                "Invalid Uri",
+                "Standard valid XML document",
                 new List<string>
                 {
-                    Path.Combine(InputDirectory, "AnnotationInvalidUri.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory, "Annotation.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -104,43 +107,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                         InputDirectory,
                         "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
                 },
+                "1.0.0",
+                new OpenApiDocumentGenerationSettings(new  SchemaGenerationSettings(new CamelCasePropertyNameResolver())),
                 9,
                 Path.Combine(
                     OutputDirectory,
-                    "AnnotationInvalidUri.Json"),
-                new DocumentGenerationDiagnostic
-                {
-                    Errors =
-                    {
-                        new GenerationError
-                        {
-                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
-                            Message = string.Format(
-                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
-                                8,
-                                9),
-                        }
-                    }
-                },
-                new List<OperationGenerationDiagnostic>
-                {
-                    new OperationGenerationDiagnostic
-                    {
-                        OperationMethod = SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
-                        Path = "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
-                        Errors =
-                        {
-                            new GenerationError
-                            {
-                                ExceptionType = typeof(InvalidUrlException).Name,
-                                Message = string.Format(
-                                    SpecificationGenerationMessages.InvalidUrl,
-                                    "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
-                                    SpecificationGenerationMessages.MalformattedUrl),
-                            }
-                        }
-                    }
-                }
+                    "AnnotationCamelCase.Json")
             };
         }
 
@@ -153,7 +125,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationParamWithoutInNotPresentInUrl.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -178,7 +151,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             Message = string.Format(
                                 SpecificationGenerationMessages.UnableToGenerateAllOperations,
                                 8,
-                                9),
+                                9)
                         }
                     }
                 },
@@ -195,7 +168,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                                 ExceptionType = typeof(MissingInAttributeException).Name,
                                 Message = string.Format(
                                     SpecificationGenerationMessages.MissingInAttribute,
-                                    string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"})),
+                                    string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"}))
                             }
                         }
                     }
@@ -209,7 +182,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationConflictingPathAndQueryParameters.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -234,7 +208,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             Message = string.Format(
                                 SpecificationGenerationMessages.UnableToGenerateAllOperations,
                                 8,
-                                9),
+                                9)
                         }
                     }
                 },
@@ -252,7 +226,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                                 Message = string.Format(
                                     SpecificationGenerationMessages.ConflictingPathAndQueryParameters,
                                     "id",
-                                    "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}"),
+                                    "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}")
                             },
                             new GenerationError
                             {
@@ -273,7 +247,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationUndocumentedPathParam.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -298,7 +273,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             Message = string.Format(
                                 SpecificationGenerationMessages.UnableToGenerateAllOperations,
                                 8,
-                                9),
+                                9)
                         }
                     }
                 },
@@ -316,7 +291,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                                 Message = string.Format(
                                     SpecificationGenerationMessages.UndocumentedPathParameter,
                                     "id",
-                                    "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}"),
+                                    "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}")
                             }
                         }
                     }
@@ -330,7 +305,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationUndocumentedGeneric.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -355,7 +331,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             Message = string.Format(
                                 SpecificationGenerationMessages.UnableToGenerateAllOperations,
                                 8,
-                                9),
+                                9)
                         }
                     }
                 },
@@ -370,7 +346,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             new GenerationError
                             {
                                 ExceptionType = typeof(UndocumentedGenericTypeException).Name,
-                                Message = SpecificationGenerationMessages.UndocumentedGenericType,
+                                Message = SpecificationGenerationMessages.UndocumentedGenericType
                             }
                         }
                     }
@@ -384,7 +360,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationIncorrectlyOrderedGeneric.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -409,7 +386,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             Message = string.Format(
                                 SpecificationGenerationMessages.UnableToGenerateAllOperations,
                                 8,
-                                9),
+                                9)
                         }
                     }
                 },
@@ -424,7 +401,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             new GenerationError
                             {
                                 ExceptionType = typeof(UnorderedGenericTypeException).Name,
-                                Message = SpecificationGenerationMessages.UnorderedGenericType,
+                                Message = SpecificationGenerationMessages.UnorderedGenericType
                             }
                         }
                     }
@@ -438,7 +415,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationRequestMissingSeeTag.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -463,7 +441,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             Message = string.Format(
                                 SpecificationGenerationMessages.UnableToGenerateAllOperations,
                                 8,
-                                9),
+                                9)
                         }
                     }
                 },
@@ -480,7 +458,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                                 ExceptionType = typeof(InvalidRequestBodyException).Name,
                                 Message = string.Format(
                                     SpecificationGenerationMessages.MissingSeeCrefTag,
-                                    "sampleObject"),
+                                    "sampleObject")
                             }
                         }
                     }
@@ -494,7 +472,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationTypeNotFound.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -519,7 +498,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             Message = string.Format(
                                 SpecificationGenerationMessages.UnableToGenerateAllOperations,
                                 8,
-                                9),
+                                9)
                         }
                     }
                 },
@@ -537,11 +516,127 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                                 Message = string.Format(
                                     SpecificationGenerationMessages.TypeNotFound,
                                     "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.TestNotFound",
-                                string.Join(" ", new List<string>
-                                {
-                                    "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll",
-                                    "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll"
-                                }))
+                                    string.Join(" ", new List<string>
+                                    {
+                                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll",
+                                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll"
+                                    }))
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
+        public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldYieldFailure()
+        {
+            // Invalid Verb
+            yield return new object[]
+            {
+                "Invalid Verb",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationInvalidVerb.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationInvalidVerb.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9)
+                        }
+                    }
+                },
+                new List<OperationGenerationDiagnostic>
+                {
+                    new OperationGenerationDiagnostic
+                    {
+                        OperationMethod = "Invalid",
+                        Path = "/V1/samples/{id}",
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(InvalidVerbException).Name,
+                                Message = string.Format(SpecificationGenerationMessages.InvalidHttpMethod, "Invalid")
+                            }
+                        }
+                    }
+                }
+            };
+
+            // Invalid Uri
+            yield return new object[]
+            {
+                "Invalid Uri",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationInvalidUri.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationInvalidUri.Json"),
+                new DocumentGenerationDiagnostic
+                {
+                    Errors =
+                    {
+                        new GenerationError
+                        {
+                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
+                            Message = string.Format(
+                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
+                                8,
+                                9)
+                        }
+                    }
+                },
+                new List<OperationGenerationDiagnostic>
+                {
+                    new OperationGenerationDiagnostic
+                    {
+                        OperationMethod = SpecificationGenerationMessages.OperationMethodNotParsedGivenUrlIsInvalid,
+                        Path = "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
+                        Errors =
+                        {
+                            new GenerationError
+                            {
+                                ExceptionType = typeof(InvalidUrlException).Name,
+                                Message = string.Format(
+                                    SpecificationGenerationMessages.InvalidUrl,
+                                    "http://{host}:9000/V1/samples/{id}?queryBool={queryBool}",
+                                    SpecificationGenerationMessages.MalformattedUrl)
                             }
                         }
                     }
@@ -558,7 +653,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationNewFilter.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -586,7 +682,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "Annotation.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -611,7 +708,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationWithNoResponseBody.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -636,7 +734,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationParamWithoutInButPresentInUrl.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -662,7 +761,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationParamNoTypeSpecified.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -687,7 +787,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationMultipleResponseTypes.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -712,7 +813,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationMultipleRequestTypes.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -737,7 +839,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationMultipleRequestMediaTypes.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -762,7 +865,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationMultipleResponseMediaTypes.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -787,7 +891,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationOptionalPathParametersBranching.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -812,7 +917,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationAlternativeParamTags.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -837,7 +943,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationArrayInParamTags.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -862,7 +969,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "AnnotationSummaryWithTags.xml"),
-                    Path.Combine(InputDirectory, "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
                 },
                 new List<string>
                 {
@@ -879,6 +987,67 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                     OutputDirectory,
                     "AnnotationSummaryWithTags.Json")
             };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldRemoveFailedOperations))]
+        public void InvalidDocumentationShouldRemoveFailedOperations(
+            string testCaseName,
+            IList<string> inputXmlFiles,
+            IList<string> inputBinaryFiles,
+            int expectedOperationGenerationResultsCount,
+            string expectedJsonFile,
+            DocumentGenerationDiagnostic expectedDocumentGenerationResult,
+            IList<OperationGenerationDiagnostic> expectedFailureOperationGenerationResults)
+        {
+            _output.WriteLine(testCaseName);
+
+            var documents = new List<XDocument>();
+
+            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
+
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
+
+            GenerationDiagnostic result;
+
+            var generator = new OpenApiGenerator();
+
+            var openApiDocuments = generator.GenerateDocuments(input, out result);
+
+            result.Should().NotBeNull();
+
+            result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
+
+            openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
+            result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
+
+            var failedPaths = result.OperationGenerationDiagnostics.Where(
+                    p => p.Errors.Count > 0)
+                .ToList();
+
+            var actualDocument = openApiDocuments[DocumentVariantInfo.Default]
+                .SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
+            var expectedDocument = File.ReadAllText(expectedJsonFile);
+
+            _output.WriteLine(actualDocument);
+
+            failedPaths.Should().BeEquivalentTo(expectedFailureOperationGenerationResults);
+
+            // We are doing serialization and deserialization to force the resulting actual document
+            // to have the exact fields we will see in the resulting document based on the contract resolver.
+            // Without serialization and deserialization, the actual document may have fields that should
+            // not be present, such as empty list fields.
+            var openApiStringReader = new OpenApiStringReader();
+
+            var actualDeserializedDocument = openApiStringReader.Read(
+                actualDocument,
+                out OpenApiDiagnostic diagnostic);
+
+            diagnostic.Errors.Count.Should().Be(0);
+
+            actualDeserializedDocument
+                .Should()
+                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
 
         [Theory]
@@ -944,67 +1113,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForInvalidDocumentationShouldRemoveFailedOperations))]
-        public void InvalidDocumentationShouldRemoveFailedOperations(
-            string testCaseName,
-            IList<string> inputXmlFiles,
-            IList<string> inputBinaryFiles,
-            int expectedOperationGenerationResultsCount,
-            string expectedJsonFile,
-            DocumentGenerationDiagnostic expectedDocumentGenerationResult,
-            IList<OperationGenerationDiagnostic> expectedFailureOperationGenerationResults)
-        {
-            _output.WriteLine(testCaseName);
-
-            var documents = new List<XDocument>();
-
-            documents.AddRange(inputXmlFiles.Select(XDocument.Load));
-
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
-
-            GenerationDiagnostic result;
-
-            var generator = new OpenApiGenerator();
-
-            var openApiDocuments = generator.GenerateDocuments(input, out result);
-
-            result.Should().NotBeNull();
-
-            result.DocumentGenerationDiagnostic.Should().BeEquivalentTo(expectedDocumentGenerationResult);
-
-            openApiDocuments[DocumentVariantInfo.Default].Should().NotBeNull();
-            result.OperationGenerationDiagnostics.Count.Should().Be(expectedOperationGenerationResultsCount);
-
-            var failedPaths = result.OperationGenerationDiagnostics.Where(
-                    p => p.Errors.Count > 0)
-                .ToList();
-
-            var actualDocument = openApiDocuments[DocumentVariantInfo.Default]
-                .SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
-            var expectedDocument = File.ReadAllText(expectedJsonFile);
-
-            _output.WriteLine(actualDocument);
-
-            failedPaths.Should().BeEquivalentTo(expectedFailureOperationGenerationResults);
-
-            // We are doing serialization and deserialization to force the resulting actual document
-            // to have the exact fields we will see in the resulting document based on the contract resolver.
-            // Without serialization and deserialization, the actual document may have fields that should
-            // not be present, such as empty list fields.
-            var openApiStringReader = new OpenApiStringReader();
-
-            var actualDeserializedDocument = openApiStringReader.Read(
-                actualDocument,
-                out OpenApiDiagnostic diagnostic);
-
-            diagnostic.Errors.Count.Should().Be(0);
-
-            actualDeserializedDocument
-                .Should()
-                .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
-        }
-
-        [Theory]
         [InlineData("1.0.0")]
         public void NoOperationsToParseShouldReturnEmptyDocument(string openApiDocumentVersion)
         {
@@ -1013,7 +1121,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             var document = XDocument.Load(path);
 
             var input = new OpenApiGeneratorConfig(
-                new List<XDocument>() {document},
+                new List<XDocument> {document},
                 new List<string>(),
                 openApiDocumentVersion,
                 FilterSetVersion.V1);
@@ -1033,20 +1141,20 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                         {
                             new GenerationError
                             {
-                                Message = SpecificationGenerationMessages.NoOperationElementFoundToParse,
+                                Message = SpecificationGenerationMessages.NoOperationElementFoundToParse
                             }
                         }
                     }
-                );
+               );
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForValidDocumentationShouldReturnCorrectDocument))]
-        public void ValidDocumentationShouldReturnCorrectDocument(
+        [MemberData(nameof(GetTestCasesForPassANewFilterAndShouldReturnCorrectDocument))]
+        public void PassANewFilterAndShouldReturnCorrectDocument(
             string testCaseName,
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
-            string openApiDocumentVersion,
+            IFilter filter,
             int expectedOperationGenerationResultsCount,
             string expectedJsonFile)
         {
@@ -1056,11 +1164,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
-            var input = new OpenApiGeneratorConfig(
-                documents,
-                inputBinaryFiles,
-                openApiDocumentVersion,
-                FilterSetVersion.V1);
+            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
+            input.OpenApiGeneratorFilterConfig.Filters.Add(filter);
 
             GenerationDiagnostic result;
 
@@ -1096,12 +1201,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForPassANewFilterAndShouldReturnCorrectDocument))]
-        public void PassANewFilterAndShouldReturnCorrectDocument(
+        [MemberData(nameof(GetTestCasesForValidDocumentationShouldReturnCorrectDocument))]
+        public void ValidDocumentationShouldReturnCorrectDocument(
             string testCaseName,
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
-            IFilter filter,
+            string openApiDocumentVersion,
             int expectedOperationGenerationResultsCount,
             string expectedJsonFile)
         {
@@ -1111,8 +1216,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
-            var input = new OpenApiGeneratorConfig(documents, inputBinaryFiles, "1.0.0", FilterSetVersion.V1);
-            input.OpenApiGeneratorFilterConfig.Filters.Add(filter);
+            var input = new OpenApiGeneratorConfig(
+                documents,
+                inputBinaryFiles,
+                openApiDocumentVersion,
+                FilterSetVersion.V1);
 
             GenerationDiagnostic result;
 

@@ -17,6 +17,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
     /// </summary>
     public class SchemaReferenceRegistry : ReferenceRegistry<Type, OpenApiSchema>
     {
+        private readonly SchemaGenerationSettings _schemaGenerationSettings;
+
+        /// <summary>
+        /// Creates an instance of <see cref="SchemaReferenceRegistry"/>.
+        /// </summary>
+        /// <param name="schemaGenerationSettings">The schema generation settings.</param>
+        public SchemaReferenceRegistry(SchemaGenerationSettings schemaGenerationSettings)
+        {
+            _schemaGenerationSettings = schemaGenerationSettings
+                ?? throw new ArgumentNullException(nameof(schemaGenerationSettings));
+        }
+
         /// <summary>
         /// The dictionary containing all references of the given type.
         /// </summary>
@@ -122,11 +134,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                 {
                     var ignoreProperty = false;
 
-                    var propertyName = propertyInfo.Name;
                     var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
 
                     // Check if the property is read-only.
                     innerSchema.ReadOnly = !propertyInfo.CanWrite;
+
+                    var propertyName = _schemaGenerationSettings
+                        .PropertyNameResolver.ResolvePropertyName(propertyInfo);
 
                     var attributes = propertyInfo.GetCustomAttributes(false);
 
@@ -135,18 +149,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                         if (attribute.GetType().FullName == "Newtonsoft.Json.JsonPropertyAttribute")
                         {
                             var type = attribute.GetType();
-                            var propertyNameInfo = type.GetProperty("PropertyName");
-
-                            if (propertyNameInfo != null)
-                            {
-                                var jsonPropertyName = (string) propertyNameInfo.GetValue(attribute, null);
-
-                                if (!string.IsNullOrWhiteSpace(jsonPropertyName))
-                                {
-                                    propertyName = jsonPropertyName;
-                                }
-                            }
-
                             var requiredPropertyInfo = type.GetProperty("Required");
 
                             if (requiredPropertyInfo != null)
@@ -178,7 +180,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     if (propertyNameDeclaringTypeMap.ContainsKey(propertyName))
                     {
                         var existingPropertyDeclaringType = propertyNameDeclaringTypeMap[propertyName];
-                        bool duplicateProperty = true;
+                        var duplicateProperty = true;
 
                         if (existingPropertyDeclaringType != null && propertyDeclaringType != null)
                         {

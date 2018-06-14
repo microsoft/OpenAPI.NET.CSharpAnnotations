@@ -27,12 +27,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             IList<XDocument> annotationXmlDocuments,
             IList<string> assemblyPaths,
             string openApiDocumentVersion,
-            FilterSetVersion filterSetVersion) 
+            FilterSetVersion filterSetVersion)
             : this(
-                  annotationXmlDocuments,
-                  assemblyPaths,
-                  openApiDocumentVersion,
-                  new OpenApiGeneratorFilterConfig(filterSetVersion))
+                annotationXmlDocuments,
+                assemblyPaths,
+                openApiDocumentVersion,
+                new OpenApiGeneratorFilterConfig(filterSetVersion))
         {
         }
 
@@ -84,11 +84,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// types provided in the xml.
         /// </summary>
         public IList<string> AssemblyPaths { get; }
-
-        /// <summary>
-        /// The version of the filter set to use to generate an OpenAPI document.
-        /// </summary>
-        public FilterSetVersion FilterSetVersion { get; }
 
         /// <summary>
         /// The version of the OpenAPI document.

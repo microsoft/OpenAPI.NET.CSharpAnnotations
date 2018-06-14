@@ -29,6 +29,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
         }
 
         [Theory]
+        [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldFail))]
+        public void GenerateSchemaFromTypeShouldFail(
+            Type type,
+            string expectedExceptionMessage)
+        {
+            var referenceRegistryManager =
+                new ReferenceRegistryManager(
+                    new OpenApiDocumentGenerationSettings(
+                        new SchemaGenerationSettings(new DefaultPropertyNameResolver())));
+
+            Action action = () => referenceRegistryManager.FindOrAddSchemaReference(type);
+            action.Should().Throw<DocumentationException>(expectedExceptionMessage);
+        }
+
+        [Theory]
         [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldSucceed))]
         public void GenerateSchemaFromTypeShouldSucceed(
             Type type,
@@ -38,7 +53,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
             _output.WriteLine(type.ToString());
 
             // Arrange
-            var referenceRegistryManager = new ReferenceRegistryManager();
+            var referenceRegistryManager =
+                 new ReferenceRegistryManager(
+                     new OpenApiDocumentGenerationSettings(
+                         new SchemaGenerationSettings(new DefaultPropertyNameResolver())));
 
             // Act
             var returnedSchema =
@@ -60,15 +78,72 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForGenerateSchemaFromTypeShouldFail))]
-        public void GenerateSchemaFromTypeShouldFail(
+        [MemberData(nameof(GetTestCasesForGenerateSchemaCustomSettingsShouldSucceed))]
+        public void GenerateSchemaCustomSettingsShouldSucceed(
             Type type,
-            string expectedExceptionMessage)
+            OpenApiDocumentGenerationSettings generationSettings,
+            OpenApiSchema expectedSchema,
+            IDictionary<string, OpenApiSchema> expectedReferences)
         {
-            var referenceRegistryManager = new ReferenceRegistryManager();
+            _output.WriteLine(type.ToString());
 
-            Action action = () => referenceRegistryManager.FindOrAddSchemaReference(type);
-            action.Should().Throw<DocumentationException>(expectedExceptionMessage);
+            // Arrange
+            var referenceRegistryManager =
+                new ReferenceRegistryManager(generationSettings);
+
+            // Act
+            var returnedSchema =
+                referenceRegistryManager.FindOrAddSchemaReference(type);
+
+            // Assert
+            var actualSchema = returnedSchema;
+            var actualReferences = referenceRegistryManager.SchemaReferenceRegistry.References;
+
+            _output.WriteLine(actualSchema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0));
+            foreach (var reference in actualReferences)
+            {
+                _output.WriteLine(reference.Key);
+                _output.WriteLine(reference.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0));
+            }
+
+            actualSchema.Should().BeEquivalentTo(expectedSchema);
+            actualReferences.Should().BeEquivalentTo(expectedReferences);
+        }
+
+        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaCustomSettingsShouldSucceed()
+        {
+            yield return new object[]
+            {
+                typeof(SampleType2),
+                new OpenApiDocumentGenerationSettings(new SchemaGenerationSettings(new CamelCasePropertyNameResolver())),
+                new OpenApiSchema
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.Schema,
+                        Id = typeof(SampleType2).ToString().SanitizeClassName()
+                    }
+                },
+                new Dictionary<string, OpenApiSchema>
+                {
+                    [typeof(SampleType2).ToString().SanitizeClassName()]
+                    = SampleType2.schema,
+                }
+            };
+        }
+
+        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldFail()
+        {
+            yield return new object[]
+            {
+                typeof(SampleTypeWithDuplicateProperty),
+                string.Format(SpecificationGenerationMessages.AddingSchemaReferenceFailed,
+                    typeof(SampleTypeWithDuplicateProperty).ToString().SanitizeClassName(),
+                    string.Format(
+                        SpecificationGenerationMessages.DuplicateProperty,
+                        "sampleList",
+                        typeof(SampleTypeWithDuplicateProperty)))
+            };
         }
 
         public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldSucceed()
@@ -240,7 +315,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     = SampleInnerType.schema,
                     [typeof(SampleType).ToString().SanitizeClassName()]
                     = SampleType.schema
-                },
+                }
             };
             yield return new object[]
             {
@@ -263,7 +338,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     = SampleInnerType.schema,
                     [typeof(SampleType).ToString().SanitizeClassName()]
                     = SampleType.schema
-                },
+                }
             };
 
             // Generic types
@@ -282,7 +357,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 {
                     [typeof(SampleGenericType<string>).ToString().SanitizeClassName()]
                     = SampleGenericType<string>.schemaString
-                },
+                }
             };
             yield return new object[]
             {
@@ -394,20 +469,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     [typeof(SampleBaseType2).ToString().SanitizeClassName()]
                     = SampleBaseType2.schema
                 }
-            };
-        }
-
-        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldFail()
-        {
-            yield return new object[]
-            {
-                typeof(SampleTypeWithDuplicateProperty),
-                string.Format(SpecificationGenerationMessages.AddingSchemaReferenceFailed,
-                    typeof(SampleTypeWithDuplicateProperty).ToString().SanitizeClassName(),
-                    string.Format(
-                        SpecificationGenerationMessages.DuplicateProperty,
-                        "sampleList",
-                        typeof(SampleTypeWithDuplicateProperty).ToString()))
             };
         }
     }

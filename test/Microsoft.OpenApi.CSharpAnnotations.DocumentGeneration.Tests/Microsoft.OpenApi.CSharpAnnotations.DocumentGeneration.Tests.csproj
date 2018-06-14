@@ -194,6 +194,9 @@
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationArrayInParamTags.Json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationCamelCase.Json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationConflictingPathAndQueryParameters.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
