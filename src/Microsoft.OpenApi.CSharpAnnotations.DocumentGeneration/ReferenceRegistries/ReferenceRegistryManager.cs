@@ -16,11 +16,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
     {
         /// <summary>
         /// Creates an instance of <see cref="ReferenceRegistryManager"/> class.
-        /// <param name="schemaGenerationSettings">The schema generation settings.</param>
+        /// <param name="openApiDocumentGenerationSettings">The Open API document generation settings.</param>
         /// </summary>
-        public ReferenceRegistryManager(SchemaGenerationSettings schemaGenerationSettings)
+        public ReferenceRegistryManager(OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings)
         {
-            SchemaReferenceRegistry = new SchemaReferenceRegistry(schemaGenerationSettings);
+            if(openApiDocumentGenerationSettings == null)
+            {
+                throw new ArgumentNullException(nameof(openApiDocumentGenerationSettings));
+            }
+
+            SchemaReferenceRegistry = new SchemaReferenceRegistry(
+                openApiDocumentGenerationSettings.SchemaGenerationSettings);
             ExampleReferenceRegistry = new ExampleReferenceRegistry();
             ParameterReferenceRegistry = new ParameterReferenceRegistry(
                 SchemaReferenceRegistry,

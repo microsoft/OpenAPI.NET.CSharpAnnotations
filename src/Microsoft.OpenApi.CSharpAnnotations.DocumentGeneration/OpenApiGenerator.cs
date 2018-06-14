@@ -20,12 +20,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="openApiGeneratorConfig">The configuration that will be used to generate
         /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <param name="openApiDocumentGenerationSettings">The optional Open API document generation settings.</param>
         /// <returns>The generated OpenAPI document.</returns>
         public OpenApiDocument GenerateDocument(
             OpenApiGeneratorConfig openApiGeneratorConfig,
-            out GenerationDiagnostic generationDiagnostic)
+            out GenerationDiagnostic generationDiagnostic,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings = null)
         {
-            var documents = GenerateDocuments(openApiGeneratorConfig, out generationDiagnostic);
+            var documents = GenerateDocuments(
+                openApiGeneratorConfig,
+                out generationDiagnostic,
+                openApiDocumentGenerationSettings);
 
             return documents?.Count == 0 ? null : documents[DocumentVariantInfo.Default];
         }
@@ -38,10 +43,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="openApiGeneratorConfig">The configuration that will be used to generate
         /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <param name="openApiDocumentGenerationSettings">The optional Open API document generation settings.</param>
         /// <returns>Dictionary mapping document variant metadata to their respective OpenAPI document.</returns>
         public IDictionary<DocumentVariantInfo, OpenApiDocument> GenerateDocuments(
             OpenApiGeneratorConfig openApiGeneratorConfig,
-            out GenerationDiagnostic generationDiagnostic)
+            out GenerationDiagnostic generationDiagnostic,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings = null)
         {
             foreach (var assemblyPath in openApiGeneratorConfig.AssemblyPaths)
             {
@@ -51,9 +58,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 }
             }
 
+            if(openApiDocumentGenerationSettings == null)
+            {
+                openApiDocumentGenerationSettings = new OpenApiDocumentGenerationSettings(
+                    new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
+            }
+
             var internalOpenApiGenerator = new InternalOpenApiGenerator(
                 openApiGeneratorConfig.OpenApiGeneratorFilterConfig,
-                openApiGeneratorConfig.SchemaGenerationSettings);
+                openApiDocumentGenerationSettings);
 
             return internalOpenApiGenerator.GenerateOpenApiDocuments(
                 openApiGeneratorConfig.AnnotationXmlDocuments,

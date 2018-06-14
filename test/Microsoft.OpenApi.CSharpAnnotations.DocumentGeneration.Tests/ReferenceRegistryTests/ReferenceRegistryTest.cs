@@ -35,7 +35,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
             string expectedExceptionMessage)
         {
             var referenceRegistryManager =
-                new ReferenceRegistryManager(new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
+                new ReferenceRegistryManager(
+                    new OpenApiDocumentGenerationSettings(
+                        new SchemaGenerationSettings(new DefaultPropertyNameResolver())));
 
             Action action = () => referenceRegistryManager.FindOrAddSchemaReference(type);
             action.Should().Throw<DocumentationException>(expectedExceptionMessage);
@@ -52,7 +54,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
 
             // Arrange
             var referenceRegistryManager =
-                new ReferenceRegistryManager(new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
+                 new ReferenceRegistryManager(
+                     new OpenApiDocumentGenerationSettings(
+                         new SchemaGenerationSettings(new DefaultPropertyNameResolver())));
 
             // Act
             var returnedSchema =
@@ -71,6 +75,61 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
 
             actualSchema.Should().BeEquivalentTo(expectedSchema);
             actualReferences.Should().BeEquivalentTo(expectedReferences);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForGenerateSchemaCustomSettingsShouldSucceed))]
+        public void GenerateSchemaCustomSettingsShouldSucceed(
+            Type type,
+            OpenApiDocumentGenerationSettings generationSettings,
+            OpenApiSchema expectedSchema,
+            IDictionary<string, OpenApiSchema> expectedReferences)
+        {
+            _output.WriteLine(type.ToString());
+
+            // Arrange
+            var referenceRegistryManager =
+                new ReferenceRegistryManager(generationSettings);
+
+            // Act
+            var returnedSchema =
+                referenceRegistryManager.FindOrAddSchemaReference(type);
+
+            // Assert
+            var actualSchema = returnedSchema;
+            var actualReferences = referenceRegistryManager.SchemaReferenceRegistry.References;
+
+            _output.WriteLine(actualSchema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0));
+            foreach (var reference in actualReferences)
+            {
+                _output.WriteLine(reference.Key);
+                _output.WriteLine(reference.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0));
+            }
+
+            actualSchema.Should().BeEquivalentTo(expectedSchema);
+            actualReferences.Should().BeEquivalentTo(expectedReferences);
+        }
+
+        public static IEnumerable<object[]> GetTestCasesForGenerateSchemaCustomSettingsShouldSucceed()
+        {
+            yield return new object[]
+            {
+                typeof(SampleType2),
+                new OpenApiDocumentGenerationSettings(new SchemaGenerationSettings(new CamelCasePropertyNameResolver())),
+                new OpenApiSchema
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.Schema,
+                        Id = typeof(SampleType2).ToString().SanitizeClassName()
+                    }
+                },
+                new Dictionary<string, OpenApiSchema>
+                {
+                    [typeof(SampleType2).ToString().SanitizeClassName()]
+                    = SampleType2.schema,
+                }
+            };
         }
 
         public static IEnumerable<object[]> GetTestCasesForGenerateSchemaFromTypeShouldFail()

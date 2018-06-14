@@ -641,7 +641,7 @@
             "type": "boolean",
             "description": "Gets or sets the sample property bool"
           },
-          "samplePropertyInt": {
+          "samplePropertyStringInt": {
             "type": "integer",
             "description": "Gets or sets the sample property int",
             "format": "int32"

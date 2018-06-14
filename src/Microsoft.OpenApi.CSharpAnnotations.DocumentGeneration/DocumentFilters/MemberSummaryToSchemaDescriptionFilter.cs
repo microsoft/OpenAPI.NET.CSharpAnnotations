@@ -26,10 +26,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="openApiDocument">The Open API specification document to be updated.</param>
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
+        /// <param name="openApiDocumentGenerationSettings"><see cref="OpenApiDocumentGenerationSettings"/></param>
         public void Apply(
             OpenApiDocument openApiDocument,
             IList<XDocument> xmlDocuments,
-            DocumentFilterSettings settings)
+            DocumentFilterSettings settings,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings)
         {
             if (openApiDocument == null)
             {
@@ -93,7 +95,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
 
                 if (propertyInfo != null)
                 {
-                    propertyName = settings.PropertyNameResolver.ResolvePropertyName(propertyInfo);
+                    propertyName = openApiDocumentGenerationSettings
+                        .SchemaGenerationSettings
+                        .PropertyNameResolver
+                        .ResolvePropertyName(propertyInfo);
                 }
 
                 foreach (var schema in schemas)

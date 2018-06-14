@@ -11,16 +11,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// <summary>
     /// Resolves property name by camel casing.
     /// </summary>
-    public class CamelCasePropertyNameResolver : IPropertyNameResolver
+    public class CamelCasePropertyNameResolver : DefaultPropertyNameResolver, IPropertyNameResolver
     {
         /// <summary>
         /// Resolves the property name for the given property info.
         /// </summary>
         /// <param name="propertyInfo">The property info to resolve property name for.</param>
         /// <returns>The property info.</returns>
-        public string ResolvePropertyName(PropertyInfo propertyInfo)
+        public new string ResolvePropertyName(PropertyInfo propertyInfo)
         {
-            return propertyInfo.Name.ToCamelCase();
+            return base.ResolvePropertyName(propertyInfo).ToCamelCase();
         }
     }
 }

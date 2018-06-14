@@ -33,8 +33,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions
         /// </summary>
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>
-        protected NotSupportedInAttributeValueException( SerializationInfo info, StreamingContext context )
-            : base( info, context )
+        protected NotSupportedInAttributeValueException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

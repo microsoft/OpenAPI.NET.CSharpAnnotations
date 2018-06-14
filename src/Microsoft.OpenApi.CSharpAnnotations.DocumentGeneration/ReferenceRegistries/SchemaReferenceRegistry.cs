@@ -26,7 +26,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         public SchemaReferenceRegistry(SchemaGenerationSettings schemaGenerationSettings)
         {
             _schemaGenerationSettings = schemaGenerationSettings
-                ?? throw new ArgumentNullException( nameof( schemaGenerationSettings ) );
+                ?? throw new ArgumentNullException(nameof(schemaGenerationSettings));
         }
 
         /// <summary>

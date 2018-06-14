@@ -31,22 +31,25 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         private readonly IList<IOperationFilter> _operationFilters;
         private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
         private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
-        private readonly SchemaGenerationSettings _schemaGenerationSettings;
+        private readonly OpenApiDocumentGenerationSettings _openApiDocumentGenerationSettings;
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
         /// </summary>
         /// <param name="openApiGeneratorFilterConfig">The configuration encapsulating all the filters
         /// that will be applied while generating/processing OpenAPI document from C# annotations.</param>
-        /// <param name="schemaGenerationSettings">The settings to use for schema generation.</param>
+        /// <param name="openApiDocumentGenerationSettings">The settings to use for Open API document generation.
+        /// </param>
         public InternalOpenApiGenerator(
             OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig,
-            SchemaGenerationSettings schemaGenerationSettings)
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings)
         {
             if (openApiGeneratorFilterConfig == null)
             {
                 throw new ArgumentNullException(nameof(openApiGeneratorFilterConfig));
             }
+            _openApiDocumentGenerationSettings = openApiDocumentGenerationSettings
+                ?? throw new ArgumentNullException(nameof(openApiDocumentGenerationSettings));
 
             _documentFilters = TypeCastFilters<IDocumentFilter>(openApiGeneratorFilterConfig.Filters);
             _documentConfigFilters = TypeCastFilters<IDocumentConfigFilter>(openApiGeneratorFilterConfig.Filters);
@@ -56,7 +59,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 openApiGeneratorFilterConfig.Filters);
             _postProcessingDocumentFilters = TypeCastFilters<IPostProcessingDocumentFilter>(
                 openApiGeneratorFilterConfig.Filters);
-            _schemaGenerationSettings = schemaGenerationSettings;
+
+            
         }
 
         /// <summary>
@@ -90,14 +94,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             ExceptionType = e.GetType().Name,
                             Message = e.Message
                         }
-                    );
+                   );
                 }
             }
 
             if (!referenceRegistryManagerMap.ContainsKey(documentVariantInfo))
             {
                 referenceRegistryManagerMap[documentVariantInfo] =
-                    new ReferenceRegistryManager(_schemaGenerationSettings);
+                    new ReferenceRegistryManager(_openApiDocumentGenerationSettings);
             }
 
             foreach (var pathToPathItem in paths)
@@ -138,7 +142,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     ExceptionType = e.GetType().Name,
                                     Message = e.Message
                                 }
-                            );
+                           );
                         }
                     }
 
@@ -167,7 +171,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                         ExceptionType = e.GetType().Name,
                                         Message = e.Message
                                     }
-                                );
+                               );
                             }
                         }
                     }
@@ -328,8 +332,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                 {
                                     TypeFetcher = typeFetcher,
                                     OpenApiDocumentVersion = openApiDocumentVersion,
-                                    PropertyNameResolver = _schemaGenerationSettings.PropertyNameResolver
-                                });
+                                },
+                                _openApiDocumentGenerationSettings);
                         }
                         catch (Exception e)
                         {

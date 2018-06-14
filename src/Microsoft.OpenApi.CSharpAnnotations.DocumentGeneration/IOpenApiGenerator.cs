@@ -21,10 +21,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="openApiGeneratorConfig">The configuration that will be used to generate
         /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <param name="openApiDocumentGenerationSettings">The Open API document generation settings.</param>
         /// <returns>The generated OpenAPI document.</returns>
         OpenApiDocument GenerateDocument(
             OpenApiGeneratorConfig openApiGeneratorConfig,
-            out GenerationDiagnostic generationDiagnostic);
+            out GenerationDiagnostic generationDiagnostic,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings = null);
 
         /// <summary>
         /// Generates an OpenAPI document per variant specified in configuration.
@@ -34,9 +36,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="openApiGeneratorConfig">The configuration that will be used to generate
         /// the document.</param>
         /// <param name="generationDiagnostic">The generation diagnostics.</param>
+        /// <param name="openApiDocumentGenerationSettings">The Open API document generation settings.</param>
         /// <returns>Dictionary mapping document variant metadata to their respective OpenAPI document.</returns>
         IDictionary<DocumentVariantInfo, OpenApiDocument> GenerateDocuments(
             OpenApiGeneratorConfig openApiGeneratorConfig,
-            out GenerationDiagnostic generationDiagnostic);
+            out GenerationDiagnostic generationDiagnostic,
+            OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings = null);
     }
 }
