@@ -136,9 +136,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
 
                     var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
 
-                    // Check if the property is read-only.
-                    innerSchema.ReadOnly = !propertyInfo.CanWrite;
-
                     var propertyName = _schemaGenerationSettings
                         .PropertyNameResolver.ResolvePropertyName(propertyInfo);
 
