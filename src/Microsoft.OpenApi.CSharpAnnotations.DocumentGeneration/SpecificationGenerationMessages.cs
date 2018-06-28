@@ -61,6 +61,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         public const string OperationMethodNotParsedGivenUrlIsInvalid =
             "Operation method has not been parsed given that the url is invalid.";
 
+        public const string ProvideEitherValueOrUrlTag =
+            "Tag \"example\" cannot contain both \"value\" and \"url\" tags. Please provide either one of them.";
+
+        public const string ProvideValueForExample =
+            "Tag \"value\" for example is empty. Please populate it with example value.";
+
         public const string SuccessfulPathGeneration = "The specification for path has been generated successfully.";
 
         public const string TypeNotFound = "Type \"{0}\" could not be found. " +

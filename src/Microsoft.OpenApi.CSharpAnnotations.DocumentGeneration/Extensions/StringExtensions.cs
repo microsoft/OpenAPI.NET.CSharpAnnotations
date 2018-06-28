@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 
@@ -30,6 +31,23 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         }
 
         /// <summary>
+        /// Gets the field name from the "cref" value.
+        /// </summary>
+        /// <param name="value">The cref value.</param>
+        /// <returns>The type name.</returns>
+        public static string ExtractFieldNameFromCref( this string value )
+        {
+            if ( string.IsNullOrEmpty( value ) )
+            {
+                return value;
+            }
+
+            var field = Regex.IsMatch( value, "^F:" ) ? value.Split( ':' )[1] : value;
+
+            return field.Split( '.' ).Last();
+        }
+
+        /// <summary>
         /// Gets the type name from the "cref" value.
         /// </summary>
         /// <param name="value">The cref value.</param>
@@ -42,6 +60,23 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             }
 
             return Regex.IsMatch(value, "^T:") ? value.Split(':')[1] : value;
+        }
+
+        /// <summary>
+        /// Gets the type name name from the field "cref" value.
+        /// </summary>
+        /// <param name="value">The cref value.</param>
+        /// <returns>The type name.</returns>
+        public static string ExtractTypeNameFromFieldCref( this string value )
+        {
+            if ( string.IsNullOrEmpty( value ) )
+            {
+                return value;
+            }
+
+            var field = Regex.IsMatch( value, "^F:" ) ? value.Split( ':' )[1] : value;
+
+            return field.Substring( field.LastIndexOf( '.' ) + 1 );
         }
 
         /// <summary>

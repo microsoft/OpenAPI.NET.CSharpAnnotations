@@ -1,10 +1,18 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
+using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 {
@@ -69,6 +77,93 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             }
 
             return description.ToString().Trim().RemoveBlankLines();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="typeFetcher"></param>
+        /// <returns></returns>
+        public static OpenApiExample ToOpenApiExample(this XElement element, TypeFetcher typeFetcher)
+        {
+            if(typeFetcher == null)
+            {
+                throw new ArgumentNullException( nameof( typeFetcher ) );
+            }
+
+            var openApiExample = new OpenApiExample();
+
+            var summaryElement = element
+                .Elements()
+                .Where( p => p.Name == KnownXmlStrings.Summary )
+                .FirstOrDefault();
+
+            if ( summaryElement != null )
+            {
+                openApiExample.Summary = summaryElement.Value;
+            }
+
+            var valueElement = element.Elements().Where( p => p.Name == KnownXmlStrings.Value ).FirstOrDefault();
+            var urlElement = element.Elements().Where( p => p.Name == KnownXmlStrings.Url ).FirstOrDefault();
+
+            if ( valueElement != null && urlElement != null )
+            {
+                throw new InvalidExampleException( SpecificationGenerationMessages.ProvideEitherValueOrUrlTag );
+            }
+
+            IOpenApiAny exampleValue;
+
+            if ( valueElement != null )
+            {
+                var seeNodes = element.Descendants( KnownXmlStrings.See );
+
+                var crefValue = seeNodes
+                    .Select( node => node.Attribute( KnownXmlStrings.Cref )?.Value )
+                    .Where( crefVal => crefVal != null ).FirstOrDefault();
+
+                if ( crefValue != null )
+                {
+                    var typeName = crefValue.ExtractTypeNameFromFieldCref();
+                    var type = typeFetcher.LoadTypeFromCrefValues( new List<string>() { typeName } );
+                    var fieldName = crefValue.ExtractFieldNameFromCref();
+
+                    FieldInfo[] fields = type.GetFields( BindingFlags.Public
+                        | BindingFlags.Static );
+                    var field = fields.Where( f => f.Name == fieldName ).FirstOrDefault();
+
+                    if(field==null)
+                    {
+
+                    }
+
+                    var value = field.GetValue( null );
+
+                    exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
+                        value.ToString(),
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out OpenApiDiagnostic openApiDiagnostic );
+
+                    openApiExample.Value = exampleValue;
+                }
+
+                if ( string.IsNullOrWhiteSpace( valueElement.Value ) )
+                {
+                    throw new InvalidExampleException( SpecificationGenerationMessages.ProvideValueForExample );
+                }
+
+                exampleValue = new OpenApiStringReader()
+                    .ReadFragment<IOpenApiAny>( valueElement.Value, OpenApiSpecVersion.OpenApi3_0, out OpenApiDiagnostic _ );
+
+                openApiExample.Value = exampleValue;
+            }
+
+            if ( urlElement != null )
+            {
+                openApiExample.ExternalValue = urlElement.Value;
+            }
+
+            return openApiExample;
         }
     }
 }
