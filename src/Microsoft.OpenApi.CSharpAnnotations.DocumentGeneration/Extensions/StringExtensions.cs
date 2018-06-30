@@ -38,16 +38,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// </summary>
         /// <param name="value">The cref value.</param>
         /// <returns>The type name.</returns>
-        public static string ExtractFieldNameFromCref( this string value )
+        public static string ExtractFieldNameFromCref(this string value)
         {
-            if ( string.IsNullOrEmpty( value ) )
+            if (string.IsNullOrEmpty(value))
             {
                 return value;
             }
 
-            var field = Regex.IsMatch( value, "^F:" ) ? value.Split( ':' )[1] : value;
+            var field = Regex.IsMatch(value, "^F:") ? value.Split(':')[1] : value;
 
-            return field.Split( '.' ).Last();
+            return field.Split('.').Last();
         }
 
         /// <summary>

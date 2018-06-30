@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions
 {
     /// <summary>
-    /// The exception that is recorded when example is documentated incorrectly.
+    /// The exception that is recorded when example tag is documentated incorrectly.
     /// </summary>
     [Serializable]
     internal class InvalidExampleException : DocumentationException
@@ -22,8 +22,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidExampleException"/>.
         /// </summary>
-        public InvalidExampleException( string message )
-            : base( message )
+        public InvalidExampleException(string message)
+            : base(message)
         {
         }
 
@@ -32,8 +32,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions
         /// </summary>
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>
-        protected InvalidExampleException( SerializationInfo info, StreamingContext context )
-            : base( info, context )
+        protected InvalidExampleException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
