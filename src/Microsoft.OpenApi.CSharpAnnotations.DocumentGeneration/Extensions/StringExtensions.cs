@@ -32,6 +32,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 
         /// <summary>
         /// Gets the field name from the "cref" value.
+        /// e.g. if the value is
+        /// F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example,
+        /// this will return SampleObject1Example.
         /// </summary>
         /// <param name="value">The cref value.</param>
         /// <returns>The type name.</returns>
@@ -64,19 +67,22 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 
         /// <summary>
         /// Gets the type name name from the field "cref" value.
+        /// e.g. if the value is
+        /// F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example,
+        /// this will return Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.
         /// </summary>
         /// <param name="value">The cref value.</param>
         /// <returns>The type name.</returns>
-        public static string ExtractTypeNameFromFieldCref( this string value )
+        public static string ExtractTypeNameFromFieldCref(this string value)
         {
-            if ( string.IsNullOrEmpty( value ) )
+            if (string.IsNullOrEmpty(value))
             {
                 return value;
             }
 
-            var field = Regex.IsMatch( value, "^F:" ) ? value.Split( ':' )[1] : value;
+            var field = Regex.IsMatch(value, "^F:") ? value.Split(':')[1] : value;
 
-            return field.Substring( field.LastIndexOf( '.' ) + 1 );
+            return field.Substring(0, field.LastIndexOf('.'));
         }
 
         /// <summary>

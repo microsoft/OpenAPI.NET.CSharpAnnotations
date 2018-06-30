@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -31,11 +32,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public void Apply( OpenApiOperation operation, XElement element, OperationFilterSettings settings )
+        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
         {
             var paramElements = element.Elements()
                 .Where(
-                    p => p.Name == KnownXmlStrings.Param )
+                    p => p.Name == KnownXmlStrings.Param)
                 .ToList();
 
             // Query paramElements again to get all the parameter elements that have "in" attribute.
@@ -44,61 +45,70 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
             var paramElementsWithIn = paramElements.Where(
                     p =>
                         KnownXmlStrings.InValuesTranslatableToParameter.Contains(
-                            p.Attribute( KnownXmlStrings.In )?.Value ) )
+                            p.Attribute(KnownXmlStrings.In)?.Value))
                 .ToList();
 
-            foreach ( var paramElement in paramElementsWithIn )
-            {
-                var inValue = paramElement.Attribute( KnownXmlStrings.In )?.Value.Trim();
-                var name = paramElement.Attribute( KnownXmlStrings.Name )?.Value.Trim();
+            SchemaReferenceRegistry schemaReferenceRegistry
+                = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
 
-                if ( inValue == KnownXmlStrings.Path &&
-                    !settings.Path.Contains( $"{{{name}}}", StringComparison.InvariantCultureIgnoreCase ) )
+            foreach (var paramElement in paramElementsWithIn)
+            {
+                var inValue = paramElement.Attribute(KnownXmlStrings.In)?.Value.Trim();
+                var name = paramElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
+
+                if (inValue == KnownXmlStrings.Path &&
+                    !settings.Path.Contains($"{{{name}}}", StringComparison.InvariantCultureIgnoreCase))
                 {
                     continue;
                 }
 
-                var isRequired = paramElement.Attribute( KnownXmlStrings.Required )?.Value.Trim();
-                var cref = paramElement.Attribute( KnownXmlStrings.Cref )?.Value.Trim();
+                var isRequired = paramElement.Attribute(KnownXmlStrings.Required)?.Value.Trim();
+                var cref = paramElement.Attribute(KnownXmlStrings.Cref)?.Value.Trim();
 
                 var childNodes = paramElement.DescendantNodes().ToList();
                 var description = string.Empty;
 
                 var lastNode = childNodes.LastOrDefault();
 
-                if ( lastNode != null && lastNode.NodeType == XmlNodeType.Text )
+                if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
                     description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
                 // Fetch if any see tags are present, if present populate listed types with it.
-                var seeNodes = paramElement.Descendants( KnownXmlStrings.See );
+                var seeNodes = paramElement.Elements().Where(i => i.Name == KnownXmlStrings.See);
 
                 var allListedTypes = seeNodes
-                    .Select( node => node.Attribute( KnownXmlStrings.Cref )?.Value )
-                    .Where( crefValue => crefValue != null ).ToList();
+                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
+                    .Where(crefValue => crefValue != null).ToList();
 
                 // If no see tags are present, add the value from cref tag.
-                if ( !allListedTypes.Any() && !string.IsNullOrWhiteSpace( cref ) )
+                if (!allListedTypes.Any() && !string.IsNullOrWhiteSpace(cref))
                 {
-                    allListedTypes.Add( cref );
+                    allListedTypes.Add(cref);
                 }
 
-                var schema = GenerateSchemaFromCref( allListedTypes, settings );
-                var parameterLocation = GetParameterKind( inValue );
+                var type = typeof(string);
+                if (allListedTypes.Any())
+                {
+                    type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+                }
 
-                var exampleElements = paramElements.Elements().Where( p => p.Name == KnownXmlStrings.Example );
+                var schema = schemaReferenceRegistry.FindOrAddReference(type);
+                var parameterLocation = GetParameterKind(inValue);
+
+                var exampleElements = paramElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
                 var examples = new Dictionary<string, OpenApiExample>();
                 int exampleCounter = 1;
 
-                foreach ( var exampleElement in exampleElements )
+                foreach (var exampleElement in exampleElements)
                 {
-                    var exampleName = exampleElement.Attribute( KnownXmlStrings.Name )?.Value.Trim();
-                    var example = exampleElement.ToOpenApiExample( settings.TypeFetcher );
+                    var exampleName = exampleElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
+                    var example = exampleElement.ToOpenApiExample(settings.TypeFetcher);
 
                     examples.Add(
-                        string.IsNullOrWhiteSpace( exampleName ) ? $"example{exampleCounter++}" : exampleName,
-                        example );
+                        string.IsNullOrWhiteSpace(exampleName) ? $"example{exampleCounter++}" : exampleName,
+                        example);
                 }
 
                 var openApiParameter = new OpenApiParameter
@@ -106,37 +116,31 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     Name = name,
                     In = parameterLocation,
                     Description = description,
-                    Required = parameterLocation == ParameterLocation.Path || Convert.ToBoolean( isRequired ),
+                    Required = parameterLocation == ParameterLocation.Path || Convert.ToBoolean(isRequired),
                     Schema = schema
                 };
 
-                if ( examples.Count > 0 )
+                if (examples.Count > 0)
                 {
-                    openApiParameter.Schema.Example = examples.First().Value.Value;
+                    if (openApiParameter.Schema.Reference != null)
+                    {
+                        var key = schemaReferenceRegistry.GetKey(type);
+
+                        if (schemaReferenceRegistry.References.ContainsKey(key))
+                        {
+                            schemaReferenceRegistry.References[key].Example = examples.First().Value.Value;
+                        }
+                    }
+                    else
+                    {
+                        openApiParameter.Schema.Example = examples.First().Value.Value;
+                    }
+
                     openApiParameter.Examples = examples;
                 }
 
-                operation.Parameters.Add( openApiParameter );
+                operation.Parameters.Add(openApiParameter);
             }
-        }
-
-        /// <summary>
-        /// Generates schema from type names in cref.
-        /// </summary>
-        /// <returns>
-        /// Schema from type in cref if the type is resolvable.
-        /// Otherwise, default to schema for string type.
-        /// </returns>
-        private static OpenApiSchema GenerateSchemaFromCref(IList<string> crefValues, OperationFilterSettings settings)
-        {
-            var type = typeof(string);
-
-            if (crefValues.Any())
-            {
-                type = settings.TypeFetcher.LoadTypeFromCrefValues(crefValues);
-            }
-
-            return settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
         }
 
         private static ParameterLocation GetParameterKind(string parameterKind)

@@ -48,7 +48,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                         break;
 
                     case XmlNodeType.Element:
-                        var childElement = (XElement) child;
+                        var childElement = (XElement)child;
 
                         switch (childElement.Name.ToString())
                         {
@@ -80,85 +80,103 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         }
 
         /// <summary>
-        /// 
+        /// Generates an <see cref="OpenApiExample"/> from XElement with name="example".
         /// </summary>
-        /// <param name="element"></param>
-        /// <param name="typeFetcher"></param>
-        /// <returns></returns>
+        /// <param name="element">The XElement with name="example".</param>
+        /// <param name="typeFetcher">The type fetcher.</param>
+        /// <returns><see cref="OpenApiExample"/></returns>
         public static OpenApiExample ToOpenApiExample(this XElement element, TypeFetcher typeFetcher)
         {
-            if(typeFetcher == null)
+            if (typeFetcher == null)
             {
-                throw new ArgumentNullException( nameof( typeFetcher ) );
+                throw new ArgumentNullException(nameof(typeFetcher));
             }
+
+            if (element == null)
+            {
+                return null;
+            }
+
+            var exampleChildElements = element
+                .Elements();
+
+            if (!exampleChildElements.Any())
+            {
+                return null;
+            }
+
+            var summaryElement = exampleChildElements
+                .Where(p => p.Name == KnownXmlStrings.Summary)
+                .FirstOrDefault();
 
             var openApiExample = new OpenApiExample();
 
-            var summaryElement = element
-                .Elements()
-                .Where( p => p.Name == KnownXmlStrings.Summary )
-                .FirstOrDefault();
-
-            if ( summaryElement != null )
+            if (summaryElement != null)
             {
                 openApiExample.Summary = summaryElement.Value;
             }
 
-            var valueElement = element.Elements().Where( p => p.Name == KnownXmlStrings.Value ).FirstOrDefault();
-            var urlElement = element.Elements().Where( p => p.Name == KnownXmlStrings.Url ).FirstOrDefault();
+            var valueElement = exampleChildElements.Where(p => p.Name == KnownXmlStrings.Value).FirstOrDefault();
+            var urlElement = exampleChildElements.Where(p => p.Name == KnownXmlStrings.Url).FirstOrDefault();
 
-            if ( valueElement != null && urlElement != null )
+            if (valueElement != null && urlElement != null)
             {
-                throw new InvalidExampleException( SpecificationGenerationMessages.ProvideEitherValueOrUrlTag );
+                throw new InvalidExampleException(SpecificationGenerationMessages.ProvideEitherValueOrUrlTag);
             }
 
-            IOpenApiAny exampleValue;
+            IOpenApiAny exampleValue = null;
 
-            if ( valueElement != null )
+            if (valueElement != null)
             {
-                var seeNodes = element.Descendants( KnownXmlStrings.See );
-
+                var seeNodes = element.Descendants(KnownXmlStrings.See);
                 var crefValue = seeNodes
-                    .Select( node => node.Attribute( KnownXmlStrings.Cref )?.Value )
-                    .Where( crefVal => crefVal != null ).FirstOrDefault();
+                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
+                    .Where(crefVal => crefVal != null).FirstOrDefault();
 
-                if ( crefValue != null )
+                if (string.IsNullOrWhiteSpace(valueElement.Value) && string.IsNullOrWhiteSpace(crefValue))
+                {
+                    throw new InvalidExampleException(SpecificationGenerationMessages.ProvideValueForExample);
+                }
+
+                if (!string.IsNullOrWhiteSpace(crefValue))
                 {
                     var typeName = crefValue.ExtractTypeNameFromFieldCref();
-                    var type = typeFetcher.LoadTypeFromCrefValues( new List<string>() { typeName } );
+                    var type = typeFetcher.LoadTypeFromCrefValues(new List<string>() { typeName });
                     var fieldName = crefValue.ExtractFieldNameFromCref();
 
-                    FieldInfo[] fields = type.GetFields( BindingFlags.Public
-                        | BindingFlags.Static );
-                    var field = fields.Where( f => f.Name == fieldName ).FirstOrDefault();
+                    FieldInfo[] fields = type.GetFields(BindingFlags.Public
+                        | BindingFlags.Static);
+                    var field = fields.Where(f => f.Name == fieldName).FirstOrDefault();
 
-                    if(field==null)
+                    if (field == null)
                     {
+                        var errorMessage = string.Format(
+                            SpecificationGenerationMessages.FieldNotFound,
+                            fieldName,
+                            typeName);
 
+                        throw new TypeLoadException(errorMessage);
                     }
 
-                    var value = field.GetValue( null );
-
                     exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
-                        value.ToString(),
+                        field.GetValue(null).ToString(),
                         OpenApiSpecVersion.OpenApi3_0,
-                        out OpenApiDiagnostic openApiDiagnostic );
-
-                    openApiExample.Value = exampleValue;
+                        out OpenApiDiagnostic openApiDiagnostic);
                 }
 
-                if ( string.IsNullOrWhiteSpace( valueElement.Value ) )
+                if (!string.IsNullOrWhiteSpace(valueElement.Value))
                 {
-                    throw new InvalidExampleException( SpecificationGenerationMessages.ProvideValueForExample );
+                    exampleValue = new OpenApiStringReader()
+                    .ReadFragment<IOpenApiAny>(
+                        valueElement.Value,
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out OpenApiDiagnostic _);
                 }
-
-                exampleValue = new OpenApiStringReader()
-                    .ReadFragment<IOpenApiAny>( valueElement.Value, OpenApiSpecVersion.OpenApi3_0, out OpenApiDiagnostic _ );
 
                 openApiExample.Value = exampleValue;
             }
 
-            if ( urlElement != null )
+            if (urlElement != null)
             {
                 openApiExample.ExternalValue = urlElement.Value;
             }

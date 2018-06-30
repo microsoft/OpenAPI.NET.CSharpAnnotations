@@ -32,7 +32,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         /// Gets the key from the input object to use as reference string.
         /// </summary>
         /// <remarks>This must match the regular expression ^[a-zA-Z0-9\.\-_]+$</remarks>
-        protected override string GetKey(object input)
+        internal override string GetKey(object input)
         {
             throw new NotImplementedException();
         }

@@ -97,6 +97,9 @@
       <None Update="DocumentVariantTests\Output\AnnotationVariantSwaggerGroup2.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="ExtensionsTests\Input\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="FilterTests\Input\ParamMissingInAttribute.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -116,6 +119,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationConflictingPathAndQueryParameters.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationExample.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationIncorrectlyOrderedGeneric.xml">
@@ -197,6 +203,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationConflictingPathAndQueryParameters.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationExample.Json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationIncorrectlyOrderedGeneric.json">
@@ -311,5 +320,6 @@
 
     <ItemGroup>
       <Folder Include="DocumentVariantTests\Output\AnnotationsWithDuplicatePaths\" />
+      <Folder Include="ExtensionsTests\Input\" />
     </ItemGroup>
 </Project>

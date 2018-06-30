@@ -32,7 +32,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             "Only the first occurrence of it added to the generated document, "+
             "rest all are omitted from the generated document.";
 
-        public const string DuplicateProperty = "A property with the name \"{0}\" already exists on \"{1}\"";
+        public const string DuplicateProperty = "A property with the name \"{0}\" already exists on \"{1}\".";
+
+        public const string FieldNotFound = "Field \"{0}\" could not be found for type: \"{1}\".";
 
         public const string FilterSetVersionNotSupported = "Provided filter set version: \"{0}\" is not supported.";
 

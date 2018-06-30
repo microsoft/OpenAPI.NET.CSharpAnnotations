@@ -29,6 +29,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         /// Gets the key from the input object to use as reference string.
         /// </summary>
         /// <remarks>This must match the regular expression ^[a-zA-Z0-9\.\-_]+$</remarks>
-        protected abstract string GetKey(TInput input);
+        internal abstract string GetKey(TInput input);
     }
 }

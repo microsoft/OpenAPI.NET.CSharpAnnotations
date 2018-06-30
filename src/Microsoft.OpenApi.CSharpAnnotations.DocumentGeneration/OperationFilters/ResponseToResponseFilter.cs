@@ -3,11 +3,14 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -36,6 +39,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     p => p.Name == KnownXmlStrings.Response ||
                         p.Name == KnownXmlStrings.ResponseType);
 
+            SchemaReferenceRegistry schemaReferenceRegistry = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
+
             foreach (var responseElement in responseElements)
             {
                 var code = responseElement.Attribute(KnownXmlStrings.Code)?.Value;
@@ -61,19 +66,54 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     description = lastNode.ToString();
                 }
 
-                var seeNodes = responseElement.Descendants(KnownXmlStrings.See);
+                var seeNodes = responseElement.Elements().Where(i => i.Name == KnownXmlStrings.See);
 
                 var allListedTypes = seeNodes
                     .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
                     .Where(crefValue => crefValue != null).ToList();
 
                 OpenApiSchema schema = null;
+                Type responseContractType = null;
 
                 if (allListedTypes.Any())
                 {
-                    var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-                    schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
-                        responseContractType);
+                    responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+                    schema = schemaReferenceRegistry.FindOrAddReference(responseContractType);
+                }
+
+                var exampleElements = responseElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
+                var examples = new Dictionary<string, OpenApiExample>();
+                int exampleCounter = 1;
+
+                foreach (var exampleElement in exampleElements)
+                {
+                    var exampleName = exampleElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
+                    var example = exampleElement.ToOpenApiExample(settings.TypeFetcher);
+
+                    examples.Add(
+                        string.IsNullOrWhiteSpace(exampleName) ? $"example{exampleCounter++}" : exampleName,
+                        example);
+                }
+
+                if (schema != null)
+                {
+                    if (examples.Count > 0)
+                    {
+                        if (schema.Reference != null)
+                        {
+                            var key = schemaReferenceRegistry.GetKey(responseContractType);
+
+                            if (schemaReferenceRegistry.References.ContainsKey(key))
+                            {
+                                settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
+                                    = examples.First().Value.Value;
+                            }
+                        }
+                        else
+                        {
+                            schema.Example = examples.First().Value.Value;
+                        }
+                    }
                 }
 
                 if (operation.Responses.ContainsKey(code))
@@ -124,6 +164,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     }
 
                     operation.Responses.Add(code, response);
+                }
+
+                if (examples.Count > 0)
+                {
+                    if (operation.Responses[code].Content[mediaType].Examples.Any())
+                    {
+                        examples.CopyInto(operation.Responses[code].Content[mediaType].Examples);
+                    }
+                    else
+                    {
+                        operation.Responses[code].Content[mediaType].Examples = examples;
+                    }
                 }
             }
 

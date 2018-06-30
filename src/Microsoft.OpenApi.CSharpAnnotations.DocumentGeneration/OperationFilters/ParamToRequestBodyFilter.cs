@@ -3,12 +3,14 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -39,6 +41,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                         p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
                 .ToList();
 
+            SchemaReferenceRegistry schemaReferenceRegistry = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
+
             foreach (var bodyElement in bodyElements)
             {
                 var name = bodyElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
@@ -54,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     description = lastNode.ToString();
                 }
 
-                var seeNodes = bodyElement.Descendants(KnownXmlStrings.See);
+                var seeNodes = bodyElement.Elements().Where(i => i.Name == KnownXmlStrings.See);
 
                 var allListedTypes = seeNodes
                     .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
@@ -67,7 +71,41 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                 }
 
                 var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-                var schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
+                var schema = schemaReferenceRegistry.FindOrAddReference(type);
+
+                var exampleElements = bodyElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
+                var examples = new Dictionary<string, OpenApiExample>();
+                int exampleCounter = 1;
+
+                foreach (var exampleElement in exampleElements)
+                {
+                    var exampleName = exampleElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
+                    var example = exampleElement.ToOpenApiExample(settings.TypeFetcher);
+
+                    examples.Add(
+                        string.IsNullOrWhiteSpace(exampleName) ? $"example{exampleCounter++}" : exampleName,
+                        example);
+                }
+
+                if (examples.Count > 0)
+                {
+                    // In case a schema is a reference, find that schmea object in schema registry
+                    // and update the example.
+                    if (schema.Reference != null)
+                    {
+                        var key = schemaReferenceRegistry.GetKey(type);
+
+                        if (schemaReferenceRegistry.References.ContainsKey(key))
+                        {
+                            settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
+                                = examples.First().Value.Value;
+                        }
+                    }
+                    else
+                    {
+                        schema.Example = examples.First().Value.Value;
+                    }
+                }
 
                 if (operation.RequestBody == null)
                 {
@@ -107,6 +145,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                         }
 
                         operation.RequestBody.Content[mediaType].Schema.AnyOf.Add(schema);
+                    }
+                }
+
+                if (examples.Count > 0)
+                {
+                    if (operation.RequestBody.Content[mediaType].Examples.Any())
+                    {
+                        examples.CopyInto(operation.RequestBody.Content[mediaType].Examples);
+                    }
+                    else
+                    {
+                        operation.RequestBody.Content[mediaType].Examples = examples;
                     }
                 }
             }
