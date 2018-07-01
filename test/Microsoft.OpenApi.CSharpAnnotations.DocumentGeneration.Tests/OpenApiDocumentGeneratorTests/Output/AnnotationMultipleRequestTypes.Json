@@ -694,8 +694,7 @@
             "items": {
               "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"
             },
-            "description": "Gets the sample property object list",
-            "readOnly": true
+            "description": "Gets the sample property object list"
           }
         }
       },
@@ -724,16 +723,14 @@
             "additionalProperties": {
               "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"
             },
-            "description": "Gets the sample property object dictionary",
-            "readOnly": true
+            "description": "Gets the sample property object dictionary"
           },
           "samplePropertyObjectList": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"
             },
-            "description": "Gets the sample property object list",
-            "readOnly": true
+            "description": "Gets the sample property object list"
           },
           "samplePropertyString1": {
             "type": "string",
