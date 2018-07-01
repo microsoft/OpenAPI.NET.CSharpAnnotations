@@ -4,7 +4,6 @@
 // ------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -75,41 +74,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                // Fetch if any see tags are present, if present populate listed types with it.
-                var seeNodes = paramElement.Elements().Where(i => i.Name == KnownXmlStrings.See);
-
-                var allListedTypes = seeNodes
-                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
-                    .Where(crefValue => crefValue != null).ToList();
-
-                // If no see tags are present, add the value from cref tag.
-                if (!allListedTypes.Any() && !string.IsNullOrWhiteSpace(cref))
-                {
-                    allListedTypes.Add(cref);
-                }
-
-                var type = typeof(string);
-                if (allListedTypes.Any())
-                {
-                    type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-                }
+                var type = XElementProcessor.GetType(paramElement, settings.TypeFetcher, true);
 
                 var schema = schemaReferenceRegistry.FindOrAddReference(type);
                 var parameterLocation = GetParameterKind(inValue);
 
-                var exampleElements = paramElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
-                var examples = new Dictionary<string, OpenApiExample>();
-                int exampleCounter = 1;
-
-                foreach (var exampleElement in exampleElements)
-                {
-                    var exampleName = exampleElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
-                    var example = exampleElement.ToOpenApiExample(settings.TypeFetcher);
-
-                    examples.Add(
-                        string.IsNullOrWhiteSpace(exampleName) ? $"example{exampleCounter++}" : exampleName,
-                        example);
-                }
+                var examples = XElementProcessor.GetOpenApiExamples(paramElement, settings.TypeFetcher);
 
                 var openApiParameter = new OpenApiParameter
                 {

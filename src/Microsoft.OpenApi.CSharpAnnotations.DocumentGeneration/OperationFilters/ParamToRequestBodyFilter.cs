@@ -3,11 +3,9 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
-using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
@@ -55,37 +53,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                 if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
-                    description = lastNode.ToString();
+                    description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                var seeNodes = bodyElement.Elements().Where(i => i.Name == KnownXmlStrings.See);
-
-                var allListedTypes = seeNodes
-                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
-                    .Where(crefValue => crefValue != null).ToList();
-
-                if (!allListedTypes.Any())
-                {
-                    throw new InvalidRequestBodyException(
-                        string.Format(SpecificationGenerationMessages.MissingSeeCrefTag, name));
-                }
-
-                var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+                var type = XElementProcessor.GetType(bodyElement, settings.TypeFetcher);
                 var schema = schemaReferenceRegistry.FindOrAddReference(type);
 
-                var exampleElements = bodyElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
-                var examples = new Dictionary<string, OpenApiExample>();
-                int exampleCounter = 1;
-
-                foreach (var exampleElement in exampleElements)
-                {
-                    var exampleName = exampleElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
-                    var example = exampleElement.ToOpenApiExample(settings.TypeFetcher);
-
-                    examples.Add(
-                        string.IsNullOrWhiteSpace(exampleName) ? $"example{exampleCounter++}" : exampleName,
-                        example);
-                }
+                var examples = XElementProcessor.GetOpenApiExamples(bodyElement, settings.TypeFetcher);
 
                 if (examples.Count > 0)
                 {

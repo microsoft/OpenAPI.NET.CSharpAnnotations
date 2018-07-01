@@ -48,6 +48,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string MissingInAttribute = "In attribute is missing from parameter(s): \"{0}\"";
 
+        public const string MissingNameAttribute = "\"name\" attribute is missing from {0}.";
+
         public const string MissingSeeCrefTag = 
             "Tag \"<see cref=\"(RequestBodyType)\"\\>\" is missing from body parameter: \"{0}\". ";
 

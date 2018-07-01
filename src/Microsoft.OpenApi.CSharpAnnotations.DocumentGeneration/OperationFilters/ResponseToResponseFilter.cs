@@ -3,8 +3,6 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -63,37 +61,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                 if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
-                    description = lastNode.ToString();
+                    description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                var seeNodes = responseElement.Elements().Where(i => i.Name == KnownXmlStrings.See);
+                var responseContractType = XElementProcessor.GetType(responseElement, settings.TypeFetcher);
+                OpenApiSchema schema = schemaReferenceRegistry.FindOrAddReference(responseContractType);
 
-                var allListedTypes = seeNodes
-                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
-                    .Where(crefValue => crefValue != null).ToList();
-
-                OpenApiSchema schema = null;
-                Type responseContractType = null;
-
-                if (allListedTypes.Any())
-                {
-                    responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-                    schema = schemaReferenceRegistry.FindOrAddReference(responseContractType);
-                }
-
-                var exampleElements = responseElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
-                var examples = new Dictionary<string, OpenApiExample>();
-                int exampleCounter = 1;
-
-                foreach (var exampleElement in exampleElements)
-                {
-                    var exampleName = exampleElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
-                    var example = exampleElement.ToOpenApiExample(settings.TypeFetcher);
-
-                    examples.Add(
-                        string.IsNullOrWhiteSpace(exampleName) ? $"example{exampleCounter++}" : exampleName,
-                        example);
-                }
+                var examples = XElementProcessor.GetOpenApiExamples(responseElement, settings.TypeFetcher);
+                var headers = XElementProcessor.GetOpenApiHeaders(
+                    responseElement,
+                    settings.TypeFetcher,
+                    settings.ReferenceRegistryManager.SchemaReferenceRegistry);
 
                 if (schema != null)
                 {
@@ -161,6 +139,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     if (schema != null)
                     {
                         response.Content[mediaType] = new OpenApiMediaType { Schema = schema };
+                    }
+
+                    if (headers.Any())
+                    {
+                        response.Headers = headers;
                     }
 
                     operation.Responses.Add(code, response);
