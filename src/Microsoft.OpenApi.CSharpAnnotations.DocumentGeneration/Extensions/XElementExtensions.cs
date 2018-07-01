@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
-using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 {
@@ -40,7 +40,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                         break;
 
                     case XmlNodeType.Element:
-                        var childElement = (XElement)child;
+                        var childElement = (XElement) child;
 
                         switch (childElement.Name.ToString())
                         {
