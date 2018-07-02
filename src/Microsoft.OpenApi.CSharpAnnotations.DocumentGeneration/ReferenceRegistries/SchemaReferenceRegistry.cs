@@ -18,6 +18,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
     public class SchemaReferenceRegistry : ReferenceRegistry<Type, OpenApiSchema>
     {
         private readonly SchemaGenerationSettings _schemaGenerationSettings;
+        private IPropertyNameResolver _propertyNameResolver;
 
         /// <summary>
         /// Creates an instance of <see cref="SchemaReferenceRegistry"/>.
@@ -27,6 +28,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         {
             _schemaGenerationSettings = schemaGenerationSettings
                 ?? throw new ArgumentNullException(nameof(schemaGenerationSettings));
+            _propertyNameResolver = schemaGenerationSettings.PropertyNameResolver;
         }
 
         /// <summary>
@@ -129,6 +131,25 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                 References[key] = schema;
 
                 var propertyNameDeclaringTypeMap = new Dictionary<string, Type>();
+                var typeAttributes = input.GetCustomAttributes(false);
+
+                foreach (var typeAttribute in typeAttributes)
+                {
+                    if (typeAttribute.GetType().FullName == "Newtonsoft.Json.JsonObjectAttribute")
+                    {
+                        var type = typeAttribute.GetType();
+                        var namingStrategyInfo = type.GetProperty("NamingStrategyType");
+                        if (namingStrategyInfo != null)
+                        {
+                            var namingStrategyValue = namingStrategyInfo.GetValue(typeAttribute, null);
+                            if (namingStrategyValue.ToString()
+                                == "Newtonsoft.Json.Serialization.CamelCaseNamingStrategy")
+                            {
+                                _propertyNameResolver = new CamelCasePropertyNameResolver();
+                            }
+                        }
+                    }
+                }
 
                 foreach (var propertyInfo in input.GetProperties())
                 {
@@ -136,11 +157,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
 
                     var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
 
-                    // Check if the property is read-only.
-                    innerSchema.ReadOnly = !propertyInfo.CanWrite;
-
-                    var propertyName = _schemaGenerationSettings
-                        .PropertyNameResolver.ResolvePropertyName(propertyInfo);
+                    var propertyName = _propertyNameResolver.ResolvePropertyName(propertyInfo);
 
                     var attributes = propertyInfo.GetCustomAttributes(false);
 

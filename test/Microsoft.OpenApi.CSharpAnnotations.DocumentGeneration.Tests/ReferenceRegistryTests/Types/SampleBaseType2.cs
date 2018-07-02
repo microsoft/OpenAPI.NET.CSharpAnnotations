@@ -19,7 +19,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 ["sampleList"] = new OpenApiSchema
                 {
                     Type = "array",
-                    ReadOnly = true,
                     Items = new OpenApiSchema
                     {
                         Type = "string"
@@ -28,7 +27,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 ["SampleList2"] = new OpenApiSchema
                 {
                     Type = "array",
-                    ReadOnly = true,
                     Items = new OpenApiSchema
                     {
                         Type = "integer",
