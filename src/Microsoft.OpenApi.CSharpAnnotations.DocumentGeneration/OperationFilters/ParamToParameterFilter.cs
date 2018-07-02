@@ -74,12 +74,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                var type = XElementProcessor.GetType(paramElement, settings.TypeFetcher, true);
+                var type = typeof(string);
+                var allListedTypes = paramElement.GetListedTypes();
+
+                if (allListedTypes.Any())
+                {
+                    type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+                }
 
                 var schema = schemaReferenceRegistry.FindOrAddReference(type);
                 var parameterLocation = GetParameterKind(inValue);
 
-                var examples = XElementProcessor.GetOpenApiExamples(paramElement, settings.TypeFetcher);
+                var examples = paramElement.ToOpenApiExamples(settings.TypeFetcher);
 
                 var openApiParameter = new OpenApiParameter
                 {
@@ -92,18 +98,23 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                 if (examples.Count > 0)
                 {
-                    if (openApiParameter.Schema.Reference != null)
-                    {
-                        var key = schemaReferenceRegistry.GetKey(type);
+                    var firstExample = examples.First().Value?.Value;
 
-                        if (schemaReferenceRegistry.References.ContainsKey(key))
-                        {
-                            schemaReferenceRegistry.References[key].Example = examples.First().Value.Value;
-                        }
-                    }
-                    else
+                    if (firstExample != null)
                     {
-                        openApiParameter.Schema.Example = examples.First().Value.Value;
+                        if (openApiParameter.Schema.Reference != null)
+                        {
+                            var key = schemaReferenceRegistry.GetKey(type);
+
+                            if (schemaReferenceRegistry.References.ContainsKey(key))
+                            {
+                                schemaReferenceRegistry.References[key].Example = firstExample;
+                            }
+                        }
+                        else
+                        {
+                            openApiParameter.Schema.Example = firstExample;
+                        }
                     }
 
                     openApiParameter.Examples = examples;

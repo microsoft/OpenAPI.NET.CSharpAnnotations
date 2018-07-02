@@ -6,6 +6,7 @@
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
@@ -56,28 +57,41 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                var type = XElementProcessor.GetType(bodyElement, settings.TypeFetcher);
+                var allListedTypes = bodyElement.GetListedTypes();
+
+                if (!allListedTypes.Any())
+                {
+                    throw new InvalidRequestBodyException(
+                        string.Format(SpecificationGenerationMessages.MissingSeeCrefTag, name));
+                }
+
+                var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
                 var schema = schemaReferenceRegistry.FindOrAddReference(type);
 
-                var examples = XElementProcessor.GetOpenApiExamples(bodyElement, settings.TypeFetcher);
+                var examples = bodyElement.ToOpenApiExamples(settings.TypeFetcher);
 
                 if (examples.Count > 0)
                 {
-                    // In case a schema is a reference, find that schmea object in schema registry
-                    // and update the example.
-                    if (schema.Reference != null)
-                    {
-                        var key = schemaReferenceRegistry.GetKey(type);
+                    var firstExample = examples.First().Value?.Value;
 
-                        if (schemaReferenceRegistry.References.ContainsKey(key))
-                        {
-                            settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
-                                = examples.First().Value.Value;
-                        }
-                    }
-                    else
+                    if (firstExample != null)
                     {
-                        schema.Example = examples.First().Value.Value;
+                        // In case a schema is a reference, find that schmea object in schema registry
+                        // and update the example.
+                        if (schema.Reference != null)
+                        {
+                            var key = schemaReferenceRegistry.GetKey(type);
+
+                            if (schemaReferenceRegistry.References.ContainsKey(key))
+                            {
+                                settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
+                                    = firstExample;
+                            }
+                        }
+                        else
+                        {
+                            schema.Example = firstExample;
+                        }
                     }
                 }
 

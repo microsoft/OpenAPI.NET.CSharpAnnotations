@@ -64,12 +64,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                var responseContractType = XElementProcessor.GetType(responseElement, settings.TypeFetcher);
-                OpenApiSchema schema = schemaReferenceRegistry.FindOrAddReference(responseContractType);
+                var type = typeof(string);
+                var allListedTypes = responseElement.GetListedTypes();
 
-                var examples = XElementProcessor.GetOpenApiExamples(responseElement, settings.TypeFetcher);
-                var headers = XElementProcessor.GetOpenApiHeaders(
-                    responseElement,
+                var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+
+                OpenApiSchema schema = null;
+                if (responseContractType != null)
+                {
+                    schema = schemaReferenceRegistry.FindOrAddReference(responseContractType);
+                }
+
+                var examples = responseElement.ToOpenApiExamples(settings.TypeFetcher);
+                var headers = responseElement.ToOpenApiHeaders(
                     settings.TypeFetcher,
                     settings.ReferenceRegistryManager.SchemaReferenceRegistry);
 
@@ -77,19 +84,24 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                 {
                     if (examples.Count > 0)
                     {
-                        if (schema.Reference != null)
-                        {
-                            var key = schemaReferenceRegistry.GetKey(responseContractType);
+                        var firstExample = examples.First().Value?.Value;
 
-                            if (schemaReferenceRegistry.References.ContainsKey(key))
-                            {
-                                settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
-                                    = examples.First().Value.Value;
-                            }
-                        }
-                        else
+                        if (firstExample != null)
                         {
-                            schema.Example = examples.First().Value.Value;
+                            if (schema.Reference != null)
+                            {
+                                var key = schemaReferenceRegistry.GetKey(responseContractType);
+
+                                if (schemaReferenceRegistry.References.ContainsKey(key))
+                                {
+                                    settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
+                                        = firstExample;
+                                }
+                            }
+                            else
+                            {
+                                schema.Example = firstExample;
+                            }
                         }
                     }
                 }

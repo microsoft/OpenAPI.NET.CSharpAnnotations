@@ -9,6 +9,7 @@ using System.IO;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
@@ -18,7 +19,7 @@ using Xunit.Abstractions;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.ExtensionsTests
 {
     [Collection("DefaultSettings")]
-    public class XElementProcessorTest
+    public class XElementExtensionTest
     {
         private const string InputDirectory = "ExtensionsTests/Input";
         private readonly ITestOutputHelper _output;
@@ -29,12 +30,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         private readonly SchemaReferenceRegistry schemaReferenceRegistry = new SchemaReferenceRegistry(
             new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
 
-        public XElementProcessorTest(ITestOutputHelper output)
+        public XElementExtensionTest(ITestOutputHelper output)
         {
             _output = output;
         }
 
-        public static IEnumerable<object[]> GetTestCasesForXElementProcessorExampleShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForXElementExtensionExampleShouldSucceed()
         {
             yield return new object[]
             {
@@ -118,7 +119,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             };
         }
 
-        public static IEnumerable<object[]> GetTestCasesForXElementProcessorExampleShouldFail()
+        public static IEnumerable<object[]> GetTestCasesForXElementExtensionExampleShouldFail()
         {
             yield return new object[]
             {
@@ -155,7 +156,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             };
         }
 
-        public static IEnumerable<object[]> GetTestCasesForXElementProcessorHeaderShouldFail()
+        public static IEnumerable<object[]> GetTestCasesForXElementExtensionHeaderShouldFail()
         {
             yield return new object[]
             {
@@ -165,7 +166,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             };
         }
 
-        public static IEnumerable<object[]> GetTestCasesForXElementProcessorHeaderShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForXElementExtensionHeaderShouldSucceed()
         {
             yield return new object[]
             {
@@ -238,57 +239,54 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForXElementProcessorExampleShouldFail))]
-        public void XElementProcessorExampleShouldFail(
+        [MemberData(nameof(GetTestCasesForXElementExtensionExampleShouldFail))]
+        public void XElementExtensionExampleShouldFail(
             string testCaseName,
             XElement xElement,
             string expectedExceptionMessage)
         {
             _output.WriteLine(testCaseName);
 
-            Action action = () => XElementProcessor.GetOpenApiExamples(xElement, typeFetcher);
+            Action action = () => xElement.ToOpenApiExamples(typeFetcher);
             action.Should().Throw<Exception>(expectedExceptionMessage);
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForXElementProcessorExampleShouldSucceed))]
-        public void XElementProcessorExampleShouldSucceed(
+        [MemberData(nameof(GetTestCasesForXElementExtensionExampleShouldSucceed))]
+        public void XElementExtensionExampleShouldSucceed(
             string testCaseName,
             XElement xElement,
             Dictionary<string, OpenApiExample> expectedOpenApiExamples)
         {
             _output.WriteLine(testCaseName);
 
-            var openApiExamples = XElementProcessor.GetOpenApiExamples(xElement,typeFetcher);
+            var openApiExamples = xElement.ToOpenApiExamples(typeFetcher);
             openApiExamples.Should().BeEquivalentTo(expectedOpenApiExamples);
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForXElementProcessorHeaderShouldFail))]
-        public void XElementProcessorHeaderShouldFail(
+        [MemberData(nameof(GetTestCasesForXElementExtensionHeaderShouldFail))]
+        public void XElementExtensionHeaderShouldFail(
             string testCaseName,
             XElement xElement,
             string expectedExceptionMessage)
         {
             _output.WriteLine(testCaseName);
 
-            Action action = () => XElementProcessor.GetOpenApiHeaders(xElement, typeFetcher, schemaReferenceRegistry);
+            Action action = () => xElement.ToOpenApiHeaders(typeFetcher, schemaReferenceRegistry);
             action.Should().Throw<Exception>(expectedExceptionMessage);
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForXElementProcessorHeaderShouldSucceed))]
-        public void XElementProcessorHeaderShouldSucceed(
+        [MemberData(nameof(GetTestCasesForXElementExtensionHeaderShouldSucceed))]
+        public void XElementExtensionHeaderShouldSucceed(
             string testCaseName,
             XElement xElement,
             Dictionary<string,OpenApiHeader> expectedOpenApiHeaders)
         {
             _output.WriteLine(testCaseName);
 
-            var openApiHeaders = XElementProcessor.GetOpenApiHeaders(
-                xElement,
-                typeFetcher,
-                schemaReferenceRegistry);
+            var openApiHeaders = xElement.ToOpenApiHeaders(typeFetcher,schemaReferenceRegistry);
 
             openApiHeaders.Should().BeEquivalentTo(expectedOpenApiHeaders);
         }
