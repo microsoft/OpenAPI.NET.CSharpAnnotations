@@ -142,7 +142,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                         if (namingStrategyInfo != null)
                         {
                             var namingStrategyValue = namingStrategyInfo.GetValue(typeAttribute, null);
-                            if (namingStrategyValue.ToString()
+
+                            if (namingStrategyValue?.ToString()
                                 == "Newtonsoft.Json.Serialization.CamelCaseNamingStrategy")
                             {
                                 _propertyNameResolver = new CamelCasePropertyNameResolver();
