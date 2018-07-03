@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Examples.cs" />
     <Compile Include="ISampleObject4.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleEnum1.cs" />

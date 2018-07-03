@@ -181,7 +181,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             documentVariantInfo,
                             new OpenApiDocument
                             {
-                                Components = new OpenApiComponents()
+                                Components = new OpenApiComponents(),
+                                Paths = new OpenApiPaths()
                             });
                     }
 

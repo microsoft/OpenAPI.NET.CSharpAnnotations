@@ -4,12 +4,12 @@
 // ------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -47,6 +47,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             p.Attribute(KnownXmlStrings.In)?.Value))
                 .ToList();
 
+            SchemaReferenceRegistry schemaReferenceRegistry
+                = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
+
             foreach (var paramElement in paramElementsWithIn)
             {
                 var inValue = paramElement.Attribute(KnownXmlStrings.In)?.Value.Trim();
@@ -71,51 +74,54 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                // Fetch if any see tags are present, if present populate listed types with it.
-                var seeNodes = paramElement.Descendants(KnownXmlStrings.See);
+                var type = typeof(string);
+                var allListedTypes = paramElement.GetListedTypes();
 
-                var allListedTypes = seeNodes
-                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
-                    .Where(crefValue => crefValue != null).ToList();
-
-                // If no see tags are present, add the value from cref tag.
-                if (!allListedTypes.Any() && !string.IsNullOrWhiteSpace(cref))
+                if (allListedTypes.Any())
                 {
-                    allListedTypes.Add(cref);
+                    type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
                 }
 
-                var schema = GenerateSchemaFromCref(allListedTypes, settings);
+                var schema = schemaReferenceRegistry.FindOrAddReference(type);
                 var parameterLocation = GetParameterKind(inValue);
 
-                operation.Parameters.Add(
-                    new OpenApiParameter
+                var examples = paramElement.ToOpenApiExamples(settings.TypeFetcher);
+
+                var openApiParameter = new OpenApiParameter
+                {
+                    Name = name,
+                    In = parameterLocation,
+                    Description = description,
+                    Required = parameterLocation == ParameterLocation.Path || Convert.ToBoolean(isRequired),
+                    Schema = schema
+                };
+
+                if (examples.Count > 0)
+                {
+                    var firstExample = examples.First().Value?.Value;
+
+                    if (firstExample != null)
                     {
-                        Name = name,
-                        In = parameterLocation,
-                        Description = description,
-                        Required = parameterLocation == ParameterLocation.Path || Convert.ToBoolean(isRequired),
-                        Schema = schema
-                    });
+                        if (openApiParameter.Schema.Reference != null)
+                        {
+                            var key = schemaReferenceRegistry.GetKey(type);
+
+                            if (schemaReferenceRegistry.References.ContainsKey(key))
+                            {
+                                schemaReferenceRegistry.References[key].Example = firstExample;
+                            }
+                        }
+                        else
+                        {
+                            openApiParameter.Schema.Example = firstExample;
+                        }
+                    }
+
+                    openApiParameter.Examples = examples;
+                }
+
+                operation.Parameters.Add(openApiParameter);
             }
-        }
-
-        /// <summary>
-        /// Generates schema from type names in cref.
-        /// </summary>
-        /// <returns>
-        /// Schema from type in cref if the type is resolvable.
-        /// Otherwise, default to schema for string type.
-        /// </returns>
-        private static OpenApiSchema GenerateSchemaFromCref(IList<string> crefValues, OperationFilterSettings settings)
-        {
-            var type = typeof(string);
-
-            if (crefValues.Any())
-            {
-                type = settings.TypeFetcher.LoadTypeFromCrefValues(crefValues);
-            }
-
-            return settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(type);
         }
 
         private static ParameterLocation GetParameterKind(string parameterKind)

@@ -32,7 +32,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             "Only the first occurrence of it added to the generated document, "+
             "rest all are omitted from the generated document.";
 
-        public const string DuplicateProperty = "A property with the name \"{0}\" already exists on \"{1}\"";
+        public const string DuplicateProperty = "A property with the name \"{0}\" already exists on \"{1}\".";
+
+        public const string FieldNotFound = "Field \"{0}\" could not be found for type: \"{1}\".";
 
         public const string FilterSetVersionNotSupported = "Provided filter set version: \"{0}\" is not supported.";
 
@@ -45,6 +47,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         public const string MalformattedUrl = "Url is malformatted and cannot be decoded properly.";
 
         public const string MissingInAttribute = "In attribute is missing from parameter(s): \"{0}\"";
+
+        public const string MissingNameAttribute = "\"name\" attribute is missing from {0}.";
 
         public const string MissingSeeCrefTag = 
             "Tag \"<see cref=\"(RequestBodyType)\"\\>\" is missing from body parameter: \"{0}\". ";
@@ -60,6 +64,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
         public const string OperationMethodNotParsedGivenUrlIsInvalid =
             "Operation method has not been parsed given that the url is invalid.";
+
+        public const string ProvideEitherValueOrUrlTag =
+            "Tag \"example\" cannot contain both \"value\" and \"url\" tags. Please provide either one of them.";
+
+        public const string ProvideValueForExample =
+            "Tag \"value\" for example is empty. Please populate it with example value.";
 
         public const string SuccessfulPathGeneration = "The specification for path has been generated successfully.";
 

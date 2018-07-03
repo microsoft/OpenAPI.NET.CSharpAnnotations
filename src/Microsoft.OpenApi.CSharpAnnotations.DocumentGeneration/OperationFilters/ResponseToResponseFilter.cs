@@ -8,6 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -36,6 +37,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     p => p.Name == KnownXmlStrings.Response ||
                         p.Name == KnownXmlStrings.ResponseType);
 
+            SchemaReferenceRegistry schemaReferenceRegistry = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
+
             foreach (var responseElement in responseElements)
             {
                 var code = responseElement.Attribute(KnownXmlStrings.Code)?.Value;
@@ -58,22 +61,49 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                 if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
                 {
-                    description = lastNode.ToString();
+                    description = lastNode.ToString().Trim().RemoveBlankLines();
                 }
 
-                var seeNodes = responseElement.Descendants(KnownXmlStrings.See);
+                var type = typeof(string);
+                var allListedTypes = responseElement.GetListedTypes();
 
-                var allListedTypes = seeNodes
-                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
-                    .Where(crefValue => crefValue != null).ToList();
+                var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
 
                 OpenApiSchema schema = null;
-
-                if (allListedTypes.Any())
+                if (responseContractType != null)
                 {
-                    var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-                    schema = settings.ReferenceRegistryManager.SchemaReferenceRegistry.FindOrAddReference(
-                        responseContractType);
+                    schema = schemaReferenceRegistry.FindOrAddReference(responseContractType);
+                }
+
+                var examples = responseElement.ToOpenApiExamples(settings.TypeFetcher);
+                var headers = responseElement.ToOpenApiHeaders(
+                    settings.TypeFetcher,
+                    settings.ReferenceRegistryManager.SchemaReferenceRegistry);
+
+                if (schema != null)
+                {
+                    if (examples.Count > 0)
+                    {
+                        var firstExample = examples.First().Value?.Value;
+
+                        if (firstExample != null)
+                        {
+                            if (schema.Reference != null)
+                            {
+                                var key = schemaReferenceRegistry.GetKey(responseContractType);
+
+                                if (schemaReferenceRegistry.References.ContainsKey(key))
+                                {
+                                    settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
+                                        = firstExample;
+                                }
+                            }
+                            else
+                            {
+                                schema.Example = firstExample;
+                            }
+                        }
+                    }
                 }
 
                 if (operation.Responses.ContainsKey(code))
@@ -123,7 +153,24 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                         response.Content[mediaType] = new OpenApiMediaType { Schema = schema };
                     }
 
+                    if (headers.Any())
+                    {
+                        response.Headers = headers;
+                    }
+
                     operation.Responses.Add(code, response);
+                }
+
+                if (examples.Count > 0)
+                {
+                    if (operation.Responses[code].Content[mediaType].Examples.Any())
+                    {
+                        examples.CopyInto(operation.Responses[code].Content[mediaType].Examples);
+                    }
+                    else
+                    {
+                        operation.Responses[code].Content[mediaType].Examples = examples;
+                    }
                 }
             }
 

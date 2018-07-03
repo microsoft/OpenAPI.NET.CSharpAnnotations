@@ -987,6 +987,32 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                     OutputDirectory,
                     "AnnotationSummaryWithTags.Json")
             };
+
+            // XML document with examples
+            yield return new object[]
+            {
+                "XML document with examples",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationExample.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                "1.0.0",
+                2,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationExample.Json")
+            };
         }
 
         [Theory]

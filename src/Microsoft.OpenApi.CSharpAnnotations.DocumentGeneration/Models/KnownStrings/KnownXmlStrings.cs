@@ -16,6 +16,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStr
         public const string Cref = "cref";
         public const string Default = "default";
         public const string Description = "description";
+        public const string Example = "example";
         public const string Group = "group";
         public const string Header = "header";
         public const string In = "in";
@@ -42,6 +43,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStr
         public const string Tag = "tag";
         public const string Type = "type";
         public const string Url = "url";
+        public const string Value = "value";
         public const string Variant = "variant";
         public const string Verb = "verb";
 

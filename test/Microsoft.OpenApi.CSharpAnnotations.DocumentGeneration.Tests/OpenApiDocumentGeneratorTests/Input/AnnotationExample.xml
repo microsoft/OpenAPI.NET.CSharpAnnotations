@@ -1,0 +1,117 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig">
+      <summary>
+        Responsible for route configuration
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+      <summary>
+        Registers routes
+      </summary>
+      <param name="routes">Route collection</param>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig">
+      <summary>
+        Web config.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+      <summary>
+        Register the configuration, services, and routes.
+      </summary>
+      <param name="config">HTTP Configuration</param>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV1">
+      <summary>
+        Define V1 operations.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV3.SampleGet2(System.String,System.String)">
+      <summary>
+        Sample put 2
+      </summary>
+      <group>Sample V3</group>
+      <verb>PUT</verb>
+      <url>http://localhost:9000/V3/samples/{id}?queryString={queryString}</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="id" cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1" in="path">The object id
+        <example><value><see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example"/></value></example>
+      </param>
+      <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
+      <param name="sampleObject1" in="body"><see cref="T:System.String"/>Request Body
+        <example><value>Request Body Example</value></example>
+      </param>
+      <param name="sampleObject1" in="body"><see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Request Body
+        <example><value><see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example"/></value></example>
+      </param>
+      <response code="200">
+        <see cref="T:System.String"/>
+        List of sample objects.
+        <example name="Example one"><value>Response 200 Example 1</value></example>
+        <example name="Example two"><value>Response 200 Example 2</value></example>
+      </response>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4"/>
+        <example><value><see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject4Example"/></value></example>
+        <example><value><see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject4Example"/></value></example>
+        Sample object
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV4.SamplePost1(Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1,System.String)">
+    <summary>
+    Sample get 1
+    </summary>
+    <group>Sample V4</group>
+    <verb>POST</verb>
+    <url>https://myapi.sample.com/V4/samples/{id}</url>
+    <param name="id" cref="T:System.String" in="path">The object id
+      <example name="Example one"><value>id1</value></example>
+      <example name="Example two"><value>id2</value></example>
+    </param>
+    <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean
+    <example><value>true</value></example>
+    <example><value>false</value></example>
+    </param>
+    <param name="sampleHeaderParam1" cref="T:System.Single" in="header">
+      <example><value>Sample header 1</value></example>
+    Header param 1
+    </param>
+    <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+    <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+    <param name="sampleObject1" in="body"><see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Request Body
+      <example><value><see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example"/></value></example>
+    </param>
+    <response code="200"><see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4"/>
+      <example><value><see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject4Example"/></value></example>
+      <example><value><see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject4Example"/></value></example>
+    Sample object
+    </response>
+    <response code="400"><see cref="T:System.String"/>Bad request</response>
+     </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleControllerV2">
+      <summary>
+        Defines V2 operations.
+      </summary>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication">
+      <summary>
+        Web API Application.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication.Application_Start">
+      <summary>
+        Start application.
+      </summary>
+    </member>
+  </members>
+</doc>

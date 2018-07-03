@@ -67,6 +67,14 @@
         "responses": {
           "200": {
             "description": "Sample object retrieved",
+            "headers": {
+              "TestHeader": {
+                "description": "Test Header",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {

@@ -263,7 +263,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         /// <remarks>
         /// This must match the regular expression ^[a-zA-Z0-9\.\-_]+$ due to OpenAPI V3 spec.
         /// </remarks>
-        protected override string GetKey(Type input)
+        internal override string GetKey(Type input)
         {
             // Type.ToString() returns full name for non-generic types and
             // returns a full name without unnecessary assembly information for generic types.

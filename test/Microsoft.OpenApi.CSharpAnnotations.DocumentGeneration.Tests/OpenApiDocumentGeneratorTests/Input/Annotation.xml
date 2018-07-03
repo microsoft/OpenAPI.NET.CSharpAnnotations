@@ -52,6 +52,9 @@
       <param name="id" cref="T:System.String" in="path">The object id</param>
       <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
       <response code="200">
+        <!--Response headers-->>
+        <header name="TestHeader" cref="T:System.String"><description>Test Header</description></header>
+        <!--///////////////////////-->>
         <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Sample object retrieved
       </response>
       <response code="400">
