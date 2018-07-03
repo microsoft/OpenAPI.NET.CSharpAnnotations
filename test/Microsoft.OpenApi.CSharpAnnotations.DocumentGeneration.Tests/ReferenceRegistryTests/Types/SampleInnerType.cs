@@ -20,7 +20,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 ["SamplePropertyInnerEnum"] = new OpenApiSchema
                 {
                     Type = "string",
-                    ReadOnly = false,
                     Enum = new List<IOpenApiAny>
                     {
                         new OpenApiString(SampleEnum.SampleEnumValueFirst.ToString()),
@@ -30,7 +29,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 ["SamplePropertyInnerListInt"] = new OpenApiSchema
                 {
                     Type = "array",
-                    ReadOnly = true,
                     Items = new OpenApiSchema
                     {
                         Type = "integer",
@@ -39,8 +37,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 },
                 ["SamplePropertyInnerString"] = new OpenApiSchema
                 {
-                    Type = "string",
-                    ReadOnly = false
+                    Type = "string"
                 }
             }
         };

@@ -470,6 +470,26 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     = SampleBaseType2.schema
                 }
             };
+
+            //Type with JObject Attribute
+            yield return new object[]
+            {
+                typeof(SampleTypeWithJObjectAttribute),
+                new OpenApiSchema
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.Schema,
+                        Id = typeof(SampleTypeWithJObjectAttribute).ToString().SanitizeClassName()
+                    }
+                },
+                new Dictionary<string, OpenApiSchema>
+                {
+                    [typeof(SampleTypeWithJObjectAttribute).ToString().SanitizeClassName()]
+                    = SampleTypeWithJObjectAttribute.schema
+                }
+            };
+
         }
     }
 }
