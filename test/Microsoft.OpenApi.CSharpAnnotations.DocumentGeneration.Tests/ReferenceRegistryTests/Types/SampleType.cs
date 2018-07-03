@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.ReferenceRegistryTests.Types
 {
+    [JsonObject]
     internal class SampleType
     {
         public static readonly OpenApiSchema schema = new OpenApiSchema
