@@ -35,6 +35,48 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             _output = output;
         }
 
+        public static IEnumerable<object[]> GetTestCasesForGetDescriptionTextFromLastTextNodeShouldSucceed()
+        {
+            yield return new object[]
+            {
+                "Elemnt with multiple see tags",
+                XElement.Parse(@"<param name=""sampleHeaderParam2"" in=""header"">"
+        + @"<see cref=""T:System.Collections.Generic.List`1""/>"
+        + @"where T is <see cref=""T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2""/>"
+        + @"where T1 is <see cref=""T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1""/>"
+        + @"where T2 is <see cref=""T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2""/>"
+        + @"Header param 2</param>"),
+                "Header param 2"
+            };
+
+            yield return new object[]
+            {
+                "Element with example tag",
+                XElement.Parse(
+                    "<parent>  Test Request  <example><summary>Test Example</summary>"
+                    +"<url>https://localhost/test.json</url></example></parent>"),
+                "Test Request"
+            };
+
+            yield return new object[]
+            {
+                "Element with response header and example tag",
+                XElement.Parse(@"<parent><example name=""BodyExample"">"
+                + @"<value><see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example""/>"
+                +"</value></example>Sample Description<response><header>Test Header</header></response></parent>"),
+                "Sample Description"
+            };
+
+            yield return new object[]
+            {
+                "Element with no child text nodes",
+                XElement.Parse(
+                    "<parent><example><summary>Test Example</summary>"
+                    +"<url>https://localhost/test.json</url></example></parent>"),
+                string.Empty
+            };
+        }
+
         public static IEnumerable<object[]> GetTestCasesForXElementExtensionExampleShouldSucceed()
         {
             yield return new object[]
@@ -236,6 +278,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                     }
                 }
            };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForGetDescriptionTextFromLastTextNodeShouldSucceed))]
+        public void GetDescriptionTextFromLastTextNodeShouldSucceed(
+            string testCaseName,
+            XElement xElement,
+            string expectedDescriptionText)
+        {
+            _output.WriteLine(testCaseName);
+
+            var description = xElement.GetDescriptionTextFromLastTextNode();
+            description.Should().BeEquivalentTo(expectedDescriptionText);
         }
 
         [Theory]

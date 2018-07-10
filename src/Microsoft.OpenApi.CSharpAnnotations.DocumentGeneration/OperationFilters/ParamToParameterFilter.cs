@@ -64,15 +64,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                 var isRequired = paramElement.Attribute(KnownXmlStrings.Required)?.Value.Trim();
                 var cref = paramElement.Attribute(KnownXmlStrings.Cref)?.Value.Trim();
 
-                var childNodes = paramElement.DescendantNodes().ToList();
-                var description = string.Empty;
-
-                var lastNode = childNodes.LastOrDefault();
-
-                if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
-                {
-                    description = lastNode.ToString().Trim().RemoveBlankLines();
-                }
+                var description = paramElement.GetDescriptionTextFromLastTextNode();
 
                 var type = typeof(string);
                 var allListedTypes = paramElement.GetListedTypes();

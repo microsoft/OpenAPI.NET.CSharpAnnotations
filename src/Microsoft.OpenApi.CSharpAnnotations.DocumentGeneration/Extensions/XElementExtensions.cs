@@ -81,6 +81,25 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         }
 
         /// <summary>
+        /// Gets the text from the last text node of the provided element's child nodes with the following modifications:
+        /// 1. Any blank lines are removed.
+        /// 2. Beginning and trailing whitespaces are trimmed.
+        /// </summary>
+        public static string GetDescriptionTextFromLastTextNode(this XElement element)
+        {
+            var lastTextNode = element.Nodes()
+                .Where( i => i.NodeType == XmlNodeType.Text )
+                .LastOrDefault();
+
+            if (lastTextNode != null)
+            {
+                return lastTextNode.ToString().Trim().RemoveBlankLines();
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Fetches list of fully qualified type names from the "cref" attribute or "see" tag of the provided XElement.
         /// </summary>
         /// <param name="xElement">The XElement to process.</param>
