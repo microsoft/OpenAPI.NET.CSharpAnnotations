@@ -38,7 +38,7 @@
       <group>Sample V1</group>
       <verb>GET</verb>
       <url>http://localhost:9000/V1/samples/{id}?queryBool={queryBool}</url>
-      <param name="sampleHeaderParam1" cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1" in="header"></param>
+      <param name="sampleHeaderParam1" cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1" in="header">Header param 1</param>
       <!-- Header parameter with see tag containing custom type reference -->
       <param name="sampleHeaderParam2" in="header">
         <see cref="T:System.Collections.Generic.List`1"/>
