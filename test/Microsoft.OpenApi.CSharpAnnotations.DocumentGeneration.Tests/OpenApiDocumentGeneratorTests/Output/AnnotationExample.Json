@@ -49,7 +49,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "",
+            "description": "The object id",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"
@@ -78,7 +78,7 @@
           }
         ],
         "requestBody": {
-          "description": "Request Body Example",
+          "description": "Request Body",
           "content": {
             "application/json": {
               "schema": {
@@ -103,7 +103,7 @@
         },
         "responses": {
           "200": {
-            "description": "Response 200 Example 2",
+            "description": "List of sample objects.",
             "content": {
               "application/json": {
                 "schema": {
@@ -316,7 +316,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "id2",
+            "description": "The object id",
             "required": true,
             "schema": {
               "type": "string",
@@ -334,7 +334,7 @@
           {
             "name": "queryBool",
             "in": "query",
-            "description": "false",
+            "description": "Sample query boolean",
             "required": true,
             "schema": {
               "type": "boolean",
@@ -382,7 +382,7 @@
           }
         ],
         "requestBody": {
-          "description": "",
+          "description": "Request Body",
           "content": {
             "application/json": {
               "schema": {

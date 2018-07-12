@@ -47,15 +47,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                 var name = bodyElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
                 var mediaType = bodyElement.Attribute(KnownXmlStrings.Type)?.Value ?? "application/json";
 
-                var childNodes = bodyElement.DescendantNodes().ToList();
-                var description = string.Empty;
-
-                var lastNode = childNodes.LastOrDefault();
-
-                if (lastNode != null && lastNode.NodeType == XmlNodeType.Text)
-                {
-                    description = lastNode.ToString().Trim().RemoveBlankLines();
-                }
+                var description = bodyElement.GetDescriptionTextFromLastTextNode();
 
                 var allListedTypes = bodyElement.GetListedTypes();
 
