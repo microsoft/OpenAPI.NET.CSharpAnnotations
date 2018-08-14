@@ -119,6 +119,10 @@ The configuration XML is handcrafted (NOT generated from Visual Studio build).
 
 Consult our [Wiki](https://github.com/Microsoft/OpenAPI.NET.CSharpAnnotations/wiki/Advanced-Configuration-XML) for specific guidance and examples on how to draft this XML.
 
+# VSTS Build Task
+
+- [OpenAPI Document Tools - Build Task](https://marketplace.visualstudio.com/items?itemName=ms-openapi.OpenApiDocumentTools)
+
 # Nuget Packages
 
 - [Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration](https://www.nuget.org/packages/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration)
