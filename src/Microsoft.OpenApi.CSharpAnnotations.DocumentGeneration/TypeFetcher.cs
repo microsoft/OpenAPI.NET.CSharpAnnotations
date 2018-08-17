@@ -134,13 +134,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 return _typeMap[typeName];
             }
 
-            Type contractType = null;
-
             // Load custom type from the given list of assemblies.
             foreach (var file in _contractAssemblyPaths)
             {
                 var assembly = Assembly.LoadFrom(file);
-                contractType = assembly.GetType(typeName);
+                var contractType = assembly.GetType(typeName);
 
                 if (contractType == null)
                 {
@@ -148,58 +146,31 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 }
 
                 _typeMap.Add(typeName, contractType);
+
                 return contractType;
             }
-
-            // Attempt to load type from friendly name, search through all loaded assemblies.
-            var potentialTypes = new List<Type>();
 
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic);
 
             foreach (var loadedAssembly in loadedAssemblies)
             {
-                try
+                var contractType = loadedAssembly.GetType(typeName);
+
+                if (contractType == null)
                 {
-                    var potentialTypesInAssembly = loadedAssembly.GetTypes()
-                        .Where(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName));
-                    potentialTypes.AddRange(potentialTypesInAssembly);
+                    continue;
                 }
-                catch (ReflectionTypeLoadException e)
-                {
-                    // Unable to load types from assembly due to missing dependencies.
-                    // The types that are available, however, are included in the exception.
-                    // Check to see if a potential type is specified
-                    foreach (var loadedType in e.Types)
-                    {
-                        if (loadedType != null && (loadedType.Name.Equals(typeName)
-                                                   || loadedType.FullName.Equals(typeName)))
-                        {
-                            potentialTypes.Add(loadedType);
-                        }
-                    }
-                }
-            }
 
-            string errorMessage;
+                _typeMap.Add(typeName, contractType);
 
-            if (potentialTypes.Count > 1)
-            {
-                errorMessage = string.Format(SpecificationGenerationMessages.CannotUniquelyIdentifyType,
-                    typeName, string.Join(" ", potentialTypes.Select(type => type.FullName)));
-
-                throw new TypeLoadException(errorMessage);
-            }
-
-            contractType = potentialTypes.FirstOrDefault();
-
-            // Could not find the type.
-            if (contractType != null)
-            {
                 return contractType;
             }
 
-            errorMessage = string.Format(SpecificationGenerationMessages.TypeNotFound, typeName,
+
+            var errorMessage = string.Format(
+                SpecificationGenerationMessages.TypeNotFound,
+                typeName,
                 string.Join(" ", _contractAssemblyPaths.Select(Path.GetFileName)));
 
             throw new TypeLoadException(errorMessage);
