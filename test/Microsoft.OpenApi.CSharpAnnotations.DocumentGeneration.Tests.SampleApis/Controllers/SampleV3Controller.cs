@@ -35,7 +35,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
         [Route("V3/samples")]
-        public Task<List<ISampleObject4<SampleObject1, SampleObject2>>> SampleGet1()
+        public async Task<List<ISampleObject4<SampleObject1, SampleObject2>>> SampleGet1()
         {
             throw new NotSupportedException();
         }
@@ -60,7 +60,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
         [Route("V3/samples/{id}")]
-        public Task<ISampleObject4<SampleObject1, SampleObject2>> SampleGet2(string id, string queryString)
+        public async Task<ISampleObject4<SampleObject1, SampleObject2>> SampleGet2(string id, string queryString)
         {
             throw new NotSupportedException();
         }

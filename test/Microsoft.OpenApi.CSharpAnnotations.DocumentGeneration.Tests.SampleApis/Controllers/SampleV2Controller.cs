@@ -30,7 +30,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpDelete]
         [Route("V2/samples/{id}")]
-        public Task<SampleObject1> DeleteEntity(string id)
+        public async Task<SampleObject1> DeleteEntity(string id)
         {
             throw new NotSupportedException();
         }
@@ -48,7 +48,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
         [Route("V2/samples")]
-        public Task<List<SampleObject2>> SampleGet1()
+        public async Task<List<SampleObject2>> SampleGet1()
         {
             throw new NotSupportedException();
         }
@@ -68,7 +68,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
         [Route("V2/samples/{id}")]
-        public Task<SampleObject2> SampleGet2(string id, string queryString)
+        public async Task<SampleObject2> SampleGet2(string id, string queryString)
         {
             throw new NotSupportedException();
         }
