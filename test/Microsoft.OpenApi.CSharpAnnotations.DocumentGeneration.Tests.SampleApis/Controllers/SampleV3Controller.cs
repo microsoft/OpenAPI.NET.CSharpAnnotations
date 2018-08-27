@@ -12,43 +12,30 @@ using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers
 {
     /// <summary>
-    /// Defines V2 operations.
+    /// Defines V3 operations.
     /// </summary>
-    public class SampleControllerV2 : ApiController
+    public class SampleV3Controller : ApiController
     {
-        /// <summary>
-        /// Sample delete
-        /// </summary>
-        /// <group>Sample V2</group>
-        /// <verb>DELETE</verb>
-        /// <url>https://myapi.sample.com/V2/samples/{id}</url>
-        /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
-        /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
-        /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
-        /// <param name="id" cref="string" in="path">The object id</param>
-        /// <response code="200"><see cref="SampleObject1"/>Sample object deleted</response>
-        /// <response code="400"><see cref="string"/>Bad request</response>
-        [HttpDelete]
-        [Route("/V2/samples/{id}")]
-        public Task<SampleObject1> DeleteEntity(string id)
-        {
-            throw new NotSupportedException();
-        }
-
         /// <summary>
         /// Sample get 1
         /// </summary>
-        /// <group>Sample V2</group>
+        /// <group>Sample V3</group>
         /// <verb>GET</verb>
-        /// <url>https://myapi.sample.com/V2/samples/</url>
+        /// <url>https://myapi.sample.com/V3/samples/</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
-        /// <response code="200"><see cref="List{T}"/>where T is <see cref="SampleObject2"/>List of sample objects</response>
+        /// <response code="200">
+        /// <see cref="List{T}"/>
+        /// where T is <see cref="ISampleObject4{T1,T2}"/>
+        /// where T1 is <see cref="SampleObject1"/>
+        /// where T2 is <see cref="SampleObject2"/>
+        /// List of sample objects
+        /// </response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
-        [Route("/V2/samples")]
-        public Task<List<SampleObject2>> SampleGet1()
+        [Route("V3/samples")]
+        public Task<List<ISampleObject4<SampleObject1, SampleObject2>>> SampleGet1()
         {
             throw new NotSupportedException();
         }
@@ -56,19 +43,24 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <summary>
         /// Sample get 2
         /// </summary>
-        /// <group>Sample V2</group>
+        /// <group>Sample V3</group>
         /// <verb>GET</verb>
-        /// <url>https://myapi.sample.com/V2/samples/{id}?queryString={queryString}</url>
+        /// <url>https://myapi.sample.com/V3/samples/{id}?queryString={queryString}</url>
         /// <param name="sampleHeaderParam1" cref="float" in="header">Header param 1</param>
         /// <param name="sampleHeaderParam2" cref="string" in="header">Header param 2</param>
         /// <param name="sampleHeaderParam3" cref="string" in="header">Header param 3</param>
         /// <param name="id" cref="string" in="path">The object id</param>
         /// <param name="queryString" cref="string" in="query">The sample query string</param>
-        /// <response code="200"><see cref="SampleObject2"/>Sample object retrieved</response>
+        /// <response code="200">
+        /// <see cref="ISampleObject4{T1,T2}"/>
+        /// where T1 is <see cref="SampleObject1"/>
+        /// where T2 is <see cref="SampleObject2"/>
+        /// List of sample objects
+        /// </response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
-        [Route("/V2/samples/{id}?queryString={queryString}")]
-        public Task<SampleObject2> SampleGet2(string id, string queryString)
+        [Route("V3/samples/{id}")]
+        public Task<ISampleObject4<SampleObject1, SampleObject2>> SampleGet2(string id, string queryString)
         {
             throw new NotSupportedException();
         }
