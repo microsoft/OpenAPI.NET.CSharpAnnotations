@@ -32,7 +32,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         [Route("V2/samples/{id}")]
         public async Task<SampleObject1> DeleteEntity(string id)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         [Route("V2/samples")]
         public async Task<List<SampleObject2>> SampleGet1()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         [Route("V2/samples/{id}")]
         public async Task<SampleObject2> SampleGet2(string id, string queryString = null)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         [Route("V3/samples")]
         public async Task<List<ISampleObject4<SampleObject1, SampleObject2>>> SampleGet1()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         [Route("V3/samples/{id}")]
         public async Task<ISampleObject4<SampleObject1, SampleObject2>> SampleGet2(string id, string queryString = null)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }
