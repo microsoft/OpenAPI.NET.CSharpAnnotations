@@ -68,7 +68,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
         [Route("V2/samples/{id}")]
-        public async Task<SampleObject2> SampleGet2(string id, string queryString)
+        public async Task<SampleObject2> SampleGet2(string id, string queryString = null)
         {
             throw new NotSupportedException();
         }
