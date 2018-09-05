@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
@@ -10,6 +11,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
     /// <summary>
     /// Object containing all diagnostic information related to document-level of generation process.
     /// </summary>
+    [Serializable]
     public class DocumentGenerationDiagnostic
     {
         /// <summary>

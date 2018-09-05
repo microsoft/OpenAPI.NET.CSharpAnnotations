@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 
@@ -11,6 +12,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
     /// <summary>
     /// Class encapsulating information for a variant of a document.
     /// </summary>
+    [Serializable]
     public class DocumentVariantInfo
     {
         private static readonly DocumentVariantInfo _defaultSpecificationDocumentVariantInfo

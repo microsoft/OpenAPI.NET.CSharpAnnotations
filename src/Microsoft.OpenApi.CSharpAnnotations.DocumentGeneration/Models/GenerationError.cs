@@ -3,11 +3,14 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
 {
     /// <summary>
     /// Model representing the generation error for the operation.
     /// </summary>
+    [Serializable]
     public class GenerationError
     {
         /// <summary>

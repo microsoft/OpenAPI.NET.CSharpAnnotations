@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license. 
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApi.Readers.Interface;
@@ -10,6 +11,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
     /// <summary>
     /// Object coining all diagnostic information related to OpenApi document generation.
     /// </summary>
+    [Serializable]
     public class GenerationDiagnostic : IDiagnostic
     {
         /// <summary>
