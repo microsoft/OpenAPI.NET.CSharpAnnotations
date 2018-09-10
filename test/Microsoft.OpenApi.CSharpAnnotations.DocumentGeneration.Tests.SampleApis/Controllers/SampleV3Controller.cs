@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
     /// <summary>
     /// Defines V3 operations.
     /// </summary>
-    public class SampleControllerV3 : ApiController
+    public class SampleV3Controller : ApiController
     {
         /// <summary>
         /// Sample get 1
@@ -34,10 +34,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
-        [Route("/V3/samples")]
-        public Task<List<ISampleObject4<SampleObject1, SampleObject2>>> SampleGet1()
+        [Route("V3/samples")]
+        public async Task<List<ISampleObject4<SampleObject1, SampleObject2>>> SampleGet1()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
-        [Route("/V3/samples/{id}?queryString={queryString}")]
-        public Task<ISampleObject4<SampleObject1, SampleObject2>> SampleGet2(string id, string queryString)
+        [Route("V3/samples/{id}")]
+        public async Task<ISampleObject4<SampleObject1, SampleObject2>> SampleGet2(string id, string queryString = null)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }

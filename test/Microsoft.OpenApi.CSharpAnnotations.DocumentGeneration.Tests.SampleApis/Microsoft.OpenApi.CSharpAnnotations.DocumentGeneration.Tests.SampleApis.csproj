@@ -112,10 +112,10 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\SampleControllerV1.cs" />
-    <Compile Include="Controllers\SampleControllerV3.cs" />
-    <Compile Include="Controllers\SampleControllerV2.cs" />
-    <Compile Include="Controllers\SampleControllerV4.cs" />
+    <Compile Include="Controllers\SampleV1Controller.cs" />
+    <Compile Include="Controllers\SampleV3Controller.cs" />
+    <Compile Include="Controllers\SampleV2Controller.cs" />
+    <Compile Include="Controllers\SampleV4Controller.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
     /// <summary>
     /// Defines V4 operations.
     /// </summary>
-    public class SampleControllerV4 : ApiController
+    public class SampleV4Controller : ApiController
     {
         /// <summary>
         /// Sample get 1
@@ -34,10 +34,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
-        [Route("/V4/samples")]
-        public Task<List<ISampleObject4<SampleObject1, SampleObject4>>> SampleGet1()
+        [Route("V4/samples")]
+        public async Task<List<ISampleObject4<SampleObject1, SampleObject4>>> SampleGet1()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -70,10 +70,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// </response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpPost]
-        [Route("/V4/samples")]
-        public Task<SampleObject4> SamplePost1(SampleObject1 sampleObject1, string id)
+        [Route("V4/samples/{id}")]
+        public async Task<SampleObject4> SamplePost1([FromBody] SampleObject1 sampleObject1, string id, bool queryBool)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }
