@@ -20,6 +20,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     public class TypeFetcher
     {
         private readonly IList<string> _contractAssemblyPaths = new List<string>();
+        private readonly IDictionary<string, Type> _typeMap = new Dictionary<string, Type>();
 
         /// <summary>
         /// Creates new instance of <see cref="TypeFetcher"/>.
@@ -112,7 +113,67 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <returns>The number of generics.</returns>
         private static int ExtractNumberOfGenerics(string typeName)
         {
-            return IsGenericType(typeName)? int.Parse(typeName.Split('`')[1], CultureInfo.CurrentCulture): 0;
+            return IsGenericType(typeName) ? int.Parse(typeName.Split('`')[1], CultureInfo.CurrentCulture) : 0;
+        }
+
+        private static bool IsGenericType(string typeName)
+        {
+            return typeName.Contains("`");
+        }
+
+        /// <summary>
+        /// Loads the given type name from assemblies located in the given assembly path.
+        /// </summary>
+        /// <param name="typeName">The type name.</param>
+        /// <exception cref="TypeLoadException">Thrown when type was not found.</exception>
+        /// <returns>The type.</returns>
+        public Type LoadType(string typeName)
+        {
+            if (_typeMap.ContainsKey(typeName))
+            {
+                return _typeMap[typeName];
+            }
+
+            // Load custom type from the given list of assemblies.
+            foreach (var file in _contractAssemblyPaths)
+            {
+                var assembly = Assembly.LoadFrom(file);
+                var contractType = assembly.GetType(typeName);
+
+                if (contractType == null)
+                {
+                    continue;
+                }
+
+                _typeMap.Add(typeName, contractType);
+
+                return contractType;
+            }
+
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => !a.IsDynamic);
+
+            foreach (var loadedAssembly in loadedAssemblies)
+            {
+                var contractType = loadedAssembly.GetType(typeName);
+
+                if (contractType == null)
+                {
+                    continue;
+                }
+
+                _typeMap.Add(typeName, contractType);
+
+                return contractType;
+            }
+
+
+            var errorMessage = string.Format(
+                SpecificationGenerationMessages.TypeNotFound,
+                typeName,
+                string.Join(" ", _contractAssemblyPaths.Select(Path.GetFileName)));
+
+            throw new TypeLoadException(errorMessage);
         }
 
         /// <summary>
@@ -136,7 +197,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 typeName = crefValue.ExtractTypeNameFromCref();
                 return CreateListType(typeName);
             }
-            
+
             if (crefValues.Any(IsGenericType))
             {
                 return ExtractGenericType(crefValues.Select(i => i.ExtractTypeNameFromCref()).ToList());
@@ -144,87 +205,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             typeName = crefValues.First().ExtractTypeNameFromCref();
             return LoadType(typeName);
-        }
-
-        /// <summary>
-        /// Loads the given type name from assemblies located in the given assembly path.
-        /// </summary>
-        /// <param name="typeName">The type name.</param>
-        /// <exception cref="TypeLoadException">Thrown when type was not found.</exception>
-        /// <returns>The type.</returns>
-        public Type LoadType(string typeName)
-        {
-            Type contractType = null;
-
-            // Load custom type from the given list of assemblies.
-            foreach (var file in _contractAssemblyPaths)
-            {
-                var assembly = Assembly.LoadFrom(file);
-
-                if (contractType == null)
-                {
-                    contractType = assembly.GetType(typeName);
-                }
-            }
-
-            // Attempt to load type from friendly name, search through all loaded assemblies.
-            if (contractType == null)
-            {
-                var potentialTypes = new List<Type>();
-
-                var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-                    .Where(a => !a.IsDynamic);
-
-                foreach (var loadedAssembly in loadedAssemblies)
-                {
-                    try
-                    {
-                        var potentialTypesInAssembly = loadedAssembly.GetTypes()
-                            .Where(t => t.Name.Equals(typeName) || t.FullName.Equals(typeName));
-                        potentialTypes.AddRange(potentialTypesInAssembly);
-                    }
-                    catch (ReflectionTypeLoadException e)
-                    {
-                        // Unable to load types from assembly due to missing dependencies.
-                        // The types that are available, however, are included in the exception.
-                        // Check to see if a potential type is specified
-                        foreach (var loadedType in e.Types)
-                        {
-                            if (loadedType != null && (loadedType.Name.Equals(typeName)
-                                || loadedType.FullName.Equals(typeName)))
-                            {
-                                potentialTypes.Add(loadedType);
-                            }
-                        }
-                    }
-                }
-
-                if (potentialTypes.Count > 1)
-                {
-                    var errorMessage = string.Format(SpecificationGenerationMessages.CannotUniquelyIdentifyType,
-                        typeName, string.Join(" ", potentialTypes.Select(type => type.FullName)));
-
-                    throw new TypeLoadException(errorMessage);
-                }
-
-                contractType = potentialTypes.FirstOrDefault();
-            }
-
-            // Could not find the type.
-            if (contractType == null)
-            {
-                var errorMessage = string.Format(SpecificationGenerationMessages.TypeNotFound, typeName,
-                    string.Join(" ", _contractAssemblyPaths.Select(Path.GetFileName)));
-
-                throw new TypeLoadException(errorMessage);
-            }
-
-            return contractType;
-        }
-
-        private static bool IsGenericType(string typeName)
-        {
-            return typeName.Contains("`");
         }
     }
 }
