@@ -14,7 +14,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
     /// <summary>
     /// Defines V2 operations.
     /// </summary>
-    public class SampleControllerV2 : ApiController
+    public class SampleV2Controller : ApiController
     {
         /// <summary>
         /// Sample delete
@@ -29,10 +29,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="200"><see cref="SampleObject1"/>Sample object deleted</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpDelete]
-        [Route("/V2/samples/{id}")]
-        public Task<SampleObject1> DeleteEntity(string id)
+        [Route("V2/samples/{id}")]
+        public async Task<SampleObject1> DeleteEntity(string id)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -47,10 +47,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="200"><see cref="List{T}"/>where T is <see cref="SampleObject2"/>List of sample objects</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
-        [Route("/V2/samples")]
-        public Task<List<SampleObject2>> SampleGet1()
+        [Route("V2/samples")]
+        public async Task<List<SampleObject2>> SampleGet1()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -67,10 +67,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="200"><see cref="SampleObject2"/>Sample object retrieved</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpGet]
-        [Route("/V2/samples/{id}?queryString={queryString}")]
-        public Task<SampleObject2> SampleGet2(string id, string queryString)
+        [Route("V2/samples/{id}")]
+        public async Task<SampleObject2> SampleGet2(string id, string queryString = null)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }

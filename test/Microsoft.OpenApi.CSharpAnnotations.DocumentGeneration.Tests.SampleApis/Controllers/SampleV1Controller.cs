@@ -13,7 +13,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
     /// <summary>
     /// Define V1 operations.
     /// </summary>
-    public class SampleControllerV1 : ApiController
+    public class SampleV1Controller : ApiController
     {
         /// <summary>
         /// Sample Get 1
@@ -32,10 +32,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <swagger>Group2</swagger>
         /// <returns>The sample object 1</returns>
         [HttpGet]
-        [Route("/V1/samples/{id}?queryBool={queryBool}")]
-        public Task<SampleObject1> SampleGet1(string id, bool queryBool)
+        [Route("V1/samples/{id}")]
+        public async Task<SampleObject1> SampleGet1(string id, bool queryBool)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -51,10 +51,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         /// <returns>The sample object 3</returns>
         [HttpGet]
-        [Route("/V1/samples")]
-        public Task<SampleObject3> SampleGet2()
+        [Route("V1/samples")]
+        public async Task<SampleObject3> SampleGet2()
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -70,10 +70,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="200"><see cref="SampleObject1"/>Sample object posted</response>
         /// <response code="400"><see cref="string"/>Bad request</response>
         [HttpPost]
-        [Route("/V1/samples")]
-        public Task<SampleObject1> SamplePost([FromBody] SampleObject3 sampleObject)
+        [Route("V1/samples")]
+        public async Task<SampleObject1> SamplePost([FromBody] SampleObject3 sampleObject)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -91,10 +91,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         /// <returns>The sample object 1</returns>
         [HttpPut]
-        [Route("/V1/samples/{id}")]
-        public Task<SampleObject1> SamplePut(string id, [FromBody] SampleObject1 sampleObject)
+        [Route("V1/samples/{id}")]
+        public async Task<SampleObject1> SamplePut(string id, [FromBody] SampleObject1 sampleObject)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }
