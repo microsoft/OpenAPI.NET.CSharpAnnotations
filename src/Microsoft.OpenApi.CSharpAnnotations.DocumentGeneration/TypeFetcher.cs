@@ -137,7 +137,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             // Load custom type from the given list of assemblies.
             foreach (var file in _contractAssemblyPaths)
             {
-                var assembly = Assembly.LoadFrom(file);
+                byte[] assemblyBytes = File.ReadAllBytes( file );
+
+                var assembly = Assembly.Load( assemblyBytes );
                 var contractType = assembly.GetType(typeName);
 
                 if (contractType == null)
