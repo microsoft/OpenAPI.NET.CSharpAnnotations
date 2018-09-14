@@ -10,7 +10,7 @@
         <Company>Microsoft</Company>
         <Title>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</Title>
         <PackageId>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</PackageId>
-        <Version>1.0.0-beta041</Version>
+        <Version>1.0.0-beta042</Version>
         <Description>Library that translates Visual Studio C# Annotations into .NET objects representing OpenAPI specification.</Description>
         <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
         <PackageTags>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</PackageTags>
