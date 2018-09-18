@@ -33,15 +33,22 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
 
             yield return new object[]
             {
-                "Type one base type",
+                "Type with one base type",
                 typeof(BaseTypeB),
                 new List<Type> {typeof(BaseTypeC)}
             };
 
             yield return new object[]
             {
-                "Type one no base type",
+                "Type with no base type",
                 typeof(BaseTypeC),
+                new List<Type>()
+            };
+
+            yield return new object[]
+            {
+                "Simple type should not return any base type",
+                typeof(string),
                 new List<Type>()
             };
         }
