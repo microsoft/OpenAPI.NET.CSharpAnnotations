@@ -19,6 +19,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     public class TypeFetcher
     {
+        private readonly IDictionary<Type, List<Type>> _baseTypeMap = new Dictionary<Type, List<Type>>();
         private readonly IList<string> _contractAssemblyPaths = new List<string>();
         private readonly IDictionary<string, Type> _typeMap = new Dictionary<string, Type>();
 
@@ -114,6 +115,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         private static int ExtractNumberOfGenerics(string typeName)
         {
             return IsGenericType(typeName) ? int.Parse(typeName.Split('`')[1], CultureInfo.CurrentCulture) : 0;
+        }
+
+        /// <summary>
+        /// Get base types for provided type.
+        /// </summary>
+        /// <param name="type">The type to fetch base types for.</param>
+        /// <returns>The list of base types.</returns>
+        public List<Type> GetBaseTypes(Type type)
+        {
+            if (!_baseTypeMap.ContainsKey(type))
+            {
+                _baseTypeMap.Add(type, type.GetBaseTypes());
+            }
+
+            return _baseTypeMap[type];
         }
 
         private static bool IsGenericType(string typeName)

@@ -1,0 +1,200 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://myapi.sample.com"
+        }
+    ],
+    "paths": {
+        "/V5/samples/": {
+            "get": {
+                "tags": [
+                    "Sample V5"
+                ],
+                "summary": "Sample get 1",
+                "operationId": "getV5Samples",
+                "parameters": [
+                    {
+                        "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "sampleHeaderParam2",
+                        "in": "header",
+                        "description": "Header param 2",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "sample object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/V5/samples/{id}": {
+            "post": {
+                "tags": [
+                    "Sample V5"
+                ],
+                "summary": "Sample get 1",
+                "operationId": "postV5SamplesById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The object id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "id1"
+                        },
+                        "examples": {
+                            "Example one": {
+                                "value": "id1"
+                            },
+                            "Example two": {
+                                "value": "id2"
+                            }
+                        }
+                    },
+                    {
+                        "name": "queryBool",
+                        "in": "query",
+                        "description": "Sample query boolean",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean",
+                            "example": true
+                        },
+                        "examples": {
+                            "example1": {
+                                "value": true
+                            },
+                            "example2": {
+                                "value": false
+                            }
+                        }
+                    },
+                    {
+                        "name": "sampleHeaderParam1",
+                        "in": "header",
+                        "description": "Header param 1",
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": "Sample header 1"
+                        },
+                        "examples": {
+                            "example1": {
+                                "value": "Sample header 1"
+                            }
+                        }
+                    },
+                    {
+                        "name": "sampleHeaderParam2",
+                        "in": "header",
+                        "description": "Header param 2",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sampleHeaderParam3",
+                        "in": "header",
+                        "description": "Header param 3",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request Body",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sample object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5": {
+                "type": "object",
+                "properties": {
+                    "SampleProperty": {
+                        "type": "string",
+                        "description": "The sample string property."
+                    },
+                    "SampleBaseProprety": {
+                        "type": "string",
+                        "description": "The sample base propery."
+                    }
+                }
+            }
+        }
+    }
+}

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -58,23 +59,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
                              m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:")));
             }
 
-            foreach (var propertyMember in propertyMembers)
+            var typeNames = propertyMembers.Attributes(KnownXmlStrings.Name).Select(i => string
+                .Join(".", i.Value.Split('.').Take(i.Value.Split('.').Length - 1))
+                .Substring(2)).Distinct().ToList();
+
+            foreach (var typeName in typeNames)
             {
-                var fullPropertyName = propertyMember.Attribute(KnownXmlStrings.Name).Value;
-
-                var splitPropertyName = fullPropertyName.Split('.');
-
-                // Take everything before the last period and remove the "P:" prefix.
-                var className =
-                    string.Join(".", splitPropertyName.Take(splitPropertyName.Length - 1))
-                        .Substring(startIndex: 2);
-
                 // We need to sanitize class name to match the format in the schema reference registry.
                 // Note that this class may also match several classes in the registry given that generics
                 // with different types are treated as different schemas.
                 // For example, summary information for properties in class name A 
                 // should apply to those properties in schema A, A_B_, and A_B_C__ as well.
-                var sanitizedClassName = className.SanitizeClassName();
+                var sanitizedClassName = typeName.SanitizeClassName();
 
                 var schemas = openApiDocument.Components.Schemas.Where(
                         s => s.Key == sanitizedClassName ||
@@ -86,27 +82,47 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
                     continue;
                 }
 
-                var propertyName =
-                    splitPropertyName[splitPropertyName.Length - 1];
+                var typeInfo = settings.TypeFetcher.LoadType(typeName);
 
-                var propertyInfo = settings.TypeFetcher.LoadType(className)
-                    ?.GetProperties()
-                    .FirstOrDefault(p => p.Name == propertyName);
+                var typesToFetchPropertiesFor = settings.TypeFetcher.GetBaseTypes(typeInfo);
+                typesToFetchPropertiesFor.Add(typeInfo);
 
-                if (propertyInfo != null)
+                var propertiesMap = new Dictionary<string, PropertyInfo>();
+
+                foreach (var type in typesToFetchPropertiesFor)
                 {
-                    propertyName = openApiDocumentGenerationSettings
-                        .SchemaGenerationSettings
-                        .PropertyNameResolver
-                        .ResolvePropertyName(propertyInfo);
+                    foreach (var property in type.GetProperties())
+                    {
+                        if (!propertiesMap.ContainsKey(property.Name))
+                        {
+                            propertiesMap.Add(property.Name, property);
+                        }
+                    }
                 }
 
-                foreach (var schema in schemas)
+                foreach (var property in propertiesMap.Keys)
                 {
-                    if (schema.Value.Properties.ContainsKey(propertyName))
+                    var propertyName = openApiDocumentGenerationSettings
+                        .SchemaGenerationSettings
+                        .PropertyNameResolver
+                        .ResolvePropertyName(propertiesMap[property]);
+
+                    foreach (var schema in schemas)
                     {
-                        schema.Value.Properties[propertyName].Description =
-                            propertyMember.Element(KnownXmlStrings.Summary)?.Value.RemoveBlankLines();
+                        var propertyMember = propertyMembers.FirstOrDefault(
+                            i => i.Attribute(KnownXmlStrings.Name)?.Value ==
+                                 $"P:{propertiesMap[property].DeclaringType}.{property}");
+
+                        if (propertyMember == null)
+                        {
+                            continue;
+                        }
+
+                        if (schema.Value.Properties.ContainsKey(propertyName))
+                        {
+                            schema.Value.Properties[propertyName].Description =
+                                propertyMember.Element(KnownXmlStrings.Summary)?.Value.RemoveBlankLines();
+                        }
                     }
                 }
             }

@@ -57,6 +57,27 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             };
 
         /// <summary>
+        /// Gets the base types for the provided type
+        /// </summary>
+        /// <param name="type">The type to fetch base types for.</param>
+        /// <returns></returns>
+        public static List<Type> GetBaseTypes(this Type type)
+        {
+            var baseTypes = new List<Type>();
+
+            while (type != null && !type.IsSimple())
+            {
+                if (type.BaseType != null && !type.BaseType.IsSimple())
+                {
+                    baseTypes.Add(type.BaseType);
+                }
+                type = type.BaseType;
+            }
+
+            return baseTypes;
+        }
+
+        /// <summary>
         /// Gets the item type in an array or an IEnumerable.
         /// </summary>
         /// <param name="type">An array or IEnumerable type to get the item type from.</param>
@@ -81,12 +102,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// </summary>
         public static bool ImplementInterface(this Type type, Type interfaceType)
         {
-            for (Type currentType = type; currentType != null; currentType = currentType.BaseType)
+            for (var currentType = type; currentType != null; currentType = currentType.BaseType)
             {
                 IEnumerable<Type> interfaces = currentType.GetInterfaces();
-                foreach (Type i in interfaces)
+                foreach (var i in interfaces)
                 {
-                    if (i == interfaceType || (i != null && i.ImplementInterface(interfaceType)))
+                    if (i == interfaceType || i != null && i.ImplementInterface(interfaceType))
                     {
                         return true;
                     }
@@ -102,8 +123,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         public static bool IsDictionary(this Type type)
         {
             return type.IsGenericType &&
-            (typeof(IDictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
-                typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()));
+                   (typeof(IDictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()) ||
+                    typeof(Dictionary<,>).IsAssignableFrom(type.GetGenericTypeDefinition()));
         }
 
         /// <summary>

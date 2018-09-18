@@ -54,11 +54,13 @@
     <Compile Include="Examples.cs" />
     <Compile Include="ISampleObject4.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleBaseObject.cs" />
     <Compile Include="SampleEnum1.cs" />
     <Compile Include="SampleObject1.cs" />
     <Compile Include="SampleObject2.cs" />
     <Compile Include="SampleObject3.cs" />
     <Compile Include="SampleObject4.cs" />
+    <Compile Include="SampleObject5.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
