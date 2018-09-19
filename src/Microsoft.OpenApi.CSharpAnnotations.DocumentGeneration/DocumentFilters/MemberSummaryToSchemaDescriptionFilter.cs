@@ -59,9 +59,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
                              m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:")));
             }
 
-            var typeNames = propertyMembers.Attributes(KnownXmlStrings.Name).Select(i => string
-                .Join(".", i.Value.Split('.').Take(i.Value.Split('.').Length - 1))
-                .Substring(2)).Distinct().ToList();
+            // Fetches distinct type names like
+            // Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleBaseObject
+            // From property memeber names like
+            // P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleBaseObject.SampleBaseProprety
+            var typeNames = propertyMembers
+                .Attributes(KnownXmlStrings.Name)
+                .Select(i => 
+                    string.Join(".", i.Value.Split('.').Take(i.Value.Split('.').Length - 1))
+                    .Substring(2))
+                .Distinct()
+                .ToList();
 
             foreach (var typeName in typeNames)
             {

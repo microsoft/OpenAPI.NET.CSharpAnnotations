@@ -57,11 +57,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             };
 
         /// <summary>
-        /// Gets the base types for the provided type
+        /// Gets the base types for the provided type.
         /// </summary>
         /// <param name="type">The type to fetch base types for.</param>
-        /// <returns></returns>
-        public static List<Type> GetBaseTypes(this Type type)
+        /// <returns>List of base types.</returns>
+        public static IList<Type> GetBaseTypes(this Type type)
         {
             var baseTypes = new List<Type>();
 

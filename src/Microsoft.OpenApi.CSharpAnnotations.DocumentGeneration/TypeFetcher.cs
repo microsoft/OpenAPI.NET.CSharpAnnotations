@@ -19,7 +19,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     /// </summary>
     public class TypeFetcher
     {
-        private readonly IDictionary<Type, List<Type>> _baseTypeMap = new Dictionary<Type, List<Type>>();
+        private readonly IDictionary<Type, IList<Type>> _baseTypeMap = new Dictionary<Type, IList<Type>>();
         private readonly IList<string> _contractAssemblyPaths = new List<string>();
         private readonly IDictionary<string, Type> _typeMap = new Dictionary<string, Type>();
 
@@ -122,7 +122,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// </summary>
         /// <param name="type">The type to fetch base types for.</param>
         /// <returns>The list of base types.</returns>
-        public List<Type> GetBaseTypes(Type type)
+        public IList<Type> GetBaseTypes(Type type)
         {
             if (!_baseTypeMap.ContainsKey(type))
             {
