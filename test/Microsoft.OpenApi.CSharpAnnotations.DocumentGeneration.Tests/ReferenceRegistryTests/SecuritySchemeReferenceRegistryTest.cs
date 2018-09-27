@@ -257,7 +257,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     .Root,
                 string.Format(
                     SpecificationGenerationMessages.UndocumentedAuthorizationUrl,
-                    KnownXmlStrings.implicitFlow)
+                    KnownXmlStrings.ImplicitFlow)
             };
 
             // Undocumented token url for password flow type
@@ -268,7 +268,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     .Root,
                 string.Format(
                     SpecificationGenerationMessages.UndocumentedTokenUrl,
-                    KnownXmlStrings.password)
+                    KnownXmlStrings.Password)
             };
 
             // Undocumented open id connect url for security type openIdConnect
@@ -302,7 +302,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     .Root,
                 string.Format(
                     SpecificationGenerationMessages.UndocumentedScopeForFlow,
-                    KnownXmlStrings.clientCredentials)
+                    KnownXmlStrings.ClientCredentials)
             };
 
             // Undocumented name for scope
@@ -313,7 +313,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     .Root,
                 string.Format(
                     SpecificationGenerationMessages.UndocumentedName,
-                    KnownXmlStrings.scope)
+                    KnownXmlStrings.Scope)
             };
 
             // Undocumented description for scope
@@ -324,7 +324,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                     .Root,
                 string.Format(
                     SpecificationGenerationMessages.UndocumentedDescription,
-                    KnownXmlStrings.scope)
+                    KnownXmlStrings.Scope)
             };
         }
     }
