@@ -53,13 +53,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             OpenApiGeneratorFilterConfig openApiGeneratorFilterConfig)
         {
             AnnotationXmlDocuments = annotationXmlDocuments
-                ?? throw new ArgumentNullException(nameof(annotationXmlDocuments));
+                                     ?? throw new ArgumentNullException(nameof(annotationXmlDocuments));
 
             AssemblyPaths = assemblyPaths
-                ?? throw new ArgumentNullException(nameof(assemblyPaths));
+                            ?? throw new ArgumentNullException(nameof(assemblyPaths));
 
             OpenApiGeneratorFilterConfig = openApiGeneratorFilterConfig
-                ?? throw new ArgumentNullException(nameof(openApiGeneratorFilterConfig));
+                                           ?? throw new ArgumentNullException(nameof(openApiGeneratorFilterConfig));
 
             if (string.IsNullOrWhiteSpace(openApiDocumentVersion))
             {
@@ -95,5 +95,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// document from C# annotations.
         /// </summary>
         public OpenApiGeneratorFilterConfig OpenApiGeneratorFilterConfig { get; }
+
+        /// <summary>
+        /// The description to use while populating OpenApiInfo.
+        /// </summary>
+        public string OpenApiInfoDescription { get; set; }
     }
 }

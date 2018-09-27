@@ -152,7 +152,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             var inValue = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.In)?.Value;
             var name = xElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
             var description = xElement.Elements().FirstOrDefault(
-                p => p.Name == KnownXmlStrings.Description)?.Value;
+                p => p.Name == KnownXmlStrings.Description)?.Value.Trim().RemoveBlankLines(); ;
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -181,7 +181,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             var bearerFormat = xElement.Elements()
                 .FirstOrDefault(p => p.Name == KnownXmlStrings.BearerFormat)?.Value;
             var description = xElement.Elements().FirstOrDefault(
-                p => p.Name == KnownXmlStrings.Description)?.Value;
+                p => p.Name == KnownXmlStrings.Description)?.Value.Trim().RemoveBlankLines(); ;
 
             if (string.IsNullOrWhiteSpace(scheme))
             {
@@ -208,7 +208,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         internal static OpenApiSecurityScheme ToOAuth2SecurityScheme(this XElement xElement, out IList<string> scopes)
         {
             var flowElements = xElement.Elements().Where(p => p.Name == KnownXmlStrings.Flow);
-            var description = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?.Value;
+            var description = xElement.Elements()
+                .FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?
+                .Value.Trim().RemoveBlankLines(); ;
             scopes = new List<string>();
 
             var securityScheme = new OpenApiSecurityScheme
@@ -564,7 +566,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         {
             var url = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.OpenIdConnectUrl)?.Value;
             var scopeElements = xElement.Elements().Where(p => p.Name == KnownXmlStrings.Scope);
-            var description = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?.Value;
+            var description = xElement.Elements()
+                .FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?
+                .Value.Trim().RemoveBlankLines(); ;
             scopes = new List<string>();
 
             if (!scopeElements.Any())

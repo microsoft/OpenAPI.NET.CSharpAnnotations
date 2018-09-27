@@ -73,6 +73,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 openApiGeneratorConfig.AssemblyPaths,
                 openApiGeneratorConfig.AdvancedConfigurationXmlDocument?.ToString(),
                 openApiGeneratorConfig.OpenApiDocumentVersion,
+                openApiGeneratorConfig.OpenApiInfoDescription,
                 out generationDiagnostic);
         }
     }
