@@ -87,9 +87,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// </summary>
         public static string GetDescriptionTextFromLastTextNode(this XElement element)
         {
-            var lastTextNode = element.Nodes()
-                .Where( i => i.NodeType == XmlNodeType.Text )
-                .LastOrDefault();
+            var lastTextNode = element
+                .Nodes()
+                .LastOrDefault(i => i.NodeType == XmlNodeType.Text);
 
             if (lastTextNode != null)
             {
@@ -123,6 +123,92 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             return allListedTypes;
         }
 
+        private static OpenApiExample ToOpenApiExample(this XElement element, TypeFetcher typeFetcher)
+        {
+            var exampleChildElements = element.Elements();
+
+            if (!exampleChildElements.Any())
+            {
+                return null;
+            }
+
+            var summaryElement = exampleChildElements.FirstOrDefault(p => p.Name == KnownXmlStrings.Summary);
+
+            var openApiExample = new OpenApiExample();
+
+            if (summaryElement != null)
+            {
+                openApiExample.Summary = summaryElement.Value;
+            }
+
+            var valueElement = exampleChildElements.FirstOrDefault(p => p.Name == KnownXmlStrings.Value);
+            var urlElement = exampleChildElements.FirstOrDefault(p => p.Name == KnownXmlStrings.Url);
+
+            if (valueElement != null && urlElement != null)
+            {
+                throw new InvalidExampleException(SpecificationGenerationMessages.ProvideEitherValueOrUrlTag);
+            }
+
+            IOpenApiAny exampleValue = null;
+
+            if (valueElement != null)
+            {
+                var seeNodes = element.Descendants(KnownXmlStrings.See);
+                var crefValue = seeNodes
+                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
+                    .FirstOrDefault(crefVal => crefVal != null);
+
+                if (string.IsNullOrWhiteSpace(valueElement.Value) && string.IsNullOrWhiteSpace(crefValue))
+                {
+                    throw new InvalidExampleException(SpecificationGenerationMessages.ProvideValueForExample);
+                }
+
+                if (!string.IsNullOrWhiteSpace(crefValue))
+                {
+                    var typeName = crefValue.ExtractTypeNameFromFieldCref();
+                    var type = typeFetcher.LoadTypeFromCrefValues(new List<string> {typeName});
+                    var fieldName = crefValue.ExtractFieldNameFromCref();
+
+                    var fields = type.GetFields(BindingFlags.Public
+                                                | BindingFlags.Static);
+                    var field = fields.FirstOrDefault(f => f.Name == fieldName);
+
+                    if (field == null)
+                    {
+                        var errorMessage = string.Format(
+                            SpecificationGenerationMessages.FieldNotFound,
+                            fieldName,
+                            typeName);
+
+                        throw new TypeLoadException(errorMessage);
+                    }
+
+                    exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
+                        field.GetValue(null).ToString(),
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out OpenApiDiagnostic _);
+                }
+
+                if (!string.IsNullOrWhiteSpace(valueElement.Value))
+                {
+                    exampleValue = new OpenApiStringReader()
+                        .ReadFragment<IOpenApiAny>(
+                            valueElement.Value,
+                            OpenApiSpecVersion.OpenApi3_0,
+                            out OpenApiDiagnostic _);
+                }
+
+                openApiExample.Value = exampleValue;
+            }
+
+            if (urlElement != null)
+            {
+                openApiExample.ExternalValue = urlElement.Value;
+            }
+
+            return openApiExample;
+        }
+
         /// <summary>
         /// Processes the "example" tag child elements of the provide XElement
         /// and generates a map of string to OpenApiExample.
@@ -136,7 +222,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         {
             var exampleElements = xElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
             var examples = new Dictionary<string, OpenApiExample>();
-            int exampleCounter = 1;
+            var exampleCounter = 1;
 
             foreach (var exampleElement in exampleElements)
             {
@@ -152,92 +238,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             }
 
             return examples;
-        }
-
-        private static OpenApiExample ToOpenApiExample(this XElement element, TypeFetcher typeFetcher)
-        {
-            var exampleChildElements = element.Elements();
-
-            if (!exampleChildElements.Any())
-            {
-                return null;
-            }
-
-            var summaryElement = exampleChildElements.Where(p => p.Name == KnownXmlStrings.Summary).FirstOrDefault();
-
-            var openApiExample = new OpenApiExample();
-
-            if (summaryElement != null)
-            {
-                openApiExample.Summary = summaryElement.Value;
-            }
-
-            var valueElement = exampleChildElements.Where(p => p.Name == KnownXmlStrings.Value).FirstOrDefault();
-            var urlElement = exampleChildElements.Where(p => p.Name == KnownXmlStrings.Url).FirstOrDefault();
-
-            if (valueElement != null && urlElement != null)
-            {
-                throw new InvalidExampleException(SpecificationGenerationMessages.ProvideEitherValueOrUrlTag);
-            }
-
-            IOpenApiAny exampleValue = null;
-
-            if (valueElement != null)
-            {
-                var seeNodes = element.Descendants(KnownXmlStrings.See);
-                var crefValue = seeNodes
-                    .Select(node => node.Attribute(KnownXmlStrings.Cref)?.Value)
-                    .Where(crefVal => crefVal != null).FirstOrDefault();
-
-                if (string.IsNullOrWhiteSpace(valueElement.Value) && string.IsNullOrWhiteSpace(crefValue))
-                {
-                    throw new InvalidExampleException(SpecificationGenerationMessages.ProvideValueForExample);
-                }
-
-                if (!string.IsNullOrWhiteSpace(crefValue))
-                {
-                    var typeName = crefValue.ExtractTypeNameFromFieldCref();
-                    var type = typeFetcher.LoadTypeFromCrefValues(new List<string>() { typeName });
-                    var fieldName = crefValue.ExtractFieldNameFromCref();
-
-                    FieldInfo[] fields = type.GetFields(BindingFlags.Public
-                        | BindingFlags.Static);
-                    var field = fields.Where(f => f.Name == fieldName).FirstOrDefault();
-
-                    if (field == null)
-                    {
-                        var errorMessage = string.Format(
-                            SpecificationGenerationMessages.FieldNotFound,
-                            fieldName,
-                            typeName);
-
-                        throw new TypeLoadException(errorMessage);
-                    }
-
-                    exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
-                        field.GetValue(null).ToString(),
-                        OpenApiSpecVersion.OpenApi3_0,
-                        out OpenApiDiagnostic openApiDiagnostic);
-                }
-
-                if (!string.IsNullOrWhiteSpace(valueElement.Value))
-                {
-                    exampleValue = new OpenApiStringReader()
-                    .ReadFragment<IOpenApiAny>(
-                        valueElement.Value,
-                        OpenApiSpecVersion.OpenApi3_0,
-                        out OpenApiDiagnostic _);
-                }
-
-                openApiExample.Value = exampleValue;
-            }
-
-            if (urlElement != null)
-            {
-                openApiExample.ExternalValue = urlElement.Value;
-            }
-
-            return openApiExample;
         }
 
         /// <summary>
@@ -266,12 +266,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                 if (string.IsNullOrWhiteSpace(name))
                 {
                     throw new InvalidHeaderException(
-                        string.Format(SpecificationGenerationMessages.MissingNameAttribute, "header"));
+                        string.Format(SpecificationGenerationMessages.UndocumentedName, "header"));
                 }
 
-                var description = headerElement.Elements()
-                    .Where(p => p.Name == KnownXmlStrings.Description)
-                    .FirstOrDefault()?.Value.Trim().RemoveBlankLines();
+                var description = headerElement
+                    .Elements()
+                    .FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?.Value.Trim().RemoveBlankLines();
 
                 var listedTypes = headerElement.GetListedTypes();
                 var type = typeFetcher.LoadTypeFromCrefValues(listedTypes);

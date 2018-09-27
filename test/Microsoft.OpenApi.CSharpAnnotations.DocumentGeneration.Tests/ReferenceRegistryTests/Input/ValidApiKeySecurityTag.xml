@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<security type="apiKey" name="api-Key">
+    <description>Test security</description>
+    <in>query</in>
+</security>

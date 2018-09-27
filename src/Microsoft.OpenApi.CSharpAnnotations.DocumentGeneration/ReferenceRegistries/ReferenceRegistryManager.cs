@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Xml.Linq;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 
@@ -31,6 +32,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
             ParameterReferenceRegistry = new ParameterReferenceRegistry(
                 SchemaReferenceRegistry,
                 ExampleReferenceRegistry);
+            SecuritySchemeReferenceRegistry = new SecuritySchemeReferenceRegistry();
         }
 
         /// <summary>
@@ -47,6 +49,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         /// Reference registry for the <see cref="OpenApiSchema"/> class.
         /// </summary>
         public SchemaReferenceRegistry SchemaReferenceRegistry { get; }
+
+        /// <summary>
+        /// Reference registry for the <see cref="OpenApiSecurityScheme"/> class.
+        /// </summary>
+        public SecuritySchemeReferenceRegistry SecuritySchemeReferenceRegistry { get; }
 
         /// <summary>
         /// Finds an existing reference of an <see cref="OpenApiExample"/> class or creates a new one.
@@ -70,6 +77,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
         public OpenApiSchema FindOrAddSchemaReference(Type input)
         {
             return SchemaReferenceRegistry.FindOrAddReference(input);
+        }
+
+        /// <summary>
+        /// Finds an existing reference of an <see cref="OpenApiSecurityScheme"/> class or creates a new one.
+        /// </summary>
+        public OpenApiSecurityScheme FindOrAddSecuritySchemeReference(XElement input)
+        {
+            return SecuritySchemeReferenceRegistry.FindOrAddReference(input);
         }
     }
 }

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<security type="openIdConnect" name="openidconnect">
+    <description>Test security</description>
+    <openIdConnectUrl>https://example.com/api/oauth/dialog</openIdConnectUrl>
+    <scope name="scope1"></scope>
+</security>

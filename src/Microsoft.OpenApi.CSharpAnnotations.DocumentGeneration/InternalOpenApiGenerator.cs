@@ -27,11 +27,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
     {
         private readonly IList<IDocumentConfigFilter> _documentConfigFilters;
         private readonly IList<IDocumentFilter> _documentFilters;
+        private readonly OpenApiDocumentGenerationSettings _openApiDocumentGenerationSettings;
         private readonly IList<IOperationConfigFilter> _operationConfigFilters;
         private readonly IList<IOperationFilter> _operationFilters;
         private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
         private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
-        private readonly OpenApiDocumentGenerationSettings _openApiDocumentGenerationSettings;
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
@@ -92,7 +92,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             ExceptionType = e.GetType().Name,
                             Message = e.Message
                         }
-                   );
+                    );
                 }
             }
 
@@ -140,7 +140,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     ExceptionType = e.GetType().Name,
                                     Message = e.Message
                                 }
-                           );
+                            );
                         }
                     }
 
@@ -169,7 +169,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                         ExceptionType = e.GetType().Name,
                                         Message = e.Message
                                     }
-                               );
+                                );
                             }
                         }
                     }
@@ -225,6 +225,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
         /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
+        /// <param name="description">The description.</param>
         /// <param name="generationDiagnostic">A string representing serialized version of
         /// <see cref="GenerationDiagnostic"/>>
         /// </param>
@@ -316,6 +317,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         new OperationGenerationDiagnostic(operationGenerationDiagnostic));
                 }
 
+                var referenceRegistryManager = new ReferenceRegistryManager(_openApiDocumentGenerationSettings);
+
                 foreach (var variantInfoDocumentValuePair in documents)
                 {
                     var openApiDocument = variantInfoDocumentValuePair.Value;
@@ -331,6 +334,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                 {
                                     TypeFetcher = typeFetcher,
                                     OpenApiDocumentVersion = openApiDocumentVersion,
+                                    ReferenceRegistryManager = referenceRegistryManager
                                 },
                                 _openApiDocumentGenerationSettings);
                         }
@@ -354,6 +358,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                 OperationGenerationDiagnostics = operationGenerationDiagnostics
                             });
                     }
+
+                    referenceRegistryManager.SecuritySchemeReferenceRegistry.References.CopyInto(
+                        openApiDocument.Components.SecuritySchemes);
                 }
 
                 if (documentConfigElement != null)
@@ -569,6 +576,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 referenceRegistryManagerMap[documentVariantInfo]
                     .SchemaReferenceRegistry.References.CopyInto(
                         specificationDocuments[documentVariantInfo].Components.Schemas);
+
+                referenceRegistryManagerMap[documentVariantInfo]
+                    .SecuritySchemeReferenceRegistry.References.CopyInto(
+                        specificationDocuments[documentVariantInfo].Components.SecuritySchemes);
             }
 
             return operationGenerationResults;

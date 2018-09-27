@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<security type="http" name="http">
+    <description>Test security</description>
+    <scheme>basic</scheme>
+</security>
