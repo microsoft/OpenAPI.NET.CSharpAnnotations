@@ -225,7 +225,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
         /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
-        /// <param name="description">The description.</param>
         /// <param name="generationDiagnostic">A string representing serialized version of
         /// <see cref="GenerationDiagnostic"/>>
         /// </param>

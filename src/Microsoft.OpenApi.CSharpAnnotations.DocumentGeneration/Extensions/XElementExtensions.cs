@@ -123,6 +123,269 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             return allListedTypes;
         }
 
+        private static ParameterLocation GetParameterKind(string parameterKind)
+        {
+            switch (parameterKind)
+            {
+                case KnownXmlStrings.Header:
+                    return ParameterLocation.Header;
+
+                case KnownXmlStrings.Query:
+                    return ParameterLocation.Query;
+
+                case KnownXmlStrings.Cookie:
+                    return ParameterLocation.Cookie;
+
+                default:
+                    return ParameterLocation.Header;
+            }
+        }
+
+        /// <summary>
+        /// Processed the "security" tag child elements of the provided XElement
+        /// and generate <see cref="OpenApiSecurityScheme"/> of type ApiKey
+        /// </summary>
+        /// <param name="xElement">The XElement to process.</param>
+        /// <returns><see cref="OpenApiSecurityScheme"/></returns>
+        internal static OpenApiSecurityScheme ToApiKeySecurityScheme(this XElement xElement)
+        {
+            var inValue = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.In)?.Value;
+            var name = xElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
+            var description = xElement.Elements().FirstOrDefault(
+                p => p.Name == KnownXmlStrings.Description)?.Value;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new InvalidSecurityTagException(
+                    string.Format(SpecificationGenerationMessages.UndocumentedName, KnownXmlStrings.Security));
+            }
+
+            return new OpenApiSecurityScheme
+            {
+                Description = description,
+                Type = SecuritySchemeType.ApiKey,
+                In = GetParameterKind(inValue),
+                Name = name
+            };
+        }
+
+        /// <summary>
+        /// Processed the "security" tag child elements of the provided XElement
+        /// and generate <see cref="OpenApiSecurityScheme"/> of type Http
+        /// </summary>
+        /// <param name="xElement">The XElement to process.</param>
+        /// <returns><see cref="OpenApiSecurityScheme"/></returns>
+        internal static OpenApiSecurityScheme ToHttpSecurityScheme(this XElement xElement)
+        {
+            var scheme = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Scheme)?.Value;
+            var bearerFormat = xElement.Elements()
+                .FirstOrDefault(p => p.Name == KnownXmlStrings.BearerFormat)?.Value;
+            var description = xElement.Elements().FirstOrDefault(
+                p => p.Name == KnownXmlStrings.Description)?.Value;
+
+            if (string.IsNullOrWhiteSpace(scheme))
+            {
+                throw new InvalidSecurityTagException(
+                    string.Format(SpecificationGenerationMessages.UndocumentedScheme, SecuritySchemeType.Http));
+            }
+
+            return new OpenApiSecurityScheme
+            {
+                Description = description,
+                Type = SecuritySchemeType.Http,
+                Scheme = scheme,
+                BearerFormat = bearerFormat
+            };
+        }
+
+        /// <summary>
+        /// Processed the "security" tag child elements of the provided XElement
+        /// and generate <see cref="OpenApiSecurityScheme"/> of type OAuth2
+        /// </summary>
+        /// <param name="xElement">The XElement to process.</param>
+        /// <param name="scopes">The scopes.</param>
+        /// <returns><see cref="OpenApiSecurityScheme"/></returns>
+        internal static OpenApiSecurityScheme ToOAuth2SecurityScheme(this XElement xElement, out IList<string> scopes)
+        {
+            var flowElements = xElement.Elements().Where(p => p.Name == KnownXmlStrings.Flow);
+            var description = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?.Value;
+            scopes = new List<string>();
+
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Flows = new OpenApiOAuthFlows(),
+                Description = description,
+                Type = SecuritySchemeType.OAuth2
+            };
+
+            if (!flowElements.Any())
+            {
+                throw new InvalidSecurityTagException(
+                    string.Format(SpecificationGenerationMessages.UndocumentedFlow, SecuritySchemeType.OAuth2));
+            }
+
+            foreach (var flowElement in flowElements)
+            {
+                var flowType = flowElement.Attribute(KnownXmlStrings.Type)?.Value;
+
+                if (string.IsNullOrWhiteSpace(flowType))
+                {
+                    throw new InvalidSecurityTagException(string.Format(
+                        SpecificationGenerationMessages.UndocumentedType,
+                        KnownXmlStrings.Flow));
+                }
+
+                IList<string> oAuthScopes;
+
+                switch (flowType)
+                {
+                    case KnownXmlStrings.ImplicitFlow:
+
+                        securityScheme.Flows.Implicit =
+                            flowElement.ToOAuthFlow(flowType, out oAuthScopes);
+                        foreach (var oAuthScope in oAuthScopes)
+                        {
+                            if (!scopes.Contains(oAuthScope))
+                            {
+                                scopes.Add(oAuthScope);
+                            }
+                        }
+                        break;
+
+                    case KnownXmlStrings.Password:
+
+                        securityScheme.Flows.Password =
+                            flowElement.ToOAuthFlow(flowType, out oAuthScopes);
+                        foreach (var oAuthScope in oAuthScopes)
+                        {
+                            if (!scopes.Contains(oAuthScope))
+                            {
+                                scopes.Add(oAuthScope);
+                            }
+                        }
+                        break;
+
+                    case KnownXmlStrings.ClientCredentials:
+
+                        securityScheme.Flows.ClientCredentials =
+                            flowElement.ToOAuthFlow(flowType, out oAuthScopes);
+                        foreach (var oAuthScope in oAuthScopes)
+                        {
+                            if (!scopes.Contains(oAuthScope))
+                            {
+                                scopes.Add(oAuthScope);
+                            }
+                        }
+                        break;
+
+                    case KnownXmlStrings.AuthorizationCode:
+                        securityScheme.Flows.AuthorizationCode =
+                            flowElement.ToOAuthFlow(flowType, out oAuthScopes);
+                        foreach (var oAuthScope in oAuthScopes)
+                        {
+                            if (!scopes.Contains(oAuthScope))
+                            {
+                                scopes.Add(oAuthScope);
+                            }
+                        }
+
+                        break;
+
+                    default:
+                        throw new InvalidSecurityTagException(string.Format(
+                            SpecificationGenerationMessages.NotSupportedTypeAttributeValue,
+                            flowType,
+                            KnownXmlStrings.Flow,
+                            string.Join(", ", KnownXmlStrings.AllowedFlowTypeValues)));
+                }
+            }
+
+            return securityScheme;
+        }
+
+        private static OpenApiOAuthFlow ToOAuthFlow(this XElement element, string flowType,
+            out IList<string> scopeNames)
+        {
+            var oAuthFlow = new OpenApiOAuthFlow();
+            scopeNames = new List<string>();
+
+            var authorizationUrl = element.Elements()
+                .FirstOrDefault(p => p.Name == KnownXmlStrings.AuthorizationUrl)?.Value;
+
+            var refreshUrl = element.Elements()
+                .FirstOrDefault(p => p.Name == KnownXmlStrings.RefreshUrl)?.Value;
+
+            var tokenUrl = element.Elements()
+                .FirstOrDefault(p => p.Name == KnownXmlStrings.TokenUrl)?.Value;
+
+            if (flowType == KnownXmlStrings.ImplicitFlow || flowType == KnownXmlStrings.AuthorizationCode)
+            {
+                if (authorizationUrl == null)
+                {
+                    throw new InvalidSecurityTagException(string.Format(
+                        SpecificationGenerationMessages.UndocumentedAuthorizationUrl,
+                        flowType));
+                }
+                oAuthFlow.AuthorizationUrl = new Uri(authorizationUrl);
+            }
+
+            if (flowType == KnownXmlStrings.Password
+                || flowType == KnownXmlStrings.AuthorizationCode
+                || flowType == KnownXmlStrings.ClientCredentials)
+            {
+                if (tokenUrl == null)
+                {
+                    throw new InvalidSecurityTagException(string.Format(
+                        SpecificationGenerationMessages.UndocumentedTokenUrl,
+                        flowType));
+                }
+
+                oAuthFlow.TokenUrl = new Uri(tokenUrl);
+            }
+
+            if (refreshUrl != null)
+            {
+                oAuthFlow.RefreshUrl = new Uri(refreshUrl);
+            }
+
+            var scopeElements = element.Elements()
+                .Where(p => p.Name == KnownXmlStrings.Scope);
+
+            if (!scopeElements.Any())
+            {
+                throw new InvalidSecurityTagException(string.Format(
+                    SpecificationGenerationMessages.UndocumentedScopeForFlow,
+                    flowType));
+            }
+
+            foreach (var scopeElement in scopeElements)
+            {
+                var name = scopeElement.Attribute(KnownXmlStrings.Name)?.Value;
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    throw new InvalidSecurityTagException(string.Format(
+                        SpecificationGenerationMessages.UndocumentedName,
+                        KnownXmlStrings.Scope));
+                }
+
+                var description = scopeElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Description)
+                    ?.Value;
+
+                if (string.IsNullOrWhiteSpace(description))
+                {
+                    throw new InvalidSecurityTagException(string.Format(
+                        SpecificationGenerationMessages.UndocumentedDescription,
+                        KnownXmlStrings.Scope));
+                }
+
+                scopeNames.Add(name);
+                oAuthFlow.Scopes.Add(name, description);
+            }
+
+            return oAuthFlow;
+        }
+
         private static OpenApiExample ToOpenApiExample(this XElement element, TypeFetcher typeFetcher)
         {
             var exampleChildElements = element.Elements();
@@ -287,6 +550,57 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             }
 
             return openApiHeaders;
+        }
+
+        /// <summary>
+        /// Processed the "security" tag child elements of the provided XElement
+        /// and generate <see cref="OpenApiSecurityScheme"/> of type OpenIdConnect
+        /// </summary>
+        /// <param name="xElement">The XElement to process.</param>
+        /// <param name="scopes">The scopes.</param>
+        /// <returns><see cref="OpenApiSecurityScheme"/></returns>
+        internal static OpenApiSecurityScheme ToOpenIdConnectSecurityScheme(this XElement xElement,
+            out IList<string> scopes)
+        {
+            var url = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.OpenIdConnectUrl)?.Value;
+            var scopeElements = xElement.Elements().Where(p => p.Name == KnownXmlStrings.Scope);
+            var description = xElement.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?.Value;
+            scopes = new List<string>();
+
+            if (!scopeElements.Any())
+            {
+                throw new InvalidSecurityTagException(string.Format(
+                    SpecificationGenerationMessages.UndocumentedScopeForSecurity,
+                    KnownXmlStrings.OpenIdConnect));
+            }
+
+            foreach (var scopeElement in scopeElements)
+            {
+                var name = scopeElement.Attribute(KnownXmlStrings.Name)?.Value;
+
+                if (name == null)
+                {
+                    throw new InvalidSecurityTagException(string.Format(
+                        SpecificationGenerationMessages.UndocumentedName,
+                        KnownXmlStrings.Scope));
+                }
+
+                scopes.Add(name);
+            }
+
+            if (string.IsNullOrWhiteSpace(url))
+            {
+                throw new InvalidSecurityTagException(
+                    string.Format(SpecificationGenerationMessages.UndocumentedOpenIdConnectUrl,
+                        SecuritySchemeType.OpenIdConnect));
+            }
+
+            return new OpenApiSecurityScheme
+            {
+                Description = description,
+                Type = SecuritySchemeType.OpenIdConnect,
+                OpenIdConnectUrl = new Uri(url)
+            };
         }
     }
 }

@@ -27,18 +27,22 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         {
             if (settings == null)
             {
-                throw new ArgumentNullException( nameof( settings ) );
+                throw new ArgumentNullException(nameof(settings));
             }
 
             if (element == null)
             {
-                throw new ArgumentNullException( nameof( element ) );
+                throw new ArgumentNullException(nameof(element));
+            }
+
+            if (operation == null)
+            {
+                throw new ArgumentNullException(nameof(operation));
             }
 
             var securityElements = element.Elements()
                 .Where(
-                    p => p.Name == KnownXmlStrings.Security)
-                .ToList();
+                    p => p.Name == KnownXmlStrings.Security);
 
             if (!securityElements.Any())
             {
@@ -50,12 +54,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
             foreach (var securityElement in securityElements)
             {
-                var securityScheme = securitySchemeRegistry.FindOrAddReference( securityElement );
+                var securityScheme = securitySchemeRegistry.FindOrAddReference(securityElement);
 
-                openApiSecurityRequirement.Add( securityScheme, securitySchemeRegistry.Scopes );
+                openApiSecurityRequirement.Add(securityScheme, securitySchemeRegistry.Scopes);
             }
 
-            operation.Security.Add( openApiSecurityRequirement );
+            operation.Security.Add(openApiSecurityRequirement);
         }
     }
 }
