@@ -46,8 +46,33 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStr
         public const string Value = "value";
         public const string Variant = "variant";
         public const string Verb = "verb";
+        public const string ApiKey = "apiKey";
+        public const string Http = "http";
+        public const string OAuth2 = "oauth2";
+        public const string OpenIdConnect = "openIdConnect";
+        public const string Security = "security";
+        public const string Cookie = "cookie";
+        public const string Scheme = "scheme";
+        public const string BearerFormat = "bearerFormat";
+        public const string OpenIdConnectUrl = "openIdConnectUrl";
+        public const string TokenUrl = "tokenUrl";
+        public const string RefreshUrl = "refreshUrl";
+        public const string AuthorizationUrl = "authorizationUrl";
+        public const string Flow = "flow";
+        public const string ImplicitFlow = "implicit";
+        public const string Password = "password";
+        public const string AuthorizationCode = "authorizationCode";
+        public const string ClientCredentials = "clientCredentials";
+        public const string Scope = "scope";
+        public static string[] AllowedAppKeyInValues => new[] {Header, Query, Cookie};
+
+        public static string[] AllowedFlowTypeValues => new[]
+            {ImplicitFlow, Password, AuthorizationCode, ClientCredentials};
 
         public static string[] AllowedInValues => new[] {Header, Path, Query, Body};
+
+        public static string[] AllowedSecurityTypeValues => new[]
+            {ApiKey, Http, OpenIdConnect, OAuth2};
 
         // "body" in attribute is translated to a requestBody instead of a parameter.
         public static string[] InValuesTranslatableToParameter => new[] {Header, Path, Query};

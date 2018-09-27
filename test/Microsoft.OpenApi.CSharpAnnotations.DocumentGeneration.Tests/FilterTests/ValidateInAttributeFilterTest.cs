@@ -30,16 +30,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTes
 
         public static IEnumerable<object[]> GetTestCasesForValidateInAttributeShouldFail()
         {
-            // Param missing In attribute
-            yield return new object[]
-            {
-                "Param missing in attribute",
-                XElement.Load(Path.Combine(InputDirectory, "ParamMissingInAttribute.xml")),
-                string.Format(
-                    SpecificationGenerationMessages.MissingInAttribute,
-                    "sampleHeaderParam2, sampleHeaderParam3")
-            };
-
             // Param with not supported In value
             yield return new object[]
             {

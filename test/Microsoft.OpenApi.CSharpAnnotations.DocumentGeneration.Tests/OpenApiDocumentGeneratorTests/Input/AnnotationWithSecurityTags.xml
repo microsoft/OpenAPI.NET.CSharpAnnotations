@@ -1,0 +1,151 @@
+﻿<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig">
+            <summary>
+                Responsible for route configuration
+            </summary>
+        </member>
+        <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+            <summary>
+                Registers routes
+            </summary>
+            <param name="routes">Route collection</param>
+        </member>
+        <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig">
+            <summary>
+                Web config.
+            </summary>
+            <security type="apiKey" name="api-Key">
+                <description>Test security</description>
+                <in>query</in>
+            </security>
+            <security type="http" name="http">
+                <description>Test security</description>
+                <scheme>basic</scheme>
+            </security>
+            <security type="http" name="http-bearer">
+                <description>Test security</description>
+                <scheme>bearer</scheme>
+                <bearerFormat>JWT</bearerFormat>
+            </security>
+            <security type="oauth2" name="oauth">
+                <description>Test security</description>
+                <flow type="implicit">
+                    <authorizationUrl>https://example.com/api/oauth/dialog</authorizationUrl>
+                    <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+                    <scope name="scope1">
+                        <description>scope1</description>
+                    </scope>
+                </flow>
+                <flow type="password">
+                    <tokenUrl>https://example.com/api/oauth/dialog</tokenUrl>
+                    <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+                    <scope name="scope1">
+                        <description>scope1</description>
+                    </scope>
+                </flow>
+                <flow type="authorizationCode">
+                    <authorizationUrl>https://example.com/api/oauth/dialog</authorizationUrl>
+                    <tokenUrl>https://example.com/api/oauth/dialog</tokenUrl>
+                    <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+                    <scope name="scope1">
+                        <description>scope1</description>
+                    </scope>
+                </flow>
+                <flow type="clientCredentials">
+                    <tokenUrl>https://example.com/api/oauth/dialog</tokenUrl>
+                    <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+                    <scope name="scope1">
+                        <description>scope1</description>
+                    </scope>
+                </flow>
+            </security>
+            <security type="openIdConnect" name="openIdConnect">
+                <description>Test security</description>
+                <openIdConnectUrl>https://example.com/api/oauth/dialog</openIdConnectUrl>
+                <scope name="scope1"></scope>
+                <scope name="scope2"></scope>
+            </security>
+        </member>
+        <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+            <summary>
+                Register the configuration, services, and routes.
+            </summary>
+            <param name="config">HTTP Configuration</param>
+        </member>
+        <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller">
+            <summary>
+                Define V1 operations.
+            </summary>
+        </member>
+        <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller.SampleGet1(System.String,System.Boolean)">
+            <summary>
+                Sample Get 1
+            </summary>
+            <group>Sample V1</group>
+            <verb>GET</verb>
+            <url>https://myapi.sample.com/V1/samples/{id}?queryBool={queryBool}</url>
+            <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+            <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+            <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+            <param name="id" cref="T:System.String" in="path">The object id</param>
+            <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
+            <response code="200">
+                <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Sample object retrieved
+            </response>
+            <response code="400">
+                <see cref="T:System.String"/>Bad request
+            </response>
+            <swagger>Group1</swagger>
+            <swagger>Group2</swagger>
+            <security type="oauth2" name="oauth-2">
+                <description>Test security</description>
+                <flow type="implicit">
+                    <authorizationUrl>https://sampleUrl</authorizationUrl>
+                    <refreshUrl>https://sampleUrl</refreshUrl>
+                    <scope name="scope1">
+                        <description>scope1</description>
+                    </scope>
+                </flow>
+            </security>
+            <returns>The sample object 1</returns>
+        </member>
+        <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller.SampleGet2">
+            <summary>
+                Sample Get 2
+            </summary>
+            <group>Sample V1</group>
+            <verb>GET</verb>
+            <url>https://myapi.sample.com/V1/samples</url>
+            <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+            <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+            <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+            <response code="200">
+                <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3"/>Paged Entity contract
+            </response>
+            <response code="400">
+                <see cref="T:System.String"/>Bad request
+            </response>
+            <returns>The sample object 3</returns>
+        </member>
+        <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV5Controller">
+            <summary>
+                Sample v5 controller.
+            </summary>
+        </member>
+        <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication">
+            <summary>
+                Web API Application.
+            </summary>
+        </member>
+        <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication.Application_Start">
+            <summary>
+                Start application.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -29,18 +29,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                 .Where(p => p.Name == KnownXmlStrings.Param)
                 .ToList();
 
-            var paramElementsWithoutIn = paramElements.Where(p => p.Attribute(KnownXmlStrings.In)?.Value == null)
-                .ToList();
+            var paramWithInValues = paramElements.Where(p => p.Attribute(KnownXmlStrings.In)?.Value != null).ToList();
 
-            var paramElementsWithoutAllowedValues = paramElements.Where(
-                p => !KnownXmlStrings.AllowedInValues.Contains(p.Attribute(KnownXmlStrings.In)?.Value)).ToList();
-
-            if (paramElementsWithoutIn.Any())
+            if (!paramWithInValues.Any())
             {
-                throw new MissingInAttributeException(
-                    paramElementsWithoutIn.Select(
-                        p => p.Attribute(KnownXmlStrings.Name)?.Value));
+                return;
             }
+
+            var paramElementsWithoutAllowedValues = paramWithInValues.Where(
+                p => !KnownXmlStrings.AllowedInValues.Contains(p.Attribute(KnownXmlStrings.In)?.Value)).ToList();
 
             if (paramElementsWithoutAllowedValues.Any())
             {

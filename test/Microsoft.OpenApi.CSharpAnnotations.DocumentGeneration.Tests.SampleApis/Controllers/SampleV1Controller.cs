@@ -30,6 +30,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         /// <response code="400"><see cref="string"/>Bad request</response>
         /// <swagger>Group1</swagger>
         /// <swagger>Group2</swagger>
+        /// <security type="oauth2" name="oauth">
+        ///     <description>Test security</description>
+        ///     <flow type="implicit">
+        ///         <authorizationUrl>https://sampleUrl</authorizationUrl>
+        ///         <refreshUrl>https://sampleUrl</refreshUrl>
+        ///         <scope name="scope1">
+        ///             <description></description>
+        ///         </scope>
+        ///     </flow>
+        /// </security>
         /// <returns>The sample object 1</returns>
         [HttpGet]
         [Route("V1/samples/{id}")]

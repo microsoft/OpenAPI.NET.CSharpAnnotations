@@ -3,6 +3,8 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
+
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
 {
     /// <summary>
@@ -14,6 +16,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// Gets or sets the OpenAPI document version.
         /// </summary>
         public string OpenApiDocumentVersion { get; set; }
+
+        /// <summary>
+        /// Gets the reference registry manager.
+        /// </summary>
+        public ReferenceRegistryManager ReferenceRegistryManager { get; set; }
 
         /// <summary>
         /// Gets or sets the type fetcher.

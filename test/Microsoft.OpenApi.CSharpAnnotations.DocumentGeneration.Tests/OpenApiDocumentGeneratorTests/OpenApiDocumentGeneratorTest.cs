@@ -108,7 +108,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                         "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
                 },
                 "1.0.0",
-                new OpenApiDocumentGenerationSettings(new  SchemaGenerationSettings(new CamelCasePropertyNameResolver())),
+                new OpenApiDocumentGenerationSettings(
+                    new SchemaGenerationSettings(new CamelCasePropertyNameResolver())),
                 9,
                 Path.Combine(
                     OutputDirectory,
@@ -118,63 +119,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
 
         public static IEnumerable<object[]> GetTestCasesForInvalidDocumentationShouldRemoveFailedOperations()
         {
-            // Parameters that have no in attributes and not present in the URL.
-            yield return new object[]
-            {
-                "Parameters Without In Attribute And Not Present In URL",
-                new List<string>
-                {
-                    Path.Combine(InputDirectory, "AnnotationParamWithoutInNotPresentInUrl.xml"),
-                    Path.Combine(InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
-                },
-                new List<string>
-                {
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
-                    Path.Combine(
-                        InputDirectory,
-                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
-                },
-                9,
-                Path.Combine(
-                    OutputDirectory,
-                    "AnnotationParamWithoutInNotPresentInUrl.Json"),
-                new DocumentGenerationDiagnostic
-                {
-                    Errors =
-                    {
-                        new GenerationError
-                        {
-                            ExceptionType = typeof(UnableToGenerateAllOperationsException).Name,
-                            Message = string.Format(
-                                SpecificationGenerationMessages.UnableToGenerateAllOperations,
-                                8,
-                                9)
-                        }
-                    }
-                },
-                new List<OperationGenerationDiagnostic>
-                {
-                    new OperationGenerationDiagnostic
-                    {
-                        OperationMethod = OperationType.Get.ToString(),
-                        Path = "/V1/samples/{id}",
-                        Errors =
-                        {
-                            new GenerationError
-                            {
-                                ExceptionType = typeof(MissingInAttributeException).Name,
-                                Message = string.Format(
-                                    SpecificationGenerationMessages.MissingInAttribute,
-                                    string.Join(", ", new List<string> {"sampleHeaderParam2", "sampleHeaderParam3"}))
-                            }
-                        }
-                    }
-                }
-            };
-
             // Conflicting Path and Query Parameters
             yield return new object[]
             {
@@ -230,10 +174,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             },
                             new GenerationError
                             {
-                                ExceptionType = typeof(MissingInAttributeException).Name,
+                                ExceptionType = typeof(UndocumentedPathParameterException).Name,
                                 Message = string.Format(
-                                    SpecificationGenerationMessages.MissingInAttribute,
-                                    "id")
+                                    SpecificationGenerationMessages.UndocumentedPathParameter,
+                                    "id",
+                                    "http://localhost:9000/V1/samples/{id}?queryBool={queryBool}&id={id}")
                             }
                         }
                     }
@@ -1039,6 +984,32 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                     OutputDirectory,
                     "AnnotationWithBaseClassProperty.Json")
             };
+
+            // XML document with security tags
+            yield return new object[]
+            {
+                "XML document with security tags",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithSecurityTags.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                "1.0.0",
+                2,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationWithSecurityTags.Json")
+            };
         }
 
         [Theory]
@@ -1197,7 +1168,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                             }
                         }
                     }
-               );
+                );
         }
 
         [Theory]

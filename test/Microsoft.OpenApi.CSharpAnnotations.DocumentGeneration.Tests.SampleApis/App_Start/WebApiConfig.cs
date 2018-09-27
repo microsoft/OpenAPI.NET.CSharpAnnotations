@@ -10,6 +10,27 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
     /// <summary>
     /// Web config.
     /// </summary>
+    /// <security type="http" name="http-bearer">
+    ///     <description>Test security</description>
+    ///     <scheme>bearer</scheme>
+    ///     <bearerFormat>JWT</bearerFormat>
+    /// </security>
+    /// <security type="oauth2" name="oauth">
+    ///     <description>Test security</description>
+    ///     <flow type="implicit">
+    ///         <authorizationUrl>https://example.com/api/oauth/dialog</authorizationUrl>
+    ///         <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+    ///         <scope name="scope1">
+    ///             <description></description>
+    ///         </scope>
+    ///     </flow>
+    /// </security>
+    /// <security type="openIdConnect" name="openIdConnect">
+    ///     <description>Test security</description>
+    ///     <openIdConnectUrl>https://example.com/api/oauth/dialog</openIdConnectUrl>
+    ///     <scope name="scope1"></scope>
+    ///     <scope name="scope2"></scope>
+    /// </security>
     public static class WebApiConfig
     {
         /// <summary>

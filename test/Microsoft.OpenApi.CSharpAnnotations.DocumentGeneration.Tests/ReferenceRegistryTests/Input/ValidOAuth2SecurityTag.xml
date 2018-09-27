@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<security type="oauth2" name="oauth">
+    <description>Test security</description>
+    <flow type="implicit">
+        <authorizationUrl>https://example.com/api/oauth/dialog</authorizationUrl>
+        <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+        <scope name="scope1">
+            <description>scope1</description>
+        </scope>
+    </flow>
+    <flow type="password">
+        <tokenUrl>https://example.com/api/oauth/dialog</tokenUrl>
+        <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+        <scope name="scope1">
+            <description>scope1</description>
+        </scope>
+    </flow>
+    <flow type="authorizationCode">
+        <authorizationUrl>https://example.com/api/oauth/dialog</authorizationUrl>
+        <tokenUrl>https://example.com/api/oauth/dialog</tokenUrl>
+        <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+        <scope name="scope1">
+            <description>scope1</description>
+        </scope>
+    </flow>
+    <flow type="clientCredentials">
+        <tokenUrl>https://example.com/api/oauth/dialog</tokenUrl>
+        <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+        <scope name="scope1">
+            <description>scope1</description>
+        </scope>
+    </flow>
+</security>

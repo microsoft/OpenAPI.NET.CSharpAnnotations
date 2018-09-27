@@ -204,7 +204,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Header element with no name attribute.",
                 XElement.Parse("<parent><header></header></parent>"),
-                string.Format(SpecificationGenerationMessages.MissingNameAttribute, "header")
+                string.Format(SpecificationGenerationMessages.UndocumentedName, "header")
             };
         }
 
