@@ -18,6 +18,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         public string OpenApiDocumentVersion { get; set; }
 
         /// <summary>
+        /// The description to use while populating OpenApiInfo.
+        /// </summary>
+        public string OpenApiInfoDescription { get; set; }
+
+        /// <summary>
         /// Gets the reference registry manager.
         /// </summary>
         public ReferenceRegistryManager ReferenceRegistryManager { get; set; }

@@ -18,8 +18,8 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
         <PackageReference Include="FluentAssertions" Version="5.1.2">
         </PackageReference>
-        <PackageReference Include="Microsoft.OpenApi" Version="1.1.0-preview.3" />
-        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.1.0-preview.3" />
+        <PackageReference Include="Microsoft.OpenApi" Version="1.1.0" />
+        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
         <PackageReference Include="SharpYaml" Version="1.6.1">
         </PackageReference>
@@ -182,6 +182,9 @@
       <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationWithSecurityTags.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="OpenApiDocumentGeneratorTests\Input\DescriptionMarkdown.md">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -264,6 +267,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithBaseClassProperty.Json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithDescription.Json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithNoResponseBody.Json">

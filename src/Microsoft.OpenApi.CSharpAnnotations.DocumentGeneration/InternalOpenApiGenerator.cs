@@ -225,6 +225,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <param name="contractAssemblyPaths">The contract assembly paths.</param>
         /// <param name="configurationXml">The serialized XDocument representing the generation configuration.</param>
         /// <param name="openApiDocumentVersion">The version of the OpenAPI document.</param>
+        /// <param name="openApiInfoDescription">The description to use while populating OpenApiInfo.</param>
         /// <param name="generationDiagnostic">A string representing serialized version of
         /// <see cref="GenerationDiagnostic"/>>
         /// </param>
@@ -236,6 +237,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             IList<string> contractAssemblyPaths,
             string configurationXml,
             string openApiDocumentVersion,
+            string openApiInfoDescription,
             out GenerationDiagnostic generationDiagnostic)
         {
             IDictionary<DocumentVariantInfo, OpenApiDocument> openApiDocuments
@@ -333,6 +335,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                 {
                                     TypeFetcher = typeFetcher,
                                     OpenApiDocumentVersion = openApiDocumentVersion,
+                                    OpenApiInfoDescription = openApiInfoDescription,
                                     ReferenceRegistryManager = referenceRegistryManager
                                 },
                                 _openApiDocumentGenerationSettings);

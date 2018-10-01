@@ -43,7 +43,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
             specificationDocument.Info = new OpenApiInfo
             {
                 Title = xmlDocument.XPathSelectElement("//doc/assembly/name")?.Value,
-                Version = settings.OpenApiDocumentVersion
+                Version = settings.OpenApiDocumentVersion,
+                Description = settings.OpenApiInfoDescription
             };
         }
     }
