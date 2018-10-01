@@ -1267,12 +1267,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
             documents.AddRange(inputXmlFiles.Select(XDocument.Load));
 
             var input = new OpenApiGeneratorConfig(
-                documents,
-                inputBinaryFiles,
-                "1",
-                FilterSetVersion.V1)
+                annotationXmlDocuments: documents,
+                assemblyPaths: inputBinaryFiles,
+                openApiDocumentVersion: "1",
+                filterSetVersion: FilterSetVersion.V1)
             {
-                OpenApiInfoDescription = File.ReadAllText(descriptionFile)
+                OpenApiInfoDescription = File.ReadAllText(descriptionFile).Replace("\r", "")
             };
 
             GenerationDiagnostic result;

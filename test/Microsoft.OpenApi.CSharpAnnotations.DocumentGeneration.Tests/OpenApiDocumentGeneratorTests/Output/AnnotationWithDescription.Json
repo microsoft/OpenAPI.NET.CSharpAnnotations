@@ -2,7 +2,7 @@
     "openapi": "3.0.1",
     "info": {
         "title": "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis",
-        "description": "# This is a sample service \"description file\"\r\n\r\nHello `world`!",
+        "description": "# This is a sample service \"description file\"\n\nHello `world`!",
         "version": "1"
     },
     "servers": [
