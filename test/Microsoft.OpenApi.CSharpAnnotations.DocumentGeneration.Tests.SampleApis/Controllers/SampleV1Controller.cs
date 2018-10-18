@@ -36,7 +36,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
         ///         <authorizationUrl>https://sampleUrl</authorizationUrl>
         ///         <refreshUrl>https://sampleUrl</refreshUrl>
         ///         <scope name="scope1">
-        ///             <description></description>
+        ///             <description>Example flow description</description>
         ///         </scope>
         ///     </flow>
         /// </security>

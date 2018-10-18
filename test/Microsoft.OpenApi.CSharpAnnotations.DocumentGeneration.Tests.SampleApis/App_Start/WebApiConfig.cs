@@ -21,15 +21,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApi
     ///         <authorizationUrl>https://example.com/api/oauth/dialog</authorizationUrl>
     ///         <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
     ///         <scope name="scope1">
-    ///             <description></description>
+    ///             <description>Example flow description</description>
     ///         </scope>
     ///     </flow>
     /// </security>
     /// <security type="openIdConnect" name="openIdConnect">
     ///     <description>Test security</description>
     ///     <openIdConnectUrl>https://example.com/api/oauth/dialog</openIdConnectUrl>
-    ///     <scope name="scope1"></scope>
-    ///     <scope name="scope2"></scope>
+    ///     <scope name="scope1">
+    ///         <description>Scope 1 description</description>    
+    ///     </scope>
+    ///     <scope name="scope2">
+    ///         <description>Scope 2 description</description>    
+    ///     </scope>
     /// </security>
     public static class WebApiConfig
     {
