@@ -490,6 +490,25 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Reference
                 }
             };
 
+            // Type with nullable enum
+            yield return new object[]
+            {
+                typeof(SampleTypeWithNullableEnum),
+                new OpenApiSchema
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = typeof(SampleTypeWithNullableEnum).ToString().SanitizeClassName(),
+                        Type = ReferenceType.Schema
+                    }
+                },
+                new Dictionary<string, OpenApiSchema>
+                {
+                    [typeof(SampleTypeWithNullableEnum).ToString().SanitizeClassName()]
+                    = SampleTypeWithNullableEnum.schema
+                }
+            };
+
         }
     }
 }
