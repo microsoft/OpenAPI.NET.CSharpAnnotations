@@ -1,4 +1,5 @@
-﻿//  Copyright (c) Microsoft Corporation.  All rights reserved.
+﻿// ------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All rights reserved.
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
@@ -7,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.ReferenceRegistryTests.Types
 {
-    public class SampleTypeWithDuplicateProperty
+    internal class SampleTypeWithDuplicateProperty
     {
         [JsonProperty("sampleList")]
         public IList<string> SampleStringList { get; }

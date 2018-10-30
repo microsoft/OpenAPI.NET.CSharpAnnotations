@@ -123,6 +123,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     return schema;
                 }
 
+                var nullableUnderlyingType = Nullable.GetUnderlyingType(input);
+
+                if (nullableUnderlyingType?.IsEnum == true)
+                {
+                    schema.Type = "string";
+                    schema.Nullable = true;
+
+                    foreach (var name in nullableUnderlyingType.GetEnumNames())
+                    {
+                        schema.Enum.Add(new OpenApiString(name));
+                    }
+
+                    return schema;
+                }
+
                 schema.Type = "object";
 
                 // Note this assignment is necessary to allow self-referencing type to finish
