@@ -5,7 +5,7 @@
 ![C# Annotation Document Generator](docs/images/banner.png "Convert /// C# Comments --> OpenAPI.NET")
 
 # Convert C# Annotations to OpenAPI.NET [Preview]
-[Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for late summer 2018. Feedback is welcome!]
+[Disclaimer: This repository is in a preview state. Expect to see some iterating as we work towards the final release candidate slated for January 2019. Feedback is welcome!]
 
 
 ### Welcome!
