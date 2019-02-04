@@ -109,7 +109,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// Removes the duplicate string from parameter name to work around the rosyln issue.
         /// https://github.com/dotnet/roslyn/issues/26292.
         /// e.g if the value is service-$Catalog-Id-1-$Catalog-Id-1, this will return
-        /// service-$Catalog-Id
+        /// service-$Catalog-Id-1
         /// </summary>
         /// <param name="value">The param name to update.</param>
         /// <returns>The updated value.</returns>
