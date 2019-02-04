@@ -23,9 +23,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         public string Path { get; set; }
 
         /// <summary>
-        /// Gets the reference registry manager.
+        /// Gets or sets the reference registry manager.
         /// </summary>
         public ReferenceRegistryManager ReferenceRegistryManager { get; set; }
+
+        /// <summary>
+        /// Gets or sets the bool to indicate whether to remove duplicate string from parameter name to work around
+        /// rosyln issue. https://github.com/dotnet/roslyn/issues/26292.
+        /// </summary>
+        public bool RemoveDuplicateStringFromParamName { get; set; }
 
         /// <summary>
         /// Gets or sets the type fetcher.

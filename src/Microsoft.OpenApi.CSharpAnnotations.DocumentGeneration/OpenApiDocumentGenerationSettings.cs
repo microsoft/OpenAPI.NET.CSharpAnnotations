@@ -16,15 +16,27 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// Creates an instance of <see cref="OpenApiDocumentGenerationSettings"/>.
         /// </summary>
         /// <param name="schemaGenerationSettings">The schema generation settings.</param>
-        public OpenApiDocumentGenerationSettings(SchemaGenerationSettings schemaGenerationSettings)
+        /// <param name="removeDuplicateStringFromParamName">Indicates whether to remove duplicate string from parameter
+        /// name to work around rosyln issue. https://github.com/dotnet/roslyn/issues/26292.
+        /// </param>
+        public OpenApiDocumentGenerationSettings(
+            SchemaGenerationSettings schemaGenerationSettings,
+            bool removeDuplicateStringFromParamName = false)
         {
             this.SchemaGenerationSettings = schemaGenerationSettings ??
                 throw new ArgumentNullException(nameof(schemaGenerationSettings));
+            this.RemoveDuplicateStringFromParamName = removeDuplicateStringFromParamName;
         }
 
         /// <summary>
         /// Gets the schema generation settings.
         /// </summary>
         public SchemaGenerationSettings SchemaGenerationSettings { get; }
+
+        /// <summary>
+        /// Gets the bool to indicate whether to remove duplicate string from parameter name to work around rosyln
+        /// issue. https://github.com/dotnet/roslyn/issues/26292.
+        /// </summary>
+        public bool RemoveDuplicateStringFromParamName { get; }
     }
 }

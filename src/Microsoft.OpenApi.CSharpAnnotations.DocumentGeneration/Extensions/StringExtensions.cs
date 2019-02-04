@@ -106,6 +106,30 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         }
 
         /// <summary>
+        /// Removes the duplicate string from parameter name to work around the rosyln issue.
+        /// https://github.com/dotnet/roslyn/issues/26292.
+        /// e.g if the value is service-$Catalog-Id-1-$Catalog-Id-1, this will return
+        /// service-$Catalog-Id
+        /// </summary>
+        /// <param name="value">The param name to update.</param>
+        /// <returns>The updated value.</returns>
+        public static string RemoveDuplicateString(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            // Find the first special character among -,$,@,_ in the string.
+            string firstOccuredSpecialCharacter = Regex.Match(value, "[-_$@]").Value;
+
+            return string.IsNullOrWhiteSpace(firstOccuredSpecialCharacter)
+                ? value
+                : string.Join(firstOccuredSpecialCharacter,
+                    value.Split(firstOccuredSpecialCharacter.ToCharArray()[0]).Distinct());
+        }
+
+        /// <summary>
         /// Sanitizes class name to satisfy the OpenAPI V3 restriction, i.e.
         /// match the regular expression ^[a-zA-Z0-9\.\-_]+$.
         /// </summary>

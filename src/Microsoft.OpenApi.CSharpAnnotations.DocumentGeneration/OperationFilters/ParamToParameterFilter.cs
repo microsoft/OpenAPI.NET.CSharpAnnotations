@@ -54,6 +54,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                 var inValue = paramElement.Attribute(KnownXmlStrings.In)?.Value.Trim();
                 var name = paramElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
 
+                if (settings.RemoveDuplicateStringFromParamName)
+                {
+                    name = name.RemoveDuplicateString();
+                }
+
                 if (inValue == KnownXmlStrings.Path &&
                     !settings.Path.Contains($"{{{name}}}", StringComparison.InvariantCultureIgnoreCase))
                 {

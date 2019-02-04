@@ -21,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             _output = output;
         }
 
-        public static IEnumerable<object[]> GetTestCasesForStringExtensionShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForToCamelCaseShouldSucceed()
         {
             yield return new object[]
             {
@@ -45,10 +45,33 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             };
         }
 
+        public static IEnumerable<object[]> GetTestCasesForRemoveDuplicateStringShouldSucceed()
+        {
+            yield return new object[]
+            {
+                "String with special character $",
+                "$skip$skip",
+                "$skip"
+            };
+
+            yield return new object[]
+            {
+                "String with special character -",
+                "ms-cv-cv",
+                "ms-cv"
+            };
+
+            yield return new object[]
+            {
+                "string with no special character",
+                "testParam",
+                "testParam"
+            };
+        }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForStringExtensionShouldSucceed))]
-        public void StringExtensionShouldUpdateCorrectly(
+        [MemberData(nameof(GetTestCasesForToCamelCaseShouldSucceed))]
+        public void ToCamelCaseShouldUpdateCorrectly(
             string testCaseName,
             string inputString,
             string expectedUpdatedString)
@@ -56,6 +79,20 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             _output.WriteLine(testCaseName);
 
             inputString = inputString.ToCamelCase();
+
+            inputString.Should().Be(expectedUpdatedString);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForRemoveDuplicateStringShouldSucceed))]
+        public void RemoveDuplicateStringShouldUpdateCorrectly(
+            string testCaseName,
+            string inputString,
+            string expectedUpdatedString)
+        {
+            _output.WriteLine(testCaseName);
+
+            inputString = inputString.RemoveDuplicateString();
 
             inputString.Should().Be(expectedUpdatedString);
         }

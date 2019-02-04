@@ -176,6 +176,9 @@
       <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationWithBaseClassProperty.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationWithDuplicateStringInParamName.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationWithNoResponseBody.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -270,6 +273,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithDescription.Json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithDuplicateStringInParamName.Json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithNoResponseBody.Json">
