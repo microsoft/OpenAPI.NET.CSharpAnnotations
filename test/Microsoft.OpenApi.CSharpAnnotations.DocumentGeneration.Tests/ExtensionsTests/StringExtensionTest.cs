@@ -63,9 +63,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
 
             yield return new object[]
             {
-                "String with special character @ and no duplicate",
+                "String with special character @ and duplicate not introduced by roslyn",
                 "@skip@skip",
                 "@skip@skip"
+            };
+
+            yield return new object[]
+            {
+                "String with special character @ and no duplicate",
+                "@skip",
+                "@skip"
             };
 
             yield return new object[]

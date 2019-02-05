@@ -148,6 +148,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                 specialCharIndex = value.IndexOf(firstOccuredSpecialCharacter.ToCharArray()[0], 1);
             }
 
+            if (specialCharIndex == -1)
+            {
+                return value;
+            }
+
             // Divide the string after special character into two halves and check if they are equal.
             // If equal take only first half of string. if not equal return value as is.
             var valueLengthAfterSpecialChar = value.Length - specialCharIndex;
