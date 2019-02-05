@@ -136,9 +136,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                         "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
                 },
                 "1.0.0",
-                new OpenApiDocumentGenerationSettings(
-                    new SchemaGenerationSettings(new DefaultPropertyNameResolver()),
-                    true),
+                new OpenApiDocumentGenerationSettings(true),
                 9,
                 Path.Combine(
                     OutputDirectory,

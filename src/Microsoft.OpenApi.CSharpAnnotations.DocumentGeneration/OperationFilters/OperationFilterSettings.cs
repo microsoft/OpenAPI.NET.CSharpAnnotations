@@ -29,9 +29,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
         /// <summary>
         /// Gets or sets the bool to indicate whether to remove duplicate string from parameter name to work around
-        /// rosyln issue. https://github.com/dotnet/roslyn/issues/26292.
+        /// roslyn issue. https://github.com/dotnet/roslyn/issues/26292.
         /// </summary>
-        public bool RemoveDuplicateStringFromParamName { get; set; }
+        public bool RemoveRoslynDuplicateStringFromParamName { get; set; }
 
         /// <summary>
         /// Gets or sets the type fetcher.

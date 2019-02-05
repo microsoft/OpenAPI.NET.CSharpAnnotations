@@ -45,13 +45,34 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             };
         }
 
-        public static IEnumerable<object[]> GetTestCasesForRemoveDuplicateStringShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForRemoveRoslynDuplicateStringShouldSucceed()
         {
             yield return new object[]
             {
                 "String with special character $",
                 "$skip$skip",
                 "$skip"
+            };
+
+            yield return new object[]
+            {
+                "String with special character @",
+                "@service_Catalog_Id@Id@test@Id@test",
+                "@service_Catalog_Id@Id@test"
+            };
+
+            yield return new object[]
+            {
+                "String with special character @ and no duplicate",
+                "@skip@skip",
+                "@skip@skip"
+            };
+
+            yield return new object[]
+            {
+                "String with multiple special characters",
+                "service-$Catalog-Id-1-$Catalog-Id-1",
+                "service-$Catalog-Id-1"
             };
 
             yield return new object[]
@@ -84,15 +105,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForRemoveDuplicateStringShouldSucceed))]
-        public void RemoveDuplicateStringShouldUpdateCorrectly(
+        [MemberData(nameof(GetTestCasesForRemoveRoslynDuplicateStringShouldSucceed))]
+        public void RemoveRoslynDuplicateStringShouldUpdateCorrectly(
             string testCaseName,
             string inputString,
             string expectedUpdatedString)
         {
             _output.WriteLine(testCaseName);
 
-            inputString = inputString.RemoveDuplicateString();
+            inputString = inputString.RemoveRoslynDuplicateString();
 
             inputString.Should().Be(expectedUpdatedString);
         }

@@ -118,8 +118,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         ReferenceRegistryManager = referenceRegistryManagerMap[documentVariantInfo],
                         Path = path,
                         OperationMethod = operationMethod.ToString(),
-                        RemoveDuplicateStringFromParamName = _openApiDocumentGenerationSettings
-                            .RemoveDuplicateStringFromParamName
+                        RemoveRoslynDuplicateStringFromParamName = _openApiDocumentGenerationSettings
+                            .RemoveRoslynDuplicateStringFromParamName
                     };
 
                     // Apply all the operation-related filters to extract information related to the operation.

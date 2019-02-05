@@ -106,27 +106,57 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         }
 
         /// <summary>
-        /// Removes the duplicate string from parameter name to work around the rosyln issue.
+        /// Removes the duplicate string from the parameter name to work around the roslyn issue.
         /// https://github.com/dotnet/roslyn/issues/26292.
-        /// e.g if the value is service-$Catalog-Id-1-$Catalog-Id-1, this will return
-        /// service-$Catalog-Id-1
         /// </summary>
+        /// <remarks>
+        /// If a character is not allowed in an identifier name in .NET, roslyn duplicates the string following the
+        /// first occurence of that special character in the complied xml.
+        /// e.g if the param name is service-Catalog-Id-1, roslyn will convert it to
+        /// service-Catalog-Id-1-Catalog-Id-1 and this method will remove the duplicate string -Catalog-Id-1 and
+        /// return service-Catalog-Id-1
+        /// Also @ is allowed at the start of the identifier name, so roslyn duplicates the string following the
+        /// second occurence of that special character in the complied xml.
+        /// e.g if the param name is @skip@skip, roslyn will convert it to
+        /// @skip@skip@skip and this method will remove the duplicate string @skip and
+        /// return @skip@skip
+        /// </remarks>
         /// <param name="value">The param name to update.</param>
         /// <returns>The updated value.</returns>
-        public static string RemoveDuplicateString(this string value)
+        public static string RemoveRoslynDuplicateString(this string value)
         {
             if (string.IsNullOrEmpty(value))
             {
                 return value;
             }
 
-            // Find the first special character among -,$,@,_ in the string.
-            string firstOccuredSpecialCharacter = Regex.Match(value, "[-_$@]").Value;
+            // Only alphanumeric or hyphen characters are allowed in an identifier name.
+            // So look for special character other than these.
+            string firstOccuredSpecialCharacter = Regex.Match(value, "[^a-zA-Z0-9_]").Value;
 
-            return string.IsNullOrWhiteSpace(firstOccuredSpecialCharacter)
-                ? value
-                : string.Join(firstOccuredSpecialCharacter,
-                    value.Split(firstOccuredSpecialCharacter.ToCharArray()[0]).Distinct());
+            if (string.IsNullOrWhiteSpace(firstOccuredSpecialCharacter))
+            {
+                return value;
+            }
+
+            var specialCharIndex = value.IndexOf(firstOccuredSpecialCharacter.ToCharArray()[0]);
+
+            // @ is allowed at the start of the identifier name, so look for second occurence of it.
+            // e.g. if a param name is @skip@skip, roslyn will compile it as @skip@skip@skip.
+            if (firstOccuredSpecialCharacter == "@")
+            {
+                specialCharIndex = value.IndexOf(firstOccuredSpecialCharacter.ToCharArray()[0], 1);
+            }
+
+            // Divide the string after special character into two halves and check if they are equal.
+            // If equal take only first half of string. if not equal return value as is.
+            var valueLengthAfterSpecialChar = value.Length - specialCharIndex;
+            var firstHalf = value.Substring(specialCharIndex, valueLengthAfterSpecialChar / 2);
+            var secondHalf = value.Substring(specialCharIndex + valueLengthAfterSpecialChar / 2,
+                valueLengthAfterSpecialChar / 2);
+
+            return firstHalf == secondHalf ? value.Substring(0,specialCharIndex + firstHalf.Length)
+                : value;
         }
 
         /// <summary>

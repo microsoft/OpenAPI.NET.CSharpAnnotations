@@ -54,9 +54,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                 var inValue = paramElement.Attribute(KnownXmlStrings.In)?.Value.Trim();
                 var name = paramElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
 
-                if (settings.RemoveDuplicateStringFromParamName)
+                if (settings.RemoveRoslynDuplicateStringFromParamName)
                 {
-                    name = name.RemoveDuplicateString();
+                    name = name.RemoveRoslynDuplicateString();
                 }
 
                 if (inValue == KnownXmlStrings.Path &&
