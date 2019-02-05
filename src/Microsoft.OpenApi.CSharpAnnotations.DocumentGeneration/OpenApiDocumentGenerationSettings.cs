@@ -1,9 +1,9 @@
 ﻿// ------------------------------------------------------------
-//  Copyright (c)Microsoft Corporation.  All rights reserved.
+//  Copyright (c) Microsoft Corporation.  All rights reserved.
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-using System;
+using System; 
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 {
@@ -38,7 +38,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// </summary>
         /// <param name="schemaGenerationSettings">The schema generation settings.</param>
         /// <param name="removeRoslynDuplicateStringFromParamName">Indicates whether to remove duplicate string from
-        /// parameter name to work around rosyln issue.</param>
+        /// parameter name to work around roslyn issue.</param>
         public OpenApiDocumentGenerationSettings(
             SchemaGenerationSettings schemaGenerationSettings,
             bool removeRoslynDuplicateStringFromParamName)

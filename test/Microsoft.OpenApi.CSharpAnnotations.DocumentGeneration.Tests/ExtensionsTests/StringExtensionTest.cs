@@ -21,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             _output = output;
         }
 
-        public static IEnumerable<object[]> GetTestCasesForToCamelCaseShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForToCamelCaseShouldUpdateCorrectly()
         {
             yield return new object[]
             {
@@ -45,60 +45,94 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             };
         }
 
-        public static IEnumerable<object[]> GetTestCasesForRemoveRoslynDuplicateStringShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForRemoveRoslynDuplicateStringShouldUpdateCorrectly()
         {
             yield return new object[]
             {
+                "String with even length starting from -",
+                "abc-ef-efg",
+                "abc-ef-efg"
+            };
+
+            yield return new object[]
+            {
+                "String with odd length starting from -",
+                "abc-de-de",
+                "abc-de"
+            };
+
+            yield return new object[]
+            {
+                "String staring with @ and odd length starting from -",
+                "@abc-de-de",
+                "@abc-de"
+            };
+
+            yield return new object[]
+            {
+                "String staring with @ and odd length starting from - and no duplicates",
+                "@abc-de-fg",
+                "@abc-de-fg"
+            };
+
+            yield return new object[]
+            {
+                "String staring with @ and even length starting from -",
+                "@abc-ef-efg",
+                "@abc-ef-efg"
+            };
+
+            yield return new object[]
+            {
                 "String with special character $",
-                "$skip$skip",
-                "$skip"
+                "$abc$abc",
+                "$abc"
             };
 
             yield return new object[]
             {
                 "String with special character @",
-                "@service_Catalog_Id@Id@test@Id@test",
-                "@service_Catalog_Id@Id@test"
+                "@abc@de@fg@@de@fg@",
+                "@abc@de@fg@"
             };
 
             yield return new object[]
             {
                 "String with special character @ and duplicate not introduced by roslyn",
-                "@skip@skip",
-                "@skip@skip"
+                "@abc@abc",
+                "@abc@abc"
             };
 
             yield return new object[]
             {
                 "String with special character @ and no duplicate",
-                "@skip",
-                "@skip"
+                "@abc",
+                "@abc"
             };
 
             yield return new object[]
             {
                 "String with multiple special characters",
-                "service-$Catalog-Id-1-$Catalog-Id-1",
-                "service-$Catalog-Id-1"
+                "abc-$de-fg-h-$de-fg-h",
+                "abc-$de-fg-h"
             };
 
             yield return new object[]
             {
-                "String with special character -",
-                "ms-cv-cv",
-                "ms-cv"
+                "String with no special character",
+                "abc",
+                "abc"
             };
-
             yield return new object[]
             {
-                "string with no special character",
-                "testParam",
-                "testParam"
+                "String with @ not in starting",
+                "abc@abc@abc",
+                "abc@abc"
             };
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForToCamelCaseShouldSucceed))]
+        [MemberData(nameof(GetTestCasesForToCamelCaseShouldUpdateCorrectly))]
         public void ToCamelCaseShouldUpdateCorrectly(
             string testCaseName,
             string inputString,
@@ -112,7 +146,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForRemoveRoslynDuplicateStringShouldSucceed))]
+        [MemberData(nameof(GetTestCasesForRemoveRoslynDuplicateStringShouldUpdateCorrectly))]
         public void RemoveRoslynDuplicateStringShouldUpdateCorrectly(
             string testCaseName,
             string inputString,

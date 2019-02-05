@@ -111,12 +111,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// </summary>
         /// <remarks>
         /// If a character is not allowed in an identifier name in .NET, roslyn duplicates the string following the
-        /// first occurence of that special character in the complied xml.
+        /// first occurrence of that special character in the complied xml.
         /// e.g if the param name is service-Catalog-Id-1, roslyn will convert it to
         /// service-Catalog-Id-1-Catalog-Id-1 and this method will remove the duplicate string -Catalog-Id-1 and
         /// return service-Catalog-Id-1
         /// Also @ is allowed at the start of the identifier name, so roslyn duplicates the string following the
-        /// second occurence of that special character in the complied xml.
+        /// second occurrence of that special character in the complied xml.
         /// e.g if the param name is @skip@skip, roslyn will convert it to
         /// @skip@skip@skip and this method will remove the duplicate string @skip and
         /// return @skip@skip
@@ -130,35 +130,49 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                 return value;
             }
 
-            // Only alphanumeric or hyphen characters are allowed in an identifier name.
+            string specialCharRegex = "[^a-zA-Z0-9_]";
+
+            // Only alphanumeric or underscore characters are allowed in an identifier name.
             // So look for special character other than these.
-            string firstOccuredSpecialCharacter = Regex.Match(value, "[^a-zA-Z0-9_]").Value;
+            Match match = Regex.Match(value, specialCharRegex);
 
-            if (string.IsNullOrWhiteSpace(firstOccuredSpecialCharacter))
+            if (!match.Success)
             {
                 return value;
             }
 
-            var specialCharIndex = value.IndexOf(firstOccuredSpecialCharacter.ToCharArray()[0]);
+            string firstOccurredSpecialCharacter = match.Value;
 
-            // @ is allowed at the start of the identifier name, so look for second occurence of it.
+            var specialCharIndex = value.IndexOf(firstOccurredSpecialCharacter.ToCharArray()[0]);
+
+            // @ is allowed at the start of the identifier name, so look for special character again in the substring
+            // not including first char.
             // e.g. if a param name is @skip@skip, roslyn will compile it as @skip@skip@skip.
-            if (firstOccuredSpecialCharacter == "@")
+            if (firstOccurredSpecialCharacter == "@")
             {
-                specialCharIndex = value.IndexOf(firstOccuredSpecialCharacter.ToCharArray()[0], 1);
-            }
+                match = Regex.Match(value.Substring(1, value.Length - 1), specialCharRegex);
 
-            if (specialCharIndex == -1)
-            {
-                return value;
+                if (!match.Success)
+                {
+                    return value;
+                }
+
+                specialCharIndex = value.IndexOf(match.Value.ToCharArray()[0], 1);
             }
 
             // Divide the string after special character into two halves and check if they are equal.
             // If equal take only first half of string. if not equal return value as is.
-            var valueLengthAfterSpecialChar = value.Length - specialCharIndex;
-            var firstHalf = value.Substring(specialCharIndex, valueLengthAfterSpecialChar / 2);
-            var secondHalf = value.Substring(specialCharIndex + valueLengthAfterSpecialChar / 2,
-                valueLengthAfterSpecialChar / 2);
+            var valueLengthStartingWithSpecialCharToEnd = value.Length - specialCharIndex;
+
+            // If the length is odd then its a mismatch, return value as is.
+            if (valueLengthStartingWithSpecialCharToEnd % 2 != 0)
+            {
+                return value;
+            }
+
+            var firstHalf = value.Substring(specialCharIndex, valueLengthStartingWithSpecialCharToEnd / 2);
+            var secondHalf = value.Substring(specialCharIndex + valueLengthStartingWithSpecialCharToEnd / 2,
+                valueLengthStartingWithSpecialCharToEnd / 2);
 
             return firstHalf == secondHalf ? value.Substring(0,specialCharIndex + firstHalf.Length)
                 : value;
