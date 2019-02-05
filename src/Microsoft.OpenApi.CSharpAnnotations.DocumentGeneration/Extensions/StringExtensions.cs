@@ -143,21 +143,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 
             string firstOccurredSpecialCharacter = match.Value;
 
-            var specialCharIndex = value.IndexOf(firstOccurredSpecialCharacter.ToCharArray()[0]);
+            var specialCharIndex = value.IndexOf(firstOccurredSpecialCharacter[0]);
 
             // @ is allowed at the start of the identifier name, so look for special character again in the substring
             // not including first char.
             // e.g. if a param name is @skip@skip, roslyn will compile it as @skip@skip@skip.
             if (firstOccurredSpecialCharacter == "@")
             {
-                match = Regex.Match(value.Substring(1, value.Length - 1), specialCharRegex);
+                match = Regex.Match(value.Substring(1), specialCharRegex);
 
                 if (!match.Success)
                 {
                     return value;
                 }
 
-                specialCharIndex = value.IndexOf(match.Value.ToCharArray()[0], 1);
+                specialCharIndex = value.IndexOf(match.Value[0], 1);
             }
 
             // Divide the string after special character into two halves and check if they are equal.
@@ -174,7 +174,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             var secondHalf = value.Substring(specialCharIndex + valueLengthStartingWithSpecialCharToEnd / 2,
                 valueLengthStartingWithSpecialCharToEnd / 2);
 
-            return firstHalf == secondHalf ? value.Substring(0,specialCharIndex + firstHalf.Length)
+            return firstHalf == secondHalf ? value.Substring(0, specialCharIndex + firstHalf.Length)
                 : value;
         }
 

@@ -49,35 +49,35 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         {
             yield return new object[]
             {
-                "String with even length starting from -",
+                "String with the special-character-containing part having odd length starting with -",
                 "abc-ef-efg",
                 "abc-ef-efg"
             };
 
             yield return new object[]
             {
-                "String with odd length starting from -",
+                "String with the special-character-containing part having even length starting with -",
                 "abc-de-de",
                 "abc-de"
             };
 
             yield return new object[]
             {
-                "String staring with @ and odd length starting from -",
+                "String prefixed with @ with the special-character-containing part having even length starting with -",
                 "@abc-de-de",
                 "@abc-de"
             };
 
             yield return new object[]
             {
-                "String staring with @ and odd length starting from - and no duplicates",
+                "string prefixed with @ with the special-character-containing part having even length starting with - without duplicates",
                 "@abc-de-fg",
                 "@abc-de-fg"
             };
 
             yield return new object[]
             {
-                "String staring with @ and even length starting from -",
+                "String prefixed with @ with the special-character-containing part having odd length starting with -",
                 "@abc-ef-efg",
                 "@abc-ef-efg"
             };
