@@ -31,8 +31,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
         }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForCustomSchemaGenerationSettingsShouldReturnCorrectDocument))]
-        public void CustomSchemaGenerationSettingsShouldReturnCorrectDocument(
+        [MemberData(nameof(GetTestCasesForCustomGenerationSettingsShouldReturnCorrectDocument))]
+        public void CustomGenerationSettingsShouldReturnCorrectDocument(
             string testCaseName,
             IList<string> inputXmlFiles,
             IList<string> inputBinaryFiles,
@@ -86,12 +86,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 .BeEquivalentTo(openApiStringReader.Read(expectedDocument, out var _));
         }
 
-        public static IEnumerable<object[]> GetTestCasesForCustomSchemaGenerationSettingsShouldReturnCorrectDocument()
+        public static IEnumerable<object[]> GetTestCasesForCustomGenerationSettingsShouldReturnCorrectDocument()
         {
-            // Standard, original valid XML document
+            // Standard, original valid XML document with camel case setting
             yield return new object[]
             {
-                "Standard valid XML document",
+                "Standard, original valid XML document with camel case setting",
                 new List<string>
                 {
                     Path.Combine(InputDirectory, "Annotation.xml"),
@@ -114,6 +114,33 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                 Path.Combine(
                     OutputDirectory,
                     "AnnotationCamelCase.Json")
+            };
+
+            // Standard, original valid XML document with remove duplicate from param name setting
+            yield return new object[]
+            {
+                "Standard, original valid XML document with remove duplicate from param name setting",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithDuplicateStringInParamName.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                "1.0.0",
+                new OpenApiDocumentGenerationSettings(true),
+                9,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationWithDuplicateStringInParamName.Json")
             };
         }
 

@@ -21,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             _output = output;
         }
 
-        public static IEnumerable<object[]> GetTestCasesForStringExtensionShouldSucceed()
+        public static IEnumerable<object[]> GetTestCasesForToCamelCaseShouldUpdateCorrectly()
         {
             yield return new object[]
             {
@@ -45,10 +45,95 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             };
         }
 
+        public static IEnumerable<object[]> GetTestCasesForRemoveRoslynDuplicateStringShouldUpdateCorrectly()
+        {
+            yield return new object[]
+            {
+                "String with the special-character-containing part having odd length starting with -",
+                "abc-ef-efg",
+                "abc-ef-efg"
+            };
+
+            yield return new object[]
+            {
+                "String with the special-character-containing part having even length starting with -",
+                "abc-de-de",
+                "abc-de"
+            };
+
+            yield return new object[]
+            {
+                "String prefixed with @ with the special-character-containing part having even length starting with -",
+                "@abc-de-de",
+                "@abc-de"
+            };
+
+            yield return new object[]
+            {
+                "string prefixed with @ with the special-character-containing part having even length starting with - without duplicates",
+                "@abc-de-fg",
+                "@abc-de-fg"
+            };
+
+            yield return new object[]
+            {
+                "String prefixed with @ with the special-character-containing part having odd length starting with -",
+                "@abc-ef-efg",
+                "@abc-ef-efg"
+            };
+
+            yield return new object[]
+            {
+                "String with special character $",
+                "$abc$abc",
+                "$abc"
+            };
+
+            yield return new object[]
+            {
+                "String with special character @",
+                "@abc@de@fg@@de@fg@",
+                "@abc@de@fg@"
+            };
+
+            yield return new object[]
+            {
+                "String with special character @ and duplicate not introduced by roslyn",
+                "@abc@abc",
+                "@abc@abc"
+            };
+
+            yield return new object[]
+            {
+                "String with special character @ and no duplicate",
+                "@abc",
+                "@abc"
+            };
+
+            yield return new object[]
+            {
+                "String with multiple special characters",
+                "abc-$de-fg-h-$de-fg-h",
+                "abc-$de-fg-h"
+            };
+
+            yield return new object[]
+            {
+                "String with no special character",
+                "abc",
+                "abc"
+            };
+            yield return new object[]
+            {
+                "String with @ not in starting",
+                "abc@abc@abc",
+                "abc@abc"
+            };
+        }
 
         [Theory]
-        [MemberData(nameof(GetTestCasesForStringExtensionShouldSucceed))]
-        public void StringExtensionShouldUpdateCorrectly(
+        [MemberData(nameof(GetTestCasesForToCamelCaseShouldUpdateCorrectly))]
+        public void ToCamelCaseShouldUpdateCorrectly(
             string testCaseName,
             string inputString,
             string expectedUpdatedString)
@@ -56,6 +141,20 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             _output.WriteLine(testCaseName);
 
             inputString = inputString.ToCamelCase();
+
+            inputString.Should().Be(expectedUpdatedString);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetTestCasesForRemoveRoslynDuplicateStringShouldUpdateCorrectly))]
+        public void RemoveRoslynDuplicateStringShouldUpdateCorrectly(
+            string testCaseName,
+            string inputString,
+            string expectedUpdatedString)
+        {
+            _output.WriteLine(testCaseName);
+
+            inputString = inputString.RemoveRoslynDuplicateString();
 
             inputString.Should().Be(expectedUpdatedString);
         }
