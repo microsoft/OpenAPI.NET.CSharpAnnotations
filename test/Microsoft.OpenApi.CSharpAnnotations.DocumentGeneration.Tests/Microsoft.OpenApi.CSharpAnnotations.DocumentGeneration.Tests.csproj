@@ -191,6 +191,9 @@
       <None Update="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="OpenApiDocumentGeneratorTests\Input\AnnotationWithRuntimeSerialization.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="OpenApiDocumentGeneratorTests\Input\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -279,6 +282,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithNoResponseBody.Json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithRuntimeSerialization.Json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="OpenApiDocumentGeneratorTests\Output\AnnotationWithSecurityTags.Json">

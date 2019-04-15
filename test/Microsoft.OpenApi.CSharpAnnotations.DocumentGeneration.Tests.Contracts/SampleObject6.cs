@@ -10,7 +10,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts
     /// <summary>
     /// The sample object 6.
     /// </summary>
-    /// 
     [DataContract]
     public class SampleObject6
     {
