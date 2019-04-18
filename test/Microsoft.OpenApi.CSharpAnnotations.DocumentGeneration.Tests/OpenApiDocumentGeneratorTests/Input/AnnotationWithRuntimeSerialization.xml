@@ -1,0 +1,488 @@
+<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig">
+      <summary>
+        Responsible for route configuration
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.RouteConfig.RegisterRoutes(System.Web.Routing.RouteCollection)">
+      <summary>
+        Registers routes
+      </summary>
+      <param name="routes">Route collection</param>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig">
+      <summary>
+        Web config.
+      </summary>
+      <security type="http" name="http-bearer">
+        <description>Test security</description>
+        <scheme>bearer</scheme>
+        <bearerFormat>JWT</bearerFormat>
+      </security>
+      <security type="oauth2" name="oauth">
+        <description>Test security</description>
+        <flow type="implicit">
+          <authorizationUrl>https://example.com/api/oauth/dialog</authorizationUrl>
+          <refreshUrl>https://example.com/api/oauth/dialog</refreshUrl>
+          <scope name="scope1">
+            <description>Example flow description</description>
+          </scope>
+        </flow>
+      </security>
+      <security type="openIdConnect" name="openIdConnect">
+        <description>Test security</description>
+        <openIdConnectUrl>https://example.com/api/oauth/dialog</openIdConnectUrl>
+        <scope name="scope1">
+          <description>Scope 1 description</description>
+        </scope>
+        <scope name="scope2">
+          <description>Scope 2 description</description>
+        </scope>
+      </security>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiConfig.Register(System.Web.Http.HttpConfiguration)">
+      <summary>
+        Register the configuration, services, and routes.
+      </summary>
+      <param name="config">HTTP Configuration</param>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller">
+      <summary>
+        Define V1 operations.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller.SampleGet1(System.String,System.Boolean)">
+      <summary>
+        Sample Get 1
+      </summary>
+      <group>Sample V1</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V1/samples/{id}?queryBool={queryBool}</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="id" cref="T:System.String" in="path">The object id</param>
+      <param name="queryBool" required="true" cref="T:System.Boolean" in="query">Sample query boolean</param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Sample object retrieved
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+      <swagger>Group1</swagger>
+      <swagger>Group2</swagger>
+      <security type="oauth2" name="oauth">
+        <description>Test security</description>
+        <flow type="implicit">
+          <authorizationUrl>https://sampleUrl</authorizationUrl>
+          <refreshUrl>https://sampleUrl</refreshUrl>
+          <scope name="scope1">
+            <description>Example flow description</description>
+          </scope>
+        </flow>
+      </security>
+      <returns>The sample object 1</returns>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller.SampleGet2">
+      <summary>
+        Sample Get 2
+      </summary>
+      <group>Sample V1</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V1/samples</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3"/>Paged Entity contract
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+      <returns>The sample object 3</returns>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller.SamplePost(Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3)">
+      <summary>
+        Sample Post
+      </summary>
+      <group>Sample V1</group>
+      <verb>POST</verb>
+      <url>https://myapi.sample.com/V1/samples</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="sampleObject" in="body">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject3"/>Sample object
+      </param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Sample object posted
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV1Controller.SamplePut(System.String,Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1)">
+      <summary>
+        Sample put
+      </summary>
+      <group>Sample V1</group>
+      <verb>PUT</verb>
+      <url>https://myapi.sample.com/V1/samples/{id}</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="id" cref="T:System.String" in="path">The object id</param>
+      <param name="sampleObject" in="body">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Sample object
+      </param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>The sample object updated
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+      <returns>The sample object 1</returns>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV3Controller">
+      <summary>
+        Defines V3 operations.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV3Controller.SampleGet1">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V3</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V3/samples/</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <response code="200">
+        <see cref="T:System.Collections.Generic.List`1"/>
+        where T is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2"/>
+        where T1 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>
+        where T2 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2"/>
+        List of sample objects
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV3Controller.SampleGet2(System.String,System.String)">
+      <summary>
+        Sample get 2
+      </summary>
+      <group>Sample V3</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V3/samples/{id}?queryString={queryString}</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="id" cref="T:System.String" in="path">The object id</param>
+      <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2"/>
+        where T1 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>
+        where T2 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2"/>
+        List of sample objects
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV2Controller">
+      <summary>
+        Defines V2 operations.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV2Controller.DeleteEntity(System.String)">
+      <summary>
+        Sample delete
+      </summary>
+      <group>Sample V2</group>
+      <verb>DELETE</verb>
+      <url>https://myapi.sample.com/V2/samples/{id}</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="id" cref="T:System.String" in="path">The object id</param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Sample object deleted
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV2Controller.SampleGet1">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V2</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V2/samples/</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <response code="200">
+        <see cref="T:System.Collections.Generic.List`1"/>where T is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2"/>List of sample objects
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV2Controller.SampleGet2(System.String,System.String)">
+      <summary>
+        Sample get 2
+      </summary>
+      <group>Sample V2</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V2/samples/{id}?queryString={queryString}</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="id" cref="T:System.String" in="path">The object id</param>
+      <param name="queryString" cref="T:System.String" in="query">The sample query string</param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject2"/>Sample object retrieved
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV4Controller">
+      <summary>
+        Defines V4 operations.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV4Controller.SampleGet1">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V4</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V4/samples/</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <response code="200">
+        <see cref="T:System.Collections.Generic.List`1"/>
+        where T is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.ISampleObject4`2"/>
+        where T1 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>
+        where T2 is <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4"/>
+        List of sample objects
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV4Controller.SamplePost1(Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1,System.String,System.Boolean)">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V4</group>
+      <verb>POST</verb>
+      <url>https://myapi.sample.com/V4/samples/{id}</url>
+      <param name="id" cref="T:System.String" in="path">
+        The object id
+        <example name="Example one">
+          <value>id1</value>
+        </example>
+        <example name="Example two">
+          <value>id2</value>
+        </example>
+      </param>
+      <param name="queryBool" required="true" cref="T:System.Boolean" in="query">
+        Sample query boolean
+        <example>
+          <value>true</value>
+        </example>
+        <example>
+          <value>false</value>
+        </example>
+      </param>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">
+        <example>
+          <value>Sample header 1</value>
+        </example>
+        Header param 1
+      </param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="sampleObject1" in="body">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject1"/>Request Body
+        <example>
+          <value>
+            <see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example"/>
+          </value>
+        </example>
+      </param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject4"/>
+        <example>
+          <value>
+            <see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject4Example"/>
+          </value>
+        </example>
+        <example>
+          <value>
+            <see cref="F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject4Example"/>
+          </value>
+        </example>
+        Sample object
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV6Controller">
+      <summary>
+        Sample v6 controller.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV6Controller.SampleGet1">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V6</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V6/samples/</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject6"/>
+        sample object
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV6Controller.SamplePost1(Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject6,System.String,System.Boolean)">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V6</group>
+      <verb>POST</verb>
+      <url>https://myapi.sample.com/V6/samples/{id}</url>
+      <param name="id" cref="T:System.String" in="path">
+        The object id
+        <example name="Example one">
+          <value>id1</value>
+        </example>
+        <example name="Example two">
+          <value>id2</value>
+        </example>
+      </param>
+      <param name="queryBool" required="true" cref="T:System.Boolean" in="query">
+        Sample query boolean
+        <example>
+          <value>true</value>
+        </example>
+        <example>
+          <value>false</value>
+        </example>
+      </param>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">
+        <example>
+          <value>Sample header 1</value>
+        </example>
+        Header param 1
+      </param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="sampleObject6" in="body">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject6"/>Request Body
+      </param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject6"/>
+        Sample object
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV5Controller">
+      <summary>
+        Sample v5 controller.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV5Controller.SampleGet1">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V5</group>
+      <verb>GET</verb>
+      <url>https://myapi.sample.com/V5/samples/</url>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5"/>
+        sample object
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.Controllers.SampleV5Controller.SamplePost1(Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5,System.String,System.Boolean)">
+      <summary>
+        Sample get 1
+      </summary>
+      <group>Sample V5</group>
+      <verb>POST</verb>
+      <url>https://myapi.sample.com/V5/samples/{id}</url>
+      <param name="id" cref="T:System.String" in="path">
+        The object id
+        <example name="Example one">
+          <value>id1</value>
+        </example>
+        <example name="Example two">
+          <value>id2</value>
+        </example>
+      </param>
+      <param name="queryBool" required="true" cref="T:System.Boolean" in="query">
+        Sample query boolean
+        <example>
+          <value>true</value>
+        </example>
+        <example>
+          <value>false</value>
+        </example>
+      </param>
+      <param name="sampleHeaderParam1" cref="T:System.Single" in="header">
+        <example>
+          <value>Sample header 1</value>
+        </example>
+        Header param 1
+      </param>
+      <param name="sampleHeaderParam2" cref="T:System.String" in="header">Header param 2</param>
+      <param name="sampleHeaderParam3" cref="T:System.String" in="header">Header param 3</param>
+      <param name="sampleObject5" in="body">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5"/>Request Body
+      </param>
+      <response code="200">
+        <see cref="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5"/>
+        Sample object
+      </response>
+      <response code="400">
+        <see cref="T:System.String"/>Bad request
+      </response>
+    </member>
+    <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication">
+      <summary>
+        Web API Application.
+      </summary>
+    </member>
+    <member name="M:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.WebApiApplication.Application_Start">
+      <summary>
+        Start application.
+      </summary>
+    </member>
+  </members>
+</doc>
