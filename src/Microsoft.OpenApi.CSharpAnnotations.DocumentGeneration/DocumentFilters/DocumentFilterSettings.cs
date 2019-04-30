@@ -26,10 +26,5 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// Gets the reference registry manager.
         /// </summary>
         public ReferenceRegistryManager ReferenceRegistryManager { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type fetcher.
-        /// </summary>
-        public TypeFetcher TypeFetcher { get; set; }
     }
 }

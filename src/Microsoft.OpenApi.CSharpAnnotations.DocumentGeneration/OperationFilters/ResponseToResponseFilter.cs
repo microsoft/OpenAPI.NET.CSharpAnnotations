@@ -3,13 +3,16 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
+using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
 {
@@ -37,7 +40,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     p => p.Name == KnownXmlStrings.Response ||
                         p.Name == KnownXmlStrings.ResponseType);
 
-            SchemaReferenceRegistry schemaReferenceRegistry = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
+            var schemaTypeInfo = settings.SchemaTypeInfo;
 
             foreach (var responseElement in responseElements)
             {
@@ -56,21 +59,24 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                 var description = responseElement.GetDescriptionTextFromLastTextNode();
 
-                var type = typeof(string);
                 var allListedTypes = responseElement.GetListedTypes();
 
-                var responseContractType = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+                var crefKey = allListedTypes.GetCrefKey();
 
                 OpenApiSchema schema = null;
-                if (responseContractType != null)
+                if (schemaTypeInfo.CrefToSchemaMap.ContainsKey(crefKey))
                 {
-                    schema = schemaReferenceRegistry.FindOrAddReference(responseContractType);
+                    var schemaString = schemaTypeInfo.CrefToSchemaMap[crefKey];
+
+                    schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
+                        schemaString,
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out OpenApiDiagnostic diagnostic);
                 }
 
-                var examples = responseElement.ToOpenApiExamples(settings.TypeFetcher);
-                var headers = responseElement.ToOpenApiHeaders(
-                    settings.TypeFetcher,
-                    settings.ReferenceRegistryManager.SchemaReferenceRegistry);
+                var examples = responseElement.ToOpenApiExamples(settings.SchemaTypeInfo.CrefToFieldValueMap);
+
+                var headers = responseElement.ToOpenApiHeaders(schemaTypeInfo.CrefToSchemaMap);
 
                 if (schema != null)
                 {
@@ -82,12 +88,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                         {
                             if (schema.Reference != null)
                             {
-                                var key = schemaReferenceRegistry.GetKey(responseContractType);
-
-                                if (schemaReferenceRegistry.References.ContainsKey(key))
+                                if (schemaTypeInfo.SchemaReferenceMap.ContainsKey(schema.Reference.Id))
                                 {
-                                    settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
-                                        = firstExample;
+                                    schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
+                                        schemaTypeInfo.SchemaReferenceMap[schema.Reference.Id],
+                                        OpenApiSpecVersion.OpenApi3_0,
+                                        out var _);
+
+                                    schema.Example = firstExample;
+
+                                    schemaTypeInfo.SchemaReferenceMap[schema.Reference.Id] =
+                                        schema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
                                 }
                             }
                             else

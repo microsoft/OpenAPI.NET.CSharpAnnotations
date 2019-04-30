@@ -4,12 +4,16 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
+using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
 {
@@ -46,8 +50,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             p.Attribute(KnownXmlStrings.In)?.Value))
                 .ToList();
 
-            SchemaReferenceRegistry schemaReferenceRegistry
-                = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
+            var schemaTypeInfo = settings.SchemaTypeInfo;
 
             foreach (var paramElement in paramElementsWithIn)
             {
@@ -70,18 +73,33 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                 var description = paramElement.GetDescriptionTextFromLastTextNode();
 
-                var type = typeof(string);
                 var allListedTypes = paramElement.GetListedTypes();
 
-                if (allListedTypes.Any())
+                OpenApiSchema schema = null;
+                if ( !allListedTypes.Any() )
                 {
-                    type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
+                    // Set default schema as string.
+                    schema = new OpenApiSchema()
+                    {
+                        Type = "string"
+                    };
                 }
 
-                var schema = schemaReferenceRegistry.FindOrAddReference(type);
+                var crefKey = allListedTypes.GetCrefKey();
+
+                if (schemaTypeInfo.CrefToSchemaMap.ContainsKey(crefKey) )
+                {
+                    var schemaString = schemaTypeInfo.CrefToSchemaMap[crefKey];
+
+                    schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
+                        schemaString,
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out OpenApiDiagnostic diagnostic );
+                }
+
                 var parameterLocation = GetParameterKind(inValue);
 
-                var examples = paramElement.ToOpenApiExamples(settings.TypeFetcher);
+                var examples = paramElement.ToOpenApiExamples(settings.SchemaTypeInfo.CrefToFieldValueMap);
 
                 var openApiParameter = new OpenApiParameter
                 {
@@ -100,11 +118,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     {
                         if (openApiParameter.Schema.Reference != null)
                         {
-                            var key = schemaReferenceRegistry.GetKey(type);
-
-                            if (schemaReferenceRegistry.References.ContainsKey(key))
+                            if (schemaTypeInfo.SchemaReferenceMap.ContainsKey( schema.Reference.Id))
                             {
-                                schemaReferenceRegistry.References[key].Example = firstExample;
+                                schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
+                                    schemaTypeInfo.SchemaReferenceMap[schema.Reference.Id],
+                                    OpenApiSpecVersion.OpenApi3_0,
+                                    out var _ );
+
+                                schema.Example = firstExample;
+
+                                schemaTypeInfo.SchemaReferenceMap[schema.Reference.Id] =
+                                    schema.SerializeAsJson( OpenApiSpecVersion.OpenApi3_0 );
                             }
                         }
                         else

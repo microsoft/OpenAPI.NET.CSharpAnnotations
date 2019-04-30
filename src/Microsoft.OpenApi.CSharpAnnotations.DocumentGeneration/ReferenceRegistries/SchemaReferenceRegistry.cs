@@ -5,6 +5,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Linq;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
@@ -19,6 +21,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
     {
         private readonly SchemaGenerationSettings _schemaGenerationSettings;
         private IPropertyNameResolver _propertyNameResolver;
+        private readonly Dictionary<string, string> _propertyDescriptionMap = new Dictionary<string, string>();
 
         /// <summary>
         /// Creates an instance of <see cref="SchemaReferenceRegistry"/>.
@@ -29,6 +32,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
             _schemaGenerationSettings = schemaGenerationSettings
                 ?? throw new ArgumentNullException(nameof(schemaGenerationSettings));
             _propertyNameResolver = schemaGenerationSettings.PropertyNameResolver;
+        }
+
+        /// <summary>
+        /// Creates an instance of <see cref="SchemaReferenceRegistry"/>.
+        /// </summary>
+        /// <param name="schemaGenerationSettings">The schema generation settings.</param>
+        /// <param name="propertyDescriptionMap">The property description map.</param>
+        public SchemaReferenceRegistry( SchemaGenerationSettings schemaGenerationSettings,
+            Dictionary<string, string> propertyDescriptionMap )
+        {
+            _schemaGenerationSettings = schemaGenerationSettings
+                ?? throw new ArgumentNullException( nameof( schemaGenerationSettings ) );
+            _propertyNameResolver = schemaGenerationSettings.PropertyNameResolver;
+            _propertyDescriptionMap = propertyDescriptionMap
+                ?? throw new ArgumentNullException( nameof( propertyDescriptionMap ) );
         }
 
         /// <summary>
@@ -91,6 +109,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     {
                         schema.Example = new OpenApiString(Guid.Empty.ToString());
                     }
+
+                    return schema;
+                }
+
+                if (input == typeof(Stream) || input.BaseType == typeof(Stream))
+                {
+                    schema.Type = "string";
+                    schema.Format = "binary";
 
                     return schema;
                 }
@@ -167,6 +193,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     }
                 }
 
+                var a = input.FullName;
+
                 foreach (var propertyInfo in input.GetProperties())
                 {
                     var ignoreProperty = false;
@@ -174,6 +202,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegist
                     var innerSchema = FindOrAddReference(propertyInfo.PropertyType);
 
                     var propertyName = _propertyNameResolver.ResolvePropertyName(propertyInfo);
+
+                    // Construct property name like it shows up in documentation xml.
+                    var propertyFullName = propertyInfo.DeclaringType.Namespace + "." +
+                        propertyInfo.DeclaringType?.Name + "." + propertyInfo.Name;
+
+                    if ( this._propertyDescriptionMap.ContainsKey( propertyFullName ) )
+                    {
+                        innerSchema.Description = this._propertyDescriptionMap[propertyFullName];
+                    }
 
                     var attributes = propertyInfo.GetCustomAttributes(false);
 

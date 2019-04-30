@@ -6,17 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfigFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingDocumentFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOperationFilters;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 {
@@ -32,6 +36,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         private readonly IList<IOperationFilter> _operationFilters;
         private readonly IList<IPostProcessingDocumentFilter> _postProcessingDocumentFilters;
         private readonly IList<IPreProcessingOperationFilter> _preProcessingOperationFilters;
+        private readonly OpenApiStringReader _openApiStringReader = new OpenApiStringReader();
 
         /// <summary>
         /// Creates a new instance of <see cref="InternalOpenApiGenerator"/>.
@@ -71,7 +76,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             DocumentVariantInfo documentVariantInfo,
             XElement operationElement,
             XElement operationConfigElement,
-            TypeFetcher typeFetcher)
+            SchemaTypeInfo schemaTypeInfo)
         {
             var paths = new OpenApiPaths();
 
@@ -114,7 +119,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
                     var operationFilterSettings = new OperationFilterSettings
                     {
-                        TypeFetcher = typeFetcher,
+                        SchemaTypeInfo = schemaTypeInfo,
                         ReferenceRegistryManager = referenceRegistryManagerMap[documentVariantInfo],
                         Path = path,
                         OperationMethod = operationMethod.ToString(),
@@ -246,11 +251,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 = new Dictionary<DocumentVariantInfo, OpenApiDocument>();
 
             var operationElements = new List<XElement>();
+            var propertyElements = new List<XElement>();
 
             foreach (var annotationXmlDocument in annotationXmlDocuments)
             {
                 operationElements.AddRange(
                     annotationXmlDocument.XPathSelectElements("//doc/members/member[url and verb]"));
+
+                propertyElements.AddRange(annotationXmlDocument.XPathSelectElements("//doc/members/member")
+                    .Where(
+                        m => m.Attribute(KnownXmlStrings.Name) != null &&
+                             m.Attribute(KnownXmlStrings.Name).Value.StartsWith("P:")));
             }
 
             XElement operationConfigElement = null;
@@ -292,6 +303,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             try
             {
+                var propertyNameResolverTypeName = _openApiDocumentGenerationSettings.SchemaGenerationSettings
+                    .PropertyNameResolver.GetType().FullName;
+
+                var schemaTypeInfo = new SchemaTypeInfo();
+                var internalSchemaGenerationSettings = new InternalSchemaGenerationSettings()
+                {
+                    PropertyNameResolverName = propertyNameResolverTypeName
+                };
+
                 generationDiagnostic = new GenerationDiagnostic();
                 var documentGenerationDiagnostic = new DocumentGenerationDiagnostic();
 
@@ -305,10 +325,38 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     });
                 }
 
-                var typeFetcher = new TypeFetcher(contractAssemblyPaths);
+#if NETFRAMEWORK
+                using ( var isolatedDomain = new AppDomainCreator<AssemblyLoader.AssemblyLoader>() )
+                {
+                    isolatedDomain.Object.RegisterAssemblyPaths( contractAssemblyPaths );
+                    var stringSchemaTypeInfo = isolatedDomain.Object.BuildSchemaTypeInfo(
+                        contractAssemblyPaths,
+                        operationElements.Select( i => i.ToString() ).ToList(),
+                        propertyElements.Select( i=>i.ToString() ).ToList(),
+                        documentVariantElementNames.FirstOrDefault(),
+                        internalSchemaGenerationSettings);
+
+                    schemaTypeInfo =
+                        (SchemaTypeInfo) JsonConvert.DeserializeObject( stringSchemaTypeInfo,
+                            typeof( SchemaTypeInfo ) );
+                }
+#else
+                var assemblyLoader = new AssemblyLoader.AssemblyLoader();
+                assemblyLoader.RegisterAssemblyPaths(contractAssemblyPaths);
+                var stringSchemaTypeInfo = new AssemblyLoader.AssemblyLoader().BuildSchemaTypeInfo(
+                    contractAssemblyPaths,
+                    operationElements.Select(i => i.ToString()).ToList(),
+                    propertyElements.Select(i => i.ToString()).ToList(),
+                    documentVariantElementNames.FirstOrDefault(),
+                    internalSchemaGenerationSettings);
+
+                schemaTypeInfo =
+                      (SchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                          typeof(SchemaTypeInfo));
+#endif
 
                 var operationGenerationDiagnostics = GenerateSpecificationDocuments(
-                    typeFetcher,
+                    schemaTypeInfo,
                     operationElements,
                     operationConfigElement,
                     documentVariantElementNames.FirstOrDefault(),
@@ -335,7 +383,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                 annotationXmlDocuments,
                                 new DocumentFilterSettings
                                 {
-                                    TypeFetcher = typeFetcher,
                                     OpenApiDocumentVersion = openApiDocumentVersion,
                                     OpenApiInfoDescription = openApiInfoDescription,
                                     ReferenceRegistryManager = referenceRegistryManager
@@ -439,7 +486,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// </summary>
         /// <returns>The operation generation results from populating the specification documents.</returns>
         private IList<OperationGenerationDiagnostic> GenerateSpecificationDocuments(
-            TypeFetcher typeFetcher,
+            SchemaTypeInfo schemaTypeInfo,
             IList<XElement> operationElements,
             XElement operationConfigElement,
             string documentVariantElementName,
@@ -515,7 +562,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         DocumentVariantInfo.Default,
                         operationElement,
                         operationConfigElement,
-                        typeFetcher);
+                        schemaTypeInfo);
                 }
                 catch (Exception e)
                 {
@@ -545,7 +592,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             documentVariantInfo,
                             operationElement,
                             operationConfigElement,
-                            typeFetcher);
+                            schemaTypeInfo);
                     }
                     catch (Exception e)
                     {
@@ -575,12 +622,26 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 operationGenerationResults.Add(operationGenerationResult);
             }
 
+            foreach (var serializedDocumentVariantInfo in schemaTypeInfo.VariantSchemaReferenceMap.Keys)
+            {
+                var documentVairantInfo = JsonConvert.DeserializeObject<DocumentVariantInfo>(
+                    serializedDocumentVariantInfo);
+
+                var references = schemaTypeInfo.VariantSchemaReferenceMap[serializedDocumentVariantInfo].ToDictionary(
+                    k => k.Key,
+                    k => _openApiStringReader.ReadFragment<OpenApiSchema>(
+                        k.Value,
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out var _));
+
+                if (specificationDocuments.ContainsKey(documentVairantInfo))
+                {
+                    references.CopyInto(specificationDocuments[documentVairantInfo].Components.Schemas);
+                }
+            }
+
             foreach (var documentVariantInfo in specificationDocuments.Keys)
             {
-                referenceRegistryManagerMap[documentVariantInfo]
-                    .SchemaReferenceRegistry.References.CopyInto(
-                        specificationDocuments[documentVariantInfo].Components.Schemas);
-
                 referenceRegistryManagerMap[documentVariantInfo]
                     .SecuritySchemeReferenceRegistry.References.CopyInto(
                         specificationDocuments[documentVariantInfo].Components.SecuritySchemes);

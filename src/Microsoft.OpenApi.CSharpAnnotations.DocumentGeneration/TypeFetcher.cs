@@ -12,6 +12,10 @@ using System.Reflection;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 
+#if NETCORE
+using System.Runtime.Loader;
+#endif
+
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 {
     /// <summary>
@@ -23,6 +27,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         private readonly IList<string> _contractAssemblyPaths = new List<string>();
         private readonly IDictionary<string, Type> _typeMap = new Dictionary<string, Type>();
 
+#if !NETCORE
         /// <summary>
         /// Creates new instance of <see cref="TypeFetcher"/>.
         /// </summary>
@@ -31,6 +36,20 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         {
             _contractAssemblyPaths = contractAssemblyPaths;
         }
+#else
+        private readonly AssemblyLoadContext _context;
+
+        /// <summary>
+        /// Creates new instance of <see cref="TypeFetcher"/>.
+        /// </summary>
+        /// <param name="contractAssemblyPaths">The list of contract assembly paths.</param>
+        /// <param name="context">The assembly load context.</param>
+        public TypeFetcher(IList<string> contractAssemblyPaths, AssemblyLoadContext context)
+        {
+            _context = context;
+            _contractAssemblyPaths = contractAssemblyPaths;
+        }
+#endif
 
         private Type CreateListType(string typeName)
         {
@@ -150,22 +169,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 return _typeMap[typeName];
             }
 
-            // Load custom type from the given list of assemblies.
-            foreach (var file in _contractAssemblyPaths)
-            {
-                var assembly = Assembly.LoadFrom(file);
-                var contractType = assembly.GetType(typeName);
-
-                if (contractType == null)
-                {
-                    continue;
-                }
-
-                _typeMap.Add(typeName, contractType);
-
-                return contractType;
-            }
-
+            // Try to fetch the type from the already loaded assemblies, so we do not load duplicate assemblies in
+            // app domain.
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => !a.IsDynamic);
 
@@ -183,7 +188,36 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 return contractType;
             }
 
+#if !NETCORE
+            // Load custom type from the given list of assemblies.
+            foreach (var contractAssemblyPath in _contractAssemblyPaths)
+            {
+                var assembly = Assembly.LoadFrom(contractAssemblyPath);
+                var contractType = assembly.GetType(typeName);
 
+                if (contractType == null)
+                {
+                    continue;
+                }
+
+                _typeMap.Add(typeName, contractType);
+                return contractType;
+            }
+#else
+            foreach (var contractAssemblyPath in this._contractAssemblyPaths)
+            {
+                var assembly = _context.LoadFromAssemblyPath(contractAssemblyPath);
+                var contractType = assembly.GetType(typeName);
+
+                if (contractType == null)
+                {
+                    continue;
+                }
+
+                _typeMap.Add(typeName, contractType);
+                return contractType;
+            }
+#endif
             var errorMessage = string.Format(
                 SpecificationGenerationMessages.TypeNotFound,
                 typeName,

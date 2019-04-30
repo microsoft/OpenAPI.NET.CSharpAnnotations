@@ -95,7 +95,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         //Document filters
                         _defaultFilterSet.Add(new AssemblyNameToInfoFilter());
                         _defaultFilterSet.Add(new UrlToServerFilter());
-                        _defaultFilterSet.Add(new MemberSummaryToSchemaDescriptionFilter());
                         _defaultFilterSet.Add(new SecurityToSecurityRequirementDocumentFilter());
 
                         //Operation config filters

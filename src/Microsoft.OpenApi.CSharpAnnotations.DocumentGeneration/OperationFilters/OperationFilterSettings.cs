@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -34,8 +35,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         public bool RemoveRoslynDuplicateStringFromParamName { get; set; }
 
         /// <summary>
-        /// Gets or sets the type fetcher.
+        /// Gets or sets the schema type info.
         /// </summary>
-        public TypeFetcher TypeFetcher { get; set; }
+        public SchemaTypeInfo SchemaTypeInfo { get; set; }
     }
 }
