@@ -85,17 +85,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             return generationErrors;
                         }
 
-                        schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
-                            schemaInfo.schema,
-                            OpenApiSpecVersion.OpenApi3_0,
-                            out OpenApiDiagnostic diagnostic);
+                        schema = schemaInfo.schema;
                     }
 
                     var examples = responseElement.ToOpenApiExamples(settings.SchemaTypeInfo.CrefToFieldValueMap);
 
                     var headers = responseElement.ToOpenApiHeaders(schemaTypeInfo.CrefToSchemaMap, generationErrors);
 
-                    var schemaReferenceDefaultVariant = schemaTypeInfo.VariantSchemaReferenceMap[DocumentVariantInfo.Default];
+                    var schemaReferenceDefaultVariant = schemaTypeInfo
+                        .VariantSchemaReferenceMap[DocumentVariantInfo.Default];
 
                     if (schema != null)
                     {
@@ -109,15 +107,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                                 {
                                     if (schemaReferenceDefaultVariant.ContainsKey(schema.Reference.Id))
                                     {
-                                        schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
-                                            schemaReferenceDefaultVariant[schema.Reference.Id],
-                                            OpenApiSpecVersion.OpenApi3_0,
-                                            out var _);
+                                        schema = schemaReferenceDefaultVariant[schema.Reference.Id];
 
                                         schema.Example = firstExample;
 
-                                        schemaReferenceDefaultVariant[schema.Reference.Id] =
-                                            schema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
+                                        schemaReferenceDefaultVariant[schema.Reference.Id] = schema;
                                     }
                                 }
                                 else

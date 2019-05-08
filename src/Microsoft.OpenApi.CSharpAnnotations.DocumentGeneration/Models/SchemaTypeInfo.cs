@@ -5,18 +5,13 @@
 
 using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
 {
-    /// <summary>
-    /// Holds various map b/w cref and schema.
-    /// </summary>
-    [JsonConverter(typeof(SchemaTypeInfoJsonConverter))]
     public class SchemaTypeInfo
     {
         /// <summary>
-        /// Cref key to <see cref="SchemaInfo"/> map.
+        /// Cref key to <see cref="InternalSchemaInfo"/> map.
         /// </summary>
         public Dictionary<string, SchemaInfo> CrefToSchemaMap { get; set; } =
             new Dictionary<string, SchemaInfo>();
@@ -30,7 +25,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
         /// <summary>
         /// Document Variant to Schema reference map (Schema key --> OpenApiSchema)
         /// </summary>
-        public Dictionary<DocumentVariantInfo, IDictionary<string, string>> VariantSchemaReferenceMap { get; set; } =
-            new Dictionary<DocumentVariantInfo, IDictionary<string, string>>();
+        public Dictionary<DocumentVariantInfo, IDictionary<string, OpenApiSchema>> VariantSchemaReferenceMap { get; set; } =
+            new Dictionary<DocumentVariantInfo, IDictionary<string, OpenApiSchema>>();
     }
 }

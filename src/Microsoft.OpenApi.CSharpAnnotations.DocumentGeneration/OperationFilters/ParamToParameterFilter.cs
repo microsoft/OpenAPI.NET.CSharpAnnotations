@@ -106,10 +106,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             return generationErrors;
                         }
 
-                        schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
-                            schemaInfo.schema,
-                            OpenApiSpecVersion.OpenApi3_0,
-                            out OpenApiDiagnostic diagnostic);
+                        schema = schemaInfo.schema;
                     }
 
                     var parameterLocation = GetParameterKind(inValue);
@@ -125,7 +122,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                         Schema = schema
                     };
 
-                    var schemaReferenceDefaultVariant = schemaTypeInfo.VariantSchemaReferenceMap[DocumentVariantInfo.Default];
+                    var schemaReferenceDefaultVariant = schemaTypeInfo
+                        .VariantSchemaReferenceMap[DocumentVariantInfo.Default];
 
                     if (examples.Count > 0)
                     {
@@ -137,15 +135,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             {
                                 if (schemaReferenceDefaultVariant.ContainsKey(schema.Reference.Id))
                                 {
-                                    schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
-                                       schemaReferenceDefaultVariant[schema.Reference.Id],
-                                        OpenApiSpecVersion.OpenApi3_0,
-                                        out var _);
+                                    schema = schemaReferenceDefaultVariant[schema.Reference.Id];
 
                                     schema.Example = firstExample;
 
                                     schemaReferenceDefaultVariant[schema.Reference.Id] =
-                                        schema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);
+                                        schema;
                                 }
                             }
                             else

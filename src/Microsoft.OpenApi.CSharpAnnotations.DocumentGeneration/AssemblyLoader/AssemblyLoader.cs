@@ -124,14 +124,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
         }
 
         /// <summary>
-        /// Builds <see cref="SchemaTypeInfo"/> by reflecting into contract assemblies.
+        /// Builds <see cref="InternalSchemaTypeInfo"/> by reflecting into contract assemblies.
         /// </summary>
         /// <param name="contractAssembliesPaths"></param>
         /// <param name="operationElements"></param>
         /// <param name="propertyElements"></param>
         /// <param name="documentVariantElementName"></param>
         /// <param name="internalSchemaGenerationSettings"></param>
-        /// <returns>Serialized <see cref="SchemaTypeInfo"/></returns>
+        /// <returns>Serialized <see cref="InternalSchemaTypeInfo"/></returns>
         public string BuildSchemaTypeInfo(
             IList<string> contractAssembliesPaths,
             IList<string> operationElements,
@@ -139,7 +139,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             string documentVariantElementName,
             InternalSchemaGenerationSettings internalSchemaGenerationSettings)
         {
-            var crefSchemaMap = new Dictionary<string, SchemaInfo>();
+            var crefSchemaMap = new Dictionary<string, InternalSchemaInfo>();
 
             List<XElement> xPropertyElements = propertyElements.Select(XElement.Parse).ToList();
 
@@ -167,7 +167,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 schemaGenerationSettings = new SchemaGenerationSettings(new CamelCasePropertyNameResolver());
             }
 
-            var schemaTypeInfo = new SchemaTypeInfo();
+            var schemaTypeInfo = new InternalSchemaTypeInfo();
 
 #if !NETCORE
             var typeFetcher = new TypeFetcher(contractAssembliesPaths);
@@ -224,7 +224,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 var references = referenceRegistryMap[key].References;
 
                 schemaTypeInfo.VariantSchemaReferenceMap.Add(
-                    key,
+                    key.ToString(),
                     references.ToDictionary(k => k.Key, k => k.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0)));
             }
 
@@ -238,7 +238,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
 
         private void BuildMap(
             XElement currentXElement,
-            Dictionary<string, SchemaInfo> crefSchemaMap,
+            Dictionary<string, InternalSchemaInfo> crefSchemaMap,
             Dictionary<string, string> crefFieldMap,
             TypeFetcher typeFetcher,
             SchemaReferenceRegistry schemaReferenceRegistry)
@@ -302,12 +302,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
 
         private void BuildCrefSchemaMap(
             IList<string> allListedTypes,
-            Dictionary<string, SchemaInfo> crefSchemaMap,
+            Dictionary<string, InternalSchemaInfo> crefSchemaMap,
             TypeFetcher typeFetcher,
             SchemaReferenceRegistry schemaReferenceRegistry)
         {
             var key = allListedTypes.GetCrefKey();
-            var schemaInfo = new SchemaInfo();
+            var schemaInfo = new InternalSchemaInfo();
             try
             {
                 var type = typeFetcher.LoadTypeFromCrefValues(allListedTypes);

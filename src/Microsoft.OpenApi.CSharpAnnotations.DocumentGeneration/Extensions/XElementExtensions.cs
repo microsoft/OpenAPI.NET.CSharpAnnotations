@@ -552,10 +552,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                         return null;
                     }
 
-                    schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
-                        schemaInfo.schema,
-                        OpenApiSpecVersion.OpenApi3_0,
-                        out OpenApiDiagnostic diagnostic);
+                    schema = schemaInfo.schema;
                 }
 
                 openApiHeaders.Add(

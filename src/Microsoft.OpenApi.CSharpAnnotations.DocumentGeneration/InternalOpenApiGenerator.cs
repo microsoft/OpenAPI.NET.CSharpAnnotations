@@ -307,7 +307,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 var propertyNameResolverTypeName = _openApiDocumentGenerationSettings.SchemaGenerationSettings
                     .PropertyNameResolver.GetType().FullName;
 
-                var schemaTypeInfo = new SchemaTypeInfo();
+                var internalSchemaTypeInfo = new InternalSchemaTypeInfo();
                 var internalSchemaGenerationSettings = new InternalSchemaGenerationSettings()
                 {
                     PropertyNameResolverName = propertyNameResolverTypeName
@@ -336,9 +336,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     documentVariantElementNames.FirstOrDefault(),
                     internalSchemaGenerationSettings);
 
-                schemaTypeInfo =
-                      (SchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
-                          typeof(SchemaTypeInfo));
+                internalSchemaTypeInfo =
+                      (InternalSchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                          typeof(InternalSchemaTypeInfo));
 #else
                 using (var isolatedDomain = new AppDomainCreator<AssemblyLoader.AssemblyLoader>())
                 {
@@ -350,12 +350,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         documentVariantElementNames.FirstOrDefault(),
                         internalSchemaGenerationSettings);
 
-                    schemaTypeInfo =
-                        (SchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
-                            typeof(SchemaTypeInfo));
+                    internalSchemaTypeInfo =
+                        (InternalSchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                            typeof(InternalSchemaTypeInfo));
                 }              
 #endif
 
+                SchemaTypeInfo schemaTypeInfo = internalSchemaTypeInfo.ToSchemaTypeInfo();
 
                 var operationGenerationDiagnostics = GenerateSpecificationDocuments(
                     schemaTypeInfo,
@@ -628,10 +629,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             {
                 var references = schemaTypeInfo.VariantSchemaReferenceMap[documentVariantInfo].ToDictionary(
                     k => k.Key,
-                    k => _openApiStringReader.ReadFragment<OpenApiSchema>(
-                        k.Value,
-                        OpenApiSpecVersion.OpenApi3_0,
-                        out var _));
+                    k => k.Value);
 
                 if (specificationDocuments.ContainsKey(documentVariantInfo))
                 {
