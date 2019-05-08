@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -325,22 +326,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     });
                 }
 
-#if NETFRAMEWORK
-                using ( var isolatedDomain = new AppDomainCreator<AssemblyLoader.AssemblyLoader>() )
-                {
-                    isolatedDomain.Object.RegisterAssemblyPaths( contractAssemblyPaths );
-                    var stringSchemaTypeInfo = isolatedDomain.Object.BuildSchemaTypeInfo(
-                        contractAssemblyPaths,
-                        operationElements.Select( i => i.ToString() ).ToList(),
-                        propertyElements.Select( i=>i.ToString() ).ToList(),
-                        documentVariantElementNames.FirstOrDefault(),
-                        internalSchemaGenerationSettings);
-
-                    schemaTypeInfo =
-                        (SchemaTypeInfo) JsonConvert.DeserializeObject( stringSchemaTypeInfo,
-                            typeof( SchemaTypeInfo ) );
-                }
-#else
+#if !NETFRAMEWORK
                 var assemblyLoader = new AssemblyLoader.AssemblyLoader();
                 assemblyLoader.RegisterAssemblyPaths(contractAssemblyPaths);
                 var stringSchemaTypeInfo = new AssemblyLoader.AssemblyLoader().BuildSchemaTypeInfo(
@@ -353,7 +339,23 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 schemaTypeInfo =
                       (SchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
                           typeof(SchemaTypeInfo));
+#else
+                using (var isolatedDomain = new AppDomainCreator<AssemblyLoader.AssemblyLoader>())
+                {
+                    isolatedDomain.Object.RegisterAssemblyPaths(contractAssemblyPaths);
+                    var stringSchemaTypeInfo = isolatedDomain.Object.BuildSchemaTypeInfo(
+                        contractAssemblyPaths,
+                        operationElements.Select(i => i.ToString()).ToList(),
+                        propertyElements.Select(i => i.ToString()).ToList(),
+                        documentVariantElementNames.FirstOrDefault(),
+                        internalSchemaGenerationSettings);
+
+                    schemaTypeInfo =
+                        (SchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                            typeof(SchemaTypeInfo));
+                }              
 #endif
+
 
                 var operationGenerationDiagnostics = GenerateSpecificationDocuments(
                     schemaTypeInfo,
@@ -622,21 +624,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 operationGenerationResults.Add(operationGenerationResult);
             }
 
-            foreach (var serializedDocumentVariantInfo in schemaTypeInfo.VariantSchemaReferenceMap.Keys)
+            foreach (var documentVariantInfo in schemaTypeInfo.VariantSchemaReferenceMap.Keys)
             {
-                var documentVairantInfo = JsonConvert.DeserializeObject<DocumentVariantInfo>(
-                    serializedDocumentVariantInfo);
-
-                var references = schemaTypeInfo.VariantSchemaReferenceMap[serializedDocumentVariantInfo].ToDictionary(
+                var references = schemaTypeInfo.VariantSchemaReferenceMap[documentVariantInfo].ToDictionary(
                     k => k.Key,
                     k => _openApiStringReader.ReadFragment<OpenApiSchema>(
                         k.Value,
                         OpenApiSpecVersion.OpenApi3_0,
                         out var _));
 
-                if (specificationDocuments.ContainsKey(documentVairantInfo))
+                if (specificationDocuments.ContainsKey(documentVariantInfo))
                 {
-                    references.CopyInto(specificationDocuments[documentVairantInfo].Components.Schemas);
+                    references.CopyInto(specificationDocuments[documentVariantInfo].Components.Schemas);
                 }
             }
 

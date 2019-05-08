@@ -224,16 +224,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 var references = referenceRegistryMap[key].References;
 
                 schemaTypeInfo.VariantSchemaReferenceMap.Add(
-                    key.ToString(),
+                    key,
                     references.ToDictionary(k => k.Key, k => k.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0)));
             }
 
-            schemaTypeInfo.CrefToSchemaMap = crefSchemaMap.ToDictionary(
-                k => k.Key,
-                k => JsonConvert.SerializeObject(k.Value));
+            schemaTypeInfo.CrefToSchemaMap = crefSchemaMap;
 
             // Fetch all the property members
-            return JsonConvert.SerializeObject(schemaTypeInfo);
+            var document = JsonConvert.SerializeObject(schemaTypeInfo);
+
+            return document;
         }
 
         private void BuildMap(

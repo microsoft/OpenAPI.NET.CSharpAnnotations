@@ -5,30 +5,32 @@
 
 using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
 {
     /// <summary>
     /// Holds various map b/w cref and schema.
     /// </summary>
+    [JsonConverter(typeof(SchemaTypeInfoJsonConverter))]
     public class SchemaTypeInfo
     {
         /// <summary>
-        /// Cref to serialized <see cref="SchemaInfo"/> map.
+        /// Cref key to <see cref="SchemaInfo"/> map.
         /// </summary>
-        public Dictionary<string, string> CrefToSchemaMap { get; set; } =
-            new Dictionary<string, string>();
+        public Dictionary<string, SchemaInfo> CrefToSchemaMap { get; set; } =
+            new Dictionary<string, SchemaInfo>();
 
         /// <summary>
-        /// Cref to field value map
+        /// Cref key to field value map
         /// </summary>
         public Dictionary<string, string> CrefToFieldValueMap { get; set; } = new Dictionary<string, string>();
 
 
         /// <summary>
-        /// Document Variant to Schema reference map
+        /// Document Variant to Schema reference map (Schema key --> OpenApiSchema)
         /// </summary>
-        public Dictionary<string, IDictionary<string, string>> VariantSchemaReferenceMap { get; set; } =
-            new Dictionary<string, IDictionary<string, string>>();
+        public Dictionary<DocumentVariantInfo, IDictionary<string, string>> VariantSchemaReferenceMap { get; set; } =
+            new Dictionary<DocumentVariantInfo, IDictionary<string, string>>();
     }
 }

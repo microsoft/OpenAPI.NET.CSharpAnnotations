@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
@@ -500,10 +501,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// </summary>
         /// <param name="xElement">The XElement to process.</param>
         /// <param name="crefSchemaMap">The cref to schema map.</param>
+        /// <param name="generationErrors">The generation errors produced while processing header.</param>
         /// <returns>The map of string to OpenApiHeader.</returns>
         internal static Dictionary<string, OpenApiHeader> ToOpenApiHeaders(
             this XElement xElement,
-            Dictionary<string, string> crefSchemaMap)
+            Dictionary<string, SchemaInfo> crefSchemaMap,
+            IList<GenerationError> generationErrors)
         {
             var headerElements = xElement.Elements()
                 .Where(
@@ -517,8 +520,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                 var name = headerElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    throw new InvalidHeaderException(
-                        string.Format(SpecificationGenerationMessages.UndocumentedName, "header"));
+                    generationErrors.Add(new GenerationError
+                    {
+                        ExceptionType = nameof(InvalidHeaderException),
+                        Message = string.Format(SpecificationGenerationMessages.UndocumentedName, "header")
+                    });
+
+                    return null;
                 }
 
                 var description = headerElement
@@ -535,10 +543,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 
                 if (crefSchemaMap.ContainsKey(crefKey))
                 {
-                    var schemaString = crefSchemaMap[crefKey];
+                    var schemaInfo = crefSchemaMap[crefKey];
+
+                    if (schemaInfo.error.ExceptionType != null)
+                    {
+                        generationErrors.Add(schemaInfo.error);
+
+                        return null;
+                    }
 
                     schema = new OpenApiStringReader().ReadFragment<OpenApiSchema>(
-                        schemaString,
+                        schemaInfo.schema,
                         OpenApiSpecVersion.OpenApi3_0,
                         out OpenApiDiagnostic diagnostic);
                 }

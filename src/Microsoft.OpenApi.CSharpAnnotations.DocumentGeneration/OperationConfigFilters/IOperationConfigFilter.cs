@@ -3,7 +3,9 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
 using Microsoft.OpenApi.Models;
 
@@ -26,6 +28,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
         /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>.
         /// </param>
         /// <param name="settings"><see cref="OperationConfigFilterSettings"/></param>
-        void Apply(OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings);
+        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        IList<GenerationError> Apply(
+            OpenApiOperation operation,
+            XElement element,
+            OperationConfigFilterSettings settings);
     }
 }

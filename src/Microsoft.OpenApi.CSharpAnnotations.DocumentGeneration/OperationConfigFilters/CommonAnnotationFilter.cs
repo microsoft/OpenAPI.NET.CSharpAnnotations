@@ -4,8 +4,10 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
 
@@ -22,31 +24,51 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element containing operation-level config in the config xml.</param>
         /// <param name="settings">The operation config filter settings.</param>
-        public void Apply(OpenApiOperation operation, XElement element, OperationConfigFilterSettings settings)
+        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        public IList<GenerationError> Apply(
+            OpenApiOperation operation,
+            XElement element,
+            OperationConfigFilterSettings settings)
         {
-            var annotationElements = element.Descendants().Where(i => i.Name == KnownXmlStrings.Annotation);
+            var generationErrors = new List<GenerationError>();
 
-            foreach (var annotationElement in annotationElements)
+            try
             {
-                var targetedTag = annotationElement.Attribute(KnownXmlStrings.Tag);
+                var annotationElements = element.Descendants().Where(i => i.Name == KnownXmlStrings.Annotation);
 
-                // Only proceed if the target tag is null (indicating that the annotation applies to all operations)
-                // or if the target tag matches with tags in this operation.
-                if (targetedTag != null &&
-                    !operation.Tags.Select(t => t.Name)
-                        .Contains(targetedTag.Value.Trim(), StringComparer.InvariantCultureIgnoreCase))
+                foreach (var annotationElement in annotationElements)
                 {
-                    continue;
-                }
+                    var targetedTag = annotationElement.Attribute(KnownXmlStrings.Tag);
 
-                foreach (var operationFilter in settings.OperationFilters)
-                {
-                    operationFilter.Apply(
-                        operation,
-                        annotationElement,
-                        settings.OperationFilterSettings);
+                    // Only proceed if the target tag is null (indicating that the annotation applies to all operations)
+                    // or if the target tag matches with tags in this operation.
+                    if (targetedTag != null &&
+                        !operation.Tags.Select(t => t.Name)
+                            .Contains(targetedTag.Value.Trim(), StringComparer.InvariantCultureIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    foreach (var operationFilter in settings.OperationFilters)
+                    {
+                        operationFilter.Apply(
+                            operation,
+                            annotationElement,
+                            settings.OperationFilterSettings);
+                    }
                 }
             }
+            catch(Exception ex)
+            {
+                generationErrors.Add(
+                   new GenerationError
+                   {
+                       Message = ex.Message,
+                       ExceptionType = ex.GetType().Name
+                   });
+            }
+
+            return generationErrors;
         }
     }
 }

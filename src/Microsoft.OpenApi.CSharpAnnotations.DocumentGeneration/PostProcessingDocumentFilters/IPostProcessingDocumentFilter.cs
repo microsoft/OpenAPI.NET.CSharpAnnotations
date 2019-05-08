@@ -3,7 +3,9 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
 using Microsoft.OpenApi.Models;
 
@@ -20,6 +22,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingD
         /// </summary>
         /// <param name="openApiDocument">The OpenAPI document to process.</param>
         /// <param name="settings"><see cref="PostProcessingDocumentFilterSettings"/></param>
-        void Apply(OpenApiDocument openApiDocument, PostProcessingDocumentFilterSettings settings);
+        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        IList<GenerationError> Apply(OpenApiDocument openApiDocument, PostProcessingDocumentFilterSettings settings);
     }
 }

@@ -3,7 +3,9 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
 using Microsoft.OpenApi.Models;
 
@@ -26,6 +28,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         /// <see cref="OpenApiGeneratorConfig.AnnotationXmlDocuments"/>.
         /// </param>
         /// <param name="settings"><see cref="PreProcessingOperationFilterSettings"/></param>
-        void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings);
+        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        IList<GenerationError> Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings);
     }
 }

@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters;
 using Microsoft.OpenApi.Models;
 
@@ -24,7 +25,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <see cref="OpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
         /// <param name="settings"><see cref="DocumentFilterSettings"/></param>
         /// <param name="openApiDocumentGenerationSettings"><see cref="OpenApiDocumentGenerationSettings"/></param>
-        void Apply(
+        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        IList<GenerationError> Apply(
             OpenApiDocument openApiDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings,
