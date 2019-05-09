@@ -53,7 +53,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
                     .ToList();
 
-                var schemaTypeInfo = settings.SchemaTypeInfo;
+                var generationContext = settings.GenerationContext;
 
                 foreach (var bodyElement in bodyElements)
                 {
@@ -72,24 +72,26 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                     var crefKey = allListedTypes.GetCrefKey();
 
-                    OpenApiSchema schema = null;
-                    if (schemaTypeInfo.CrefToSchemaMap.ContainsKey(crefKey))
+                    OpenApiSchema schema = new OpenApiSchema();
+                    if (generationContext.CrefToSchemaMap.ContainsKey(crefKey))
                     {
-                        var schemaInfo = schemaTypeInfo.CrefToSchemaMap[crefKey];
+                        var schemaInfo = generationContext.CrefToSchemaMap[crefKey];
 
-                        if (schemaInfo.error.ExceptionType != null)
+                        if (schemaInfo.Error != null)
                         {
-                            generationErrors.Add(schemaInfo.error);
+                            generationErrors.Add(schemaInfo.Error);
 
                             return generationErrors;
                         }
 
-                        schema = schemaInfo.schema;
+                        schemaInfo.Schema.CopyInto(schema);
                     }
 
-                    var examples = bodyElement.ToOpenApiExamples(settings.SchemaTypeInfo.CrefToFieldValueMap);
+                    var examples = bodyElement.ToOpenApiExamples(
+                        generationContext.CrefToFieldValueMap,
+                        generationErrors);
 
-                    var schemaReferenceDefaultVariant = schemaTypeInfo
+                    var schemaReferenceDefaultVariant = generationContext
                         .VariantSchemaReferenceMap[DocumentVariantInfo.Default];
 
                     if (examples.Count > 0)
@@ -104,11 +106,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             {
                                 if (schemaReferenceDefaultVariant.ContainsKey(schema.Reference.Id))
                                 {
-                                    schema = schemaReferenceDefaultVariant[schema.Reference.Id];
-
-                                    schema.Example = firstExample;
-
-                                    schemaReferenceDefaultVariant[schema.Reference.Id] = schema;
+                                    schemaReferenceDefaultVariant[schema.Reference.Id].Example = firstExample;
                                 }
                             }
                             else

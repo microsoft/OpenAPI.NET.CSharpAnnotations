@@ -124,14 +124,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
         }
 
         /// <summary>
-        /// Builds <see cref="InternalSchemaTypeInfo"/> by reflecting into contract assemblies.
+        /// Builds <see cref="InternalGenerationContext"/> by reflecting into contract assemblies.
         /// </summary>
-        /// <param name="contractAssembliesPaths"></param>
-        /// <param name="operationElements"></param>
-        /// <param name="propertyElements"></param>
-        /// <param name="documentVariantElementName"></param>
-        /// <param name="internalSchemaGenerationSettings"></param>
-        /// <returns>Serialized <see cref="InternalSchemaTypeInfo"/></returns>
+        /// <param name="contractAssembliesPaths">The contract assemlby paths.</param>
+        /// <param name="operationElements">The operation xelements.</param>
+        /// <param name="propertyElements">The property xelements</param>
+        /// <param name="documentVariantElementName">The document variant element name.</param>
+        /// <param name="internalSchemaGenerationSettings"><see cref="InternalSchemaGenerationSettings"/></param>
+        /// <returns>Serialized <see cref="InternalGenerationContext"/></returns>
         public string BuildSchemaTypeInfo(
             IList<string> contractAssembliesPaths,
             IList<string> operationElements,
@@ -139,7 +139,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             string documentVariantElementName,
             InternalSchemaGenerationSettings internalSchemaGenerationSettings)
         {
-            var crefSchemaMap = new Dictionary<string, InternalSchemaInfo>();
+            var crefSchemaMap = new Dictionary<string, InternalSchemaGenerationInfo>();
 
             List<XElement> xPropertyElements = propertyElements.Select(XElement.Parse).ToList();
 
@@ -167,7 +167,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 schemaGenerationSettings = new SchemaGenerationSettings(new CamelCasePropertyNameResolver());
             }
 
-            var schemaTypeInfo = new InternalSchemaTypeInfo();
+            var internalGenerationContext = new InternalGenerationContext();
 
 #if !NETCORE
             var typeFetcher = new TypeFetcher(contractAssembliesPaths);
@@ -186,15 +186,17 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                         new SchemaReferenceRegistry(schemaGenerationSettings, propertyMap));
                 }
 
+                // Recursively build the various cref-schema, cref-fieldValue map.
                 BuildMap(
                     xOperationElement,
                     crefSchemaMap,
-                    schemaTypeInfo.CrefToFieldValueMap,
+                    internalGenerationContext.CrefToFieldValueMap,
                     typeFetcher,
                     referenceRegistryMap[DocumentVariantInfo.Default]);
 
                 var customElements = xOperationElement.Descendants(documentVariantElementName);
 
+                // Build the various cref-schema, cref-fieldValue map for each customElement.
                 foreach (var customElement in customElements)
                 {
                     var documentVariantInfo = new DocumentVariantInfo
@@ -213,7 +215,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                     BuildMap(
                         xOperationElement,
                         crefSchemaMap,
-                        schemaTypeInfo.CrefToFieldValueMap,
+                        internalGenerationContext.CrefToFieldValueMap,
                         typeFetcher,
                         referenceRegistryMap[documentVariantInfo]);
                 }          
@@ -223,23 +225,32 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             {
                 var references = referenceRegistryMap[key].References;
 
-                schemaTypeInfo.VariantSchemaReferenceMap.Add(
+                internalGenerationContext.VariantSchemaReferenceMap.Add(
                     key.ToString(),
                     references.ToDictionary(k => k.Key, k => k.Value.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0)));
             }
 
-            schemaTypeInfo.CrefToSchemaMap = crefSchemaMap;
+            internalGenerationContext.CrefToSchemaMap = crefSchemaMap;
 
-            // Fetch all the property members
-            var document = JsonConvert.SerializeObject(schemaTypeInfo);
+            // Serialize the context to transfer across app domain.
+            var document = JsonConvert.SerializeObject(internalGenerationContext);
 
             return document;
         }
 
+        /// <summary>
+        /// Fetches all the cref's from the provided operation element and build cref --> schema, cref --> field value
+        /// maps.
+        /// </summary>
+        /// <param name="currentXElement">The XElement to fetch cref and see tags for.</param>
+        /// <param name="crefSchemaMap">The cref to <see cref="InternalSchemaGenerationInfo"/> map.</param>
+        /// <param name="crefFieldMap">The cref to <see cref="FieldValueInfo"/> map.</param>
+        /// <param name="typeFetcher">The type fetcher used to fetch type, field information.</param>
+        /// <param name="schemaReferenceRegistry"><see cref="SchemaReferenceRegistry"/>.</param>
         private void BuildMap(
             XElement currentXElement,
-            Dictionary<string, InternalSchemaInfo> crefSchemaMap,
-            Dictionary<string, string> crefFieldMap,
+            Dictionary<string, InternalSchemaGenerationInfo> crefSchemaMap,
+            Dictionary<string, FieldValueInfo> crefFieldMap,
             TypeFetcher typeFetcher,
             SchemaReferenceRegistry schemaReferenceRegistry)
         {
@@ -300,19 +311,27 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             }
         }
 
+        /// <summary>
+        /// Generates schema for the provided list of types and store them in the provided dictionary.
+        /// </summary>
+        /// <param name="allListedTypes">The listed types to fetch schema for.</param>
+        /// <param name="crefSchemaMap">The cref to <see cref="InternalSchemaGenerationInfo"/> map.</param>
+        /// <param name="typeFetcher">The type fetcher used to fetch type information using reflection.</param>
+        /// <param name="schemaReferenceRegistry"><see cref="SchemaReferenceRegistry"/>.</param>
         private void BuildCrefSchemaMap(
             IList<string> allListedTypes,
-            Dictionary<string, InternalSchemaInfo> crefSchemaMap,
+            Dictionary<string, InternalSchemaGenerationInfo> crefSchemaMap,
             TypeFetcher typeFetcher,
             SchemaReferenceRegistry schemaReferenceRegistry)
         {
             var key = allListedTypes.GetCrefKey();
-            var schemaInfo = new InternalSchemaInfo();
+            
+            var schemaInfo = new InternalSchemaGenerationInfo();
             try
             {
                 var type = typeFetcher.LoadTypeFromCrefValues(allListedTypes);
                 var schema = schemaReferenceRegistry.FindOrAddReference(type);
-                schemaInfo.schema = schema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);             
+                schemaInfo.Schema = schema.SerializeAsJson(OpenApiSpecVersion.OpenApi3_0);             
             }
             catch (Exception e)
             {
@@ -322,7 +341,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                     Message = e.Message
                 };
 
-                schemaInfo.error = error;
+                schemaInfo.Error = error;
             }
 
             if (!crefSchemaMap.ContainsKey(key))
@@ -331,9 +350,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             }
         }
 
+        /// <summary>
+        /// Provided a field cref value, fetches the field value using reflection.
+        /// </summary>
+        /// <param name="crefValue">The cref value for the field.</param>
+        /// <param name="crefFieldMap">The cref value to <see cref="FieldValueInfo"/> map.</param>
+        /// <param name="typeFetcher">The type fetcher used to fetch field value from the loaded assemblies.</param>
         private void BuildCrefFieldValueMap(
             string crefValue,
-            Dictionary<string, string> crefFieldMap,
+            Dictionary<string, FieldValueInfo> crefFieldMap,
             TypeFetcher typeFetcher)
         {
             if (string.IsNullOrWhiteSpace(crefValue))
@@ -341,24 +366,47 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 return;
             }
 
-            var typeName = crefValue.ExtractTypeNameFromFieldCref();
-            var type = typeFetcher.LoadTypeFromCrefValues(new List<string> { typeName });
-            var fieldName = crefValue.ExtractFieldNameFromCref();
-
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static);
-            var field = fields.FirstOrDefault(f => f.Name == fieldName);
-
-            if (field == null)
+            if (crefFieldMap.ContainsKey(crefValue))
             {
-                var errorMessage = string.Format(
-                    SpecificationGenerationMessages.FieldNotFound,
-                    fieldName,
-                    typeName);
-
-                throw new TypeLoadException(errorMessage);
+                return;
             }
 
-            crefFieldMap.Add(crefValue, field.GetValue(null).ToString());
+            var fieldValueInfo = new FieldValueInfo();
+
+            try
+            {
+                var typeName = crefValue.ExtractTypeNameFromFieldCref();
+                var type = typeFetcher.LoadTypeFromCrefValues(new List<string> { typeName });
+                var fieldName = crefValue.ExtractFieldNameFromCref();
+
+                var fields = type.GetFields(BindingFlags.Public | BindingFlags.Static);
+                var field = fields.FirstOrDefault(f => f.Name == fieldName);
+
+                if (field == null)
+                {
+                    var errorMessage = string.Format(
+                        SpecificationGenerationMessages.FieldNotFound,
+                        fieldName,
+                        typeName);
+
+                    throw new TypeLoadException(errorMessage);
+                }
+
+                fieldValueInfo.Value = field.GetValue(null).ToString();
+
+            }
+            catch (Exception e)
+            {
+                var error = new GenerationError
+                {
+                    ExceptionType = e.GetType().Name,
+                    Message = e.Message
+                };
+
+                fieldValueInfo.Error = error;
+            }
+
+            crefFieldMap.Add(crefValue, fieldValueInfo);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                         p => p.Name == KnownXmlStrings.Response ||
                             p.Name == KnownXmlStrings.ResponseType);
 
-                var schemaTypeInfo = settings.SchemaTypeInfo;
+                var generationContext = settings.GenerationContext;
 
                 foreach (var responseElement in responseElements)
                 {
@@ -74,25 +74,28 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                     var crefKey = allListedTypes.GetCrefKey();
 
                     OpenApiSchema schema = null;
-                    if (schemaTypeInfo.CrefToSchemaMap.ContainsKey(crefKey))
+                    if (generationContext.CrefToSchemaMap.ContainsKey(crefKey))
                     {
-                        var schemaInfo = schemaTypeInfo.CrefToSchemaMap[crefKey];
+                        var schemaInfo = generationContext.CrefToSchemaMap[crefKey];
 
-                        if (schemaInfo.error.ExceptionType != null)
+                        if (schemaInfo.Error != null)
                         {
-                            generationErrors.Add(schemaInfo.error);
+                            generationErrors.Add(schemaInfo.Error);
 
                             return generationErrors;
                         }
 
-                        schema = schemaInfo.schema;
+                        schema = new OpenApiSchema();
+                        schemaInfo.Schema.CopyInto(schema);
                     }
 
-                    var examples = responseElement.ToOpenApiExamples(settings.SchemaTypeInfo.CrefToFieldValueMap);
+                    var examples = responseElement.ToOpenApiExamples(
+                        generationContext.CrefToFieldValueMap,
+                        generationErrors);
 
-                    var headers = responseElement.ToOpenApiHeaders(schemaTypeInfo.CrefToSchemaMap, generationErrors);
+                    var headers = responseElement.ToOpenApiHeaders(generationContext.CrefToSchemaMap, generationErrors);
 
-                    var schemaReferenceDefaultVariant = schemaTypeInfo
+                    var schemaReferenceDefaultVariant = generationContext
                         .VariantSchemaReferenceMap[DocumentVariantInfo.Default];
 
                     if (schema != null)
@@ -107,11 +110,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                                 {
                                     if (schemaReferenceDefaultVariant.ContainsKey(schema.Reference.Id))
                                     {
-                                        schema = schemaReferenceDefaultVariant[schema.Reference.Id];
-
-                                        schema.Example = firstExample;
-
-                                        schemaReferenceDefaultVariant[schema.Reference.Id] = schema;
+                                        schemaReferenceDefaultVariant[schema.Reference.Id].Example = firstExample;
                                     }
                                 }
                                 else

@@ -8,7 +8,7 @@
   <param name="sampleHeaderParam1" cref="T:System.Single" in="header">Header param 1</param>
   <!-- value of in attribute is not supported. -->
   <param name="sampleHeaderParam2" cref="T:System.String" in="notSupported">Header param 2</param>
-  <param name="sampleHeaderParam3" cref="T:System.String" in="notSupported">Header param 2</param>
+  <param name="sampleHeaderParam3" cref="T:System.String" in="notSupported2">Header param 2</param>
   <!-- /////////////////////// -->
   <param name="id" cref="T:System.String">The object id</param>
   <param name="queryBool" required="true" cref="T:System.Boolean">Sample query boolean</param>

@@ -6,18 +6,18 @@
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
 {
     /// <summary>
-    /// 
+    /// Stores field values.
     /// </summary>
-    internal class InternalSchemaInfo
+    public class FieldValueInfo
     {
         /// <summary>
-        /// 
+        /// Gets or sets the field value.
         /// </summary>
-        public string schema { get; set; }
+        public string Value { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the error encountered while fetching field value.
         /// </summary>
-        public GenerationError error { get; set; }
+        public GenerationError Error { get; set; }
     }
 }

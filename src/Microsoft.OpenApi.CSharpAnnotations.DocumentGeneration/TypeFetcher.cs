@@ -19,7 +19,7 @@ using System.Runtime.Loader;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 {
     /// <summary>
-    /// Proxy class for fetching type information by loading assemblies into private AppDomain.
+    /// Proxy class for fetching type information by loading assemblies.
     /// </summary>
     public class TypeFetcher
     {

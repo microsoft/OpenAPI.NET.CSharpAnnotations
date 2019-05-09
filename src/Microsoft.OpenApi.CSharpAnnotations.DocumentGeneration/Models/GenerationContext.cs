@@ -8,22 +8,25 @@ using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
 {
-    public class SchemaTypeInfo
+    /// <summary>
+    /// Holds various required map b/w cref and schema to perform Open API spec generation.
+    /// </summary>
+    public class GenerationContext
     {
         /// <summary>
-        /// Cref key to <see cref="InternalSchemaInfo"/> map.
+        /// Cref key to <see cref="InternalSchemaGenerationInfo"/> map.
         /// </summary>
-        public Dictionary<string, SchemaInfo> CrefToSchemaMap { get; set; } =
-            new Dictionary<string, SchemaInfo>();
+        public Dictionary<string, SchemaGenerationInfo> CrefToSchemaMap { get; set; } =
+            new Dictionary<string, SchemaGenerationInfo>();
 
         /// <summary>
-        /// Cref key to field value map
+        /// Cref key to <see cref="FieldValueInfo"/> map.
         /// </summary>
-        public Dictionary<string, string> CrefToFieldValueMap { get; set; } = new Dictionary<string, string>();
-
+        public Dictionary<string, FieldValueInfo> CrefToFieldValueMap { get; set; }
+            = new Dictionary<string, FieldValueInfo>();
 
         /// <summary>
-        /// Document Variant to Schema reference map (Schema key --> OpenApiSchema)
+        /// Document Variant to Schema reference map (Schema key --> OpenApiSchema).
         /// </summary>
         public Dictionary<DocumentVariantInfo, IDictionary<string, OpenApiSchema>> VariantSchemaReferenceMap { get; set; } =
             new Dictionary<DocumentVariantInfo, IDictionary<string, OpenApiSchema>>();

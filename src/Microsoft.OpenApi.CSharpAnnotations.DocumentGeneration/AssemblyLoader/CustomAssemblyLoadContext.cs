@@ -52,6 +52,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 return assembly;
             }
 
+            // Try to load assembly using version.
             var version = args.Version;
             if (version != null)
             {
@@ -77,6 +78,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 }
             }
 
+            // Try to load assembly using full name, which includes version too.
             assembly = TryLoadByAssemblyName(args.FullName);
             if (assembly != null)
             {
@@ -84,6 +86,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 return assembly;
             }
 
+            // Try to load assembly using short assembly name.
             assembly = AssemblyLoadUtility.TryLoadByName(AssemblyPaths, assemblyName);
             if (assembly != null)
             {

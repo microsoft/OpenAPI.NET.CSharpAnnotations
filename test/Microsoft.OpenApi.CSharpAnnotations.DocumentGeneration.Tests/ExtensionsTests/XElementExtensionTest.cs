@@ -9,7 +9,9 @@ using System.IO;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
@@ -23,10 +25,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
     {
         private const string InputDirectory = "ExtensionsTests/Input";
         private readonly ITestOutputHelper _output;
-        private readonly TypeFetcher typeFetcher = new TypeFetcher(
-            new List<string>() { Path.Combine(
-                InputDirectory,
-                "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll") });
         private readonly SchemaReferenceRegistry schemaReferenceRegistry = new SchemaReferenceRegistry(
             new SchemaGenerationSettings(new DefaultPropertyNameResolver()));
 
@@ -83,6 +81,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Empty example element",
                 XElement.Parse("<parent><example></example></parent>"),
+                new Dictionary<string,FieldValueInfo>(),
                 new Dictionary<string, OpenApiExample>()
             };
 
@@ -91,6 +90,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example with url",
                 XElement.Parse(
                     "<parent><example><summary>Test Example</summary><url>https://localhost/test.json</url></example></parent>"),
+                new Dictionary<string,FieldValueInfo>(),
                 new Dictionary<string, OpenApiExample>()
                 {
                     {
@@ -109,6 +109,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example element with cref",
                 XElement.Parse(@"<parent><example name=""BodyExample"">"
                 + @"<value><see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example""/></value></example></parent>"),
+                new Dictionary<string,FieldValueInfo>()
+                {
+                    {
+                        "F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example",
+                        new FieldValueInfo
+                        {
+                            Value = ExpectedExamples.SampleObject1Example
+                        } 
+                    }
+                },
                 new Dictionary<string, OpenApiExample>()
                 {
                     {
@@ -129,6 +139,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 + @"<see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example""/>"
                 + @"</value></example>"
                 + @"<example><value>Test example 2</value></example></parent>"),
+                new Dictionary<string,FieldValueInfo>()
+                {
+                    {
+                        "F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example",
+                        new FieldValueInfo
+                        {
+                            Value = ExpectedExamples.SampleObject1Example
+                        }
+                    }
+                },
                 new Dictionary<string, OpenApiExample>()
                 {
                     {
@@ -150,6 +170,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Example element with inline value",
                 XElement.Parse(@"<parent><example><value>Test Example</value></example></parent>"),
+                new Dictionary<string,FieldValueInfo>(),
                 new Dictionary<string, OpenApiExample>()
                 {
                     {
@@ -167,7 +188,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Example element contain both value and url.",
                 XElement.Parse("<parent><example><value></value><url></url></example></parent>"),
-                SpecificationGenerationMessages.ProvideEitherValueOrUrlTag
+                new Dictionary<string,FieldValueInfo>(),
+                new List<GenerationError>
+                {
+                    new GenerationError
+                    {
+                        ExceptionType=nameof(InvalidExampleException),
+                        Message = SpecificationGenerationMessages.ProvideEitherValueOrUrlTag
+                    }
+                }    
             };
 
             yield return new object[]
@@ -175,7 +204,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example value with no cref and value.",
                 XElement.Parse(
                     @"<parent><example><summary>Test Example</summary><value></value></example></parent>"),
-                SpecificationGenerationMessages.ProvideValueForExample
+                new Dictionary<string,FieldValueInfo>(),
+                new List<GenerationError>
+                {
+                    new GenerationError
+                    {
+                        ExceptionType=nameof(InvalidExampleException),
+                        Message = SpecificationGenerationMessages.ProvideValueForExample
+                    }
+                }
             };
 
             yield return new object[]
@@ -183,18 +220,32 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example element with cref containing type that doesn't exists in provided assembly.",
                 XElement.Parse(@"<parent><example><value><see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration."
                 + @"Tests.DoesnotExists.DoesnotExists""/></value></example></parent>"),
-                "Type \"Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DoesnotExists\" could not be found."
-                + " Ensure that it exists in one of the following assemblies: "
-                + "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll"
-            };
-
-            yield return new object[]
-            {
-                "Example element with cref containing filed that doesn't exists in provided type.",
-                XElement.Parse(@"<parent><example><value><see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration."
-                + @"Tests.Contracts.Examples.DoesNotExists""/></value></example></parent>"),
-                "Field \"DoesNotExists\" could not be found for type: "
-                + "\"Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples\"."
+                new Dictionary<string,FieldValueInfo>()
+                {
+                    {
+                        "F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DoesnotExists.DoesnotExists",
+                        new FieldValueInfo
+                        {
+                            Error = new GenerationError
+                            {
+                                ExceptionType = nameof(TypeLoadException),
+                                Message = "Type \"Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DoesnotExists\" could not be found."
+                                    + " Ensure that it exists in one of the following assemblies: "
+                                    + "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll"
+                            }
+                        }
+                    }
+                },
+                new List<GenerationError>
+                {
+                    new GenerationError
+                    {
+                        ExceptionType = nameof(TypeLoadException),
+                        Message = "Type \"Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DoesnotExists\" could not be found."
+                            + " Ensure that it exists in one of the following assemblies: "
+                            + "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll"
+                    }
+                }
             };
         }
 
@@ -204,7 +255,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Header element with no name attribute.",
                 XElement.Parse("<parent><header></header></parent>"),
-                string.Format(SpecificationGenerationMessages.UndocumentedName, "header")
+                new Dictionary<string,SchemaGenerationInfo>(),
+                new List<GenerationError>
+                {
+                    new GenerationError
+                    {
+                        ExceptionType=nameof(InvalidHeaderException),
+                        Message = string.Format(SpecificationGenerationMessages.UndocumentedName, "header")
+                    }
+                }           
             };
         }
 
@@ -215,12 +274,25 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Header with no description element",
                 XElement.Parse(
                     @"<parent><header name=""header1"" cref=""T:System.String""></header></parent>"),
+                new Dictionary<string, SchemaGenerationInfo>()
+                {
+                    {
+                        "T:System.String",
+                        new SchemaGenerationInfo
+                        {
+                            Schema = new OpenApiSchema
+                            {
+                                Type = "string"
+                            }
+                        }
+                    }
+                },
                 new Dictionary<string, OpenApiHeader>()
                 {
                     {
                         "header1",
                         new OpenApiHeader {
-                            Schema =  new OpenApiSchema
+                            Schema = new OpenApiSchema
                             {
                                 Type = "string"
                             }
@@ -234,6 +306,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Header with description element",
                 XElement.Parse(
                     @"<parent><header name=""header1"" cref=""T:System.String""><description> Test header </description></header></parent>"),
+                new Dictionary<string, SchemaGenerationInfo>()
+                {
+                    {
+                        "T:System.String",
+                        new SchemaGenerationInfo
+                        {
+                            Schema = new OpenApiSchema
+                            {
+                                Type = "string"
+                            }
+                        }
+                    }
+                },
                 new Dictionary<string, OpenApiHeader>()
                 {
                     {
@@ -255,6 +340,19 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 XElement.Parse(
                     @"<parent><header name=""header1"" cref=""T:System.String""><description> Test header </description></header>"
                     + @"<header name=""header2"" cref=""T:System.String""></header></parent>"),
+                new Dictionary<string, SchemaGenerationInfo>()
+                {
+                    {
+                        "T:System.String",
+                        new SchemaGenerationInfo
+                        {
+                            Schema = new OpenApiSchema
+                            {
+                                Type = "string"
+                            }
+                        }
+                    }
+                },
                 new Dictionary<string, OpenApiHeader>()
                 {
                     {
@@ -298,12 +396,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         public void XElementExtensionExampleShouldFail(
             string testCaseName,
             XElement xElement,
-            string expectedExceptionMessage)
+            Dictionary<string,FieldValueInfo> crefFieldValueMap,
+            List<GenerationError> expectedGenerationErrors)
         {
             _output.WriteLine(testCaseName);
 
-            Action action = () => xElement.ToOpenApiExamples(typeFetcher);
-            action.Should().Throw<Exception>(expectedExceptionMessage);
+            var generationErrors = new List<GenerationError>();
+            xElement.ToOpenApiExamples(crefFieldValueMap, generationErrors);
+            generationErrors.Should().BeEquivalentTo(expectedGenerationErrors);
         }
 
         [Theory]
@@ -311,12 +411,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         public void XElementExtensionExampleShouldSucceed(
             string testCaseName,
             XElement xElement,
+            Dictionary<string, FieldValueInfo> crefFieldValueMap,
             Dictionary<string, OpenApiExample> expectedOpenApiExamples)
         {
             _output.WriteLine(testCaseName);
 
-            var openApiExamples = xElement.ToOpenApiExamples(typeFetcher);
+            var generationErrors = new List<GenerationError>();
+            var openApiExamples = xElement.ToOpenApiExamples(crefFieldValueMap, generationErrors);
             openApiExamples.Should().BeEquivalentTo(expectedOpenApiExamples);
+            generationErrors.Count.Should().Be(0);
         }
 
         [Theory]
@@ -324,12 +427,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         public void XElementExtensionHeaderShouldFail(
             string testCaseName,
             XElement xElement,
-            string expectedExceptionMessage)
+            Dictionary<string, SchemaGenerationInfo> crefSchemaMap,
+            List<GenerationError> expectedGenerationErrors)
         {
             _output.WriteLine(testCaseName);
 
-            Action action = () => xElement.ToOpenApiHeaders(typeFetcher, schemaReferenceRegistry);
-            action.Should().Throw<Exception>(expectedExceptionMessage);
+            var generationErrors = new List<GenerationError>();
+            xElement.ToOpenApiHeaders(crefSchemaMap, generationErrors);
+
+            generationErrors.Should().BeEquivalentTo(expectedGenerationErrors);
         }
 
         [Theory]
@@ -337,13 +443,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         public void XElementExtensionHeaderShouldSucceed(
             string testCaseName,
             XElement xElement,
-            Dictionary<string,OpenApiHeader> expectedOpenApiHeaders)
+            Dictionary<string, SchemaGenerationInfo> crefSchemaMap,
+            Dictionary<string, OpenApiHeader> expectedOpenApiHeaders)
         {
             _output.WriteLine(testCaseName);
 
-            var openApiHeaders = xElement.ToOpenApiHeaders(typeFetcher,schemaReferenceRegistry);
+            var generationErrors = new List<GenerationError>();
+            var openApiHeaders = xElement.ToOpenApiHeaders(crefSchemaMap, generationErrors);
 
             openApiHeaders.Should().BeEquivalentTo(expectedOpenApiHeaders);
+            generationErrors.Count.Should().Be(0);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors(if any) produced when processing the filter."></returns>
         /// <remarks>
         /// Care should be taken to not overwrite the existing value in Operation if already present.
         /// This guarantees the predictable behavior that the first tag in the XML will be respected.
@@ -58,7 +58,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                                 p.Attribute(KnownXmlStrings.In)?.Value))
                     .ToList();
 
-                var schemaTypeInfo = settings.SchemaTypeInfo;
+                var generationContext = settings.GenerationContext;
 
                 foreach (var paramElement in paramElementsWithIn)
                 {
@@ -83,7 +83,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                     var allListedTypes = paramElement.GetListedTypes();
 
-                    OpenApiSchema schema = null;
+                    OpenApiSchema schema = new OpenApiSchema();
+
                     if (!allListedTypes.Any())
                     {
                         // Set default schema as string.
@@ -95,23 +96,48 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
 
                     var crefKey = allListedTypes.GetCrefKey();
 
-                    if (schemaTypeInfo.CrefToSchemaMap.ContainsKey(crefKey))
+                    if (generationContext.CrefToSchemaMap.ContainsKey(crefKey))
                     {
-                        var schemaInfo = schemaTypeInfo.CrefToSchemaMap[crefKey];
+                        var schemaInfo = generationContext.CrefToSchemaMap[crefKey];
 
-                        if (schemaInfo.error.ExceptionType != null)
+                        if (schemaInfo.Error != null)
                         {
-                            generationErrors.Add(schemaInfo.error);
+                            generationErrors.Add(schemaInfo.Error);
 
                             return generationErrors;
                         }
 
-                        schema = schemaInfo.schema;
+                        schemaInfo.Schema.CopyInto(schema);
                     }
 
                     var parameterLocation = GetParameterKind(inValue);
 
-                    var examples = paramElement.ToOpenApiExamples(settings.SchemaTypeInfo.CrefToFieldValueMap);
+                    var examples = paramElement.ToOpenApiExamples(
+                        generationContext.CrefToFieldValueMap,
+                        generationErrors);
+                   
+                    var schemaReferenceDefaultVariant = generationContext
+                        .VariantSchemaReferenceMap[DocumentVariantInfo.Default];
+
+                    if (examples.Any())
+                    {
+                        var firstExample = examples.First().Value?.Value;
+
+                        if (firstExample != null)
+                        {
+                            if (schema.Reference != null)
+                            {
+                                if (schemaReferenceDefaultVariant.ContainsKey(schema.Reference.Id))
+                                {
+                                    schemaReferenceDefaultVariant[schema.Reference.Id].Example = firstExample;
+                                }
+                            }
+                            else
+                            {
+                                schema.Example = firstExample;
+                            }
+                        }
+                    }
 
                     var openApiParameter = new OpenApiParameter
                     {
@@ -119,38 +145,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                         In = parameterLocation,
                         Description = description,
                         Required = parameterLocation == ParameterLocation.Path || Convert.ToBoolean(isRequired),
-                        Schema = schema
+                        Schema = schema,
+                        Examples = examples.Any() ? examples : null
                     };
-
-                    var schemaReferenceDefaultVariant = schemaTypeInfo
-                        .VariantSchemaReferenceMap[DocumentVariantInfo.Default];
-
-                    if (examples.Count > 0)
-                    {
-                        var firstExample = examples.First().Value?.Value;
-
-                        if (firstExample != null)
-                        {
-                            if (openApiParameter.Schema.Reference != null)
-                            {
-                                if (schemaReferenceDefaultVariant.ContainsKey(schema.Reference.Id))
-                                {
-                                    schema = schemaReferenceDefaultVariant[schema.Reference.Id];
-
-                                    schema.Example = firstExample;
-
-                                    schemaReferenceDefaultVariant[schema.Reference.Id] =
-                                        schema;
-                                }
-                            }
-                            else
-                            {
-                                openApiParameter.Schema.Example = firstExample;
-                            }
-                        }
-
-                        openApiParameter.Examples = examples;
-                    }
 
                     operation.Parameters.Add(openApiParameter);
                 }

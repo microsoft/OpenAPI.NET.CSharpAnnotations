@@ -16,6 +16,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
     /// </summary>
     internal static class AssemblyLoadUtility
     {
+        /// <summary>
+        /// Try load the assembly by using provided assembly version.
+        /// </summary>
+        /// <param name="assemblyPaths">The assembly paths.</param>
+        /// <param name="assemblyName">The assembly name to load.</param>
+        /// <param name="assemblyVersion">The assembly version to load.</param>
+        /// <returns>The assembly if able to load, otherwise null.</returns>
         internal static Assembly TryLoadByVersion(
             IList<string> assemblyPaths,
             string assemblyName,
@@ -42,6 +49,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             return null;
         }
 
+        /// <summary>
+        /// Try load the assembly by using provided assembly name.
+        /// </summary>
+        /// <param name="assemblyPaths">The assembly paths.</param>
+        /// <param name="assemblyName">The assembly name to load.</param>
+        /// <returns>The assembly if able to load, otherwise null.</returns>
         internal static Assembly TryLoadByName(IList<string> assemblyPaths, string assemblyName)
         {
             var assemblyPath = assemblyPaths.FirstOrDefault(path => path.EndsWith(assemblyName + ".dll"));

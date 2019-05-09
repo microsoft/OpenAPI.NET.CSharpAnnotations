@@ -14,6 +14,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
     public class OperationFilterSettings
     {
         /// <summary>
+        /// Gets or sets the generation context.
+        /// </summary>
+        public GenerationContext GenerationContext { get; set; }
+
+        /// <summary>
         /// Gets or sets the operation method for the operation.
         /// </summary>
         public string OperationMethod { get; set; }
@@ -33,10 +38,5 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// roslyn issue. https://github.com/dotnet/roslyn/issues/26292.
         /// </summary>
         public bool RemoveRoslynDuplicateStringFromParamName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the schema type info.
-        /// </summary>
-        public SchemaTypeInfo SchemaTypeInfo { get; set; }
     }
 }

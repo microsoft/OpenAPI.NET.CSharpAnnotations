@@ -73,33 +73,22 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         private void AddOperation(
             IDictionary<DocumentVariantInfo, OpenApiDocument> specificationDocuments,
             IDictionary<DocumentVariantInfo, ReferenceRegistryManager> referenceRegistryManagerMap,
-            IList<GenerationError> operationGenerationErrors,
+            List<GenerationError> operationGenerationErrors,
             DocumentVariantInfo documentVariantInfo,
             XElement operationElement,
             XElement operationConfigElement,
-            SchemaTypeInfo schemaTypeInfo)
+            GenerationContext generationContext)
         {
             var paths = new OpenApiPaths();
 
             foreach (var preprocessingOperationFilter in _preProcessingOperationFilters)
             {
-                try
-                {
-                    preprocessingOperationFilter.Apply(
+                var generationErrors = preprocessingOperationFilter.Apply(
                         paths,
                         operationElement,
                         new PreProcessingOperationFilterSettings());
-                }
-                catch (Exception e)
-                {
-                    operationGenerationErrors.Add(
-                        new GenerationError
-                        {
-                            ExceptionType = e.GetType().Name,
-                            Message = e.Message
-                        }
-                    );
-                }
+
+                operationGenerationErrors.AddRange(generationErrors);
             }
 
             if (!referenceRegistryManagerMap.ContainsKey(documentVariantInfo))
@@ -120,7 +109,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
                     var operationFilterSettings = new OperationFilterSettings
                     {
-                        SchemaTypeInfo = schemaTypeInfo,
+                        GenerationContext = generationContext,
                         ReferenceRegistryManager = referenceRegistryManagerMap[documentVariantInfo],
                         Path = path,
                         OperationMethod = operationMethod.ToString(),
@@ -133,23 +122,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     // since the config filters may rely on information generated from operation filters.
                     foreach (var operationFilter in _operationFilters)
                     {
-                        try
-                        {
-                            operationFilter.Apply(
+                        var generationErrors = operationFilter.Apply(
                                 operation,
                                 operationElement,
                                 operationFilterSettings);
-                        }
-                        catch (Exception e)
-                        {
-                            operationGenerationErrors.Add(
-                                new GenerationError
-                                {
-                                    ExceptionType = e.GetType().Name,
-                                    Message = e.Message
-                                }
-                            );
-                        }
+
+                        operationGenerationErrors.AddRange(generationErrors);
                     }
 
                     if (operationConfigElement != null)
@@ -158,9 +136,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         // that can be applied to the operations.
                         foreach (var configFilter in _operationConfigFilters)
                         {
-                            try
-                            {
-                                configFilter.Apply(
+                            var generationErrors = configFilter.Apply(
                                     operation,
                                     operationConfigElement,
                                     new OperationConfigFilterSettings
@@ -168,17 +144,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                         OperationFilterSettings = operationFilterSettings,
                                         OperationFilters = _operationFilters
                                     });
-                            }
-                            catch (Exception e)
-                            {
-                                operationGenerationErrors.Add(
-                                    new GenerationError
-                                    {
-                                        ExceptionType = e.GetType().Name,
-                                        Message = e.Message
-                                    }
-                                );
-                            }
+
+                            operationGenerationErrors.AddRange(generationErrors);
                         }
                     }
 
@@ -307,7 +274,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 var propertyNameResolverTypeName = _openApiDocumentGenerationSettings.SchemaGenerationSettings
                     .PropertyNameResolver.GetType().FullName;
 
-                var internalSchemaTypeInfo = new InternalSchemaTypeInfo();
+                var internalSchemaTypeInfo = new InternalGenerationContext();
                 var internalSchemaGenerationSettings = new InternalSchemaGenerationSettings()
                 {
                     PropertyNameResolverName = propertyNameResolverTypeName
@@ -337,8 +304,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     internalSchemaGenerationSettings);
 
                 internalSchemaTypeInfo =
-                      (InternalSchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
-                          typeof(InternalSchemaTypeInfo));
+                      (InternalGenerationContext)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                          typeof(InternalGenerationContext));
 #else
                 using (var isolatedDomain = new AppDomainCreator<AssemblyLoader.AssemblyLoader>())
                 {
@@ -351,15 +318,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         internalSchemaGenerationSettings);
 
                     internalSchemaTypeInfo =
-                        (InternalSchemaTypeInfo)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
-                            typeof(InternalSchemaTypeInfo));
+                        (InternalGenerationContext)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                            typeof(InternalGenerationContext));
                 }              
 #endif
 
-                SchemaTypeInfo schemaTypeInfo = internalSchemaTypeInfo.ToSchemaTypeInfo();
+                GenerationContext generationContext = internalSchemaTypeInfo.ToGenerationContext();
 
                 var operationGenerationDiagnostics = GenerateSpecificationDocuments(
-                    schemaTypeInfo,
+                    generationContext,
                     operationElements,
                     operationConfigElement,
                     documentVariantElementNames.FirstOrDefault(),
@@ -379,9 +346,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
                     foreach (var documentFilter in _documentFilters)
                     {
-                        try
-                        {
-                            documentFilter.Apply(
+                        var generationErrors = documentFilter.Apply(
                                 openApiDocument,
                                 annotationXmlDocuments,
                                 new DocumentFilterSettings
@@ -391,26 +356,26 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                                     ReferenceRegistryManager = referenceRegistryManager
                                 },
                                 _openApiDocumentGenerationSettings);
-                        }
-                        catch (Exception e)
+
+                        foreach(var error in generationErrors)
                         {
-                            documentGenerationDiagnostic.Errors.Add(
-                                new GenerationError
-                                {
-                                    ExceptionType = e.GetType().Name,
-                                    Message = e.Message
-                                });
+                            documentGenerationDiagnostic.Errors.Add(error);
                         }
                     }
 
                     foreach (var filter in _postProcessingDocumentFilters)
                     {
-                        filter.Apply(
+                        var generationErrors = filter.Apply(
                             openApiDocument,
                             new PostProcessingDocumentFilterSettings
                             {
                                 OperationGenerationDiagnostics = operationGenerationDiagnostics
                             });
+
+                        foreach (var error in generationErrors)
+                        {
+                            documentGenerationDiagnostic.Errors.Add(error);
+                        }
                     }
 
                     referenceRegistryManager.SecuritySchemeReferenceRegistry.References.CopyInto(
@@ -421,22 +386,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 {
                     foreach (var documentConfigFilter in _documentConfigFilters)
                     {
-                        try
-                        {
-                            documentConfigFilter.Apply(
+                        var generationErrors = documentConfigFilter.Apply(
                                 documents,
                                 documentConfigElement,
                                 annotationXmlDocuments,
                                 new DocumentConfigFilterSettings());
-                        }
-                        catch (Exception e)
+
+                        foreach (var error in generationErrors)
                         {
-                            documentGenerationDiagnostic.Errors.Add(
-                                new GenerationError
-                                {
-                                    ExceptionType = e.GetType().Name,
-                                    Message = e.Message
-                                });
+                            documentGenerationDiagnostic.Errors.Add(error);
                         }
                     }
                 }
@@ -489,7 +447,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// </summary>
         /// <returns>The operation generation results from populating the specification documents.</returns>
         private IList<OperationGenerationDiagnostic> GenerateSpecificationDocuments(
-            SchemaTypeInfo schemaTypeInfo,
+            GenerationContext generationContext,
             IList<XElement> operationElements,
             XElement operationConfigElement,
             string documentVariantElementName,
@@ -565,7 +523,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                         DocumentVariantInfo.Default,
                         operationElement,
                         operationConfigElement,
-                        schemaTypeInfo);
+                        generationContext);
                 }
                 catch (Exception e)
                 {
@@ -595,7 +553,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                             documentVariantInfo,
                             operationElement,
                             operationConfigElement,
-                            schemaTypeInfo);
+                            generationContext);
                     }
                     catch (Exception e)
                     {
@@ -625,9 +583,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 operationGenerationResults.Add(operationGenerationResult);
             }
 
-            foreach (var documentVariantInfo in schemaTypeInfo.VariantSchemaReferenceMap.Keys)
+            foreach (var documentVariantInfo in generationContext.VariantSchemaReferenceMap.Keys)
             {
-                var references = schemaTypeInfo.VariantSchemaReferenceMap[documentVariantInfo].ToDictionary(
+                var references = generationContext.VariantSchemaReferenceMap[documentVariantInfo].ToDictionary(
                     k => k.Key,
                     k => k.Value);
 
