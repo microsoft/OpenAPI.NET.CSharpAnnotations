@@ -12,7 +12,7 @@ using System.Reflection;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
 
-#if NETCORE
+#if !NETFRAMEWORK
 using System.Runtime.Loader;
 #endif
 
@@ -27,16 +27,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         private readonly IList<string> _contractAssemblyPaths = new List<string>();
         private readonly IDictionary<string, Type> _typeMap = new Dictionary<string, Type>();
 
-#if !NETCORE
-        /// <summary>
-        /// Creates new instance of <see cref="TypeFetcher"/>.
-        /// </summary>
-        /// <param name="contractAssemblyPaths">The list of contract assembly paths.</param>
-        public TypeFetcher(IList<string> contractAssemblyPaths)
-        {
-            _contractAssemblyPaths = contractAssemblyPaths;
-        }
-#else
+#if !NETFRAMEWORK
         private readonly AssemblyLoadContext _context;
 
         /// <summary>
@@ -47,6 +38,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         public TypeFetcher(IList<string> contractAssemblyPaths, AssemblyLoadContext context)
         {
             _context = context;
+            _contractAssemblyPaths = contractAssemblyPaths;
+        }
+#else
+        /// <summary>
+        /// Creates new instance of <see cref="TypeFetcher"/>.
+        /// </summary>
+        /// <param name="contractAssemblyPaths">The list of contract assembly paths.</param>
+        public TypeFetcher(IList<string> contractAssemblyPaths)
+        {
             _contractAssemblyPaths = contractAssemblyPaths;
         }
 #endif
@@ -188,11 +188,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 return contractType;
             }
 
-#if !NETCORE
-            // Load custom type from the given list of assemblies.
-            foreach (var contractAssemblyPath in _contractAssemblyPaths)
+#if !NETFRAMEWORK
+            foreach (var contractAssemblyPath in this._contractAssemblyPaths)
             {
-                var assembly = Assembly.LoadFrom(contractAssemblyPath);
+                var assembly = _context.LoadFromAssemblyPath(contractAssemblyPath);
                 var contractType = assembly.GetType(typeName);
 
                 if (contractType == null)
@@ -204,9 +203,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 return contractType;
             }
 #else
-            foreach (var contractAssemblyPath in this._contractAssemblyPaths)
+            // Load custom type from the given list of assemblies.
+            foreach (var contractAssemblyPath in _contractAssemblyPaths)
             {
-                var assembly = _context.LoadFromAssemblyPath(contractAssemblyPath);
+                var assembly = Assembly.LoadFrom(contractAssemblyPath);
                 var contractType = assembly.GetType(typeName);
 
                 if (contractType == null)

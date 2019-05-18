@@ -3,7 +3,7 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
-#if NETCore
+#if !NETFRAMEWORK
 
 using System;
 using System.Collections.Generic;

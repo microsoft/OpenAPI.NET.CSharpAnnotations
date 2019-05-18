@@ -15,16 +15,13 @@ using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries
 using Microsoft.OpenApi.Extensions;
 using Newtonsoft.Json;
 
-#if NETCORE
+#if !NETFRAMEWORK
 using System.Runtime.Loader;
 #endif
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
 {
-#if !NETCORE
-    internal class AssemblyLoader : MarshalByRefObject
-    {
-#else
+#if !NETFRAMEWORK
     internal class AssemblyLoader
     {
         public CustomAssemblyLoadContext Context { get; }
@@ -34,11 +31,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             Context = new CustomAssemblyLoadContext();
             AssemblyLoadContext.Default.Resolving += (context, name) => Context.Resolve(name);
         }
+#else
+    internal class AssemblyLoader : MarshalByRefObject
+    {
+        
 #endif
 
         internal void RegisterAssemblyPaths(IList<string> assemblyPaths)
         {
-#if NETCORE
+#if !NETFRAMEWORK
             Context.AssemblyPaths = assemblyPaths;
 #else
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
@@ -163,10 +164,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
 
             var internalGenerationContext = new InternalGenerationContext();
 
-#if !NETCORE
-            var typeFetcher = new TypeFetcher(contractAssembliesPaths);
-#else
+#if !NETFRAMEWORK
             var typeFetcher = new TypeFetcher(contractAssembliesPaths, Context);
+#else
+            var typeFetcher = new TypeFetcher(contractAssembliesPaths);           
 #endif
 
             List<XElement> xOperationElements = operationElements.Select(XElement.Parse).ToList();
