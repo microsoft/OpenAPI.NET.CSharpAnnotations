@@ -453,24 +453,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                             out OpenApiDiagnostic _);
                 }
 
-                if (!string.IsNullOrWhiteSpace(crefValue))
+                if (!string.IsNullOrWhiteSpace(crefValue) && crefFieldValueMap.ContainsKey(crefValue))
                 {
-                    if (crefFieldValueMap.ContainsKey(crefValue))
+                    var fieldValueInfo = crefFieldValueMap[crefValue];
+
+                    if (fieldValueInfo.Error != null)
                     {
-                        var fieldValueInfo = crefFieldValueMap[crefValue];
+                        generationErrors.Add(fieldValueInfo.Error);
 
-                        if (fieldValueInfo.Error != null)
-                        {
-                            generationErrors.Add(fieldValueInfo.Error);
+                        return null;
+                    }
 
-                            return null;
-                        }
-
-                        exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
-                            fieldValueInfo.Value,
-                            OpenApiSpecVersion.OpenApi3_0,
-                            out OpenApiDiagnostic _);
-                    }                   
+                    exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
+                        fieldValueInfo.Value,
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out OpenApiDiagnostic _);
                 }
 
                 openApiExample.Value = exampleValue;
@@ -556,7 +553,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                     .FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?.Value.Trim().RemoveBlankLines();
 
                 var listedTypes = headerElement.GetListedTypes();
-                var crefKey = listedTypes.GetCrefKey();
+                var crefKey = listedTypes.ToCrefKey();
 
                 var schema = new OpenApiSchema
                 {

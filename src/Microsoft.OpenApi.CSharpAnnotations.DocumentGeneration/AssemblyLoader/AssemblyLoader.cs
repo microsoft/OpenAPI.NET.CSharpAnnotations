@@ -77,7 +77,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
 
                 if (version != null)
                 {
-                    var assemblyByVersion = AssemblyLoadUtility.TryLoadByVersion(
+                    var assemblyByVersion = AssemblyLoadUtility.TryLoadByNameOrVersion(
                         assemblyPaths,
                         assemblyName,
                         version.Major + "." + version.Minor + "." + version.Build + ".");
@@ -87,7 +87,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                         return assemblyByVersion;
                     }
 
-                    assemblyByVersion = AssemblyLoadUtility.TryLoadByVersion(
+                    assemblyByVersion = AssemblyLoadUtility.TryLoadByNameOrVersion(
                         assemblyPaths,
                         assemblyName,
                         version.Major + "." + version.Minor + ".");
@@ -98,7 +98,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                     }
 
                     assemblyByVersion =
-                        AssemblyLoadUtility.TryLoadByVersion(assemblyPaths, assemblyName, version.Major + ".");
+                        AssemblyLoadUtility.TryLoadByNameOrVersion(assemblyPaths, assemblyName, version.Major + ".");
 
                     if (assemblyByVersion != null)
                     {
@@ -106,13 +106,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                     }
                 }
 
-                var assembly = AssemblyLoadUtility.TryLoadByName(assemblyPaths, assemblyName);
-                if (assembly != null)
-                {
-                    return assembly;
-                }
-
-                assembly = AssemblyLoadUtility.TryLoadByName(assemblyPaths, assemblyName);
+                var assembly = AssemblyLoadUtility.TryLoadByNameOrVersion(assemblyPaths, assemblyName);
                 if (assembly != null)
                 {
                     return assembly;
@@ -132,7 +126,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
         /// <param name="documentVariantElementName">The document variant element name.</param>
         /// <param name="internalSchemaGenerationSettings"><see cref="InternalSchemaGenerationSettings"/></param>
         /// <returns>Serialized <see cref="InternalGenerationContext"/></returns>
-        public string BuildSchemaTypeInfo(
+        public string BuildInternalGenerationContext(
             IList<string> contractAssembliesPaths,
             IList<string> operationElements,
             IList<string> propertyElements,
@@ -324,7 +318,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             TypeFetcher typeFetcher,
             SchemaReferenceRegistry schemaReferenceRegistry)
         {
-            var key = allListedTypes.GetCrefKey();
+            var key = allListedTypes.ToCrefKey();
             
             var schemaInfo = new InternalSchemaGenerationInfo();
             try
@@ -361,12 +355,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             Dictionary<string, FieldValueInfo> crefFieldMap,
             TypeFetcher typeFetcher)
         {
-            if (string.IsNullOrWhiteSpace(crefValue))
-            {
-                return;
-            }
-
-            if (crefFieldMap.ContainsKey(crefValue))
+            if (string.IsNullOrWhiteSpace(crefValue) || crefFieldMap.ContainsKey(crefValue))
             {
                 return;
             }
@@ -393,7 +382,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 }
 
                 fieldValueInfo.Value = field.GetValue(null).ToString();
-
             }
             catch (Exception e)
             {

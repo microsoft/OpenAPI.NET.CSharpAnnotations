@@ -28,7 +28,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
         /// <see cref="OpenApiGeneratorConfig.AdvancedConfigurationXmlDocument"/>.
         /// </param>
         /// <param name="settings"><see cref="OperationConfigFilterSettings"/></param>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         IList<GenerationError> Apply(
             OpenApiOperation operation,
             XElement element,

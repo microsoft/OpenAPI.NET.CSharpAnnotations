@@ -81,7 +81,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Empty example element",
                 XElement.Parse("<parent><example></example></parent>"),
-                new Dictionary<string,FieldValueInfo>(),
+                new Dictionary<string, FieldValueInfo>(),
                 new Dictionary<string, OpenApiExample>()
             };
 
@@ -90,7 +90,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example with url",
                 XElement.Parse(
                     "<parent><example><summary>Test Example</summary><url>https://localhost/test.json</url></example></parent>"),
-                new Dictionary<string,FieldValueInfo>(),
+                new Dictionary<string, FieldValueInfo>(),
                 new Dictionary<string, OpenApiExample>()
                 {
                     {
@@ -109,7 +109,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example element with cref",
                 XElement.Parse(@"<parent><example name=""BodyExample"">"
                 + @"<value><see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example""/></value></example></parent>"),
-                new Dictionary<string,FieldValueInfo>()
+                new Dictionary<string, FieldValueInfo>()
                 {
                     {
                         "F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example",
@@ -139,7 +139,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 + @"<see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example""/>"
                 + @"</value></example>"
                 + @"<example><value>Test example 2</value></example></parent>"),
-                new Dictionary<string,FieldValueInfo>()
+                new Dictionary<string, FieldValueInfo>()
                 {
                     {
                         "F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.Examples.SampleObject1Example",
@@ -170,7 +170,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Example element with inline value",
                 XElement.Parse(@"<parent><example><value>Test Example</value></example></parent>"),
-                new Dictionary<string,FieldValueInfo>(),
+                new Dictionary<string, FieldValueInfo>(),
                 new Dictionary<string, OpenApiExample>()
                 {
                     {
@@ -188,7 +188,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
             {
                 "Example element contain both value and url.",
                 XElement.Parse("<parent><example><value></value><url></url></example></parent>"),
-                new Dictionary<string,FieldValueInfo>(),
+                new Dictionary<string, FieldValueInfo>(),
                 new List<GenerationError>
                 {
                     new GenerationError
@@ -204,7 +204,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example value with no cref and value.",
                 XElement.Parse(
                     @"<parent><example><summary>Test Example</summary><value></value></example></parent>"),
-                new Dictionary<string,FieldValueInfo>(),
+                new Dictionary<string, FieldValueInfo>(),
                 new List<GenerationError>
                 {
                     new GenerationError
@@ -220,7 +220,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
                 "Example element with cref containing type that doesn't exists in provided assembly.",
                 XElement.Parse(@"<parent><example><value><see cref=""F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration."
                 + @"Tests.DoesnotExists.DoesnotExists""/></value></example></parent>"),
-                new Dictionary<string,FieldValueInfo>()
+                new Dictionary<string, FieldValueInfo>()
                 {
                     {
                         "F:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.DoesnotExists.DoesnotExists",
@@ -396,7 +396,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Extension
         public void XElementExtensionExampleShouldFail(
             string testCaseName,
             XElement xElement,
-            Dictionary<string,FieldValueInfo> crefFieldValueMap,
+            Dictionary<string, FieldValueInfo> crefFieldValueMap,
             List<GenerationError> expectedGenerationErrors)
         {
             _output.WriteLine(testCaseName);

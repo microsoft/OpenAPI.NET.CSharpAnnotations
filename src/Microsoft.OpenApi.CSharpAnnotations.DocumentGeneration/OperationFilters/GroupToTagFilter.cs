@@ -30,7 +30,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         public IList<GenerationError> Apply(
             OpenApiOperation operation,
             XElement element,

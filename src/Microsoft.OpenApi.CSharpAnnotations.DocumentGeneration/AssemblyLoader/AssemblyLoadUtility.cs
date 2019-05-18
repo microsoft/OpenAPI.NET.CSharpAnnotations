@@ -17,51 +17,41 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
     internal static class AssemblyLoadUtility
     {
         /// <summary>
-        /// Try load the assembly by using provided assembly version.
+        /// Try load the assembly by using provided assembly by name and version if provided.
         /// </summary>
         /// <param name="assemblyPaths">The assembly paths.</param>
-        /// <param name="assemblyName">The assembly name to load.</param>
+        /// <param name="assemblyName">The assembly name to load.It's not assembly full name.</param>
         /// <param name="assemblyVersion">The assembly version to load.</param>
         /// <returns>The assembly if able to load, otherwise null.</returns>
-        internal static Assembly TryLoadByVersion(
+        internal static Assembly TryLoadByNameOrVersion(
             IList<string> assemblyPaths,
             string assemblyName,
-            string assemblyVersion)
+            string assemblyVersion = null)
         {
             var assemblyPath = assemblyPaths.FirstOrDefault(path => path.EndsWith(assemblyName + ".dll"));
 
             if (!string.IsNullOrWhiteSpace(assemblyPath))
             {
-                try
+                if(!string.IsNullOrWhiteSpace(assemblyVersion))
                 {
-                    var info = FileVersionInfo.GetVersionInfo(assemblyPath);
-                    if (info.FileVersion.StartsWith(assemblyVersion))
+                    try
                     {
-                        return Assembly.LoadFrom(assemblyPath);
+                        var info = FileVersionInfo.GetVersionInfo(assemblyPath);
+                        if (info.FileVersion.StartsWith(assemblyVersion))
+                        {
+                            return Assembly.LoadFrom(assemblyPath);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Do nothing.
                     }
                 }
-                catch (Exception)
+                else
                 {
-                    // Do nothing.
+                    return Assembly.LoadFrom(assemblyPath);
                 }
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Try load the assembly by using provided assembly name.
-        /// </summary>
-        /// <param name="assemblyPaths">The assembly paths.</param>
-        /// <param name="assemblyName">The assembly name to load.</param>
-        /// <returns>The assembly if able to load, otherwise null.</returns>
-        internal static Assembly TryLoadByName(IList<string> assemblyPaths, string assemblyName)
-        {
-            var assemblyPath = assemblyPaths.FirstOrDefault(path => path.EndsWith(assemblyName + ".dll"));
-
-            if (!string.IsNullOrWhiteSpace(assemblyPath))
-            {
-                return Assembly.LoadFrom(assemblyPath);
+                                
             }
 
             return null;

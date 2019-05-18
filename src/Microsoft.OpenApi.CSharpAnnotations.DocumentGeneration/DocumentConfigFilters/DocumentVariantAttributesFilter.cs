@@ -31,7 +31,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
         /// Thrown when there is a conflict
         /// between the attributes in the existing document variant info and the new one.
         /// </exception>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         public IList<GenerationError> Apply(
             IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement element,
@@ -39,6 +39,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
             DocumentConfigFilterSettings settings)
         {
             var generationErrors = new List<GenerationError>();
+
+            if (element == null || xmlDocuments == null)
+            {
+                return generationErrors;
+            }
+
 
             try
             {
@@ -100,7 +106,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 generationErrors.Add(
                    new GenerationError
@@ -110,7 +116,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
                    });
             }
 
-            return generationErrors;         
+            return generationErrors;
         }
 
         private void PopulateAttributesInExistingDocumentVariantInfo(

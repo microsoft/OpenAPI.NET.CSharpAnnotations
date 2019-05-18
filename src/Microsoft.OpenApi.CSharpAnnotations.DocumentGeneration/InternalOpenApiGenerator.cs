@@ -274,7 +274,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                 var propertyNameResolverTypeName = _openApiDocumentGenerationSettings.SchemaGenerationSettings
                     .PropertyNameResolver.GetType().FullName;
 
-                var internalSchemaTypeInfo = new InternalGenerationContext();
+                var internalGenerationContext = new InternalGenerationContext();
                 var internalSchemaGenerationSettings = new InternalSchemaGenerationSettings()
                 {
                     PropertyNameResolverName = propertyNameResolverTypeName
@@ -296,34 +296,36 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 #if !NETFRAMEWORK
                 var assemblyLoader = new AssemblyLoader.AssemblyLoader();
                 assemblyLoader.RegisterAssemblyPaths(contractAssemblyPaths);
-                var stringSchemaTypeInfo = new AssemblyLoader.AssemblyLoader().BuildSchemaTypeInfo(
+                var internalGenerationContextAsString = new AssemblyLoader.AssemblyLoader().BuildInternalGenerationContext(
                     contractAssemblyPaths,
                     operationElements.Select(i => i.ToString()).ToList(),
                     propertyElements.Select(i => i.ToString()).ToList(),
                     documentVariantElementNames.FirstOrDefault(),
                     internalSchemaGenerationSettings);
 
-                internalSchemaTypeInfo =
-                      (InternalGenerationContext)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                internalGenerationContext =
+                      (InternalGenerationContext)JsonConvert.DeserializeObject(
+                          internalGenerationContextAsString,
                           typeof(InternalGenerationContext));
 #else
                 using (var isolatedDomain = new AppDomainCreator<AssemblyLoader.AssemblyLoader>())
                 {
                     isolatedDomain.Object.RegisterAssemblyPaths(contractAssemblyPaths);
-                    var stringSchemaTypeInfo = isolatedDomain.Object.BuildSchemaTypeInfo(
+                    var internalGenerationContextAsString = isolatedDomain.Object.BuildInternalGenerationContext(
                         contractAssemblyPaths,
                         operationElements.Select(i => i.ToString()).ToList(),
                         propertyElements.Select(i => i.ToString()).ToList(),
                         documentVariantElementNames.FirstOrDefault(),
                         internalSchemaGenerationSettings);
 
-                    internalSchemaTypeInfo =
-                        (InternalGenerationContext)JsonConvert.DeserializeObject(stringSchemaTypeInfo,
+                    internalGenerationContext =
+                        (InternalGenerationContext)JsonConvert.DeserializeObject(
+                            internalGenerationContextAsString,
                             typeof(InternalGenerationContext));
                 }              
 #endif
 
-                GenerationContext generationContext = internalSchemaTypeInfo.ToGenerationContext();
+                GenerationContext generationContext = internalGenerationContext.ToGenerationContext();
 
                 var operationGenerationDiagnostics = GenerateSpecificationDocuments(
                     generationContext,

@@ -9,15 +9,15 @@ using Microsoft.OpenApi.Models;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 {
     /// <summary>
-    /// 
+    /// Class containing extensions for <see cref="OpenApiSchema"/>.
     /// </summary>
     public static class OpenApiSchemaExtensions
     {
         /// <summary>
-        /// 
+        /// Copies source <see cref="OpenApiSchema"/> to target <see cref="OpenApiSchema"/>.
         /// </summary>
-        /// <param name="sourceOpenApiSchema"></param>
-        /// <param name="targetOpenApiSchema"></param>
+        /// <param name="sourceOpenApiSchema">The source schema to copy.</param>
+        /// <param name="targetOpenApiSchema">The target schema to copy into.</param>
         public static void CopyInto(this OpenApiSchema sourceOpenApiSchema, OpenApiSchema targetOpenApiSchema)
         {
             if(targetOpenApiSchema == null)

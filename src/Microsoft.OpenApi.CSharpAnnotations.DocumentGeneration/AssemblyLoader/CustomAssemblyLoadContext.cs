@@ -87,7 +87,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             }
 
             // Try to load assembly using short assembly name.
-            assembly = AssemblyLoadUtility.TryLoadByName(AssemblyPaths, assemblyName);
+            assembly = AssemblyLoadUtility.TryLoadByNameOrVersion(AssemblyPaths, assemblyName);
             if (assembly != null)
             {
                 Assemblies[args.Name] = assembly;
@@ -138,21 +138,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
         private Assembly TryLoadByVersion(
             IList<string> assemblyPaths,
             string assemblyName,
-            string assemblyVersion )
+            string assemblyVersion)
         {
-            var assemblyPath = assemblyPaths.FirstOrDefault( path => path.EndsWith( assemblyName + ".dll" ) );
+            var assemblyPath = assemblyPaths.FirstOrDefault(path => path.EndsWith(assemblyName + ".dll"));
 
-            if ( !string.IsNullOrWhiteSpace( assemblyPath ) )
+            if (!string.IsNullOrWhiteSpace(assemblyPath))
             {
                 try
                 {
-                    var info = FileVersionInfo.GetVersionInfo( assemblyPath );
-                    if ( info.FileVersion.StartsWith( assemblyVersion ) )
+                    var info = FileVersionInfo.GetVersionInfo(assemblyPath);
+                    if (info.FileVersion.StartsWith(assemblyVersion))
                     {
-                        return LoadFromAssemblyPath( assemblyPath );
+                        return LoadFromAssemblyPath(assemblyPath);
                     }
                 }
-                catch ( Exception )
+                catch (Exception)
                 {
                     // Do nothing.
                 }

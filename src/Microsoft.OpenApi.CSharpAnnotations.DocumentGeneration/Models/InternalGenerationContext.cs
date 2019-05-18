@@ -54,9 +54,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
                 InternalSchemaGenerationInfo schemaInfo = this.CrefToSchemaMap[key];
                 var internalSchemaInfo = new SchemaGenerationInfo
                 {
-                    Schema = schemaInfo.Schema == null 
-                    ? null
-                    : openApiStringReader.ReadFragment<OpenApiSchema>(
+                    Schema = schemaInfo.Schema == null
+                        ? null
+                        : openApiStringReader.ReadFragment<OpenApiSchema>(
                             schemaInfo.Schema,
                             OpenApiSpecVersion.OpenApi3_0,
                             out OpenApiDiagnostic diagnostic),
@@ -66,7 +66,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models
                 generationContext.CrefToSchemaMap.Add(key, internalSchemaInfo);
             }
 
-            foreach(var key in this.VariantSchemaReferenceMap.Keys)
+            foreach (var key in this.VariantSchemaReferenceMap.Keys)
             {
                 var documentVariantInfo = JsonConvert.DeserializeObject<DocumentVariantInfo>(key);
                 Dictionary<string, OpenApiSchema> schemaCrefMap = this.VariantSchemaReferenceMap[key].ToDictionary(

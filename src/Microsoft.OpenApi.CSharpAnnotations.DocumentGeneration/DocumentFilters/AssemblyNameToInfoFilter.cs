@@ -26,7 +26,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="xmlDocuments">The list of documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
         /// <param name="openApiDocumentGenerationSettings"><see cref="OpenApiDocumentGenerationSettings"/></param>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         public IList<GenerationError> Apply(
             OpenApiDocument specificationDocument,
             IList<XDocument> xmlDocuments,

@@ -31,7 +31,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         /// <remarks>
         /// Care should be taken to not overwrite the existing value in Operation if already present.
         /// This guarantees the predictable behavior that the first tag in the XML will be respected.
@@ -70,7 +70,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
                             string.Format(SpecificationGenerationMessages.MissingSeeCrefTag, name));
                     }
 
-                    var crefKey = allListedTypes.GetCrefKey();
+                    var crefKey = allListedTypes.ToCrefKey();
 
                     OpenApiSchema schema = new OpenApiSchema();
                     if (generationContext.CrefToSchemaMap.ContainsKey(crefKey))

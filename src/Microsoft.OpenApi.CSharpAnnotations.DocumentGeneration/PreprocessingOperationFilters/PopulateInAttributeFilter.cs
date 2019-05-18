@@ -27,7 +27,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         public IList<GenerationError> Apply(
             OpenApiPaths paths,
             XElement element,

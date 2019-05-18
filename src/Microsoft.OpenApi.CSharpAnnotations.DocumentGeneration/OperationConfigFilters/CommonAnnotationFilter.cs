@@ -24,7 +24,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationConfig
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element containing operation-level config in the config xml.</param>
         /// <param name="settings">The operation config filter settings.</param>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         public IList<GenerationError> Apply(
             OpenApiOperation operation,
             XElement element,

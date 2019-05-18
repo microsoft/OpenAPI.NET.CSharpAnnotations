@@ -22,7 +22,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PostProcessingD
         /// </summary>
         /// <param name="openApiDocument">The OpenAPI document to process.</param>
         /// <param name="settings">The filter settings.</param>
-        /// <returns>The list of generation errors, if any produced when processing the filter."></returns>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         public IList<GenerationError> Apply(
             OpenApiDocument openApiDocument,
             PostProcessingDocumentFilterSettings settings)
