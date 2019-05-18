@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +61,7 @@
     <Compile Include="SampleObject2.cs" />
     <Compile Include="SampleObject3.cs" />
     <Compile Include="SampleObject4.cs" />
+    <Compile Include="SampleObject6.cs" />
     <Compile Include="SampleObject5.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -159,6 +159,16 @@
             Gets the sample property object list
             </summary>
         </member>
+        <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject6">
+            <summary>
+            The sample object 6.
+            </summary>
+        </member>
+        <member name="P:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject6.SampleProperty">
+            <summary>
+            The sample string property.
+            </summary>
+        </member>
         <member name="T:Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.SampleObject5">
             <summary>
             The sample object 5.

@@ -1068,6 +1068,32 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                     OutputDirectory,
                     "AnnotationWithSecurityTags.Json")
             };
+
+            // XML document with runtime serialization
+            yield return new object[]
+            {
+                "XML document with runtime serialization",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithRuntimeSerialization.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                "1.0.0",
+                15,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationWithRuntimeSerialization.Json")
+            };
         }
 
         [Theory]

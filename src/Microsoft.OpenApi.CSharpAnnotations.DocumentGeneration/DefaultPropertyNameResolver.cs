@@ -30,7 +30,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             if (jsonPropertyAttribute == null)
             {
-                return propertyName;
+                return ResolvePropertyNameFromRuntimeSerialization(propertyInfo);
             }
 
             var type = jsonPropertyAttribute.GetType();
@@ -38,14 +38,45 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             if (propertyNameInfo == null)
             {
-                return propertyName;
+                return ResolvePropertyNameFromRuntimeSerialization(propertyInfo);
             }
 
-            var jsonPropertyName = (string) propertyNameInfo.GetValue(jsonPropertyAttribute, null);
+            var jsonPropertyName = (string)propertyNameInfo.GetValue(jsonPropertyAttribute, null);
 
             if (!string.IsNullOrWhiteSpace(jsonPropertyName))
             {
                 propertyName = jsonPropertyName;
+            }
+
+            return propertyName;
+        }
+
+        private string ResolvePropertyNameFromRuntimeSerialization(PropertyInfo propertyInfo)
+        {
+            var propertyName = propertyInfo.Name;
+            var attributes = propertyInfo.GetCustomAttributes(false);
+            var runTimeSerializationAttribute =
+                attributes?.Where(i => i.GetType().FullName == "System.Runtime.Serialization.DataMemberAttribute")
+                    .FirstOrDefault();
+
+            if (runTimeSerializationAttribute == null)
+            {
+                return propertyName;
+            }
+
+            var type = runTimeSerializationAttribute.GetType();
+            var propertyNameInfo = type.GetRuntimeProperty("Name");
+
+            if (propertyNameInfo == null)
+            {
+                return propertyName;
+            }
+
+            var runTimePropertyName = (string)propertyNameInfo.GetValue(runTimeSerializationAttribute, null);
+
+            if (!string.IsNullOrWhiteSpace(runTimePropertyName))
+            {
+                propertyName = runTimePropertyName;
             }
 
             return propertyName;
