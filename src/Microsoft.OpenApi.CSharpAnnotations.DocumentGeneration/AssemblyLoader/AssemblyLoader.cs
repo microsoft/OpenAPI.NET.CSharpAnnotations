@@ -22,6 +22,14 @@ using System.Runtime.Loader;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
 {
 #if !NETFRAMEWORK
+    /// <summary>
+    /// Class is used to load assemblies for .net framework and .net core runtimes.
+    /// </summary>
+    /// <remarks>
+    /// For .net framework, the class is loaded in seperate app domain and CurrentDomain.AssemblyResolve event
+    /// handler is used to resolve the assembly conflict.
+    /// For .net core custom assembly load context is used to resolve the assemlby conflict.
+    /// </remarks>
     internal class AssemblyLoader
     {
         public CustomAssemblyLoadContext Context { get; }
@@ -32,6 +40,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
             AssemblyLoadContext.Default.Resolving += (context, name) => Context.Resolve(name);
         }
 #else
+    /// <summary>
+    /// Class is used to load assemblies for .net framework and .net core runtimes.
+    /// </summary>
+    /// <remarks>
+    /// For .net framework, the class is loaded in seperate app domain and CurrentDomain.AssemblyResolve event
+    /// handler is used to resolve the assembly conflict.
+    /// For .net core custom assembly load context is used to resolve the assemlby conflict.
+    /// </remarks>
     internal class AssemblyLoader : MarshalByRefObject
     {
         
@@ -47,10 +63,15 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.AssemblyLoader
                 Version version = null;
 
                 var separatorIndex = args.Name.IndexOf(",", StringComparison.Ordinal);
+
+                // Fetch assembly name(Newtonsoft.Json) from args value like below
+                // Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
                 var assemblyName = separatorIndex > 0 ? args.Name.Substring(0, separatorIndex) : args.Name;
 
                 if (separatorIndex > 0)
                 {
+                    // Fetch assembly version(11.0.0.0) from args value like below
+                    // Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed
                     separatorIndex = args.Name.IndexOf("=", separatorIndex, StringComparison.Ordinal);
                     if (separatorIndex > 0)
                     {
