@@ -4,14 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
-using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 
@@ -388,7 +387,10 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             return oAuthFlow;
         }
 
-        private static OpenApiExample ToOpenApiExample(this XElement element, TypeFetcher typeFetcher)
+        private static OpenApiExample ToOpenApiExample(
+            this XElement element,
+            Dictionary<string, FieldValueInfo> crefFieldValueMap,
+            List<GenerationError> generationErrors)
         {
             var exampleChildElements = element.Elements();
 
@@ -411,7 +413,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 
             if (valueElement != null && urlElement != null)
             {
-                throw new InvalidExampleException(SpecificationGenerationMessages.ProvideEitherValueOrUrlTag);
+                generationErrors.Add(
+                    new GenerationError
+                    {
+                        ExceptionType = nameof(InvalidExampleException),
+                        Message = SpecificationGenerationMessages.ProvideEitherValueOrUrlTag
+                    });
+
+                return null;
             }
 
             IOpenApiAny exampleValue = null;
@@ -425,33 +434,14 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
 
                 if (string.IsNullOrWhiteSpace(valueElement.Value) && string.IsNullOrWhiteSpace(crefValue))
                 {
-                    throw new InvalidExampleException(SpecificationGenerationMessages.ProvideValueForExample);
-                }
-
-                if (!string.IsNullOrWhiteSpace(crefValue))
-                {
-                    var typeName = crefValue.ExtractTypeNameFromFieldCref();
-                    var type = typeFetcher.LoadTypeFromCrefValues(new List<string> {typeName});
-                    var fieldName = crefValue.ExtractFieldNameFromCref();
-
-                    var fields = type.GetFields(BindingFlags.Public
-                                                | BindingFlags.Static);
-                    var field = fields.FirstOrDefault(f => f.Name == fieldName);
-
-                    if (field == null)
+                    generationErrors.Add(
+                    new GenerationError
                     {
-                        var errorMessage = string.Format(
-                            SpecificationGenerationMessages.FieldNotFound,
-                            fieldName,
-                            typeName);
+                        ExceptionType = nameof(InvalidExampleException),
+                        Message = SpecificationGenerationMessages.ProvideValueForExample
+                    });
 
-                        throw new TypeLoadException(errorMessage);
-                    }
-
-                    exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
-                        field.GetValue(null).ToString(),
-                        OpenApiSpecVersion.OpenApi3_0,
-                        out OpenApiDiagnostic _);
+                    return null;
                 }
 
                 if (!string.IsNullOrWhiteSpace(valueElement.Value))
@@ -461,6 +451,23 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                             valueElement.Value,
                             OpenApiSpecVersion.OpenApi3_0,
                             out OpenApiDiagnostic _);
+                }
+
+                if (!string.IsNullOrWhiteSpace(crefValue) && crefFieldValueMap.ContainsKey(crefValue))
+                {
+                    var fieldValueInfo = crefFieldValueMap[crefValue];
+
+                    if (fieldValueInfo.Error != null)
+                    {
+                        generationErrors.Add(fieldValueInfo.Error);
+
+                        return null;
+                    }
+
+                    exampleValue = new OpenApiStringReader().ReadFragment<IOpenApiAny>(
+                        fieldValueInfo.Value,
+                        OpenApiSpecVersion.OpenApi3_0,
+                        out OpenApiDiagnostic _);
                 }
 
                 openApiExample.Value = exampleValue;
@@ -479,11 +486,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// and generates a map of string to OpenApiExample.
         /// </summary>
         /// <param name="xElement">The XElement to process.</param>
-        /// <param name="typeFetcher">The type fetcher.</param>
+        /// <param name="crefFieldValueMap">The cref to field value map.</param>
+        /// <param name="generationErrors">The generation errors produced while processing header.</param>
         /// <returns>The map of string to OpenApiExample.</returns>
         internal static Dictionary<string, OpenApiExample> ToOpenApiExamples(
             this XElement xElement,
-            TypeFetcher typeFetcher)
+            Dictionary<string, FieldValueInfo> crefFieldValueMap,
+            List<GenerationError> generationErrors)
         {
             var exampleElements = xElement.Elements().Where(p => p.Name == KnownXmlStrings.Example);
             var examples = new Dictionary<string, OpenApiExample>();
@@ -492,7 +501,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
             foreach (var exampleElement in exampleElements)
             {
                 var exampleName = exampleElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
-                var example = exampleElement.ToOpenApiExample(typeFetcher);
+                var example = exampleElement.ToOpenApiExample(crefFieldValueMap, generationErrors);
 
                 if (example != null)
                 {
@@ -510,13 +519,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
         /// and generates a map of string to OpenApiHeader.
         /// </summary>
         /// <param name="xElement">The XElement to process.</param>
-        /// <param name="typeFetcher">The type fetcher.</param>
-        /// <param name="schemaReferenceRegistry">The schema reference registry.</param>
+        /// <param name="crefSchemaMap">The cref to schema map.</param>
+        /// <param name="generationErrors">The generation errors produced while processing header.</param>
         /// <returns>The map of string to OpenApiHeader.</returns>
         internal static Dictionary<string, OpenApiHeader> ToOpenApiHeaders(
             this XElement xElement,
-            TypeFetcher typeFetcher,
-            SchemaReferenceRegistry schemaReferenceRegistry)
+            Dictionary<string, SchemaGenerationInfo> crefSchemaMap,
+            IList<GenerationError> generationErrors)
         {
             var headerElements = xElement.Elements()
                 .Where(
@@ -530,8 +539,13 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                 var name = headerElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    throw new InvalidHeaderException(
-                        string.Format(SpecificationGenerationMessages.UndocumentedName, "header"));
+                    generationErrors.Add(new GenerationError
+                    {
+                        ExceptionType = nameof(InvalidHeaderException),
+                        Message = string.Format(SpecificationGenerationMessages.UndocumentedName, "header")
+                    });
+
+                    return null;
                 }
 
                 var description = headerElement
@@ -539,9 +553,27 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                     .FirstOrDefault(p => p.Name == KnownXmlStrings.Description)?.Value.Trim().RemoveBlankLines();
 
                 var listedTypes = headerElement.GetListedTypes();
-                var type = typeFetcher.LoadTypeFromCrefValues(listedTypes);
+                var crefKey = listedTypes.ToCrefKey();
 
-                var schema = schemaReferenceRegistry.FindOrAddReference(type);
+                var schema = new OpenApiSchema
+                {
+                    Type = "string"
+                };
+
+                if (crefSchemaMap.ContainsKey(crefKey))
+                {
+                    var schemaInfo = crefSchemaMap[crefKey];
+
+                    if (schemaInfo.Error != null)
+                    {
+                        generationErrors.Add(schemaInfo.Error);
+
+                        return null;
+                    }
+
+                    schema = schemaInfo.Schema;
+                }
+
                 openApiHeaders.Add(
                     name,
                     new OpenApiHeader

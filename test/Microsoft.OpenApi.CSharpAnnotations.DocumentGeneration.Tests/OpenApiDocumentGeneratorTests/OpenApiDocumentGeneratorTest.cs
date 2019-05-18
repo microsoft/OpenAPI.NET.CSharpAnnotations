@@ -105,6 +105,9 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.OpenApiDo
                         "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
                     Path.Combine(
                         InputDirectory,
+                        "Newtonsoft.Json.dll"),
+                    Path.Combine(
+                        InputDirectory,
                         "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
                 },
                 "1.0.0",

@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -30,30 +31,70 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
         /// Thrown when there is a conflict
         /// between the attributes in the existing document variant info and the new one.
         /// </exception>
-        public void Apply(
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
+        public IList<GenerationError> Apply(
             IDictionary<DocumentVariantInfo, OpenApiDocument> documents,
             XElement element,
             IList<XDocument> xmlDocuments,
             DocumentConfigFilterSettings settings)
         {
-            var variantElements = element.Elements(KnownXmlStrings.Variant);
-            
-            foreach (var variantElement in variantElements)
-            {
-                // First, populate the document variant info attributes using the document variant option.
-                var variantOptions = variantElement.Element(KnownXmlStrings.Options)?.Elements(KnownXmlStrings.Option);
+            var generationErrors = new List<GenerationError>();
 
-                if (variantOptions != null)
+            if (element == null || xmlDocuments == null)
+            {
+                return generationErrors;
+            }
+
+
+            try
+            {
+                var variantElements = element.Elements(KnownXmlStrings.Variant);
+
+                foreach (var variantElement in variantElements)
                 {
-                    foreach (var variantOption in variantOptions)
+                    // First, populate the document variant info attributes using the document variant option.
+                    var variantOptions = variantElement.Element(KnownXmlStrings.Options)?.Elements(KnownXmlStrings.Option);
+
+                    if (variantOptions != null)
+                    {
+                        foreach (var variantOption in variantOptions)
+                        {
+                            var documentVariantInfo = new DocumentVariantInfo
+                            {
+                                Title = variantOption.Value,
+                                Categorizer = variantElement.Element(KnownXmlStrings.Name)?.Value
+                            };
+
+                            foreach (var attribute in variantOption.Attributes())
+                            {
+                                if (!documentVariantInfo.Attributes.ContainsKey(attribute.Name.ToString()))
+                                {
+                                    documentVariantInfo.Attributes[attribute.Name.ToString()] = attribute.Value;
+                                }
+                            }
+
+                            PopulateAttributesInExistingDocumentVariantInfo(documents, documentVariantInfo);
+                        }
+                    }
+
+                    // Second, populate the document variant info attributes using the information from the documents.
+                    var allCategorizerNodes = new List<XElement>();
+
+                    foreach (var xmlDocument in xmlDocuments)
+                    {
+                        allCategorizerNodes.AddRange(
+                            xmlDocument.Descendants(variantElement.Element(KnownXmlStrings.Name)?.Value));
+                    }
+
+                    foreach (var categorizerNode in allCategorizerNodes)
                     {
                         var documentVariantInfo = new DocumentVariantInfo
                         {
-                            Title = variantOption.Value,
-                            Categorizer = variantElement.Element(KnownXmlStrings.Name)?.Value
+                            Title = categorizerNode.Value,
+                            Categorizer = categorizerNode.Name.ToString()
                         };
 
-                        foreach (var attribute in variantOption.Attributes())
+                        foreach (var attribute in categorizerNode.Attributes())
                         {
                             if (!documentVariantInfo.Attributes.ContainsKey(attribute.Name.ToString()))
                             {
@@ -64,36 +105,18 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentConfigF
                         PopulateAttributesInExistingDocumentVariantInfo(documents, documentVariantInfo);
                     }
                 }
-
-                // Second, populate the document variant info attributes using the information from the documents.
-                var allCategorizerNodes = new List<XElement>();
-
-                foreach (var xmlDocument in xmlDocuments)
-                {
-                    allCategorizerNodes.AddRange(
-                        xmlDocument.Descendants(variantElement.Element(KnownXmlStrings.Name)?.Value));
-                }
-                
-                foreach (var categorizerNode in allCategorizerNodes)
-                {
-                    var documentVariantInfo = new DocumentVariantInfo
-                    {
-                        Title = categorizerNode.Value,
-                        Categorizer = categorizerNode.Name.ToString()
-                    };
-
-                    foreach (var attribute in categorizerNode.Attributes())
-                    {
-                        if (!documentVariantInfo.Attributes.ContainsKey(attribute.Name.ToString()))
-                        {
-                            documentVariantInfo.Attributes[attribute.Name.ToString()] = attribute.Value;
-                        }
-                    }
-
-                    PopulateAttributesInExistingDocumentVariantInfo(documents, documentVariantInfo);
-                }
+            }
+            catch (Exception ex)
+            {
+                generationErrors.Add(
+                   new GenerationError
+                   {
+                       Message = ex.Message,
+                       ExceptionType = ex.GetType().Name
+                   });
             }
 
+            return generationErrors;
         }
 
         private void PopulateAttributesInExistingDocumentVariantInfo(

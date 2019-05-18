@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
@@ -26,35 +27,52 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.DocumentFilters
         /// <param name="xmlDocuments">The documents representing the annotation xmls.</param>
         /// <param name="settings">Settings for document filters.</param>
         /// <param name="openApiDocumentGenerationSettings"><see cref="OpenApiDocumentGenerationSettings"/></param>
-        public void Apply(
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
+        public IList<GenerationError> Apply(
             OpenApiDocument specificationDocument,
             IList<XDocument> xmlDocuments,
             DocumentFilterSettings settings,
             OpenApiDocumentGenerationSettings openApiDocumentGenerationSettings)
         {
-            var basePaths = new List<string>();
-            var urlElements = new List<XElement>();
+            var generationErrors = new List<GenerationError>();
 
-            foreach (var xmlDocument in xmlDocuments)
+            try
             {
-                urlElements.AddRange(xmlDocument.XPathSelectElements("//doc/members/member/url"));
-            }
+                var basePaths = new List<string>();
+                var urlElements = new List<XElement>();
 
-            foreach (var urlElement in urlElements)
-            {
-                var url = urlElement.Value;
-                var sanitizedUrl = SanitizeUrl(url);
-
-                if (sanitizedUrl != null)
+                foreach (var xmlDocument in xmlDocuments)
                 {
-                    basePaths.Add(sanitizedUrl.GetLeftPart(UriPartial.Authority));
+                    urlElements.AddRange(xmlDocument.XPathSelectElements("//doc/members/member/url"));
+                }
+
+                foreach (var urlElement in urlElements)
+                {
+                    var url = urlElement.Value;
+                    var sanitizedUrl = SanitizeUrl(url);
+
+                    if (sanitizedUrl != null)
+                    {
+                        basePaths.Add(sanitizedUrl.GetLeftPart(UriPartial.Authority));
+                    }
+                }
+
+                foreach (var basePath in basePaths.Distinct())
+                {
+                    specificationDocument.Servers.Add(new OpenApiServer { Url = basePath });
                 }
             }
-
-            foreach (var basePath in basePaths.Distinct())
+            catch(Exception ex)
             {
-                specificationDocument.Servers.Add(new OpenApiServer { Url = basePath});
+                generationErrors.Add(
+                   new GenerationError
+                   {
+                       Message = ex.Message,
+                       ExceptionType = ex.GetType().Name
+                   });
             }
+
+            return generationErrors;
         }
 
         private static Uri SanitizeUrl(string url)

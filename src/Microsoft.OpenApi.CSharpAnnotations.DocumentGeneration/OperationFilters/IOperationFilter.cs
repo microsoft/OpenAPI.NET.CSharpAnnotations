@@ -3,7 +3,9 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Xml.Linq;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.Models;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -21,12 +23,16 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// <param name="element">The xml element representing an operation in the annotation xmls provided in
         /// <see cref="OpenApiGeneratorConfig.AnnotationXmlDocuments"/>.</param>
         /// <param name="settings"><see cref="OperationFilterSettings"/></param>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         /// <remarks>
         /// Care should be taken to not overwrite the existing value in Operation if already present.
         /// This guarantees the predictable behavior that the first tag in the XML will be respected.
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings);
+        IList<GenerationError> Apply(
+            OpenApiOperation operation,
+            XElement element,
+            OperationFilterSettings settings);
     }
 }

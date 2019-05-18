@@ -4,10 +4,12 @@
 // ------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
 
@@ -25,48 +27,68 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        public void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
+        public IList<GenerationError> Apply(
+            OpenApiPaths paths,
+            XElement element,
+            PreProcessingOperationFilterSettings settings)
         {
-            var paramElementsWithoutIn = element.Elements().Where(
-                    p => p.Name == KnownXmlStrings.Param
-                    && p.Attribute(KnownXmlStrings.In)?.Value == null)
-                .ToList();
+            var generationErrors = new List<GenerationError>();
 
-            var url = element.Elements()
-                .FirstOrDefault(p => p.Name == KnownXmlStrings.Url)
-                ?.Value;
-
-            if (!string.IsNullOrWhiteSpace(url))
+            try
             {
-                foreach (var paramElement in paramElementsWithoutIn)
-                {
-                    var paramName = paramElement.Attribute(KnownXmlStrings.Name)?.Value;
+                var paramElementsWithoutIn = element.Elements().Where(
+                                    p => p.Name == KnownXmlStrings.Param
+                                    && p.Attribute(KnownXmlStrings.In)?.Value == null)
+                                .ToList();
 
-                    if (url.Contains(
+                var url = element.Elements()
+                    .FirstOrDefault(p => p.Name == KnownXmlStrings.Url)
+                    ?.Value;
+
+                if (!string.IsNullOrWhiteSpace(url))
+                {
+                    foreach (var paramElement in paramElementsWithoutIn)
+                    {
+                        var paramName = paramElement.Attribute(KnownXmlStrings.Name)?.Value;
+
+                        if (url.Contains(
+                                $"/{{{paramName}}}",
+                                StringComparison.InvariantCultureIgnoreCase) &&
+                            url.Contains(
+                                $"={{{paramName}}}",
+                                StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            // The parameter is in both path and query. We cannot determine what to put for "in" attribute.
+                            throw new ConflictingPathAndQueryParametersException(paramName, url);
+                        }
+
+                        if (url.Contains(
                             $"/{{{paramName}}}",
-                            StringComparison.InvariantCultureIgnoreCase) &&
-                        url.Contains(
+                            StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            paramElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Path));
+                        }
+                        else if (url.Contains(
                             $"={{{paramName}}}",
                             StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        // The parameter is in both path and query. We cannot determine what to put for "in" attribute.
-                        throw new ConflictingPathAndQueryParametersException(paramName, url);
-                    }
-
-                    if (url.Contains(
-                        $"/{{{paramName}}}",
-                        StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        paramElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Path));
-                    }
-                    else if (url.Contains(
-                        $"={{{paramName}}}",
-                        StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        paramElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Query));
+                        {
+                            paramElement.Add(new XAttribute(KnownXmlStrings.In, KnownXmlStrings.Query));
+                        }
                     }
                 }
             }
+            catch(Exception ex)
+            {
+                generationErrors.Add(
+                   new GenerationError
+                   {
+                       Message = ex.Message,
+                       ExceptionType = ex.GetType().Name
+                   });
+            }
+
+            return generationErrors;
         }
     }
 }

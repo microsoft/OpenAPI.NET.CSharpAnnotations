@@ -10,7 +10,7 @@
         <Company>Microsoft</Company>
         <Title>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</Title>
         <PackageId>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</PackageId>
-        <Version>1.0.0-beta049</Version>
+        <Version>2.0.0-beta01</Version>
         <Description>Library that translates Visual Studio C# Annotations into .NET objects representing OpenAPI specification.</Description>
         <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
         <PackageTags>Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration</PackageTags>
@@ -28,5 +28,12 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.OpenApi" Version="1.1.1" />
       <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.1.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="10.0.1" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+      <PackageReference Include="System.Runtime.Loader">
+        <Version>4.3.0</Version>
+      </PackageReference>
     </ItemGroup>
 </Project>

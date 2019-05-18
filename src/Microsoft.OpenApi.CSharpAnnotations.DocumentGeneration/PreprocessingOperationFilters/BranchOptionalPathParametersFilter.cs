@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.Models;
 
@@ -26,46 +27,66 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
-        public void Apply(OpenApiPaths paths, XElement element, PreProcessingOperationFilterSettings settings)
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
+        public IList<GenerationError> Apply(
+            OpenApiPaths paths,
+            XElement element,
+            PreProcessingOperationFilterSettings settings)
         {
-            var paramElements = element.Elements()
-                .Where(
-                    p => p.Name == KnownXmlStrings.Param)
-                .ToList();
+            var generationErrors = new List<GenerationError>();
 
-            // We need both the full URL and the absolute paths for processing.
-            // Full URL contains all path and query parameters.
-            // Absolute path is needed to get OperationId parsed out correctly.
-            var fullUrl = element.Elements()
-                .FirstOrDefault(p => p.Name == KnownXmlStrings.Url)
-                ?.Value;
-
-            var absolutePath = fullUrl.UrlStringToAbsolutePath();
-
-            var operationMethod = (OperationType)Enum.Parse(
-                typeof(OperationType),
-                element.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Verb)?.Value,
-                ignoreCase: true);
-
-            var allGeneratedPathStrings = GeneratePossiblePaths(
-                absolutePath,
-                paramElements.Where(
-                        p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path)
-                    .ToList());
-
-            foreach (var pathString in allGeneratedPathStrings)
+            try
             {
-                if (!paths.ContainsKey(pathString))
-                {
-                    paths[pathString] = new OpenApiPathItem();
-                }
+                var paramElements = element.Elements()
+                                .Where(
+                                    p => p.Name == KnownXmlStrings.Param)
+                                .ToList();
 
-                paths[pathString].Operations[operationMethod] = 
-                    new OpenApiOperation
+                // We need both the full URL and the absolute paths for processing.
+                // Full URL contains all path and query parameters.
+                // Absolute path is needed to get OperationId parsed out correctly.
+                var fullUrl = element.Elements()
+                    .FirstOrDefault(p => p.Name == KnownXmlStrings.Url)
+                    ?.Value;
+
+                var absolutePath = fullUrl.UrlStringToAbsolutePath();
+
+                var operationMethod = (OperationType)Enum.Parse(
+                    typeof(OperationType),
+                    element.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Verb)?.Value,
+                    ignoreCase: true);
+
+                var allGeneratedPathStrings = GeneratePossiblePaths(
+                    absolutePath,
+                    paramElements.Where(
+                            p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path)
+                        .ToList());
+
+                foreach (var pathString in allGeneratedPathStrings)
+                {
+                    if (!paths.ContainsKey(pathString))
                     {
-                        OperationId = OperationHandler.GetOperationId(pathString, operationMethod)
-                    };
+                        paths[pathString] = new OpenApiPathItem();
+                    }
+
+                    paths[pathString].Operations[operationMethod] =
+                        new OpenApiOperation
+                        {
+                            OperationId = OperationHandler.GetOperationId(pathString, operationMethod)
+                        };
+                }
             }
+            catch(Exception ex)
+            {
+                generationErrors.Add(
+                   new GenerationError
+                   {
+                       Message = ex.Message,
+                       ExceptionType = ex.GetType().Name
+                   });
+            }
+
+            return generationErrors;
         }
 
         /// <summary>

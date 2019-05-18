@@ -3,6 +3,7 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
@@ -12,6 +13,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
     /// </summary>
     public class OperationFilterSettings
     {
+        /// <summary>
+        /// Gets or sets the generation context.
+        /// </summary>
+        public GenerationContext GenerationContext { get; set; }
+
         /// <summary>
         /// Gets or sets the operation method for the operation.
         /// </summary>
@@ -32,10 +38,5 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// roslyn issue. https://github.com/dotnet/roslyn/issues/26292.
         /// </summary>
         public bool RemoveRoslynDuplicateStringFromParamName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type fetcher.
-        /// </summary>
-        public TypeFetcher TypeFetcher { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using System.IO;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOperationFilters;
 using Microsoft.OpenApi.Models;
@@ -35,20 +36,28 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTes
             {
                 "Param with not supported in value",
                 XElement.Load(Path.Combine(InputDirectory, "ParamWithNotSupportedInValue.xml")),
-                string.Format(
+                new List<GenerationError>
+                {
+                    new GenerationError
+                    {
+                        ExceptionType = nameof(NotSupportedInAttributeValueException),
+                        Message = string.Format(
                     SpecificationGenerationMessages.NotSupportedInAttributeValue,
-                    "notSupported, notSupported2",
                     "sampleHeaderParam2, sampleHeaderParam3",
+                    "notSupported, notSupported2",
                     string.Join(", ", KnownXmlStrings.AllowedInValues))
+                    }
+                }
+                
             };
         }
 
         [Theory]
         [MemberData(nameof(GetTestCasesForValidateInAttributeShouldFail))]
-        public void ValidateInAttributeShouldFail(
+        public void ValidateInAttributeShouldGenerateErrors(
             string testName,
             XElement xElement,
-            string expectedExceptionMessage)
+            IList<GenerationError> expectedGenerationErrors)
         {
             var filter = new ValidateInAttributeFilter();
             var settings = new PreProcessingOperationFilterSettings();
@@ -56,8 +65,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTes
             var openApiPaths = new OpenApiPaths();
             _output.WriteLine(testName);
 
-            Action action = () => filter.Apply(openApiPaths, xElement, settings);
-            action.Should().Throw<DocumentationException>(expectedExceptionMessage);
+            var actualGenerationErrors = filter.Apply(openApiPaths, xElement, settings);
+            actualGenerationErrors.Should().BeEquivalentTo(expectedGenerationErrors);
         }
     }
 }

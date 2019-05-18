@@ -3,14 +3,19 @@
 //  Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // ------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions;
+using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Models.KnownStrings;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.ReferenceRegistries;
+using Microsoft.OpenApi.Extensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Readers;
 
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilters
 {
@@ -26,120 +31,156 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.OperationFilter
         /// <param name="operation">The operation to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>
         /// <param name="settings">The operation filter settings.</param>
+        /// <returns>The list of generation errors, if any produced when processing the filter.</returns>
         /// <remarks>
         /// Care should be taken to not overwrite the existing value in Operation if already present.
         /// This guarantees the predictable behavior that the first tag in the XML will be respected.
         /// It also guarantees that common annotations in the config file do not overwrite the
         /// annotations in the main documentation.
         /// </remarks>
-        public void Apply(OpenApiOperation operation, XElement element, OperationFilterSettings settings)
+        public IList<GenerationError> Apply(
+            OpenApiOperation operation,
+            XElement element,
+            OperationFilterSettings settings)
         {
-            var bodyElements = element.Elements()
-                .Where(
-                    p => p.Name == KnownXmlStrings.Param &&
-                        p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
-                .ToList();
+            var generationErrors = new List<GenerationError>();
 
-            SchemaReferenceRegistry schemaReferenceRegistry = settings.ReferenceRegistryManager.SchemaReferenceRegistry;
-
-            foreach (var bodyElement in bodyElements)
+            try
             {
-                var name = bodyElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
-                var mediaType = bodyElement.Attribute(KnownXmlStrings.Type)?.Value ?? "application/json";
+                var bodyElements = element.Elements()
+                    .Where(
+                        p => p.Name == KnownXmlStrings.Param &&
+                            p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Body)
+                    .ToList();
 
-                var description = bodyElement.GetDescriptionTextFromLastTextNode();
+                var generationContext = settings.GenerationContext;
 
-                var allListedTypes = bodyElement.GetListedTypes();
-
-                if (!allListedTypes.Any())
+                foreach (var bodyElement in bodyElements)
                 {
-                    throw new InvalidRequestBodyException(
-                        string.Format(SpecificationGenerationMessages.MissingSeeCrefTag, name));
-                }
+                    var name = bodyElement.Attribute(KnownXmlStrings.Name)?.Value.Trim();
+                    var mediaType = bodyElement.Attribute(KnownXmlStrings.Type)?.Value ?? "application/json";
 
-                var type = settings.TypeFetcher.LoadTypeFromCrefValues(allListedTypes);
-                var schema = schemaReferenceRegistry.FindOrAddReference(type);
+                    var description = bodyElement.GetDescriptionTextFromLastTextNode();
 
-                var examples = bodyElement.ToOpenApiExamples(settings.TypeFetcher);
+                    var allListedTypes = bodyElement.GetListedTypes();
 
-                if (examples.Count > 0)
-                {
-                    var firstExample = examples.First().Value?.Value;
-
-                    if (firstExample != null)
+                    if (!allListedTypes.Any())
                     {
-                        // In case a schema is a reference, find that schmea object in schema registry
-                        // and update the example.
-                        if (schema.Reference != null)
-                        {
-                            var key = schemaReferenceRegistry.GetKey(type);
+                        throw new InvalidRequestBodyException(
+                            string.Format(SpecificationGenerationMessages.MissingSeeCrefTag, name));
+                    }
 
-                            if (schemaReferenceRegistry.References.ContainsKey(key))
+                    var crefKey = allListedTypes.ToCrefKey();
+
+                    OpenApiSchema schema = new OpenApiSchema();
+                    if (generationContext.CrefToSchemaMap.ContainsKey(crefKey))
+                    {
+                        var schemaInfo = generationContext.CrefToSchemaMap[crefKey];
+
+                        if (schemaInfo.Error != null)
+                        {
+                            generationErrors.Add(schemaInfo.Error);
+
+                            return generationErrors;
+                        }
+
+                        schemaInfo.Schema.CopyInto(schema);
+                    }
+
+                    var examples = bodyElement.ToOpenApiExamples(
+                        generationContext.CrefToFieldValueMap,
+                        generationErrors);
+
+                    var schemaReferenceDefaultVariant = generationContext
+                        .VariantSchemaReferenceMap[DocumentVariantInfo.Default];
+
+                    if (examples.Count > 0)
+                    {
+                        var firstExample = examples.First().Value?.Value;
+
+                        if (firstExample != null)
+                        {
+                            // In case a schema is a reference, find that schema object in schema registry
+                            // and update the example.
+                            if (schema.Reference != null)
                             {
-                                settings.ReferenceRegistryManager.SchemaReferenceRegistry.References[key].Example
-                                    = firstExample;
+                                if (schemaReferenceDefaultVariant.ContainsKey(schema.Reference.Id))
+                                {
+                                    schemaReferenceDefaultVariant[schema.Reference.Id].Example = firstExample;
+                                }
+                            }
+                            else
+                            {
+                                schema.Example = firstExample;
                             }
                         }
-                        else
-                        {
-                            schema.Example = firstExample;
-                        }
                     }
-                }
 
-                if (operation.RequestBody == null)
-                {
-                    operation.RequestBody = new OpenApiRequestBody
+                    if (operation.RequestBody == null)
                     {
-                        Description = description.RemoveBlankLines(),
-                        Content =
+                        operation.RequestBody = new OpenApiRequestBody
+                        {
+                            Description = description.RemoveBlankLines(),
+                            Content =
                         {
                             [mediaType] = new OpenApiMediaType {Schema = schema}
                         },
-                        Required = true
-                    };
-                }
-                else
-                {
-                    if (string.IsNullOrWhiteSpace(operation.RequestBody.Description))
-                    {
-                        operation.RequestBody.Description = description.RemoveBlankLines();
-                    }
-
-                    if (!operation.RequestBody.Content.ContainsKey(mediaType))
-                    {
-                        operation.RequestBody.Content[mediaType] = new OpenApiMediaType
-                        {
-                            Schema = schema
+                            Required = true
                         };
                     }
                     else
                     {
-                        if (!operation.RequestBody.Content[mediaType].Schema.AnyOf.Any())
+                        if (string.IsNullOrWhiteSpace(operation.RequestBody.Description))
                         {
-                            var existingSchema = operation.RequestBody.Content[mediaType].Schema;
-                            var newSchema = new OpenApiSchema();
-                            newSchema.AnyOf.Add(existingSchema);
-
-                            operation.RequestBody.Content[mediaType].Schema = newSchema;
+                            operation.RequestBody.Description = description.RemoveBlankLines();
                         }
 
-                        operation.RequestBody.Content[mediaType].Schema.AnyOf.Add(schema);
-                    }
-                }
+                        if (!operation.RequestBody.Content.ContainsKey(mediaType))
+                        {
+                            operation.RequestBody.Content[mediaType] = new OpenApiMediaType
+                            {
+                                Schema = schema
+                            };
+                        }
+                        else
+                        {
+                            if (!operation.RequestBody.Content[mediaType].Schema.AnyOf.Any())
+                            {
+                                var existingSchema = operation.RequestBody.Content[mediaType].Schema;
+                                var newSchema = new OpenApiSchema();
+                                newSchema.AnyOf.Add(existingSchema);
 
-                if (examples.Count > 0)
-                {
-                    if (operation.RequestBody.Content[mediaType].Examples.Any())
-                    {
-                        examples.CopyInto(operation.RequestBody.Content[mediaType].Examples);
+                                operation.RequestBody.Content[mediaType].Schema = newSchema;
+                            }
+
+                            operation.RequestBody.Content[mediaType].Schema.AnyOf.Add(schema);
+                        }
                     }
-                    else
+
+                    if (examples.Count > 0)
                     {
-                        operation.RequestBody.Content[mediaType].Examples = examples;
+                        if (operation.RequestBody.Content[mediaType].Examples.Any())
+                        {
+                            examples.CopyInto(operation.RequestBody.Content[mediaType].Examples);
+                        }
+                        else
+                        {
+                            operation.RequestBody.Content[mediaType].Examples = examples;
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                generationErrors.Add(
+                   new GenerationError
+                   {
+                       Message = ex.Message,
+                       ExceptionType = ex.GetType().Name
+                   });
+            }
+
+            return generationErrors;
         }
     }
 }
