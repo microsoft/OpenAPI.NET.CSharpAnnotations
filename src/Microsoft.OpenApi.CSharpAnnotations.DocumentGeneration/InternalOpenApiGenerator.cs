@@ -293,12 +293,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     });
                 }
 
+                IList<string> serializedOperationElements = operationElements.Select(i => i.ToString()).ToList();
+
+                // Operation config elements can contain the types that needs to be fetched too,
+                // so add it to the list of operation elements which will be used to fetch type information.
+                if (operationConfigElement!=null)
+                {
+                    serializedOperationElements.Add(operationConfigElement.ToString());
+                }
+
 #if !NETFRAMEWORK
                 var assemblyLoader = new AssemblyLoader.AssemblyLoader();
                 assemblyLoader.RegisterAssemblyPaths(contractAssemblyPaths);
                 var internalGenerationContextAsString = new AssemblyLoader.AssemblyLoader().BuildInternalGenerationContext(
                     contractAssemblyPaths,
-                    operationElements.Select(i => i.ToString()).ToList(),
+                    serializedOperationElements,
                     propertyElements.Select(i => i.ToString()).ToList(),
                     documentVariantElementNames.FirstOrDefault(),
                     internalSchemaGenerationSettings);
@@ -313,7 +322,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     isolatedDomain.Object.RegisterAssemblyPaths(contractAssemblyPaths);
                     var internalGenerationContextAsString = isolatedDomain.Object.BuildInternalGenerationContext(
                         contractAssemblyPaths,
-                        operationElements.Select(i => i.ToString()).ToList(),
+                        serializedOperationElements,
                         propertyElements.Select(i => i.ToString()).ToList(),
                         documentVariantElementNames.FirstOrDefault(),
                         internalSchemaGenerationSettings);
