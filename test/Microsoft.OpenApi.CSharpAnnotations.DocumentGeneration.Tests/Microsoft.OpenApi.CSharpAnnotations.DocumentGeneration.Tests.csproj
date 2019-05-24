@@ -44,6 +44,9 @@
       <None Update="DocumentVariantTests\Input\AnnotationWithDuplicatePaths.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="OperationConfigTests\Input\AnnotationWithNoSimpleTypeReferenceInOperation.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="DocumentVariantTests\Input\AnnotationWithVariantAttributes.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -51,6 +54,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="DocumentVariantTests\Input\AnnotationWithVariantAttributesConflictWithSelf.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="OperationConfigTests\Input\ConfigWithCommonAnnotations.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="DocumentVariantTests\Input\ConfigMultipleDocumentVariantTagsWithCommonAnnotations.xml">
@@ -69,6 +75,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="DocumentVariantTests\Input\Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="OperationConfigTests\Output\AnnotationWithNoSimpleTypeReferenceInOperation.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="DocumentVariantTests\Output\AnnotationDefaultVariant.json">

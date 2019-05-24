@@ -110,6 +110,34 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Operation
                     "AnnotationNoOperationConfig.json")
             };
 
+            // Annotation with no simple type but advance config contain simple type as cref.
+            yield return new object[]
+            {
+                "Annotation with no simple type but advance config contain simple type as cref",
+                new List<string>
+                {
+                    Path.Combine(InputDirectory, "AnnotationWithNoSimpleTypeReferenceInOperation.xml"),
+                    Path.Combine(InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.xml")
+                },
+                new List<string>
+                {
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.SampleApis.dll"),
+                    Path.Combine(
+                        InputDirectory,
+                        "Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.Contracts.dll")
+                },
+                Path.Combine(
+                    InputDirectory,
+                    "ConfigWithCommonAnnotations.xml"),
+                1,
+                Path.Combine(
+                    OutputDirectory,
+                    "AnnotationWithNoSimpleTypeReferenceInOperation.json")
+            };
+
             // Blank operation section in config files
             yield return new object[]
             {
