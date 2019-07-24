@@ -474,6 +474,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             {
                 string url;
                 OperationType operationMethod;
+                OperationType operationMethod1 = OperationType.Trace;
 
                 try
                 {
@@ -498,10 +499,21 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
                     continue;
                 }
-
+                bool doubleverb = false;
                 try
                 {
-                    operationMethod = OperationHandler.GetOperationMethod(url, operationElement);
+                    string safe = OperationHandler.GetOperationMethod(url, operationElement);
+                    if(safe.Contains('/'))
+                    {
+                        string[] split = safe.Split('/');
+                        doubleverb = true;
+                        Enum.TryParse(split[0], true, out operationMethod);
+                        Enum.TryParse(split[1], true, out operationMethod1);
+                    }
+                    else
+                    {
+                        Enum.TryParse(safe, true, out operationMethod);
+                    }
                 }
                 catch (InvalidVerbException e)
                 {
@@ -577,21 +589,48 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
                     }
                 }
 
-                var operationGenerationResult = new OperationGenerationDiagnostic
+                if (doubleverb)
                 {
-                    OperationMethod = operationMethod.ToString(),
-                    Path = url
-                };
-
-                if (operationGenerationErrors.Any())
-                {
-                    foreach (var error in operationGenerationErrors)
+                    doubleverb = false;
+                    var operationGenerationResult = new OperationGenerationDiagnostic
                     {
-                        operationGenerationResult.Errors.Add(new GenerationError(error));
-                    }
-                }
+                        OperationMethod = operationMethod.ToString(),
+                        Path = url
+                    };
+                    var operationGenerationResult1 = new OperationGenerationDiagnostic
+                    {
+                        OperationMethod = operationMethod1.ToString(),
+                        Path = url
+                    };
 
-                operationGenerationResults.Add(operationGenerationResult);
+                    if (operationGenerationErrors.Any())
+                    {
+                        foreach (var error in operationGenerationErrors)
+                        {
+                            operationGenerationResult.Errors.Add(new GenerationError(error));
+                        }
+                    }
+                    operationGenerationResults.Add(operationGenerationResult);
+                    operationGenerationResults.Add(operationGenerationResult1);
+                }
+                else
+                {
+                    var operationGenerationResult = new OperationGenerationDiagnostic
+                    {
+                        OperationMethod = operationMethod.ToString(),
+                        Path = url
+                    };
+
+                    if (operationGenerationErrors.Any())
+                    {
+                        foreach (var error in operationGenerationErrors)
+                        {
+                            operationGenerationResult.Errors.Add(new GenerationError(error));
+                        }
+                    }
+                    operationGenerationResults.Add(operationGenerationResult);
+                }
+                
             }
 
             foreach (var documentVariantInfo in generationContext.VariantSchemaReferenceMap.Keys)

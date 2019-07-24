@@ -64,7 +64,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// Extracts the operation method from the operation element
         /// </summary>
         /// <exception cref="InvalidVerbException">Thrown if the verb is missing or has invalid format.</exception>
-        public static OperationType GetOperationMethod(
+        public static string GetOperationMethod(
             string url,
             XElement operationElement)
         {
@@ -76,9 +76,12 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
 
             if (Enum.TryParse(verb, true, out operationMethod))
             {
-                return operationMethod;
+                return operationMethod.ToString();
             }
-
+            if (verb.Contains('/'))
+            {
+                return verb;
+            }
             throw new InvalidVerbException(verb);
         }
 

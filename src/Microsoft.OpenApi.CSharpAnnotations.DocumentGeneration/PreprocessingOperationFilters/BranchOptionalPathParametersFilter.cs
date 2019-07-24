@@ -51,32 +51,70 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
 
                 var absolutePath = fullUrl.UrlStringToAbsolutePath();
 
-                var operationMethod = (OperationType)Enum.Parse(
-                    typeof(OperationType),
-                    element.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Verb)?.Value,
-                    ignoreCase: true);
+                var ops = element.Elements().FirstOrDefault(p => p.Name == KnownXmlStrings.Verb)?.Value;
 
-                var allGeneratedPathStrings = GeneratePossiblePaths(
-                    absolutePath,
-                    paramElements.Where(
-                            p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path)
-                        .ToList());
-
-                foreach (var pathString in allGeneratedPathStrings)
+                if (ops.Contains("/"))
                 {
-                    if (!paths.ContainsKey(pathString))
+                    string[] split = ops.Split('/');
+
+                    var operationMethod = (OperationType)Enum.Parse(typeof(OperationType), split[0], ignoreCase: true);
+
+                    var allGeneratedPathStrings = GeneratePossiblePaths(absolutePath, paramElements.Where(p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path).ToList());
+
+                    foreach (var pathString in allGeneratedPathStrings)
                     {
-                        paths[pathString] = new OpenApiPathItem();
+                        if (!paths.ContainsKey(pathString))
+                        {
+                            paths[pathString] = new OpenApiPathItem();
+                        }
+
+                        paths[pathString].Operations[operationMethod] =
+                            new OpenApiOperation
+                            {
+                                OperationId = OperationHandler.GetOperationId(pathString, operationMethod)
+                            };
                     }
 
-                    paths[pathString].Operations[operationMethod] =
-                        new OpenApiOperation
+                    var operationMethod2 = (OperationType)Enum.Parse(typeof(OperationType), split[1], ignoreCase: true);
+
+                    var allGeneratedPathStrings2 = GeneratePossiblePaths(absolutePath, paramElements.Where(p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path).ToList());
+
+                    foreach (var pathString in allGeneratedPathStrings2)
+                    {
+                        if (!paths.ContainsKey(pathString))
                         {
-                            OperationId = OperationHandler.GetOperationId(pathString, operationMethod)
-                        };
+                            paths[pathString] = new OpenApiPathItem();
+                        }
+
+                        paths[pathString].Operations[operationMethod2] =
+                            new OpenApiOperation
+                            {
+                                OperationId = OperationHandler.GetOperationId(pathString, operationMethod2)
+                            };
+                    }
+                }
+                else
+                {
+                    var operationMethod = (OperationType)Enum.Parse(typeof(OperationType), ops, ignoreCase: true);
+
+                    var allGeneratedPathStrings = GeneratePossiblePaths(absolutePath, paramElements.Where(p => p.Attribute(KnownXmlStrings.In)?.Value == KnownXmlStrings.Path).ToList());
+
+                    foreach (var pathString in allGeneratedPathStrings)
+                    {
+                        if (!paths.ContainsKey(pathString))
+                        {
+                            paths[pathString] = new OpenApiPathItem();
+                        }
+
+                        paths[pathString].Operations[operationMethod] =
+                            new OpenApiOperation
+                            {
+                                OperationId = OperationHandler.GetOperationId(pathString, operationMethod)
+                            };
+                    }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 generationErrors.Add(
                    new GenerationError
@@ -150,7 +188,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
                 // Remove the extra '/' in the front.
                 paths.Add(path.Substring(1));
             }
-
             return paths;
         }
 
@@ -206,7 +243,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
 
                 bool required;
                 var parseSuccess = bool.TryParse(
-                    pathParam.Attribute(KnownXmlStrings.Required)?.Value.Trim(), 
+                    pathParam.Attribute(KnownXmlStrings.Required)?.Value.Trim(),
                     out required);
 
                 // If any path parameter in the segment is marked as required, the entire segment is required.
