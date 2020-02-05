@@ -46,7 +46,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Extensions
                 [typeof(double?)] = () => new OpenApiSchema {Type = "number", Format = "double", Nullable = true},
                 [typeof(decimal?)] = () => new OpenApiSchema {Type = "number", Format = "double", Nullable = true},
                 [typeof(DateTime?)] = () => new OpenApiSchema {Type = "string", Format = "date-time", Nullable = true},
-                [typeof(TimeSpan?)] = () => new OpenApiSchema {Type = "string"},
+                [typeof(TimeSpan?)] = () => new OpenApiSchema {Type = "string", Nullable = true},
                 [typeof(DateTimeOffset?)] = () =>
                     new OpenApiSchema {Type = "string", Format = "date-time", Nullable = true},
                 [typeof(Guid?)] = () => new OpenApiSchema {Type = "string", Format = "uuid", Nullable = true},
