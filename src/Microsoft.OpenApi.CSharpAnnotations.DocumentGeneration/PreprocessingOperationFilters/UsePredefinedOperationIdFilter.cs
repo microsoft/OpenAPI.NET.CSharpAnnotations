@@ -64,9 +64,8 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         }
 
         /// <summary>
-        /// Creates the operation in the Paths object using the operationId tag of the operation.
-        /// It does not consider optional parameters, it create one operation for the full path.
-        /// the URL value and creates multiple operations based on optional parameters.
+        /// Creates the operation using the operationId tag of the operation. It does not consider optional
+        /// parameters, it creates one operation for the full path.
         /// </summary>
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>

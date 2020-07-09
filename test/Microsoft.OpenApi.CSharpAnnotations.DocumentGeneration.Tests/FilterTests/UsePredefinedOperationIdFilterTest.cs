@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
 using Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Exceptions;
@@ -201,169 +202,38 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTes
             };
         }
 
-        //[Fact]
-        //public void ApplyShouldUseTheOperationIdXmlTagAsOperationId()
-        //{
-        //    // Prepare
-        //    var element = XElement.Parse(@"
-        //            <member>
-        //                <summary>Assign Role</summary>
-        //                <param name=""role"">Role</param>
-        //                <url>https://localhost/v2/role/{role}/assign</url>
-        //                <verb>put</verb>
-        //                <operationId>AccessControl_AssignRole</operationId>
-        //            </member>
-        //        ");
-
-        //    var openApiPaths = new OpenApiPaths();
-        //    var settings = new PreProcessingOperationFilterSettings();
-
-        //    var filter = new UsePredefinedOperationIdFilter();
-
-        //    // Action
-        //    filter.Apply(openApiPaths, element, settings);
-
-        //    // Assert
-        //    string url = "/v2/role/{role}/assign";
-        //    OperationType operationType = OperationType.Put;
-        //    var expectedOperationId = "AccessControl_AssignRole";
-
-        //    openApiPaths.Should().ContainKey(url);
-        //    openApiPaths[url].Operations.Should().ContainKey(operationType);
-
-        //    openApiPaths[url].Operations[operationType]
-        //        .OperationId.Should().BeEquivalentTo(expectedOperationId);
-        //}
-
-        //[Theory]
-        //[MemberData(nameof(GetTestCasesForApplyShouldUseVerbXmlTagAsOperationType))]
-        //public void ApplyShouldUseVerbXmlTagAsOperationType(
-        //    string testName,
-        //    XElement element,
-        //    string url,
-        //    OperationType expectedOperationType)
-        //{
-        //    _output.WriteLine(testName);
-
-        //    // Prepare
-        //    var openApiPaths = new OpenApiPaths();
-        //    var settings = new PreProcessingOperationFilterSettings();
-
-        //    var filter = new UsePredefinedOperationIdFilter();
-
-        //    // Action
-        //    filter.Apply(openApiPaths, element, settings);
-
-        //    // Assert
-        //    openApiPaths.Should().ContainKey(url);
-        //    openApiPaths[url].Operations.Should().ContainKey(expectedOperationType);
-        //}
-
-        //public static IEnumerable<object[]> GetTestCasesForApplyShouldUseVerbXmlTagAsOperationType()
-        //{
-        //    var operationTypeStringList = new string[]
-        //    {
-        //        "get", "put", "post", "delete", "options", "head", "patch", "trace"
-        //    };
-
-        //    var expectedOperationTypeList = new OperationType[]
-        //    {
-        //        OperationType.Get, OperationType.Put, OperationType.Post, OperationType.Delete,
-        //        OperationType.Options, OperationType.Head, OperationType.Patch, OperationType.Trace
-        //    };
-
-        //    foreach (var value in operationTypeStringList.Zip(expectedOperationTypeList))
-        //    {
-        //        var element = XElement.Parse($@"
-        //            <member>
-        //                <summary>Assign Role</summary>
-        //                <param name=""role"">Role</param>
-        //                <url>https://localhost/v2/role/{{role}}/assign</url>
-        //                <verb>put</verb>
-        //                <operationId>AccessControl_AssignRole</operationId>
-        //            </member>
-        //        ");
-        //    }
-
-        //    yield return new object[]
-        //    {
-        //        "Not applicable if no operationId XML tag is present",
-        //        XElement.Parse(@"
-        //            <member>
-        //                <summary>Assign Role</summary>
-        //                <param name=""role"">Role</param>
-        //            </member>
-        //        "),
-        //        false
-        //    };
-
-        //    yield return new object[]
-        //    {
-        //        "Applicable if one operationId XML tag is present",
-        //        XElement.Parse(@"
-        //            <member>
-        //                <summary>Assign Role</summary>
-        //                <param name=""role"">Role</param>
-        //                <operationId>AccessControl_AssignRole</operationId>
-        //            </member>
-        //        "),
-        //        true
-        //    };
-
-        //    yield return new object[]
-        //    {
-        //        "Applicable if multiple operationId XML tags are present",
-        //        XElement.Parse(@"
-        //            <member>
-        //                <operationId>AssignRole</operationId>
-        //                <summary>Assign Role</summary>
-        //                <param name=""role"">Role</param>
-        //                <operationId>AccessControl_AssignRole</operationId>
-        //            </member>
-        //        "),
-        //        true
-        //    };
-        //}
-        public static IEnumerable<object[]> GetTestCasesForApplyShouldUseTheOperationIdXmlTagAsOperationId()
+        [Fact]
+        public void ApplyShouldProcessTheXmlTagProperlyEndToEnd()
         {
-            yield return new object[]
-            {
-                "",
-                XElement.Parse(@"
+            // Prepare
+            var element = XElement.Parse(@"
                     <member>
                         <summary>Assign Role</summary>
                         <param name=""role"">Role</param>
-                    </member>
-                "),
-                false
-            };
-
-            yield return new object[]
-            {
-                "Applicable if one operationId XML tag is present",
-                XElement.Parse(@"
-                    <member>
-                        <summary>Assign Role</summary>
-                        <param name=""role"">Role</param>
+                        <url>https://localhost/v2/role/{role}/assign</url>
+                        <verb>put</verb>
                         <operationId>AccessControl_AssignRole</operationId>
                     </member>
-                "),
-                true
-            };
+                ");
 
-            yield return new object[]
-            {
-                "Applicable if multiple operationId XML tags are present",
-                XElement.Parse(@"
-                    <member>
-                        <operationId>AssignRole</operationId>
-                        <summary>Assign Role</summary>
-                        <param name=""role"">Role</param>
-                        <operationId>AccessControl_AssignRole</operationId>
-                    </member>
-                "),
-                true
-            };
+            var openApiPaths = new OpenApiPaths();
+            var settings = new PreProcessingOperationFilterSettings();
+
+            var filter = new UsePredefinedOperationIdFilter();
+
+            // Action
+            filter.Apply(openApiPaths, element, settings);
+
+            // Assert
+            string url = "/v2/role/{role}/assign";
+            OperationType operationType = OperationType.Put;
+            var expectedOperationId = "AccessControl_AssignRole";
+
+            openApiPaths.Should().ContainKey(url);
+            openApiPaths[url].Operations.Should().ContainKey(operationType);
+
+            openApiPaths[url].Operations[operationType]
+                .OperationId.Should().BeEquivalentTo(expectedOperationId);
         }
 
         private static string DefaultGetUrlFunc(XElement e)

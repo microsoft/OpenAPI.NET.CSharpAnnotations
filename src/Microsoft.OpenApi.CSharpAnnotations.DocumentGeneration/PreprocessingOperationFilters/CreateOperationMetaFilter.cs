@@ -49,7 +49,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
 
         /// <summary>
         /// Initializes the OpenApi operation based on the annotation XML element.
-        /// 
+        /// It applies the first applicable filter to create operations.
         /// </summary>
         /// <param name="paths">The paths to be updated.</param>
         /// <param name="element">The xml element representing an operation in the annotation xml.</param>

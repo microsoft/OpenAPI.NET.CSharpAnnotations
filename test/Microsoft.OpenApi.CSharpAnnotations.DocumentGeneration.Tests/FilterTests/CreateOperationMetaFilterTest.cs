@@ -118,7 +118,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTes
         }
 
         [Fact]
-        public void ApplyShouldReturnTheErrorListOFTheAppliedFilter()
+        public void ApplyShouldReturnTheErrorListOfTheAppliedFilter()
         {
             // Prepare
             var openApiPaths = new OpenApiPaths();
