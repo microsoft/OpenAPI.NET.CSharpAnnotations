@@ -15,11 +15,11 @@ using Xunit.Abstractions;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTests
 {
     [Collection("DefaultSettings")]
-    public class OperationHandler_GetUrlTests
+    public class OperationHandlerGetUrlTests
     {
         private readonly ITestOutputHelper _output;
 
-        public OperationHandler_GetUrlTests(ITestOutputHelper output)
+        public OperationHandlerGetUrlTests(ITestOutputHelper output)
         {
             _output = output;
         }

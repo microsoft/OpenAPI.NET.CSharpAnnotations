@@ -14,11 +14,11 @@ using Xunit.Abstractions;
 namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.Tests.FilterTests
 {
     [Collection("DefaultSettings")]
-    public class OperationHandler_OperationIdTests
+    public class OperationHandlerOperationIdTests
     {
         private readonly ITestOutputHelper _output;
 
-        public OperationHandler_OperationIdTests(ITestOutputHelper output)
+        public OperationHandlerOperationIdTests(ITestOutputHelper output)
         {
             _output = output;
         }

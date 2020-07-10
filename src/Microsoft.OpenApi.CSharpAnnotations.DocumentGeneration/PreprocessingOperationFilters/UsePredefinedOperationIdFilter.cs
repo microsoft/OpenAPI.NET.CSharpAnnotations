@@ -41,7 +41,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         /// <param name="GetOperationMethodFunc">Get operation method function.</param>
         /// <param name="GetOperationIdFunc">Get operation id function.</param>
         /// <param name="HasOperationIdFunc">Has operation id function.</param>
-        public UsePredefinedOperationIdFilter(
+        internal UsePredefinedOperationIdFilter(
             Func<XElement, string> GetUrlFunc,
             Func<XElement, OperationType> GetOperationMethodFunc,
             Func<XElement, string> GetOperationIdFunc,
