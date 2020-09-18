@@ -13,7 +13,6 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
 {
     /// <summary>
     /// Filter to initialize OpenApi operation based on the annotation XML element.
-    /// 
     /// It does not do the creation itself but forwards the call to the real generator filters.
     /// The first filter which is applicable is executed in order to generate the operation.
     /// </summary>
@@ -22,7 +21,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration.PreprocessingOp
         private List<ICreateOperationPreProcessingOperationFilter> createOperationFilters;
 
         /// <summary>
-        /// Initializes a new production instance of the <see cref="CreateOperationMetaFilter"/>.
+        /// Initializes a new instance of the <see cref="CreateOperationMetaFilter"/>.
         /// </summary>
         /// <remarks>
         /// Using this constructor, the following filter list is used:

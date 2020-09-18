@@ -25,7 +25,7 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
         /// <returns>True if the operationId tag is in the operation element, otherwise false.</returns>
         public static bool HasOperationId(XElement operationElement)
         {
-            return operationElement?.Elements().Where(p => p.Name == KnownXmlStrings.OperationId).Count() > 0;
+            return operationElement?.Elements().Where(p => p.Name == KnownXmlStrings.OperationId).Any() ?? false;
         }
 
         /// <summary>
@@ -42,13 +42,11 @@ namespace Microsoft.OpenApi.CSharpAnnotations.DocumentGeneration
             {
                 return operationIdList[0].Value;
             }
-            else
-            {
-                string error = operationIdList.Count > 1
-                    ? SpecificationGenerationMessages.MultipleOperationId
-                    : SpecificationGenerationMessages.NoOperationId;
-                throw new InvalidOperationIdException(error);
-            }
+
+            string error = operationIdList.Count > 1
+                ? SpecificationGenerationMessages.MultipleOperationId
+                : SpecificationGenerationMessages.NoOperationId;
+            throw new InvalidOperationIdException(error);
         }
 
         /// <summary>
